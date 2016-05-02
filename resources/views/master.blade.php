@@ -9,5 +9,32 @@
     <meta property="og:image" content="http://www.international.gouv.qc.ca/Content/Users/Documents/FicheContenu/263.jpg"/>
   	<meta property="og:type" content="website"/>
     <title>S!MVO</title>
+    <!-- Stylesheets for Material Design and FontAwesome-->
+    <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.red-indigo.min.css"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+
+    <!-- Javascript libraries -->
   </head>
+  <body>
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+      <header class="mdl-layout__header">
+        <div class="mdl-layout__header-row">
+          <span class="mdl-layout-title">Simvo McGill</span>
+
+          <div class="mdl-layout-spacer"></div>
+          <nav class="mdl-navigation mdl-layout--large-screen-only">
+            <a class="mdl-navigation__link">Login</a>
+          </nav>
+        </div>
+      </header>
+
+      <main class="mdl-layout__content">
+      </main>
+    </div>
+
+    <!-- Javascript Files and Libraries -->
+    <script defer src="https://code.getmdl.io/1.1.2/material.min.js"></script>
+  </body>
 </html>
