@@ -1,0 +1,15 @@
+$primary-color: #f44235;
+$secondary-color: #4051b5;
+$background: rgba(236, 240, 241,1.0);
+
+.auth_card.mdl-card {
+  width: 100%;
+}
+.auth_card > .mdl-card__title {
+  color: #fff;
+  max-height: 70px;
+  background: $secondary-color;
+}
+.auth_icon {
+  margin-top: 1.5em;
+}

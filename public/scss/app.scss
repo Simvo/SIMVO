@@ -1,0 +1,32 @@
+// @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+
+$primary-color: #f44235;
+$secondary-color: #4051b5;
+$background: rgba(236, 240, 241,1.0);
+
+body {
+  background-color: $background !important;
+  width: 100%;
+}
+
+/** Helper Classes **/
+.center {
+  text-align: center !important;
+}
+
+.list-inline{
+  padding: 0;
+  margin: 0;
+  li{
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+    display: inline-block;
+  }
+}
+
+.list-style-none{
+  li{
+    list-style-type: none;
+  }
+}

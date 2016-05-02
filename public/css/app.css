@@ -1,0 +1,25 @@
+body {
+  background-color: #ecf0f1 !important;
+  width: 100%;
+}
+
+/** Helper Classes **/
+.center {
+  text-align: center !important;
+}
+
+.list-inline {
+  padding: 0;
+  margin: 0;
+}
+
+.list-inline li {
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+  display: inline-block;
+}
+
+.list-style-none li {
+  list-style-type: none;
+}

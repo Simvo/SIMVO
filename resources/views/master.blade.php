@@ -9,6 +9,9 @@
     <meta property="og:image" content="http://www.international.gouv.qc.ca/Content/Users/Documents/FicheContenu/263.jpg"/>
   	<meta property="og:type" content="website"/>
     <title>S!MVO</title>
+    <!-- Stylesheets -->
+    <link href="{{ asset('css/loginPage.css') }}" rel="stylesheet" type="text/css" >
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet" type="text/css" >
     <!-- Stylesheets for Material Design and FontAwesome-->
     <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.red-indigo.min.css"/>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -31,6 +34,9 @@
       </header>
 
       <main class="mdl-layout__content">
+        <div class="page-content">
+          @yield('login')
+        </div>
       </main>
     </div>
 
