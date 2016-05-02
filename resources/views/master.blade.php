@@ -28,7 +28,7 @@
 
           <div class="mdl-layout-spacer"></div>
           <nav class="mdl-navigation mdl-layout--large-screen-only">
-            <a class="mdl-navigation__link">Login</a>
+            <a class="mdl-navigation__link" href="{{ route('login') }}">Login</a>
           </nav>
         </div>
       </header>

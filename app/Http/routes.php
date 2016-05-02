@@ -11,10 +11,10 @@
 |
 */
 
+/* GET */
+
 Route::get('/', function () {
     return view('master');
 });
 
-Route::get('/auth/login', function () {
-    return view('auth.login');
-});
+Route::get('/auth', ['as'=>'login', 'uses'=>'RegistrationController@loginView']);
