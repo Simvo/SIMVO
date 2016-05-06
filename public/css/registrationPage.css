@@ -1,0 +1,38 @@
+.registration_card.mdl-card {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.registration_card > .mdl-card__actions {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.registration_card > .mdl-card__title {
+  align-items: flex-start;
+}
+
+.registration_card > .mdl-card__title {
+  margin-top: 0;
+  color: #fff;
+  background: #4051b5;
+}
+
+.registration_card > .mdl-card__actions {
+  display: flex;
+  box-sizing: border-box;
+  align-items: center;
+}
+
+.bi_info_table {
+  width: 100%;
+  padding: 20px;
+}
+
+.bi_info_table tr .desc {
+  width: 50%;
+}
+
+.new_user_submit {
+  width: 100%;
+  margin: 0 auto;
+}

@@ -10,6 +10,7 @@
   	<meta property="og:type" content="website"/>
     <title>S!MVO</title>
     <!-- Stylesheets -->
+    <link href="{{ asset('css/registrationPage.css') }}" rel="stylesheet" type="text/css" >
     <link href="{{ asset('css/loginPage.css') }}" rel="stylesheet" type="text/css" >
     <link href="{{ asset('css/app.css') }}" rel="stylesheet" type="text/css" >
     <!-- Stylesheets for Material Design and FontAwesome-->
@@ -36,6 +37,7 @@
       <main class="mdl-layout__content">
         <div class="page-content">
           @yield('login')
+          @yield('registration')
         </div>
       </main>
     </div>

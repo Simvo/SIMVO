@@ -41,7 +41,7 @@
             </ul>
             {!! Form::close() !!}
 
-              <div class="center"><a>Not Signed up? Click here to Get Started!</a></div>
+              <div class="center"><a href="{{ route('registration') }}">Not Signed up? Click here to Get Started!</a></div>
               <div class="center"><a>Forgot Password?</a></div>
           </div>
 

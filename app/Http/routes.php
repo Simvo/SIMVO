@@ -18,3 +18,5 @@ Route::get('/', function () {
 });
 
 Route::get('/auth', ['as'=>'login', 'uses'=>'RegistrationController@loginView']);
+
+Route::get('/auth/registration', ['as'=>'registration', 'uses'=>'RegistrationController@registrationView']);

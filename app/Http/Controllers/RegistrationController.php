@@ -15,4 +15,12 @@ class RegistrationController extends Controller
   {
     return view('auth.login');
   }
+
+  /**
+  * Function to Return Registration View
+  **/
+  public function registrationView()
+  {
+    return view('auth.registration');
+  }
 }
