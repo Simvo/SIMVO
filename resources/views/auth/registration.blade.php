@@ -4,8 +4,8 @@
     <div class="mdl-cell mdl-cell--2-col"></div>
 
     <div class="mdl-cell mdl-cell--8-col">
-      {!! Form::open(['style'=>'width:100%']) !!}
         <div class="mdl-card mdl-shadow--2dp registration_card">
+          {!! Form::open(['style'=>'width:100%']) !!}
           <div class="mdl-card__title mdl-card--expand">
             <h4>
               First, Let's Get Your McGill E-mail and Password for Your New Account.
@@ -17,6 +17,7 @@
                   <li class="submit_error">{{ $error }}</li>
               @endforeach
             </ul>
+
 
             <table class="bi_info_table">
 
@@ -79,6 +80,18 @@
                   </div>
                 </td>
               </tr>
+
+              <tr>
+                <td>
+                  Your Current Faculty
+                </td>
+                <td>
+                  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label program_input">
+                  {!! Form::select('Major', $faculties, null, ['class'=> 'reg_dropdown']) !!}
+                  </div>
+                </td>
+              </tr>
+
             </table>
 
             {!! Form::submit('Submit', ['class'=> 'mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent new_user_submit']) !!}

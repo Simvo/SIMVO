@@ -20,3 +20,9 @@ Route::get('/', function () {
 Route::get('/auth', ['as'=>'login', 'uses'=>'RegistrationController@loginView']);
 
 Route::get('/auth/registration', ['as'=>'registration', 'uses'=>'RegistrationController@registrationView']);
+
+Route::get('/flowchart', ['as'=>'flowchart', 'middleware' => 'auth', 'uses'=>'FlowchartController@generateFlowChart']);
+
+/* POST */
+
+Route::post('auth/registration', ['as'=>'registrationForm', 'uses'=>'RegistrationController@newUserRegistration']);
