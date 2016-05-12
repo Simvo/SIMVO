@@ -17,9 +17,8 @@
     <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.red-indigo.min.css"/>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-
-
     <!-- Javascript libraries -->
+    <script src="https://code.jquery.com/jquery-2.2.3.min.js"   integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo="   crossorigin="anonymous"></script>
   </head>
   <body>
     <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
@@ -44,5 +43,6 @@
 
     <!-- Javascript Files and Libraries -->
     <script defer src="https://code.getmdl.io/1.1.2/material.min.js"></script>
+    <script type="text/javascript" src="{{ asset('js/registrationPage.js') }}"></script>
   </body>
 </html>

@@ -10,6 +10,8 @@ use DB;
 
 class RegistrationController extends Controller
 {
+
+  use ProgramTrait;
   /**
   * Function to Return Login Auth View
   **/
@@ -23,16 +25,9 @@ class RegistrationController extends Controller
   **/
   public function registrationView()
   {
-    $faculties_PDO = DB::table('programs')
-                  ->groupBy('PROGRAM_TEACHING_FACULTY')
-                  ->get(['PROGRAM_TEACHING_FACULTY']);
+    $faculties = $this->getFaculties();
 
-    $faculties = [];
-
-    foreach($faculties_PDO as $fac)
-    {
-      $faculties[] = $fac->PROGRAM_TEACHING_FACULTY;
-    }
+    array_unshift($faculties, "Select");
 
     return view('auth.registration',[
       'faculties'=> $faculties
@@ -65,6 +60,10 @@ class RegistrationController extends Controller
     {
       return redirect()->intended('flowchart');
     }
+  }
 
+  public function getMajorsInFaculty(Request $request)
+  {
+    return json_encode($this->getMajors($request->faculty));
   }
 }

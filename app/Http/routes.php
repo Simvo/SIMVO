@@ -26,3 +26,7 @@ Route::get('/flowchart', ['as'=>'flowchart', 'middleware' => 'auth', 'uses'=>'Fl
 /* POST */
 
 Route::post('auth/registration', ['as'=>'registrationForm', 'uses'=>'RegistrationController@newUserRegistration']);
+
+/* AJAX */
+
+Route::post('/auth/registration/get-majors', 'RegistrationController@getMajorsInFaculty');

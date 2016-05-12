@@ -87,7 +87,29 @@
                 </td>
                 <td>
                   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label program_input">
-                  {!! Form::select('Major', $faculties, null, ['class'=> 'reg_dropdown']) !!}
+                  {!! Form::select('faculty', $faculties, null, ['class'=> 'reg_dropdown', 'id'=>'faculty-select']) !!}
+                  </div>
+                </td>
+              </tr>
+
+              <tr>
+                <td>
+                  Your Current Major
+                </td>
+                <td>
+                  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label program_input">
+                    <select name="major" id="major-select" class="reg_dropdown"></select>
+                  </div>
+                </td>
+              </tr>
+
+              <tr>
+                <td>
+                  Semester You Entered Selected Program
+                </td>
+                <td>
+                  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label program_input">
+                    {!! Form::select('semester', $faculties, null, ['class'=> 'reg_dropdown']) !!}
                   </div>
                 </td>
               </tr>
