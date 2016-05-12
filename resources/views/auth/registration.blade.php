@@ -87,7 +87,7 @@
                 </td>
                 <td>
                   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label program_input">
-                  {!! Form::select('faculty', $faculties, null, ['class'=> 'reg_dropdown', 'id'=>'faculty-select']) !!}
+                  {!! Form::select('Faculty', $faculties, null, ['class'=> 'reg_dropdown', 'id'=>'faculty-select']) !!}
                   </div>
                 </td>
               </tr>
@@ -98,7 +98,7 @@
                 </td>
                 <td>
                   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label program_input">
-                    <select name="major" id="major-select" class="reg_dropdown"></select>
+                    <select name="Major" id="major-select" class="reg_dropdown"></select>
                   </div>
                 </td>
               </tr>
@@ -109,7 +109,7 @@
                 </td>
                 <td>
                   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label program_input">
-                    {!! Form::select('semester', $faculties, null, ['class'=> 'reg_dropdown']) !!}
+                    {!! Form::select('Semester', $semesters, null, ['class'=> 'reg_dropdown']) !!}
                   </div>
                 </td>
               </tr>
