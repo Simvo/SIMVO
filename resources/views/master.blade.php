@@ -10,6 +10,7 @@
   	<meta property="og:type" content="website"/>
     <title>S!MVO</title>
     <!-- Stylesheets -->
+    <link href="{{ asset('css/BootstrapStyle.css') }}" rel="stylesheet" type="text/css" >
     <link href="{{ asset('css/registrationPage.css') }}" rel="stylesheet" type="text/css" >
     <link href="{{ asset('css/loginPage.css') }}" rel="stylesheet" type="text/css" >
     <link href="{{ asset('css/app.css') }}" rel="stylesheet" type="text/css" >
@@ -28,7 +29,12 @@
 
           <div class="mdl-layout-spacer"></div>
           <nav class="mdl-navigation mdl-layout--large-screen-only">
-            <a class="mdl-navigation__link" href="{{ route('login') }}">Login</a>
+            @if (isset($user) && $user)
+              <a class="mdl-navigation__link" href="{{ route('logout') }}">Logout</a>
+            @else
+              <a class="mdl-navigation__link" href="{{ route('loginView') }}">Login</a>
+            @endif
+
           </nav>
         </div>
       </header>
@@ -37,6 +43,7 @@
         <div class="page-content">
           @yield('login')
           @yield('registration')
+          @yield('flowchart')
         </div>
       </main>
     </div>

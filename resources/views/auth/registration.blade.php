@@ -87,7 +87,7 @@
                 </td>
                 <td>
                   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label program_input">
-                  {!! Form::select('Faculty', $faculties, null, ['class'=> 'reg_dropdown', 'id'=>'faculty-select']) !!}
+                  {!! Form::select('Faculty', $faculties, null, ['class'=> 'reg_dropdown form-control', 'id'=>'faculty-select']) !!}
                   </div>
                 </td>
               </tr>
@@ -98,7 +98,7 @@
                 </td>
                 <td>
                   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label program_input">
-                    <select name="Major" id="major-select" class="reg_dropdown"></select>
+                    <select name="Major" id="major-select" class="reg_dropdown form-control"></select>
                   </div>
                 </td>
               </tr>
@@ -109,10 +109,29 @@
                 </td>
                 <td>
                   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label program_input">
-                    {!! Form::select('Semester', $semesters, null, ['class'=> 'reg_dropdown']) !!}
+                    {!! Form::select('Semester', $semesters, null, ['class'=> 'reg_dropdown form-control']) !!}
                   </div>
                 </td>
               </tr>
+
+              <tr>
+                <td>
+                  Cegep?
+                </td>
+                <td>
+                  <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-1">
+                    <input type="radio" id="option-1" class="mdl-radio__button" name="Cegep" value="1" checked>
+                    <span class="mdl-radio__label">Yes</span>
+                  </label>
+                  <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-2">
+                    <input type="radio" id="option-2" class="mdl-radio__button" name="Cegep" value="0">
+                    <span class="mdl-radio__label">Other (AP, French BAC, IB etc)</span>
+                  </label>
+                </td>
+              </tr>
+
+
+
 
             </table>
 

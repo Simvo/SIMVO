@@ -24,7 +24,7 @@ $(document).ready(function(){
 
           for(var i =0; i<response.length; i++)
           {
-            var option = '<option>' + response[i]+ '</option>';
+            var option = '<option value="'+response[i][1]+'">' + response[i][0]+ '</option>';
 
             $('#major-select').append(option);
           }

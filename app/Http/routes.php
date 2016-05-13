@@ -17,7 +17,9 @@ Route::get('/', function () {
     return view('master');
 });
 
-Route::get('/auth', ['as'=>'login', 'uses'=>'RegistrationController@loginView']);
+Route::get('/auth', ['as'=>'loginView', 'uses'=>'RegistrationController@loginView']);
+
+Route::get('/logout', ['as'=>'logout', 'uses'=>'RegistrationController@logout']);
 
 Route::get('/auth/registration', ['as'=>'registration', 'uses'=>'RegistrationController@registrationView']);
 
@@ -26,6 +28,8 @@ Route::get('/flowchart', ['as'=>'flowchart', 'middleware' => 'auth', 'uses'=>'Fl
 /* POST */
 
 Route::post('auth/registration', ['as'=>'registrationForm', 'uses'=>'RegistrationController@newUserRegistration']);
+
+Route::post('/auth/login', ['as'=>'login', 'uses'=>'RegistrationController@login']);
 
 /* AJAX */
 

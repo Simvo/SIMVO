@@ -23,6 +23,40 @@ class RegistrationController extends Controller
     return view('auth.login');
   }
 
+  public function logout()
+  {
+    if(Auth::Check())
+    {
+      Auth::logout();
+    }
+
+    return redirect('/');
+  }
+
+  /**
+* Login Function
+*
+* @param Request; post
+**/
+
+public function login(Request $request)
+{
+  $this->validate($request, [
+    'email'=>'required|exists:users,email',
+    'password'=>'required|min:8'
+    ]);
+
+  if(Auth::attempt(['email' => $request->email, 'password' => $request->password]))
+  {
+    return redirect()->intended('flowchart');
+  }
+
+  else
+  {
+    return redirect()->back()->with('error', 'Login Failed');
+  }
+}
+
   /**
   * Function to Return Registration View Along with list of faculties and majors
   **/
@@ -32,14 +66,7 @@ class RegistrationController extends Controller
 
     array_unshift($faculties, "Select");
 
-    $current_semester = $this->get_current_semester();
-
-    $semesters = [$this->get_semester($current_semester)];
-
-    for ($i=0; $i <10 ; $i++)
-    {
-      array_push($semesters, $this->get_semester($this->get_previous_semester($this->encode_semester($semesters[count($semesters)-1]))));
-    }
+    $semesters = $this->generateListOfSemesters(10);
 
     return view('auth.registration',[
       'faculties'=> $faculties,
@@ -58,18 +85,25 @@ class RegistrationController extends Controller
     'Last_Name' => 'required',
     'Password' => 'required|min:8|same:Confirm_Password',
     'Confirm_Password' => 'required|min:8|same:Password',
-    'Semester' => 'required',
-    'Faculty' => 'required',
+    'Semester' => 'required|digits:1,2',
+    'Faculty' => 'required|digits:1,2',
     'Major' => 'required',
+    'Cegep' => 'required|digits:1'
     ]);
 
-    User::create([
-      'firstName' => htmlentities($request->First_Name),
-      'lastName' => htmlentities($request->Last_Name),
-      'email' => htmlentities($request->Email),
-      'faculty'
-      'password' => bcrypt($request->Password)
-    ]);
+    $semesters = $this->generateListOfSemesters(10);
+    $faculties = $this->getFaculties();
+
+    $new_user = new User();
+    $new_user->firstName = htmlentities($request->First_Name);
+    $new_user->lastName = htmlentities($request->Last_Name);
+    $new_user->email = htmlentities($request->Email);
+    $new_user->programID = htmlentities($request->Major);
+    $new_user->faculty = $faculties[$request->Faculty - 1];
+    $new_user->password = bcrypt($request->Password);
+    $new_user->enteringSemester = $this->encode_semester($semesters[$request->Semester]);
+    $new_user->cegepEntry = $request->Cegep;
+    $new_user->save();
 
     if(Auth::attempt(['email' => $request->Email, 'password' => $request->Password]))
     {

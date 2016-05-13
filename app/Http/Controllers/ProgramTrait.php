@@ -40,13 +40,13 @@ trait ProgramTrait
     $majors_PDO = DB::table('Programs')
                   ->where('PROGRAM_TEACHING_FACULTY', $faculty)
                   ->groupBy('PROGRAM_MAJOR')
-                  ->get(['PROGRAM_MAJOR']);
+                  ->get(['PROGRAM_MAJOR', 'PROGRAM_ID']);
 
     $majors = [];
 
     foreach($majors_PDO as $major)
     {
-      $majors[] = $major->PROGRAM_MAJOR;
+      $majors[] = [$major->PROGRAM_MAJOR,$major->PROGRAM_ID];
     }
 
     return $majors;

@@ -121,8 +121,20 @@ trait Tools
       break;
     }
 
-
-
     return $result;
+  }
+
+  private function generateListOfSemesters($num)
+  {
+    $current_semester = $this->get_current_semester();
+
+    $semesters = [$this->get_semester($current_semester)];
+
+    for ($i=0; $i <$num ; $i++)
+    {
+      array_push($semesters, $this->get_semester($this->get_previous_semester($this->encode_semester($semesters[count($semesters)-1]))));
+    }
+
+    return $semesters;
   }
 }

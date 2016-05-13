@@ -21,6 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('faculty');
             $table->string('password');
             $table->string('enteringSemester');
+            $table->integer('cegepEntry');
             $table->rememberToken();
             $table->timestamps();
         });
