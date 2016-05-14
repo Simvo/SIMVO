@@ -14,7 +14,6 @@
           @endforeach
         </ul>
 
-
         <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
 
           <div class="mdl-tabs__panel is-active" id="login-panel">
