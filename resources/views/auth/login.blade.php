@@ -8,7 +8,7 @@
       <div class="mdl-card__title mdl-card--expand"><h2 class="mdl-card__title-text">Login</h2></div>
 
       <div class="mdl-card__supporting-text">
-        <ul>
+        <ul class="list-style-none">
           @foreach($errors->all() as $error)
             <li><p class="submit_error">{{$error}}</p></li>
           @endforeach

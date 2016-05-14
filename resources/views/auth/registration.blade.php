@@ -12,7 +12,7 @@
             </h4>
           </div>
           <div class="mdl-card__actions mdl-card--border">
-            <ul>
+            <ul class="list-style-none">
               @foreach ($errors->all() as $error)
                   <li class="submit_error">{{ $error }}</li>
               @endforeach
@@ -116,7 +116,7 @@
 
               <tr>
                 <td>
-                  Cegep?
+                  Where You In Cegep Previously?
                 </td>
                 <td>
                   <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-1">
@@ -129,9 +129,6 @@
                   </label>
                 </td>
               </tr>
-
-
-
 
             </table>
 
