@@ -25,7 +25,12 @@
     <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
       <header class="mdl-layout__header">
         <div class="mdl-layout__header-row">
-          <span class="mdl-layout-title">Simvo McGill</span>
+          @if (isset($user) && $user)
+            <span class="mdl-layout-title">Hello&nbsp{{$user->firstName}}!</span>
+          @else
+            <span class="mdl-layout-title">Simvo McGill</span>
+          @endif
+
 
           <div class="mdl-layout-spacer"></div>
           <nav class="mdl-navigation mdl-layout--large-screen-only">

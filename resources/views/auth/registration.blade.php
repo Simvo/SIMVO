@@ -28,7 +28,7 @@
                 <td>
                   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
                     {!! Form::label('Email', 'E-mail', ['class'=> 'mdl-textfield__label']) !!}
-                    {!! Form::text('Email', null, ['class'=> 'mdl-textfield__input', 'value'=>old('e-mail')]) !!}
+                    {!! Form::email('Email', null, ['class'=> 'mdl-textfield__input', 'value'=>old('e-mail')]) !!}
                   </div>
                 </td>
               </tr>
