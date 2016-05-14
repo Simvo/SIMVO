@@ -53,7 +53,7 @@ public function login(Request $request)
 
   else
   {
-    return redirect()->back()->withErrors(['Could Not Authenticate You!']);
+    return redirect()->back()->withErrors(['Could Not Authenticate You! Wrong Password!']);
   }
 }
 
