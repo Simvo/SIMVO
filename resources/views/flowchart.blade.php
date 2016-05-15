@@ -8,7 +8,9 @@
       <table id="progress_table" style="margin: 0 auto; width:100% !important;">
         <thead>
           <tr>
-
+            @foreach ($groups as $value)
+            <td class="progress_cell">{{$value}}</td>
+            @endforeach
           </tr>
         </thead>
 
