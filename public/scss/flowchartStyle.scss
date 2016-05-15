@@ -98,3 +98,9 @@ $background: rgba(236, 240, 241,1.0);
   width: 20%;
   //position: relative;
 }
+
+.schedule_wrap {
+  overflow: auto;
+  overflow-y: hidden; // hide vertical
+  width: 100%;
+}

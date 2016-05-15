@@ -88,3 +88,9 @@
   margin-top: 20px;
   width: 20%;
 }
+
+.schedule_wrap {
+  overflow: auto;
+  overflow-y: hidden;
+  width: 100%;
+}
