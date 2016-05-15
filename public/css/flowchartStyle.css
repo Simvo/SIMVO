@@ -1,0 +1,90 @@
+.progress_div {
+  padding: 5px;
+  min-height: 50px !important;
+  width: 100% !important;
+  overflow: auto;
+}
+
+.progress_cell {
+  color: #f44235;
+  text-align: center !important;
+  font-family: "Helvetica","Arial",sans-serif;
+}
+
+.group_cell {
+  font-size: 28px !important;
+  color: black !important;
+}
+
+.area_1_card.mdl-card {
+  width: 100%;
+}
+
+.area_1_card.mdl-card .mdl-card--border {
+  padding: 20px;
+  width: 99%;
+}
+
+.area_1_card > .mdl-card__title {
+  color: #fff;
+  height: 176px;
+  background: url("../assets/demos/welcome_card.jpg") center/cover;
+}
+
+.area_1_card > .mdl-card__menu {
+  color: #fff;
+}
+
+.area_1_card .mdl-card--border {
+  display: table-row;
+}
+
+.my_program {
+  border-top: 2px solid #fccac6 !important;
+}
+
+.my_program legend {
+  text-align: center;
+  color: #f44235;
+}
+
+.elective_div {
+  padding: 20px;
+  height: 200px;
+  border-top: 2px solid rgba(39, 174, 96, 0.2);
+}
+
+.elective_div legend {
+  text-align: center;
+  color: rgba(39, 174, 96, 0.6);
+}
+
+.complementary_div {
+  padding: 20px;
+  height: 200px;
+  border-top: 2px solid rgba(243, 156, 18, 0.2);
+}
+
+.complementary_div legend {
+  text-align: center;
+  color: rgba(243, 156, 18, 0.6);
+}
+
+.schedule_wrap {
+  overflow: auto;
+  overflow-y: hidden;
+  width: 100%;
+}
+
+.semester {
+  height: 300px;
+  display: table-cell;
+  padding: 0 30px;
+  border-radius: 4px;
+  margin: 10px;
+}
+
+.complementary_area {
+  margin-top: 20px;
+  width: 20%;
+}
