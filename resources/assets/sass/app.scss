@@ -1,2 +1,10 @@
 // @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
 
+$primary-color: #f44235;
+$secondary-color: #4051b5;
+$background: rgba(236, 240, 241,1.0);
+
+body {
+  background-color: $background !important;
+  width: 100%;
+}

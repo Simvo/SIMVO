@@ -11,6 +11,26 @@
 |
 */
 
+/* GET */
+
 Route::get('/', function () {
-    return view('welcome');
+    return view('master');
 });
+
+Route::get('/auth', ['as'=>'loginView', 'uses'=>'RegistrationController@loginView']);
+
+Route::get('/logout', ['as'=>'logout', 'uses'=>'RegistrationController@logout']);
+
+Route::get('/auth/registration', ['as'=>'registration', 'uses'=>'RegistrationController@registrationView']);
+
+Route::get('/flowchart', ['as'=>'flowchart', 'middleware' => 'auth', 'uses'=>'FlowchartController@generateFlowChart']);
+
+/* POST */
+
+Route::post('auth/registration', ['as'=>'registrationForm', 'uses'=>'RegistrationController@newUserRegistration']);
+
+Route::post('/auth/login', ['as'=>'login', 'uses'=>'RegistrationController@login']);
+
+/* AJAX */
+
+Route::post('/auth/registration/get-majors', 'RegistrationController@getMajorsInFaculty');
