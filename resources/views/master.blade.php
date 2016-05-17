@@ -15,6 +15,7 @@
     <link href="{{ asset('css/loginPage.css') }}" rel="stylesheet" type="text/css" >
     <link href="{{ asset('css/app.css') }}" rel="stylesheet" type="text/css" >
     <link href="{{ asset('css/flowchartStyle.css') }}" rel="stylesheet" type="text/css" >
+    <link href="{{ asset('css/landing.css')}}" rel="stylesheet" type="text/css">
     <!-- Stylesheets for Material Design and FontAwesome-->
     <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.red-indigo.min.css"/>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -48,6 +49,7 @@
 
       <main class="mdl-layout__content">
         <div class="page-content">
+          @yield('landing')
           @yield('login')
           @yield('registration')
           @yield('flowchart')

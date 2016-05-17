@@ -1,0 +1,22 @@
+.test_card.mdl-card{
+  transition: opacity 0.2s ease;
+  height: 500px;
+  opacity: 0.4;
+  width:100%;
+}
+
+.container_card.mdl-card{
+  width:100%;
+  background: url("/test.jpg") center/cover;
+}
+
+.test_card.mdl-card:hover{
+  opacity: 1;
+}
+
+
+.page-content {
+    height: 100%;
+    width: 100%;
+
+}

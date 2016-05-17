@@ -17,6 +17,10 @@ Route::get('/', function () {
     return view('master');
 });
 
+Route::get('/test', function(){
+    return view('landing/cardpanels');
+});
+
 Route::get('/auth', ['as'=>'loginView', 'uses'=>'RegistrationController@loginView']);
 
 Route::get('/logout', ['as'=>'logout', 'uses'=>'RegistrationController@logout']);
