@@ -61,7 +61,7 @@
 
                 </div>
               </div>
-              <div class="mdl-cell mdl-cell--3-col"></div>
+              <div class="mdl-cell mdl-cell--2-col"></div>
           </div>
         </div>
       </div>

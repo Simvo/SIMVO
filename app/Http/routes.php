@@ -18,7 +18,7 @@ Route::get('/', function () {
 });
 
 Route::get('/test', function(){
-    return view('landing/cardpanels');
+    return view('landing/welcomeAnime');
 });
 
 Route::get('/auth', ['as'=>'loginView', 'uses'=>'RegistrationController@loginView']);
