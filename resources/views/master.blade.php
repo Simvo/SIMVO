@@ -57,6 +57,8 @@
       </main>
     </div>
 
+    
+
     <!-- Javascript Files and Libraries -->
     <script defer src="https://code.getmdl.io/1.1.2/material.min.js"></script>
     <script type="text/javascript" src="{{ asset('js/registrationPage.js') }}"></script>
