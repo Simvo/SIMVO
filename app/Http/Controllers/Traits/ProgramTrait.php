@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Traits;
 
 use Illuminate\Http\Request;
 
@@ -39,6 +39,7 @@ trait ProgramTrait
   {
     $majors_PDO = DB::table('Programs')
                   ->where('PROGRAM_TEACHING_FACULTY', $faculty)
+                  ->where('FIELD_OF_STUDY', 'MAJOR')
                   ->groupBy('PROGRAM_MAJOR')
                   ->get(['PROGRAM_MAJOR', 'PROGRAM_ID']);
 
@@ -60,16 +61,19 @@ trait ProgramTrait
   public function getGroups($programID)
   {
     $groups_PDO = DB::table('Programs')
-                  ->where('PROGRAM_ID', 100533)
+                  ->where('PROGRAM_ID', $programID)
                   ->groupBy('SET_TITLE_ENGLISH')
-                  ->get(['SET_TITLE_ENGLISH']);
+                  ->get(['SET_TITLE_ENGLISH', 'SET_BEGIN_TEXT_ENGLISH']);
+
     $groups = [];
 
     foreach($groups_PDO as $group)
     {
-      $groups[] = $group->SET_TITLE_ENGLISH;
+      if(!is_null($group->SET_TITLE_ENGLISH) && !is_null($group->SET_BEGIN_TEXT_ENGLISH))
+      {
+        $groups[$group->SET_TITLE_ENGLISH] = $group->SET_BEGIN_TEXT_ENGLISH;
+      }
     }
-
     return $groups;
   }
 
@@ -79,8 +83,17 @@ trait ProgramTrait
   public function getCoursesInGroup($programID, $group)
   {
     $courses_PDO = DB::table('Programs')
-                  ->where('PROGRAM_ID', 100533)
+                  ->where('PROGRAM_ID', $programID)
                   ->where('SET_TITLE_ENGLISH', $group)
-                  ->get(['SUBJECT_CODE', 'COURSE_NUMBER']);
+                  ->get(['SUBJECT_CODE', 'COURSE_NUMBER', 'COURSE_CREDITS']);
+
+    $coursesInGroup = [];
+
+    foreach($courses_PDO as $course)
+    {
+      $coursesInGroup[] = [$course->SUBJECT_CODE, $course->COURSE_NUMBER, $course->COURSE_CREDITS];
+    }
+
+    return $coursesInGroup;
   }
 }

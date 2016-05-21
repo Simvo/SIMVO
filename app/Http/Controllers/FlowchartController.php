@@ -11,8 +11,8 @@ use App\Http\Requests;
 class FlowchartController extends Controller
 {
 
-  use ProgramTrait;
-  use tools;
+  use Traits\ProgramTrait;
+  use Traits\tools;
     /**
     * Function called upon GET request. Will determine if shedule needs to be generated or simply displayed
     * Consists of generating four main parts.
@@ -22,11 +22,11 @@ class FlowchartController extends Controller
     {
       $user=Auth::User();
 
-      $groups = $this->generateProgressBar($user->major);
+      $progress = $this->generateProgressBar($user->programID);
 
       return view('flowchart', [
         'user'=>$user,
-        'groups' => $groups
+        'progress' => $progress
       ]);
     }
 
@@ -34,8 +34,22 @@ class FlowchartController extends Controller
     {
       $groups = $this->getGroups($programID);
 
-      $courses = $this->getCoursesInGroup($programID, $groups[0]);
+      $progress = [];
 
-      return $groups;
+      foreach ($groups as $key=>$value)
+      {
+        $courses = $this->getCoursesInGroup($programID, $key);
+
+        $totCredits = $value;
+        $creditsTaken = 0;
+
+        foreach ($courses as $course)
+        {
+        }
+
+        $progress[$key] = [0,$value];
+      }
+
+      return $progress;
     }
 }
