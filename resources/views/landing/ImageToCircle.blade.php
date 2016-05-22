@@ -2,7 +2,7 @@
 
 @section('landing')
 
-  <div class="mdl-grid">
+  <div class="page_grid mdl-grid">
     <div class="mdl-cell mdl-cell--12-col">
       <div class="container_card mdl-card mdl-shadow--2dp">
 
@@ -49,7 +49,7 @@
               </div> -->
             </div>
 
-          
+
         </div>
       </div>
     </div>
