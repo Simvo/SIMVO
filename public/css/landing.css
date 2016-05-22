@@ -35,6 +35,9 @@
 .landfooter.mdl-mini-footer{
 background-color: #FF2525;
 /* height: 16px; */
+width: calc(100% - 32px);
+position: absolute;
+bottom: 0px;
 }
 
 #SimvoTitle{
@@ -46,9 +49,9 @@
   top: 18%;
   font-size: 120px;
   color: white;
-  text-shadow: 0px 0px 15px rgba(0,0,0,0.5);
+  text-shadow: 0px 0px 10px rgba(0,0,0,0.3);
   z-index: 1;
-  border-bottom: 3px solid;
+  border-bottom: 2px solid;
   opacity: 0;
   -webkit-animation: appear 2s 2.5s forwards;
   animation: appear 2s 2.5s forwards;
@@ -103,7 +106,7 @@
   text-decoration: none;
   color: rgba(255, 239, 239, 0.85);
   border: 2px solid #FFFEFF;
-  width: 50%;
+  width: 20%;
   font-size: 24px;
   display: inline-block;
   border-radius: 0.3em;
@@ -217,8 +220,8 @@ body {
             clip-path: circle(110vh at center);
   }
   to {
-    -webkit-clip-path: circle(1vh at center);
-            clip-path: circle(1vh at center);
+    -webkit-clip-path: circle(0vh at center);
+            clip-path: circle(0vh at center);
   }
 }
 
@@ -228,8 +231,8 @@ body {
             clip-path: circle(110vh at center);
   }
   to {
-    -webkit-clip-path: circle(1vh at center);
-            clip-path: circle(1vh at center);
+    -webkit-clip-path: circle(0vh at center);
+            clip-path: circle(0vh at center);
   }
 }
 
