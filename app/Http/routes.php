@@ -14,11 +14,14 @@
 /* GET */
 
 Route::get('/', function () {
-    return view('master');
+    return view('landing/ImageToCircle');
 });
 
-Route::get('/test', function(){
-    return view('landing/ImageToCircle');
+Route::get('/test1', function(){
+    return view('landing/welcomeAnime');
+});
+Route::get('/test2', function(){
+    return view('landing/cardpanels');
 });
 
 Route::get('/auth', ['as'=>'loginView', 'uses'=>'RegistrationController@loginView']);

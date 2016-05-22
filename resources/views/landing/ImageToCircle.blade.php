@@ -2,7 +2,7 @@
 
 @section('landing')
 
-  <div class="mdl-grid">
+  <div class="page_grid mdl-grid">
     <div class="mdl-cell mdl-cell--12-col">
       <div class="container_card mdl-card mdl-shadow--2dp">
 
@@ -31,20 +31,25 @@
           <div class="button_holder mdl-grid">
 
 
-            <div class="mdl-cell mdl-cell--4-col"></div>
+            <div class="mdl-cell mdl-cell--2-col"></div>
               <div class="button_container mdl-cell mdl-cell--4-col">
                 <div class="button">
                   Register
                 </div>
+              </div>
+              <div class="button_container mdl-cell mdl-cell--4-col">
                 <div class="button">
                   Demo
                 </div>
+              </div>
+              <!-- <div class="button_container mdl-cell mdl-cell--4-col">
                 <div class="button">
                   About
                 </div>
-              </div>
+              </div> -->
+            </div>
 
-          </div>
+
         </div>
       </div>
     </div>
