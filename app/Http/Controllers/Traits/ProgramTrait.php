@@ -10,6 +10,7 @@ use DB;
 
 trait ProgramTrait
 {
+  use ParsingTrait;
   /**
   * Function that returns All Faculties in University
   * @param void
@@ -69,6 +70,7 @@ trait ProgramTrait
 
     foreach($groups_PDO as $group)
     {
+      $this->extractCreditFromDesc($group->SET_BEGIN_TEXT_ENGLISH);
       if(!is_null($group->SET_TITLE_ENGLISH) && !is_null($group->SET_BEGIN_TEXT_ENGLISH))
       {
         $groups[$group->SET_TITLE_ENGLISH] = $group->SET_BEGIN_TEXT_ENGLISH;
@@ -91,6 +93,7 @@ trait ProgramTrait
 
     foreach($courses_PDO as $course)
     {
+
       $coursesInGroup[] = [$course->SUBJECT_CODE, $course->COURSE_NUMBER, $course->COURSE_CREDITS];
     }
 
