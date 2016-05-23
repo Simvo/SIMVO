@@ -11,7 +11,12 @@
 |
 */
 
+/*TEST ROUTE*/
+
+Route::get('/test', ['as'=>'getAllGroupCredits', 'uses'=>'FlowchartController@getAllGroupCredits']);
+
 /* GET */
+
 
 Route::get('/', function () {
     return view('master');
