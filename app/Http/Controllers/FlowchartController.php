@@ -54,13 +54,5 @@ class FlowchartController extends Controller
       return $progress;
     }
 
-    /*Function is used to get the total credits in every group and displays them  */
-    public function getAllGroupCredits(){
-      $programID = 100275;
-      $sets = [];
-      $creditsPerSet=[];
-      $complementaryCourses = DB::table('programs')->where('SET_TYPE','Complementary')->where('PROGRAM_ID',$programID)->where('SET_NUMBER_1','7')->get();
 
-
-    }
 }
