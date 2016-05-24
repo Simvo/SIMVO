@@ -12,8 +12,10 @@ use Auth;
 class RegistrationController extends Controller
 {
 
-  use ProgramTrait;
-  use Tools;
+  use Traits\ProgramTrait;
+  use Traits\Tools;
+
+
 
   /**
   * Function to Return Login Auth View

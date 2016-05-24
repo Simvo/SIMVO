@@ -11,9 +11,9 @@
 |
 */
 
-/*TEST ROUTE*/
+/*TESTING */
 
-Route::get('/test', ['as'=>'getAllGroupCredits', 'uses'=>'FlowchartController@getAllGroupCredits']);
+Route::get('/test', ['as' => 'test', 'uses' => 'FlowchartController@test']);
 
 /* GET */
 
