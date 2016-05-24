@@ -10,6 +10,7 @@ use DB;
 
 trait ParsingTrait
 {
+  //Returns int value of credits for the group or 0 on failure
   public function extractCreditFromDesc($desc)
   {
     //Finds first mention of some number followed by 'credits'
@@ -23,7 +24,7 @@ trait ParsingTrait
       return (int) $matches2[0];
     }
     else{
-      return 'there is no credit value in the given string';
+      return 0;
     }
 
   }
