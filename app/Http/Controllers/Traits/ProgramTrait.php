@@ -10,6 +10,7 @@ use DB;
 
 trait ProgramTrait
 {
+  use ParsingTrait;
   /**
   * Function that returns All Faculties in University
   * @param void
@@ -71,7 +72,7 @@ trait ProgramTrait
     {
       if(!is_null($group->SET_TITLE_ENGLISH) && !is_null($group->SET_BEGIN_TEXT_ENGLISH))
       {
-        $groups[$group->SET_TITLE_ENGLISH] = $group->SET_BEGIN_TEXT_ENGLISH;
+        $groups[$group->SET_TITLE_ENGLISH] = $this->extractCreditFromDesc($group->SET_BEGIN_TEXT_ENGLISH);
       }
     }
     return $groups;

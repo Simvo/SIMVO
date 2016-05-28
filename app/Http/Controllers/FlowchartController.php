@@ -37,7 +37,7 @@ class FlowchartController extends Controller
       "12 credits selected from courses outside the Depar..."
       "15 credits from the following lists, two courses o..."
       */
-    return $this->extractCreditFromDesc("A Chemical Engineering student may complete the Bi...");
+    return $this->extractCreditFromDesc("29 creditsGenerally, students admitted to Engineer...");
   }
 
     /**
