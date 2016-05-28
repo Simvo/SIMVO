@@ -14,14 +14,7 @@
 /* GET */
 
 Route::get('/', function () {
-    return view('landing/ImageToCircle');
-});
-
-Route::get('/test1', function(){
-    return view('landing/welcomeAnime');
-});
-Route::get('/test2', function(){
-    return view('landing/cardpanels');
+    return view('landing/landing');
 });
 
 Route::get('/auth', ['as'=>'loginView', 'uses'=>'RegistrationController@loginView']);

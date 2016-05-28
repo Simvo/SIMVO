@@ -53,11 +53,8 @@
         </div>
       </div>
     </div>
-  </div>
+    <div class="mdl-cell mdl-cell--12-col">
 
-  <footer class="landfooter mdl-mini-footer">
-    <div class="mdl-mini-footer__right-section">
-      <div class="mdl-logo">Brought to you by Simvo Mcgill</div>
     </div>
-  </footer>
+  </div>
 @stop

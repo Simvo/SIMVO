@@ -54,7 +54,7 @@ return [
 
         'mysql' => [
             'driver' => 'mysql',
-            'host' => env('DB_HOST', 'localhost:8889'),
+            'host' => env('DB_HOST', 'localhost'),
             'port' => env('DB_PORT', '8889'),
             'database' => env('DB_DATABASE', 'SIMVO'),
             'username' => env('DB_USERNAME', 'root'),
