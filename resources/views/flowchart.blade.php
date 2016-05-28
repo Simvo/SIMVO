@@ -2,21 +2,23 @@
 @section('flowchart')
 
 <div class="mdl-grid" style="padding-bottom: 0px">
-  <div class="mdl-cell mdl-cell--12-col">
+  <div class="mdl-cell mdl-cell--12-col" style="overflow-x: scroll">
     <div class="mdl-card mdl-shadow--2dp progress_div">
 
       <table id="progress_table" style="margin: 0 auto; width:100% !important;">
         <thead>
           <tr>
-            @foreach ($groups as $value)
-            <td class="progress_cell">{{$value}}</td>
+            @foreach ($progress as $key=>$value)
+            <td class="progress_cell">{{$key}}</td>
             @endforeach
           </tr>
         </thead>
 
         <tbody>
           <tr>
-
+            @foreach ($progress as $key=>$value)
+            <td class="progress_cell group_cell {{str_replace(" ", "", $key)}}" id="{{ $key }}">{{ $value[0] }}/{{$value[1]}}</td>
+            @endforeach
           </tr>
         </tbody>
 

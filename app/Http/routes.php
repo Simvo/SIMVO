@@ -11,7 +11,12 @@
 |
 */
 
+/*TESTING */
+
+Route::get('/test', ['as' => 'test', 'uses' => 'FlowchartController@test']);
+
 /* GET */
+
 
 Route::get('/', function () {
     return view('landing/landing');
