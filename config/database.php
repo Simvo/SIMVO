@@ -63,6 +63,7 @@ return [
             'collation' => 'utf8_unicode_ci',
             'unix_socket' => '/Applications/MAMP/tmp/mysql/mysql.sock',
             'prefix' => '',
+            'unix_socket' => '/Applications/MAMP/tmp/mysql/mysql.sock',
             'strict' => false,
             'engine' => null,
         ],

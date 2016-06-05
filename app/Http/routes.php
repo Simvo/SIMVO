@@ -11,10 +11,15 @@
 |
 */
 
+/*TESTING */
+
+Route::get('/test', ['as' => 'test', 'uses' => 'FlowchartController@test']);
+
 /* GET */
 
+
 Route::get('/', function () {
-    return view('master');
+    return view('landing/landing');
 });
 
 Route::get('/auth', ['as'=>'loginView', 'uses'=>'RegistrationController@loginView']);

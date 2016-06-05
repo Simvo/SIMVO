@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use Auth;
 
+
 use App\Http\Requests;
 
 class FlowchartController extends Controller
@@ -13,8 +14,9 @@ class FlowchartController extends Controller
 
   use Traits\ProgramTrait;
   use Traits\tools;
+
     /**
-    * Function called upon GET request. Will determine if shedule needs to be generated or simply displayed
+    * Function called upon GET request. Will determine if schedule needs to be generated or simply displayed
     * Consists of generating four main parts.
     * 1) Progress Bar 2)Course Schedule 3) Complementary Courses 4) Elecitive Courses
     **/
