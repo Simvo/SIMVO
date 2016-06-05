@@ -63,6 +63,8 @@ trait ProgramTrait
   {
     $groups_PDO = DB::table('Programs')
                   ->where('PROGRAM_ID', $programID)
+                  ->whereNotNull('SUBJECT_CODE')
+                  ->whereNotNull('COURSE_NUMBER')
                   ->groupBy('SET_TITLE_ENGLISH')
                   ->get(['SET_TITLE_ENGLISH', 'SET_BEGIN_TEXT_ENGLISH']);
 
@@ -76,6 +78,7 @@ trait ProgramTrait
         $groups[$group->SET_TITLE_ENGLISH] = $this->extractCreditFromDesc($group->SET_BEGIN_TEXT_ENGLISH);
       }
     }
+    arsort($groups);
     return $groups;
   }
 

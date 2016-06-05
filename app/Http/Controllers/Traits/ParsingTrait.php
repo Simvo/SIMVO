@@ -10,23 +10,17 @@ use DB;
 
 trait ParsingTrait
 {
-<<<<<<< HEAD
-  public function extractCreditFromDesc($desc)
-  {
-    var_dump($desc);
-    $regexPattern = "/[0-9]/";
-=======
   //Returns int value of credits for the group or 0 on failure
   public function extractCreditFromDesc($desc)
   {
     //Finds first mention of some number followed by 'credits'
-    $pattern = '/[1-9]+ credits/';
+    $pattern = '/[0-9]+ credits/';
     preg_match($pattern, $desc, $matches);
 
     if($matches != [])
     {
       //extracts the int value from the identified substring
-      $pattern = '/[1-9]+/';
+      $pattern = '/[0-9]+/';
       preg_match($pattern, $matches[0], $matches2);
       return (int) $matches2[0];
     }
@@ -34,10 +28,5 @@ trait ParsingTrait
     {
       return 0;
     }
->>>>>>> courseNumberExtraction
-
-    $seach = preg_match($regexPattern, $desc, $matches,  PREG_OFFSET_CAPTURE);
-
-    var_dump($matches);
   }
 }
