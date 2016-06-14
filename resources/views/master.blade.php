@@ -16,6 +16,8 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet" type="text/css" >
     <link href="{{ asset('css/flowchartStyle.css') }}" rel="stylesheet" type="text/css" >
     <link href="{{ asset('css/landing.css')}}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('css/flowchartGroup.css') }}" rel="stylesheet" type="text/css" >
+    <link href="{{ asset('css/CustomCard.css')}}" rel="stylesheet" type="text/css">
     <!-- Stylesheets for Material Design and FontAwesome-->
     <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.red-indigo.min.css"/>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -57,10 +59,9 @@
       </main>
     </div>
 
-    
-
     <!-- Javascript Files and Libraries -->
     <script defer src="https://code.getmdl.io/1.1.2/material.min.js"></script>
     <script type="text/javascript" src="{{ asset('js/registrationPage.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/flowchart.js') }}"></script>
   </body>
 </html>

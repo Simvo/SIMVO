@@ -23,18 +23,23 @@ class FlowchartController extends Controller
     public function generateFlowChart()
     {
       $user=Auth::User();
+      $groupsWithCourses = null;
+
+      //If user has not yet setup courses or recommended Stream is not provided
+      $groupsWithCourses = $this->getGroupsWithCourses($user->programID);
 
       $progress = $this->generateProgressBar($user->programID);
 
       return view('flowchart', [
         'user'=>$user,
-        'progress' => $progress
+        'progress' => $progress,
+        'groupsWithCourses' => $groupsWithCourses
       ]);
     }
 
     public function generateProgressBar($programID)
     {
-      $groups = $this->getGroups($programID);
+      $groups = $this->getGroupsWithCredits($programID);
 
       $progress = [];
 
@@ -51,7 +56,6 @@ class FlowchartController extends Controller
 
         $progress[$key] = [0,$value];
       }
-
       return $progress;
     }
 }

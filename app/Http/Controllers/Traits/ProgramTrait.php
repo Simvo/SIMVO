@@ -72,13 +72,82 @@ trait ProgramTrait
 
     foreach($groups_PDO as $group)
     {
-      $this->extractCreditFromDesc($group->SET_BEGIN_TEXT_ENGLISH);
+      if(trim($group->SET_TITLE_ENGLISH) != "")
+      {
+        $groups[$group->SET_TITLE_ENGLISH] = [];
+      }
+    }
+    return $groups;
+  }
+
+  /**
+  * Function that returns All Groups In a certain Major
+  * @param int: ProgramID
+  * @return String array of all Group names
+  **/
+  public function getRequiredGroups($programID)
+  {
+    $groups_PDO = DB::table('Programs')
+                  ->where('PROGRAM_ID', $programID)
+                  ->where('SET_TYPE', 'Required')
+                  ->whereNotNull('SUBJECT_CODE')
+                  ->whereNotNull('COURSE_NUMBER')
+                  ->groupBy('SET_TITLE_ENGLISH')
+                  ->get(['SET_TITLE_ENGLISH', 'SET_BEGIN_TEXT_ENGLISH']);
+
+    $groups = [];
+
+    foreach($groups_PDO as $group)
+    {
+      if(trim($group->SET_TITLE_ENGLISH) != "")
+      {
+        $groups[$group->SET_TITLE_ENGLISH] = [];
+      }
+    }
+    return $groups;
+  }
+
+  /**
+  * Function that returns All Groups In a certain Major
+  * @param int: ProgramID
+  * @return String array of all Group names and credit count
+  **/
+  public function getGroupsWithCredits($programID)
+  {
+    $groups_PDO = DB::table('Programs')
+                  ->where('PROGRAM_ID', $programID)
+                  ->whereNotNull('SUBJECT_CODE')
+                  ->whereNotNull('COURSE_NUMBER')
+                  ->groupBy('SET_TITLE_ENGLISH')
+                  ->get(['SET_TITLE_ENGLISH', 'SET_BEGIN_TEXT_ENGLISH']);
+
+    $groups = [];
+
+    foreach($groups_PDO as $group)
+    {
       if(!is_null($group->SET_TITLE_ENGLISH) && !is_null($group->SET_BEGIN_TEXT_ENGLISH))
       {
         $groups[$group->SET_TITLE_ENGLISH] = $this->extractCreditFromDesc($group->SET_BEGIN_TEXT_ENGLISH);
       }
     }
     arsort($groups);
+    return $groups;
+  }
+
+  /**
+  * Function that returns All Groups In a certain Major
+  * @param int: ProgramID
+  * @return String array of all Group names and array of courses in the group
+  **/
+  public function getGroupsWithCourses($programID)
+  {
+    $groups = $this->getRequiredGroups($programID);
+
+    foreach($groups as $key=>$value)
+    {
+      $groups[$key] = $this->getCoursesInGroup($programID, $key);
+    }
+
     return $groups;
   }
 
