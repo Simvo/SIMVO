@@ -35,9 +35,36 @@
           <legend>MY PROGRAM</legend>
         </fieldset>
         <div id="course_schedule" class="schedule_wrap" style="position: relative; padding-bottom: 50px">
+          <div class="semester">
+              <h5 style="text-align:center">Exemptions</h5>
+              <div class="draggable">
+                <div class="sortable Exemptions" id="Exemptions">
+                @foreach($exemptions as $exemption)
+                <div class="custom_card {{ $exemption[4] }}_course">
+                  <div class="card_content">
+                    {{ $exemption[1] }} &nbsp {{ $exemption[2] }}
+                    <button id="menu_for_{{ $exemption[0] }}" class="mdl-button mdl-js-button mdl-button--icon">
+                      <i class="material-icons">arrow_drop_down</i>
+                    </button> {{ $exemption[3] }}
 
+                    <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="menu_for_{{ $exemption[0] }}">
+                      <li class="mdl-menu__item show_flow" id="show_flow_{{ $exemption[0] }}">Show Pre-Requisites</li>
+                      @if($exemption[3]!='Required')
+                        <li class="mdl-menu__item delete" id="remove_{{ $exemption[0] }}">Remove</li>
+                      @endif
+                    </ul>
+                  </div>
+                </div>
+                @endforeach
+                <div class="custom_card credit_counter" style="text-align:center;">
+                  <div class="credit_counter_num" style="display: table-cell; vertical-align: middle; font-size:15px">
+                    CREDITS:
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-
         @if (is_null($groupsWithCourses))
           <div class="mdl-grid">
             <fieldset class="complementary_div mdl-cell mdl-cell--6-col">

@@ -18,6 +18,11 @@ $background: rgba(236, 240, 241,1.0);
   border-radius: 5px;
 }
 
+.credit_counter {
+  display: table;
+  //height: 400px;
+  overflow: hidden;
+}
 
 .required_course {
   background: #fbb3ae !important;

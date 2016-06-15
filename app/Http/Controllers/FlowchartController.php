@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use Auth;
+use App\Schedule;
+use App\UICourse;
+use DB;
 
 
 use App\Http\Requests;
@@ -25,15 +28,20 @@ class FlowchartController extends Controller
       $user=Auth::User();
       $groupsWithCourses = null;
 
+      //load excpemtions
+      $exemptions = $this->getExemptions($user);
+
       //If user has not yet setup courses or recommended Stream is not provided
       $groupsWithCourses = $this->getGroupsWithCourses($user->programID);
+
 
       $progress = $this->generateProgressBar($user->programID);
 
       return view('flowchart', [
         'user'=>$user,
         'progress' => $progress,
-        'groupsWithCourses' => $groupsWithCourses
+        'groupsWithCourses' => $groupsWithCourses,
+        'exemptions' => $exemptions
       ]);
     }
 
@@ -57,5 +65,25 @@ class FlowchartController extends Controller
         $progress[$key] = [0,$value];
       }
       return $progress;
+    }
+
+    public function getExemptions($user)
+    {
+      $exemptions_PDO = Schedule::where('user_id',$user->id)
+                        ->where('semester', 'exemption')
+                        ->get();
+      $exemptions = [];
+
+      foreach ($exemptions_PDO as $exemption)
+      {
+        $status = DB::table('programs')->where('PROGRAM_ID', $user->programID)
+                  ->where('SUBJECT_CODE', $exemption->SUBJECT_CODE)
+                  ->where('COURSE_NUMBER', $exemption->COURSE_NUMBER)
+                  ->first(['SET_TYPE']);
+
+        $exemptions[] = [$exemption->id, $exemption->SUBJECT_CODE, $exemption->COURSE_NUMBER, $exemption->COURSE_CREDITS, $status->SET_TYPE];
+      }
+
+      return $exemptions;
     }
 }
