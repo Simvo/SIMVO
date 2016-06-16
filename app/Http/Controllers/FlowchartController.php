@@ -17,7 +17,6 @@ class FlowchartController extends Controller
 
   use Traits\ProgramTrait;
   use Traits\tools;
-
     /**
     * Function called upon GET request. Will determine if schedule needs to be generated or simply displayed
     * Consists of generating four main parts.
@@ -31,14 +30,21 @@ class FlowchartController extends Controller
       //load excpemtions
       $exemptions = $this->getExemptions($user);
 
-      //If user has not yet setup courses or recommended Stream is not provided
-      $groupsWithCourses = $this->getGroupsWithCourses($user->programID);
+      //If (user has not yet setup courses or recommended Stream is not provided)
+        $groupsWithCourses = $this->getGroupsWithCourses($user->programID);
 
+        //Get User's entering semester
+        $startingSemester = $user->enteringSemester;
+
+        $schedule = [];
+        $schedule[$this->get_semester($user->enteringSemester)] = [0,[],$startingSemester];
+      //endif
 
       $progress = $this->generateProgressBar($user->programID);
 
       return view('flowchart', [
         'user'=>$user,
+        'schedule'=> $schedule,
         'progress' => $progress,
         'groupsWithCourses' => $groupsWithCourses,
         'exemptions' => $exemptions
@@ -53,7 +59,7 @@ class FlowchartController extends Controller
 
       foreach ($groups as $key=>$value)
       {
-        $courses = $this->getCoursesInGroup($programID, $key);
+        $courses = $this->getCoursesInGroup($programID, $key, false);
 
         $totCredits = $value;
         $creditsTaken = 0;

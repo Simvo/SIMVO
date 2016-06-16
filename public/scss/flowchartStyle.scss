@@ -137,3 +137,14 @@ $background: rgba(236, 240, 241,1.0);
   overflow-y: hidden; // hide vertical
   width: 100%;
 }
+
+#add-semester-wrap {
+  #add-semester{
+    background-color: rgba(41, 128, 185,1.0);
+    i{
+      color: white;
+    }
+  }
+  display: table-cell;
+  vertical-align: middle;
+}

@@ -64,6 +64,41 @@
               </div>
             </div>
           </div>
+
+          @foreach($schedule as $key => $classes)
+          <div class="semester">
+            <h5 style="text-align:center">{{ $key }}</h5>
+            <div class="draggable">
+              <div class="sortable {{ str_replace(" ", "", $key) }}" id="{{ $key . " " . str_replace(" ", "", $key) }}">
+                @foreach($classes[1] as $class)
+                <div class="custom_card {{ $class[2] }}_course" id="{{ $class[1] }}">
+                  <div class="card_content">
+                    {{ $class[0] }}
+                    <button id="menu_for_{{ $class[1] }}" class="mdl-button mdl-js-button mdl-button--icon">
+                      <i class="material-icons">arrow_drop_down</i>
+                    </button> {{ $class[3] }}
+
+                    <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="menu_for_{{ $class[1] }}">
+                      <li class="mdl-menu__item show_flow" id="show_flow_{{ $class[1] }}">Show Pre-Requisites</li>
+                      @if($class[2]!='required')
+                        <li class="mdl-menu__item delete" id="remove_{{ $class[1] }}">Remove</li>
+                      @endif
+                    </ul>
+                  </div>
+                </div>
+                @endforeach
+                <div class="custom_card credit_counter" style="text-align:center;">
+                  <div class="credit_counter_num" style="display: table-cell; vertical-align: middle; font-size:15px">
+                    CREDITS: {{ $classes[0] }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          @endforeach
+          <div id="add-semester-wrap">
+            <a href="#" id="add-semester" class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab"><i class="material-icons">add</i></a>
+          </div>
         </div>
         @if (is_null($groupsWithCourses))
           <div class="mdl-grid">
@@ -103,19 +138,13 @@
                    <div class="draggable">
                      <div class="sortable">
                        @foreach ($value as $course)
-                         <div class="custom_card {{ $course[2] }}_course" id="{{ $course[1] }}">
+                         <div class="custom_card {{ $course[3] }}_course" id="{{ $course[1] }}">
                           <div class="card_content">
                             {{ $course[0] }}&nbsp{{ $course[1] }}
-                            <button id="menu_for_{{ $course[1] }}" class="mdl-button mdl-js-button mdl-button--icon">
+                            <button class="mdl-button mdl-js-button mdl-button--icon">
                               <i class="material-icons">arrow_drop_down</i>
                             </button>
                             {{ $course[2] }}
-                            <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="menu_for_{{ $course[1] }}">
-                              <li class="mdl-menu__item show_flow" id="show_flow_{{ $course[1] }}">Show Pre-Requisites</li>
-                              @if($course[2]!='required')
-                                <li class="mdl-menu__item delete" id="remove_{{ $course[1] }}">Remove</li>
-                              @endif
-                            </ul>
                           </div>
                         </div>
                        @endforeach

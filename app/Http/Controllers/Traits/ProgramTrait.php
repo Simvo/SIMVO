@@ -145,28 +145,29 @@ trait ProgramTrait
 
     foreach($groups as $key=>$value)
     {
-      $groups[$key] = $this->getCoursesInGroup($programID, $key);
+      $groups[$key] = $this->getCoursesInGroup($programID, $key, false);
     }
 
     return $groups;
   }
 
   /**
-  *
+  * Function that returns all courses in a group
+  * @param int: ProgramID, group, filter(if you want to exclude courses already in schedule)
+  * @return array of arrays containing course information
   **/
-  public function getCoursesInGroup($programID, $group)
+  public function getCoursesInGroup($programID, $group, $filter)
   {
     $courses_PDO = DB::table('Programs')
                   ->where('PROGRAM_ID', $programID)
                   ->where('SET_TITLE_ENGLISH', $group)
-                  ->get(['SUBJECT_CODE', 'COURSE_NUMBER', 'COURSE_CREDITS']);
+                  ->get(['SUBJECT_CODE', 'COURSE_NUMBER', 'COURSE_CREDITS','SET_TYPE']);
 
     $coursesInGroup = [];
 
     foreach($courses_PDO as $course)
     {
-
-      $coursesInGroup[] = [$course->SUBJECT_CODE, $course->COURSE_NUMBER, $course->COURSE_CREDITS];
+      $coursesInGroup[] = [$course->SUBJECT_CODE, $course->COURSE_NUMBER, $course->COURSE_CREDITS, $course->SET_TYPE];
     }
 
     return $coursesInGroup;
