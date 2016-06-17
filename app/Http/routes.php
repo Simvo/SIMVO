@@ -39,3 +39,5 @@ Route::post('/auth/login', ['as'=>'login', 'uses'=>'RegistrationController@login
 /* AJAX */
 
 Route::post('/auth/registration/get-majors', 'RegistrationController@getMajorsInFaculty');
+
+Route::post('/flowchart/move-class', 'FlowchartAJAX@move_class');

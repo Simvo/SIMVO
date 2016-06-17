@@ -1,19 +1,7 @@
-$(document).ready(function(){
+$(document).ready(function()
+{
 
-  $( '.sortable' ).sortable( {
-    start: function( event, ui ) {
-      is_dragging = true;
-    },
-    connectWith: ".sortable",
-    stop: function( event, ui ) {
-      is_dragging = false;
-    }
-  }).on( 'mousemove', function( e ){});
-
-$( ".sortable" ).sortable( {
-    placeholder: 'object_ouline hvr-pulse',
-    cancel: '.credit_counter, .error_course_message',
-  } );
+  renderSortable();
 
   $( "#add-semester" ).click( function( e ) {
 
@@ -39,8 +27,6 @@ $( ".sortable" ).sortable( {
 
     //$("#course_schedule").append(new_semester);
     $( ".semester + #add-semester-wrap" ).before( new_semester );
-
-    $( "#course_schedule" ).sortable( { refresh: course_schedule });
-
+    renderSortable();
   } );
 });
