@@ -51,6 +51,10 @@ function get_next_semester( current )
 
   function get_semester( semester )
   {
+    if(semester=="Exemption")
+    {
+      return "Exemption";
+    }
     var term = semester.split( " " );
 
     var result = term[ 1 ];

@@ -40,4 +40,4 @@ Route::post('/auth/login', ['as'=>'login', 'uses'=>'RegistrationController@login
 
 Route::post('/auth/registration/get-majors', 'RegistrationController@getMajorsInFaculty');
 
-Route::post('/flowchart/move-class', 'FlowchartAJAX@move_class');
+Route::post('/flowchart/move-course', 'FlowchartAJAX@move_course');

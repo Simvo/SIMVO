@@ -22,7 +22,7 @@ function renderSortable()
       //console.log("Moving current course");
       $.ajax( {
         type: 'post',
-        url: '/flowchart/move-class',
+        url: '/flowchart/move-course',
         data: {
           semester: new_semester,
           id: id
@@ -30,10 +30,6 @@ function renderSortable()
         success: function( data ) {
           var response = JSON.parse( data );
           console.log( response );
-
-          // Update Semester Credits
-          $( event.target ).children( '.credit_counter' ).children( '.credit_counter_num' ).text( 'CREDITS: ' + response[ 4 ] );
-          $( ui.sender[ 0 ] ).children( '.credit_counter' ).children( '.credit_counter_num' ).text( 'CREDITS: ' + response[ 3 ] );
         }
       })
     }

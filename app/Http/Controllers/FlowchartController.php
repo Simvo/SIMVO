@@ -30,7 +30,13 @@ class FlowchartController extends Controller
       //load excpemtions
       $exemptions = $this->getExemptions($user);
 
+      $schedule_check = Schedule::where('user_id', $user->id)
+                        ->where('semester', "<>", 'exemption')
+                        ->count();
+
       //If (user has not yet setup courses or recommended Stream is not provided)
+      if($schedule_check == 0)
+      {
         $groupsWithCourses = $this->getGroupsWithCourses($user->programID);
 
         //Get User's entering semester
@@ -38,7 +44,13 @@ class FlowchartController extends Controller
 
         $schedule = [];
         $schedule[$this->get_semester($user->enteringSemester)] = [0,[],$startingSemester];
-      //endif
+      }
+
+      //if user has not completed initial setup: ie, some courses are in the schedule but some remain in the setup area
+      if($schedule_check > 0)
+      {
+        $schedule = $this->generateSchedule($user);
+      }
 
       $progress = $this->generateProgressBar($user->programID);
 
@@ -91,5 +103,48 @@ class FlowchartController extends Controller
       }
 
       return $exemptions;
+    }
+
+    public function generateSchedule($user)
+    {
+      $the_schedule = [];
+
+      $user_schedule=Schedule::where('user_id', $user->id)
+      ->whereNotIn('semester', ['complementary_course', 'elective_course'])
+      ->where('semester' ,"<>", 'Exemption')
+      ->groupBy('semester')
+      ->get();
+
+      $sorted=$user_schedule->sortBy('semester');
+
+      foreach($sorted as $semester)
+      {
+        $new_semester=[];
+
+        $class_array=[];
+
+        $tot_credits=0;
+
+         $classes=DB::table('schedules')
+         ->where('user_id', $user->id)
+         ->where('semester', $semester->semester)
+         ->get(['schedules.id', 'schedules.status','schedules.SUBJECT_CODE', 'schedules.COURSE_NUMBER']);
+
+        foreach($classes as $class)
+        {
+          $credits = DB::table('programs')->where('SUBJECT_CODE', $class->SUBJECT_CODE)
+                     ->where('COURSE_NUMBER', $class->COURSE_NUMBER)
+                     ->first(['COURSE_CREDITS'])->COURSE_CREDITS;
+
+          $class_array[] = [$class->id, $class->SUBJECT_CODE, $class->COURSE_NUMBER, $credits, $class->status];
+          $tot_credits+=$credits;
+        }
+
+        var_dump($semester->semester);
+        var_dump($this->get_semester($semester->semester));
+        $the_schedule[$this->get_semester($semester->semester)]=[$tot_credits,$class_array, $semester->semester];
+      }
+
+      return $the_schedule;
     }
 }
