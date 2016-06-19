@@ -15,6 +15,7 @@ use App\Http\Requests;
 class FlowchartController extends Controller
 {
 
+  use Traits\NewObjectsTrait;
   use Traits\ProgramTrait;
   use Traits\tools;
     /**
@@ -140,8 +141,6 @@ class FlowchartController extends Controller
           $tot_credits+=$credits;
         }
 
-        var_dump($semester->semester);
-        var_dump($this->get_semester($semester->semester));
         $the_schedule[$this->get_semester($semester->semester)]=[$tot_credits,$class_array, $semester->semester];
       }
 

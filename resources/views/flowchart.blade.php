@@ -139,7 +139,7 @@
                    <div class="draggable">
                      <div class="sortable">
                        @foreach ($value as $course)
-                         <div class="custom_card {{ $course[3] }}_course" id="{{ $course[1] }}">
+                         <div class="custom_card {{ $course[3] }}_course add-to-schedule" id="{{ $course[0] }} {{ $course[1] }}">
                           <div class="card_content">
                             {{ $course[0] }}&nbsp{{ $course[1] }}
                             <button class="mdl-button mdl-js-button mdl-button--icon">

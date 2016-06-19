@@ -6,10 +6,15 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use Auth;
+use DB;
 use App\Schedule;
 
 class FlowchartAJAX extends Controller
 {
+  use Traits\NewObjectsTrait;
+  use Traits\ProgramTrait;
+  use Traits\tools;
+
   public function move_course(Request $request)
   {
     if(!Auth::Check())
@@ -17,12 +22,28 @@ class FlowchartAJAX extends Controller
 
     $semester=$request->semester;
     $sched_id=$request->id;
-    var_dump($semester);
-    var_dump($sched_id);
     $target=Schedule::find($sched_id);
     $target->semester=$semester;
     $target->save();
+  }
 
-    var_dump($semester);
+  public function add_course_to_Schedule(Request $request)
+  {
+    if(!Auth::Check())
+      return;
+
+    $user = Auth::User();
+    $courseName = $request->courseName;
+    $semester = $request->semester;
+    $parts = explode(" ", $courseName);
+
+    $course = DB::table('programs')->where('PROGRAM_ID',$user->programID)
+              ->where('SUBJECT_CODE', $parts[0])
+              ->where('COURSE_NUMBER', $parts[1])
+              ->first(['SUBJECT_CODE', 'COURSE_NUMBER', 'SET_TYPE', 'COURSE_CREDITS']);
+
+    $new_id = $this->create_schedule($user->id, $semester, $course->SUBJECT_CODE, $course->COURSE_NUMBER, $course->SET_TYPE);
+
+    return json_encode($new_id);
   }
 }

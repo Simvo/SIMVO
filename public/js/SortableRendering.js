@@ -18,20 +18,44 @@ function renderSortable()
       var new_semester = get_semester( event.target.attributes.id.nodeValue );
       var id = ui.item.context.id;
       var classes = ui.item.context.className;
+      if(classes.includes("add-to-schedule"))
+      {
+        id = "new schedule";
 
-      //console.log("Moving current course");
-      $.ajax( {
-        type: 'post',
-        url: '/flowchart/move-course',
-        data: {
-          semester: new_semester,
-          id: id
-        },
-        success: function( data ) {
-          var response = JSON.parse( data );
-          console.log( response );
-        }
-      })
+        courseName = ui.item.context.id;
+        console.log(courseName);
+
+        $.ajax( {
+          type: 'post',
+          url: '/flowchart/add-course-to-Schedule',
+          data: {
+            courseName: courseName,
+            semester: new_semester,
+            id: id
+          },
+          success: function( data ) {
+            var response = JSON.parse(data);
+            console.log(response);
+            ui.item.context.id = response;
+          }
+        })
+      }
+
+      else
+      {
+        $.ajax( {
+          type: 'post',
+          url: '/flowchart/move-course',
+          data: {
+            semester: new_semester,
+            id: id
+          },
+          success: function( data ) {
+            var response = JSON.parse( data );
+            console.log( response );
+          }
+        })
+      }
     }
   });
 }
