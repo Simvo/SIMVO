@@ -69,8 +69,8 @@
           @foreach($schedule as $key => $classes)
           <div class="semester">
             <h5 style="text-align:center">{{ $key }}</h5>
-            <div class="draggable">
-              <div class="sortable {{ str_replace(" ", "", $key) }}" id="{{ $key . " " . str_replace(" ", "", $key) }}">
+            <div class="draggable" >
+              <div class="sortable {{ str_replace(" ", "", $key) }}" id="{{ $key . " " . str_replace(" ", "", $key) }}" >
                 @foreach($classes[1] as $class)
                   <div class="custom_card {{ $class[4] }}_course" id="{{ $class[0] }}">
                     <div class="card_content">
@@ -137,7 +137,7 @@
                 <div class="group-row">
                    <p class="group-title">{{$key}}</p>
                    <div class="draggable">
-                     <div class="sortable">
+                     <div class="sortable" style="text-align:center; width:150px; margin:auto">
                        @foreach ($value as $course)
                          <div class="custom_card {{ $course[3] }}_course add-to-schedule" id="{{ $course[0] }} {{ $course[1] }}">
                           <div class="card_content">

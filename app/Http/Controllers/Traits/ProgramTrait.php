@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\User;
 use DB;
+use Auth;
 
 trait ProgramTrait
 {
@@ -104,8 +105,25 @@ trait ProgramTrait
         $groups[$group->SET_TITLE_ENGLISH] = [];
       }
     }
+
+    if(Auth::Check()){
+      if(Auth::User()['cegepEntry'] == 0){
+        $groups['Required Year 0 (Freshman) Courses'] = DB::table('Programs')
+                      ->where('PROGRAM_ID', $programID)
+                      ->whereNotNull('SUBJECT_CODE')
+                      ->whereNotNull('COURSE_NUMBER')
+                      ->where('SET_TITLE_ENGLISH','Required Year 0 (Freshman) Courses')
+                      ->get(['SET_TITLE_ENGLISH', 'SET_BEGIN_TEXT_ENGLISH']);
+      }
+    }
+    else{
+      echo 'NOPE';
+    }
+
     return $groups;
   }
+
+
 
   /**
   * Function that returns All Groups In a certain Major
@@ -143,6 +161,7 @@ trait ProgramTrait
   {
     $groups = $this->getRequiredGroups($programID);
 
+
     foreach($groups as $key=>$value)
     {
       $groups[$key] = $this->getCoursesInGroup($programID, $key, false);
@@ -167,7 +186,12 @@ trait ProgramTrait
 
     foreach($courses_PDO as $course)
     {
-      $coursesInGroup[] = [$course->SUBJECT_CODE, $course->COURSE_NUMBER, $course->COURSE_CREDITS, $course->SET_TYPE];
+      if($group == 'Required Year 0 (Freshman) Courses'){
+        $coursesInGroup[] = [$course->SUBJECT_CODE, $course->COURSE_NUMBER, $course->COURSE_CREDITS, 'Required'];
+      }
+      else{
+        $coursesInGroup[] = [$course->SUBJECT_CODE, $course->COURSE_NUMBER, $course->COURSE_CREDITS, $course->SET_TYPE];
+      }
     }
 
     return $coursesInGroup;
