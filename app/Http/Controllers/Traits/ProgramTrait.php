@@ -98,26 +98,23 @@ trait ProgramTrait
 
     $groups = [];
 
+
+    if(Auth::User()['cegepEntry'] == 0 && Auth::Check())
+    {
+      $groups['Required Year 0 (Freshman) Courses'] = DB::table('Programs')
+                    ->where('PROGRAM_ID', $programID)
+                    ->whereNotNull('SUBJECT_CODE')
+                    ->whereNotNull('COURSE_NUMBER')
+                    ->where('SET_TITLE_ENGLISH','Required Year 0 (Freshman) Courses')
+                    ->get(['SET_TITLE_ENGLISH', 'SET_BEGIN_TEXT_ENGLISH']);
+    }
+
     foreach($groups_PDO as $group)
     {
       if(trim($group->SET_TITLE_ENGLISH) != "")
       {
         $groups[$group->SET_TITLE_ENGLISH] = [];
       }
-    }
-
-    if(Auth::Check()){
-      if(Auth::User()['cegepEntry'] == 0){
-        $groups['Required Year 0 (Freshman) Courses'] = DB::table('Programs')
-                      ->where('PROGRAM_ID', $programID)
-                      ->whereNotNull('SUBJECT_CODE')
-                      ->whereNotNull('COURSE_NUMBER')
-                      ->where('SET_TITLE_ENGLISH','Required Year 0 (Freshman) Courses')
-                      ->get(['SET_TITLE_ENGLISH', 'SET_BEGIN_TEXT_ENGLISH']);
-      }
-    }
-    else{
-      echo 'NOPE';
     }
 
     return $groups;
