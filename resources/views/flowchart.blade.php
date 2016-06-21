@@ -34,7 +34,7 @@
         <fieldset class="my_program">
           <legend>MY PROGRAM</legend>
         </fieldset>
-        <div id="course_schedule" class="schedule_wrap" style="position: relative; padding-bottom: 50px">
+        <div id="course_schedule" class="schedule_wrap" style="padding-bottom: 50px">
           <!-- Exemption Semester -->
           <div class="semester">
               <h5 style="text-align:center">Exemptions</h5>
