@@ -1,18 +1,22 @@
 function renderSortable()
 {
+
   $( '.sortable' ).sortable( {
+    connectWith: ".testsort",
     start: function( event, ui ) {
       is_dragging = true;
     },
-    connectWith: ".sortable",
+
     stop: function( event, ui ) {
       is_dragging = false;
     }
   }).on( 'mousemove', function( e ){});
 
   $( ".sortable" ).sortable( {
+
+    connectWith: ".testsort",
       placeholder: 'object_ouline hvr-pulse',
-      cancel: '.credit_counter, .error_course_message',
+      cancel: '.credit_counter, .error_course_message ',
       receive: function( event, ui ) {
 
       var new_semester = get_semester( event.target.attributes.id.nodeValue );

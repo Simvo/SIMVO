@@ -39,7 +39,7 @@
           <div class="semester">
               <h5 style="text-align:center">Exemptions</h5>
               <div class="draggable">
-                <div class="sortable Exemption" id="Exemption">
+                <div class="testsort sortable Exemption" id="Exemption">
                 @foreach($exemptions as $exemption)
                 <div class="custom_card {{ $exemption[4] }}_course" id="{{ $exemption[0] }}">
                   <div class="card_content">
@@ -70,7 +70,7 @@
           <div class="semester">
             <h5 style="text-align:center">{{ $key }}</h5>
             <div class="draggable" >
-              <div class="sortable {{ str_replace(" ", "", $key) }}" id="{{ $key . " " . str_replace(" ", "", $key) }}" >
+              <div class="testsort sortable {{ str_replace(" ", "", $key) }}" id="{{ $key . " " . str_replace(" ", "", $key) }}" >
                 @foreach($classes[1] as $class)
                   <div class="custom_card {{ $class[4] }}_course" id="{{ $class[0] }}">
                     <div class="card_content">
