@@ -13,13 +13,14 @@
 
 /*TESTING */
 
-Route::get('/test', ['as' => 'test', 'uses' => 'FlowchartController@test']);
+//Route::get('/test', ['as' => 'test', 'uses' => 'FlowchartController@test']);
 
 /* GET */
 
 
 Route::get('/', function () {
-    return view('landing/landing');
+    header("Location: http://www.wearesimvo.com/");
+    exit;
 });
 
 Route::get('/auth', ['as'=>'loginView', 'uses'=>'RegistrationController@loginView']);
