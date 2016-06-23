@@ -11,10 +11,6 @@
 |
 */
 
-/*TESTING */
-
-//Route::get('/test', ['as' => 'test', 'uses' => 'FlowchartController@test']);
-
 /* GET */
 
 
