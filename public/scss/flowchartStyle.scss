@@ -1,0 +1,150 @@
+$primary-color: #f44235;
+$secondary-color: #4051b5;
+$background: rgba(236, 240, 241,1.0);
+
+.progress_div {
+  padding: 5px;
+  min-height: 50px !important;
+  width: 100% !important;
+  overflow-x: scroll;;
+}
+
+.hvr-pulse {
+  display: inline-block;
+  vertical-align: middle;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  box-shadow: 0 0 1px transparent;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-animation-name: hvr-pulse;
+  animation-name: hvr-pulse;
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-timing-function: linear;
+  animation-timing-function: linear;
+  -webkit-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+}
+
+@-webkit-keyframes hvr-pulse {
+  25% {
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
+  }
+  75% {
+    -webkit-transform: scale(0.9);
+    transform: scale(0.9);
+  }
+}
+@keyframes hvr-pulse {
+  25% {
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
+  }
+  75% {
+    -webkit-transform: scale(0.9);
+    transform: scale(0.9);
+  }
+}
+
+#progress_table{
+  overflow-x: scroll;
+}
+
+.progress_cell {
+  color: $primary-color;
+  text-align: center !important;
+  font-family: "Helvetica","Arial",sans-serif;
+}
+
+.group_cell {
+  font-size: 28px !important;
+  color: black !important;
+}
+
+.area_1_card.mdl-card {
+  width: 100%;
+  .mdl-card--border {
+    padding: 20px;
+    width: 99%;
+  }
+}
+.area_1_card > .mdl-card__title {
+  color: #fff;
+  height: 176px;
+  background: url('../assets/demos/welcome_card.jpg') center / cover;
+}
+.area_1_card > .mdl-card__menu {
+  color: #fff;
+}
+.area_1_card {
+  .mdl-card--border {
+    display: table-row;
+  }
+}
+
+.my_program {
+  border-top: 2px solid lighten($primary-color, 30%) !important;
+  legend {
+    text-align: center;
+    color: $primary-color;
+  }
+}
+
+.elective_div {
+  padding: 20px;
+  height: 200px;
+  border-top: 2px solid rgba(39, 174, 96,0.2);
+  legend {
+    text-align: center;
+    color: rgba(39, 174, 96,0.6);
+  }
+}
+
+.complementary_div {
+  padding: 20px;
+  height: 200px;
+  border-top: 2px solid rgba(243, 156, 18,0.2);
+  legend {
+    text-align: center;
+    color: rgba(243, 156, 18,0.6);
+  }
+}
+
+.schedule_wrap {
+  overflow: auto;
+  overflow-y: hidden; // hide vertical
+  width: 100%;
+}
+
+.semester {
+  height: 300px;
+  display: table-cell;
+  padding: 0 30px;
+  border-radius: 4px;
+  margin: 10px;
+}
+
+.complementary_area {
+  margin-top: 20px;
+  width: 20%;
+}
+
+.schedule_wrap {
+  overflow: auto;
+  overflow-y: hidden; // hide vertical
+  width: 100%;
+}
+
+#add-semester-wrap {
+  #add-semester{
+    background-color: rgba(41, 128, 185,1.0);
+    i{
+      color: white;
+    }
+  }
+  display: table-cell;
+  vertical-align: middle;
+}

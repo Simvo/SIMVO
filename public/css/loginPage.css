@@ -1,0 +1,13 @@
+.auth_card.mdl-card {
+  width: 100%;
+}
+
+.auth_card > .mdl-card__title {
+  color: #fff;
+  max-height: 70px;
+  background: #4051b5;
+}
+
+.auth_icon {
+  margin-top: 1.5em;
+}
