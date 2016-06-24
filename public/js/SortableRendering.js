@@ -25,7 +25,6 @@ function renderSortable()
       if(classes.includes("add-to-schedule"))
       {
         id = "new schedule";
-
         courseName = ui.item.context.id;
         console.log(courseName);
 
@@ -41,6 +40,7 @@ function renderSortable()
             var response = JSON.parse(data);
             console.log(response);
             ui.item.context.id = response;
+            $('#'+ui.item.context.id).removeClass("add-to-schedule");
           }
         })
       }
