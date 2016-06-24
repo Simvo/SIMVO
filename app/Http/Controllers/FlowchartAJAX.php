@@ -41,10 +41,12 @@ class FlowchartAJAX extends Controller
               ->where('SUBJECT_CODE', $parts[0])
               ->where('COURSE_NUMBER', $parts[1])
               ->first(['SUBJECT_CODE', 'COURSE_NUMBER', 'SET_TYPE', 'COURSE_CREDITS','SET_TITLE_ENGLISH']);
-    if($course->SET_TITLE_ENGLISH == 'Required Year 0 (Freshman) Courses'){
+    if($course->SET_TITLE_ENGLISH == 'Required Year 0 (Freshman) Courses')
+    {
       $new_id = $this->create_schedule($user->id, $semester, $course->SUBJECT_CODE, $course->COURSE_NUMBER, 'Required');
     }
-    else{
+    else
+    {
       $new_id = $this->create_schedule($user->id, $semester, $course->SUBJECT_CODE, $course->COURSE_NUMBER, $course->SET_TYPE);
     }
 
