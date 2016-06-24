@@ -27,6 +27,9 @@ class FlowchartController extends Controller
     {
       $user=Auth::User();
       $groupsWithCourses = null;
+      $schedule = [];
+      //Get User's entering semester
+      $startingSemester = $user->enteringSemester;
 
       //load excpemtions
       $exemptions = $this->getExemptions($user);
@@ -34,21 +37,21 @@ class FlowchartController extends Controller
       $schedule_check = Schedule::where('user_id', $user->id)
                         ->where('semester', "<>", 'exemption')
                         ->count();
+      $userSetupComplete = $this->checkUserSetupStatus($user);
 
       //If (user has not yet setup courses or recommended Stream is not provided)
-      if($schedule_check == 0)
+      if(!$userSetupComplete)
       {
         $groupsWithCourses = $this->getGroupsWithCourses($user->programID, true);
+      }
 
-        //Get User's entering semester
-        $startingSemester = $user->enteringSemester;
-
-        $schedule = [];
+      if($schedule_check == 0)
+      {
         $schedule[$this->get_semester($user->enteringSemester)] = [0,[],$startingSemester];
       }
 
       //if user has not completed initial setup: ie, some courses are in the schedule but some remain in the setup area
-      if($schedule_check > 0)
+      else if($schedule_check > 0)
       {
         $schedule = $this->generateSchedule($user);
       }
@@ -149,4 +152,18 @@ class FlowchartController extends Controller
 
       return $the_schedule;
     }
+
+    public function checkUserSetupStatus($user)
+    {
+      $requiredGroups = $this->getRequiredGroups($user->programID);
+
+      foreach($requiredGroups as $key=>$group)
+      {
+        $coursesInGroup = $this->getCoursesInGroup($user->programID, $key, true);
+        if(count($coursesInGroup) > 0) return false;
+      }
+
+      return true;
+    }
+
 }
