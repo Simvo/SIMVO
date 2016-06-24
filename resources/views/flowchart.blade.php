@@ -40,7 +40,7 @@
               <h5 style="text-align:center">Exemptions</h5>
               <div class="draggable">
                 <div class="testsort sortable Exemption" id="Exemption">
-                @foreach($exemptions as $exemption)
+                @foreach($exemptions[0] as $exemption)
                 <div class="custom_card {{ $exemption[4] }}_course" id="{{ $exemption[0] }}">
                   <div class="card_content">
                     {{ $exemption[1] }} &nbsp {{ $exemption[2] }}
@@ -59,7 +59,7 @@
                 @endforeach
                 <div class="custom_card credit_counter" style="text-align:center;">
                   <div class="credit_counter_num" style="display: table-cell; vertical-align: middle; font-size:15px">
-                    CREDITS:
+                    CREDITS:{{$exemptions[1]}}
                   </div>
                 </div>
               </div>

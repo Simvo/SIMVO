@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\User;
+use App\Schedule;
 use DB;
 use Auth;
 
@@ -88,7 +89,12 @@ trait ProgramTrait
   **/
   public function getRequiredGroups($programID)
   {
+    $user = Auth::User();
+
+    $version = $this->getProgramVersion($user);
+
     $groups_PDO = DB::table('Programs')
+                  ->where('VERSION', $version)
                   ->where('PROGRAM_ID', $programID)
                   ->where('SET_TYPE', 'Required')
                   ->whereNotNull('SUBJECT_CODE')
@@ -98,15 +104,9 @@ trait ProgramTrait
 
     $groups = [];
 
-
     if(Auth::User()['cegepEntry'] == 0 && Auth::Check())
     {
-      $groups['Required Year 0 (Freshman) Courses'] = DB::table('Programs')
-                    ->where('PROGRAM_ID', $programID)
-                    ->whereNotNull('SUBJECT_CODE')
-                    ->whereNotNull('COURSE_NUMBER')
-                    ->where('SET_TITLE_ENGLISH','Required Year 0 (Freshman) Courses')
-                    ->get(['SET_TITLE_ENGLISH', 'SET_BEGIN_TEXT_ENGLISH']);
+      $groups['Required Year 0 (Freshman) Courses'] = [];
     }
 
     foreach($groups_PDO as $group)
@@ -129,7 +129,12 @@ trait ProgramTrait
   **/
   public function getGroupsWithCredits($programID)
   {
+    $user = Auth::User();
+
+    $version = $this->getProgramVersion($user);
+
     $groups_PDO = DB::table('Programs')
+                  ->where('VERSION', $version)
                   ->where('PROGRAM_ID', $programID)
                   ->whereNotNull('SUBJECT_CODE')
                   ->whereNotNull('COURSE_NUMBER')
@@ -154,14 +159,13 @@ trait ProgramTrait
   * @param int: ProgramID
   * @return String array of all Group names and array of courses in the group
   **/
-  public function getGroupsWithCourses($programID)
+  public function getGroupsWithCourses($programID, $filter)
   {
     $groups = $this->getRequiredGroups($programID);
 
-
     foreach($groups as $key=>$value)
     {
-      $groups[$key] = $this->getCoursesInGroup($programID, $key, false);
+      $groups[$key] = $this->getCoursesInGroup($programID, $key, $filter);
     }
 
     return $groups;
@@ -174,7 +178,12 @@ trait ProgramTrait
   **/
   public function getCoursesInGroup($programID, $group, $filter)
   {
+    $user = Auth::User();
+
+    $version = $this->getProgramVersion($user);
+
     $courses_PDO = DB::table('Programs')
+                  ->where('VERSION', $version)
                   ->where('PROGRAM_ID', $programID)
                   ->where('SET_TITLE_ENGLISH', $group)
                   ->get(['SUBJECT_CODE', 'COURSE_NUMBER', 'COURSE_CREDITS','SET_TYPE']);
@@ -183,14 +192,40 @@ trait ProgramTrait
 
     foreach($courses_PDO as $course)
     {
-      if($group == 'Required Year 0 (Freshman) Courses'){
+      if($filter)
+      {
+        $checkIfInSchedule = Schedule::where('user_id', Auth::User()->id)
+                             ->where('SUBJECT_CODE', $course->SUBJECT_CODE)
+                             ->where('COURSE_NUMBER', $course->COURSE_NUMBER)
+                             ->get();
+        if(count($checkIfInSchedule) > 0)
+          continue;
+      }
+      if($group == 'Required Year 0 (Freshman) Courses')
+      {
         $coursesInGroup[] = [$course->SUBJECT_CODE, $course->COURSE_NUMBER, $course->COURSE_CREDITS, 'Required'];
       }
-      else{
+      else
+      {
         $coursesInGroup[] = [$course->SUBJECT_CODE, $course->COURSE_NUMBER, $course->COURSE_CREDITS, $course->SET_TYPE];
       }
     }
 
     return $coursesInGroup;
+  }
+
+  /**
+  * Function that returns most recent verion number of program.
+  * (Some mojors have multiple programs with the same program ID in the database)
+  * @param User: user
+  * @return int: version number
+  **/
+  public function getProgramVersion($user)
+  {
+    $version = DB::table('programs')->where('PROGRAM_ID', $user->programID)
+               ->groupBy('VERSION')
+               ->orderBy('Version', 'desc')
+               ->First(['VERSION']);
+    return $version->VERSION;
   }
 }

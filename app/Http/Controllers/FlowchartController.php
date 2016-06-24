@@ -38,7 +38,7 @@ class FlowchartController extends Controller
       //If (user has not yet setup courses or recommended Stream is not provided)
       if($schedule_check == 0)
       {
-        $groupsWithCourses = $this->getGroupsWithCourses($user->programID);
+        $groupsWithCourses = $this->getGroupsWithCourses($user->programID, true);
 
         //Get User's entering semester
         $startingSemester = $user->enteringSemester;
@@ -93,17 +93,20 @@ class FlowchartController extends Controller
                         ->get();
       $exemptions = [];
 
+      $sum = 0;
+
       foreach ($exemptions_PDO as $exemption)
       {
         $status = DB::table('programs')->where('PROGRAM_ID', $user->programID)
                   ->where('SUBJECT_CODE', $exemption->SUBJECT_CODE)
                   ->where('COURSE_NUMBER', $exemption->COURSE_NUMBER)
-                  ->first(['SET_TYPE']);
+                  ->first(['SET_TYPE', 'COURSE_CREDITS']);
+        $sum += $status->COURSE_CREDITS;
 
-        $exemptions[] = [$exemption->id, $exemption->SUBJECT_CODE, $exemption->COURSE_NUMBER, $exemption->COURSE_CREDITS, $status->SET_TYPE];
+        $exemptions[] = [$exemption->id, $exemption->SUBJECT_CODE, $exemption->COURSE_NUMBER, $status->COURSE_CREDITS, $status->SET_TYPE];
       }
 
-      return $exemptions;
+      return [$exemptions,$sum];
     }
 
     public function generateSchedule($user)
@@ -126,10 +129,10 @@ class FlowchartController extends Controller
 
         $tot_credits=0;
 
-         $classes=DB::table('schedules')
-         ->where('user_id', $user->id)
-         ->where('semester', $semester->semester)
-         ->get(['schedules.id', 'schedules.status','schedules.SUBJECT_CODE', 'schedules.COURSE_NUMBER']);
+        $classes=DB::table('schedules')
+        ->where('user_id', $user->id)
+        ->where('semester', $semester->semester)
+        ->get(['schedules.id', 'schedules.status','schedules.SUBJECT_CODE', 'schedules.COURSE_NUMBER']);
 
         foreach($classes as $class)
         {
