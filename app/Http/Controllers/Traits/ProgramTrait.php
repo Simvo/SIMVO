@@ -106,7 +106,7 @@ trait ProgramTrait
 
     if(Auth::User()['cegepEntry'] == 0 && Auth::Check())
     {
-      $groups['Required Year 0 (Freshman) Courses'] = [];
+      $groups['Required Year 0 (Freshman) Courses'] = $this->getCoursesInGroup($programID, 'Required Year 0 (Freshman) Courses', []);
     }
 
     foreach($groups_PDO as $group)
