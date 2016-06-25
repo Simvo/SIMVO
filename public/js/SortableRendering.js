@@ -1,6 +1,7 @@
 function renderSortable()
 {
   $( '.sortable' ).sortable( {
+    connectWith: ".validPosition",
     start: function( event, ui ) {
       is_dragging = true;
     },
@@ -11,6 +12,7 @@ function renderSortable()
   }).on( 'mousemove', function( e ){});
 
   $( ".sortable" ).sortable( {
+      connectWith: ".validPosition",
       placeholder: 'object_ouline hvr-pulse',
       cancel: '.credit_counter, .error_course_message',
       receive: function( event, ui ) {
@@ -36,8 +38,8 @@ function renderSortable()
             var response = JSON.parse(data);
             console.log(response);
             ui.item.context.id = response[0];
+            $('#'+ui.item.context.id).removeClass("add-to-schedule");
             $( event.target ).children( '.credit_counter' ).children( '.credit_counter_num' ).text( 'CREDITS: ' + response[1]);
-            ui.item.context.removeClass("add-to-schedule");
           }
         })
       }
