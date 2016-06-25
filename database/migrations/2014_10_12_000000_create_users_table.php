@@ -22,6 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('enteringSemester');
             $table->integer('cegepEntry');
+            $table->integer('course_setup_complete');
             $table->rememberToken();
             $table->timestamps();
         });
