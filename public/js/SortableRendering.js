@@ -2,7 +2,7 @@ function renderSortable()
 {
 
   $( '.sortable' ).sortable( {
-    connectWith: ".testsort",
+    connectWith: ".validPosition",
     start: function( event, ui ) {
       is_dragging = true;
     },
@@ -14,7 +14,7 @@ function renderSortable()
 
   $( ".sortable" ).sortable( {
 
-    connectWith: ".testsort",
+    connectWith: ".validPosition",
       placeholder: 'object_ouline hvr-pulse',
       cancel: '.credit_counter, .error_course_message ',
       receive: function( event, ui ) {

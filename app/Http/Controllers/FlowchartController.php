@@ -80,10 +80,6 @@ class FlowchartController extends Controller
         $totCredits = $value;
         $creditsTaken = 0;
 
-        foreach ($courses as $course)
-        {
-        }
-
         $progress[$key] = [0,$value];
       }
       return $progress;

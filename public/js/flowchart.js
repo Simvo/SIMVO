@@ -15,7 +15,7 @@ $(document).ready(function()
     var new_semester = '<div class="semester">';
     new_semester += '<h5 style="text-align:center">' + new_sem + '</h5>';
     new_semester += '<div class="draggable">';
-    new_semester += '<div class="sortable testsort ' + new_sem.replace( " ", "" ) + '" id="' + new_sem + " " + new_sem.replace( " ", "" ) + '">';
+    new_semester += '<div class="sortable validPosition ' + new_sem.replace( " ", "" ) + '" id="' + new_sem + " " + new_sem.replace( " ", "" ) + '">';
     new_semester += '<div class="custom_card credit_counter" style="text-align:center;">';
     new_semester += '<div class="credit_counter_num" style="display: table-cell; vertical-align: middle; font-size:15px">';
     new_semester += 'CREDITS: 0';
