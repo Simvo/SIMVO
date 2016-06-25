@@ -19,7 +19,7 @@ Route::get('/', function () {
     exit;
 });
 
-Route::get('/auth', ['as'=>'loginView', 'uses'=>'RegistrationController@loginView']);
+Route::get('/login', ['as'=>'loginView', 'uses'=>'RegistrationController@loginView']);
 
 Route::get('/logout', ['as'=>'logout', 'uses'=>'RegistrationController@logout']);
 

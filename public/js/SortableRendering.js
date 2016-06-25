@@ -1,22 +1,18 @@
 function renderSortable()
 {
-
   $( '.sortable' ).sortable( {
-    connectWith: ".validPosition",
     start: function( event, ui ) {
       is_dragging = true;
     },
-
+    connectWith: ".sortable",
     stop: function( event, ui ) {
       is_dragging = false;
     }
   }).on( 'mousemove', function( e ){});
 
   $( ".sortable" ).sortable( {
-
-    connectWith: ".validPosition",
       placeholder: 'object_ouline hvr-pulse',
-      cancel: '.credit_counter, .error_course_message ',
+      cancel: '.credit_counter, .error_course_message',
       receive: function( event, ui ) {
 
       var new_semester = get_semester( event.target.attributes.id.nodeValue );
@@ -25,8 +21,8 @@ function renderSortable()
       if(classes.includes("add-to-schedule"))
       {
         id = "new schedule";
+
         courseName = ui.item.context.id;
-        console.log(courseName);
 
         $.ajax( {
           type: 'post',
@@ -39,8 +35,9 @@ function renderSortable()
           success: function( data ) {
             var response = JSON.parse(data);
             console.log(response);
-            ui.item.context.id = response;
-            $('#'+ui.item.context.id).removeClass("add-to-schedule");
+            ui.item.context.id = response[0];
+            $( event.target ).children( '.credit_counter' ).children( '.credit_counter_num' ).text( 'CREDITS: ' + response[1]);
+            ui.item.context.removeClass("add-to-schedule");
           }
         })
       }
@@ -57,6 +54,8 @@ function renderSortable()
           success: function( data ) {
             var response = JSON.parse( data );
             console.log( response );
+            $( event.target ).children( '.credit_counter' ).children( '.credit_counter_num' ).text( 'CREDITS: ' + response[0]);
+            $( ui.sender[ 0 ] ).children( '.credit_counter' ).children( '.credit_counter_num' ).text( 'CREDITS: ' + response[1]);
           }
         })
       }
