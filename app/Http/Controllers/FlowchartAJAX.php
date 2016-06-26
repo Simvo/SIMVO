@@ -29,10 +29,10 @@ class FlowchartAJAX extends Controller
     $target->semester=$semester;
     $target->save();
 
-  $old_semeterCredits = $this->getSemeterCredits($old_semester, $user);
-  $new_semeterCredits = $this->getSemeterCredits($semester, $user);
+    $old_semeterCredits = $this->getSemeterCredits($old_semester, $user);
+    $new_semeterCredits = $this->getSemeterCredits($semester, $user);
 
-  return json_encode([$new_semeterCredits, $old_semeterCredits]);
+    return json_encode([$new_semeterCredits, $old_semeterCredits, $progress]);
   }
 
   public function add_course_to_Schedule(Request $request)
@@ -57,8 +57,9 @@ class FlowchartAJAX extends Controller
       $new_id = $this->create_schedule($user->id, $semester, $course->SUBJECT_CODE, $course->COURSE_NUMBER, $course->SET_TYPE);
 
     $new_semeterCredits = $this->getSemeterCredits($semester, $user);
+    $progress = $this->generateProgressBar($user);
 
-    return json_encode([$new_id,$new_semeterCredits]);
+    return json_encode([$new_id,$new_semeterCredits, $progress]);
   }
 
   public function getSemeterCredits($semester, $user)

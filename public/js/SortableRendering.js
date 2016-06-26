@@ -36,10 +36,19 @@ function renderSortable()
           },
           success: function( data ) {
             var response = JSON.parse(data);
-            console.log(response);
             ui.item.context.id = response[0];
             $('#'+ui.item.context.id).removeClass("add-to-schedule");
             $( event.target ).children( '.credit_counter' ).children( '.credit_counter_num' ).text( 'CREDITS: ' + response[1]);
+
+            for (var group in response[2])
+            {
+                if (response[2].hasOwnProperty(group))
+                {
+                    var groupProgress = response[2][group];
+                    console.log(groupProgress);
+                }
+            }
+
           }
         })
       }
