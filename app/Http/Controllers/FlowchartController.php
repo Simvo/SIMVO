@@ -56,7 +56,7 @@ class FlowchartController extends Controller
         $schedule = $this->generateSchedule($user);
       }
 
-      $progress = $this->generateProgressBar($user->programID);
+      $progress = $this->generateProgressBar($user);
 
       return view('flowchart', [
         'user'=>$user,
@@ -65,24 +65,6 @@ class FlowchartController extends Controller
         'groupsWithCourses' => $groupsWithCourses,
         'exemptions' => $exemptions
       ]);
-    }
-
-    public function generateProgressBar($programID)
-    {
-      $groups = $this->getGroupsWithCredits($programID);
-
-      $progress = [];
-
-      foreach ($groups as $key=>$value)
-      {
-        $courses = $this->getCoursesInGroup($programID, $key, false);
-
-        $totCredits = $value;
-        $creditsTaken = 0;
-
-        $progress[$key] = [0,$value];
-      }
-      return $progress;
     }
 
     public function getExemptions($user)

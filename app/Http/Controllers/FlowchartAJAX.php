@@ -33,7 +33,6 @@ class FlowchartAJAX extends Controller
   $new_semeterCredits = $this->getSemeterCredits($semester, $user);
 
   return json_encode([$new_semeterCredits, $old_semeterCredits]);
-
   }
 
   public function add_course_to_Schedule(Request $request)
@@ -50,9 +49,13 @@ class FlowchartAJAX extends Controller
     $course = DB::table('programs')->where('PROGRAM_ID',$user->programID)
               ->where('SUBJECT_CODE', $parts[0])
               ->where('COURSE_NUMBER', $parts[1])
-              ->first(['SUBJECT_CODE', 'COURSE_NUMBER', 'SET_TYPE', 'COURSE_CREDITS']);
+              ->first(['SUBJECT_CODE', 'COURSE_NUMBER', 'SET_TYPE', 'COURSE_CREDITS', 'SET_TITLE_ENGLISH']);
 
-    $new_id = $this->create_schedule($user->id, $semester, $course->SUBJECT_CODE, $course->COURSE_NUMBER, $course->SET_TYPE);
+    if($course->SET_TITLE_ENGLISH == 'Required Year 0 (Freshman) Courses')
+      $new_id = $this->create_schedule($user->id, $semester, $course->SUBJECT_CODE, $course->COURSE_NUMBER, 'Required');
+    else
+      $new_id = $this->create_schedule($user->id, $semester, $course->SUBJECT_CODE, $course->COURSE_NUMBER, $course->SET_TYPE);
+
     $new_semeterCredits = $this->getSemeterCredits($semester, $user);
 
     return json_encode([$new_id,$new_semeterCredits]);
