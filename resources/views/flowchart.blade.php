@@ -68,7 +68,7 @@
           <!-- List of Semesters -->
           @foreach($schedule as $key => $classes)
           <div class="semester">
-            <h5 style="text-align:center">{{ $key }}</h5>
+            <h5 style="text-align:center" >{{ $key }}</h5>
             <div class="draggable" >
               <div class="validPosition sortable {{ str_replace(" ", "", $key) }}" id="{{ $key . " " . str_replace(" ", "", $key) }}" >
                 @foreach($classes[1] as $class)
@@ -96,10 +96,15 @@
               </div>
             </div>
           </div>
+
+          <!-- Adding missing semester buttons -->
+          @if ((substr($key, 0, 6) == "WINTER" && !array_key_exists("SUMMER " . substr($key, 7, 4), $schedule) ) || (substr($key, 0, 4) == "FALL" && !array_key_exists("WINTER " .((int)substr($key, 5, 4) + 1), $schedule)  ) || (substr($key, 0, 6) == "SUMMER" && !array_key_exists("FALL " . substr($key, 7, 4), $schedule)  )   )
+            <div class="fill-semester-gap-wrap">
+              <a href="#" id="{{$key}}-gap" class="add-semester mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab" style="background-color: #2980b9;"><i class="material-icons" style="color: white">add</i></a>
+            </div>
+          @endif
+
           @endforeach
-          <div id="add-semester-wrap">
-            <a href="#" id="add-semester" class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab"><i class="material-icons">add</i></a>
-          </div>
         </div>
         @if (is_null($groupsWithCourses))
           <div class="mdl-grid">

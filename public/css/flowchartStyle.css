@@ -145,6 +145,12 @@
   vertical-align: middle;
 }
 
+.fill-semester-gap-wrap {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+
 #add-semester-wrap #add-semester {
   background-color: #2980b9;
 }

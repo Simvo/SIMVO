@@ -3,10 +3,11 @@ $(document).ready(function()
 
   renderSortable();
 
-  $( "#add-semester" ).click( function( e ) {
+  $(".add-semester").click(function(e){
+    //console.log($(this).attr("id" ).substring(0 , $(this).attr("id" ).length - 4 ));
 
     e.preventDefault();
-    var last_sem = $( "#course_schedule .semester:last .sortable" ).attr( "id" );
+    var last_sem = $(this).attr("id" ).substring(0 , $(this).attr("id" ).length - 4 );
     last_sem = last_sem.split( " " );
     last_sem = last_sem[ 0 ] + " " + last_sem[ 1 ];
 
@@ -25,8 +26,30 @@ $(document).ready(function()
     new_semester += '</div>';
     new_semester += '</div>';
 
+
     //$("#course_schedule").append(new_semester);
-    $( ".semester + #add-semester-wrap" ).before( new_semester );
+    $(this).parent().before( new_semester );
     renderSortable();
-  } );
+
+    //update the gap
+    $(this).attr("id",new_sem+"-gap");
+
+    //check if the next semester exists
+    last_sem = $(this).attr("id" ).substring(0 , $(this).attr("id" ).length - 4 );
+    last_sem = last_sem.split( " " );
+    last_sem = last_sem[ 0 ] + " " + last_sem[ 1 ];
+    new_sem = get_semester_letter( get_next_semester( get_semester( last_sem ) ) );
+    new_sem = new_sem.split( " " );
+    new_sem = new_sem[ 0 ] + " " + new_sem[ 1 ] + " "+ new_sem[0] + new_sem[1];
+
+    //if the next semester exists then we dont need the button!
+    if($("[id='"+new_sem+"']").length){
+      $(this).remove();
+    }
+
+
+
+
+  });
+
 });
