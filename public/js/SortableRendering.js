@@ -45,7 +45,7 @@ function renderSortable()
                 if (response[2].hasOwnProperty(group))
                 {
                     var groupProgress = response[2][group];
-                    console.log(groupProgress);
+                    var target = $( "td[id='" + group + "']" ).text("" + groupProgress[0] + "/" + groupProgress[1]);
                 }
             }
 
