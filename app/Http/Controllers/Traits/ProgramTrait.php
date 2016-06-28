@@ -13,6 +13,41 @@ use Auth;
 trait ProgramTrait
 {
   use ParsingTrait;
+
+  /**
+  * Function that returns groups and the number of credits in them along
+  * with the number of credits the user has completed in each group
+  * @param current logged in user
+  * @return array with key = groupName => [credits taken,total dredits in group]
+  **/
+  public function generateProgressBar($user)
+  {
+    $groups = $this->getGroupsWithCredits($user->programID);
+
+    $progress = [];
+
+    foreach ($groups as $key=>$value)
+    {
+      $courses = $this->getCoursesInGroup($user->programID, $key, false);
+
+      $totCredits = $value;
+      $creditsTaken = 0;
+      foreach($courses as $course)
+      {
+        $check = Schedule::where('user_id', $user->id)
+                 ->where('SUBJECT_CODE', $course[0])
+                 ->where('COURSE_NUMBER', $course[1])
+                 ->get();
+
+        if(count($check)>0)
+          $creditsTaken += $this->getCourseCredits($course[0], $course[1]);
+      }
+
+      $progress[$key] = [$creditsTaken,$value];
+    }
+    return $progress;
+  }
+
   /**
   * Function that returns All Faculties in University
   * @param void
@@ -227,5 +262,17 @@ trait ProgramTrait
                ->orderBy('Version', 'desc')
                ->First(['VERSION']);
     return $version->VERSION;
+  }
+
+  /**
+  * Returns credits in course
+  * @param User: Subject code and course number
+  * @return int: number of credits in course
+  **/
+  public function getCourseCredits($sub_code, $course_num)
+  {
+    return DB::table('programs')->where('SUBJECT_CODE', $sub_code)
+               ->where('COURSE_NUMBER', $course_num)
+               ->First(['COURSE_CREDITS'])->COURSE_CREDITS;
   }
 }
