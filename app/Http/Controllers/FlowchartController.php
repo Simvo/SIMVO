@@ -81,10 +81,10 @@ class FlowchartController extends Controller
         $status = DB::table('programs')->where('PROGRAM_ID', $user->programID)
                   ->where('SUBJECT_CODE', $exemption->SUBJECT_CODE)
                   ->where('COURSE_NUMBER', $exemption->COURSE_NUMBER)
-                  ->first(['SET_TYPE', 'COURSE_CREDITS']);
+                  ->first(['COURSE_CREDITS']);
         $sum += $status->COURSE_CREDITS;
 
-        $exemptions[] = [$exemption->id, $exemption->SUBJECT_CODE, $exemption->COURSE_NUMBER, $status->COURSE_CREDITS, $status->SET_TYPE];
+        $exemptions[] = [$exemption->id, $exemption->SUBJECT_CODE, $exemption->COURSE_NUMBER, $status->COURSE_CREDITS, $exemption->status];
       }
 
       return [$exemptions,$sum];
