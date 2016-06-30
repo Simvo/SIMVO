@@ -94,6 +94,9 @@ class FlowchartController extends Controller
     {
       $the_schedule = [];
 
+      //Always have their starting semester available -- therefore if they accidentally remove all classes from it and refresh, it will remain.
+      $the_schedule[$this->get_semester($user->enteringSemester)] = [0,[],$user->enteringSemester];
+
       $user_schedule=Schedule::where('user_id', $user->id)
       ->whereNotIn('semester', ['complementary_course', 'elective_course'])
       ->where('semester' ,"<>", 'Exemption')

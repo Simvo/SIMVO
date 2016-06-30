@@ -127,6 +127,7 @@
   padding: 0 30px;
   border-radius: 4px;
   margin: 10px;
+  position:relative;
 }
 
 .complementary_area {
@@ -148,6 +149,11 @@
 .fill-semester-gap-wrap {
   display: table-cell;
   vertical-align: middle;
+}
+
+.delete-semester-wrap{
+  width:40px;
+  margin: auto;
 }
 
 

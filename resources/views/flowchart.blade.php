@@ -93,8 +93,13 @@
                     CREDITS: {{ $classes[0] }}
                   </div>
                 </div>
+
               </div>
             </div>
+            <div class="delete-semester-wrap">
+              <a href="#" id="{{$key}}-delete" class="delete-semester mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab"><i class="material-icons">clear</i></a>
+            </div>
+
           </div>
 
           <!-- Adding missing semester buttons -->
