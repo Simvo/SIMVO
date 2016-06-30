@@ -18,6 +18,7 @@ function renderSortable()
       receive: function( event, ui ) {
 
       var new_semester = get_semester( event.target.attributes.id.nodeValue );
+      var vsbActiveSemesters = get_VSB_active_semesters();
       var id = ui.item.context.id;
       var classes = ui.item.context.className;
       if(classes.includes("add-to-schedule"))
@@ -69,6 +70,24 @@ function renderSortable()
             $( ui.sender[ 0 ] ).children( '.credit_counter' ).children( '.credit_counter_num' ).text( 'CREDITS: ' + response[1]);
           }
         })
+      }
+
+      console.log(new_semester);
+      console.log(vsbActiveSemesters);
+      // Check for VSB warnings
+      if(new_semester === vsbActiveSemesters[0] || new_semester === vsbActiveSemesters[1])
+      {
+        $.ajax({
+          type: 'post',
+          url: '/flowchart/check-course-availability',
+          data: {
+            semester: new_semester,
+            courseName: courseName
+          },
+          success: function(data){
+            var response = JSON.parse(data);
+          }
+        });
       }
     }
   });

@@ -1,3 +1,16 @@
+function get_VSB_active_semesters()
+{
+  var d = new Date();
+  var month = d.getMonth();
+  var year = d.getFullYear();
+  console.log(year);
+  var fall = year + "09";
+  if(5<month<=12)year++;
+  var winter = year + "01";
+
+  return [fall, winter];
+}
+
 function get_semester_letter( semester )
 {
   var term = semester.substring( 0, 4 );
