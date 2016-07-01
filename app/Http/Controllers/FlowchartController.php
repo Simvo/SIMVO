@@ -17,7 +17,7 @@ class FlowchartController extends Controller
 
   use Traits\NewObjectsTrait;
   use Traits\ProgramTrait;
-  use Traits\tools;
+  use Traits\Tools;
     /**
     * Function called upon GET request. Will determine if schedule needs to be generated or simply displayed
     * Consists of generating four main parts.
@@ -58,12 +58,15 @@ class FlowchartController extends Controller
 
       $progress = $this->generateProgressBar($user);
 
+      $startingSemester = $this->get_semester($startingSemester);
+
       return view('flowchart', [
         'user'=>$user,
         'schedule'=> $schedule,
         'progress' => $progress,
         'groupsWithCourses' => $groupsWithCourses,
-        'exemptions' => $exemptions
+        'exemptions' => $exemptions,
+        'startingSemester' => $startingSemester
       ]);
     }
 

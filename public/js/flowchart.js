@@ -1,10 +1,15 @@
 $(document).ready(function()
 {
+  //remove delete button from first semester
+  //$($(".semester")[1]).find(".delete-semester-wrap").remove();
+
 
   renderSortable();
 
   initDeleteListener(".delete-semester");
-  initAddSemesterListener(".add-semester")
+  initAddSemesterListener(".add-semester");
+
+
 
 });
 
@@ -74,30 +79,16 @@ function initDeleteListener(target)
     var next_sem = get_semester_letter( get_next_semester( get_semester(target_sem)));
 
 
-
-    console.log("target semester: " + target_sem);
-    console.log(CourseCount);
-    console.log("previous semester: " + prev_sem);
-    console.log("next semester: " + next_sem)
-
-
       if(CourseCount)
       {
         //Verify to delete with user
-
-
-        deleteSemester(prev_sem, target_sem, next_sem);
+        alert("Please remove all courses from this semester and try again.");
       }
       else
       {
         //no verification required
-
-
         deleteSemester(prev_sem, target_sem, next_sem);
       }
-
-
-
   });
 }
 
