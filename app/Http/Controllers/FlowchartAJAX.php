@@ -54,7 +54,6 @@ class FlowchartAJAX extends Controller
     if($course->SET_TITLE_ENGLISH == 'Required Year 0 (Freshman) Courses')
     {
       $new_id = $this->create_schedule($user->id, $semester, $course->SUBJECT_CODE, $course->COURSE_NUMBER, 'Required');
-      var_dump("HI");
     }
     else
       $new_id = $this->create_schedule($user->id, $semester, $course->SUBJECT_CODE, $course->COURSE_NUMBER, $course->SET_TYPE);
