@@ -96,9 +96,11 @@
 
               </div>
             </div>
+            @if($key != $startingSemester)
             <div class="delete-semester-wrap">
               <a href="#" id="{{$key}}-delete" class="delete-semester mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab"><i class="material-icons">clear</i></a>
             </div>
+            @endif
 
 
           </div>

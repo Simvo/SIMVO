@@ -118,7 +118,7 @@ function deleteSemester(prev_sem, target_sem, next_sem)
   }
   else if(!$("[id='"+prevID+"']").length && !$("[id='"+nextID+"']").length)
   {
-    //remove the later gap button entirely
+    //remove the later gap button entirely  
     $("[id='"+target_sem+"-gap']").parent().remove();
   }
 
