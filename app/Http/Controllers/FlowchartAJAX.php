@@ -84,4 +84,13 @@ class FlowchartAJAX extends Controller
 
     return $sum;
   }
+
+  public function vsb_checkCourseAvailablity(Request $request)
+  {
+    $semester = $request->semester;
+    $targetID = $request->scheduleID;
+    $target=Schedule::find($targetID);
+
+    return $this->checkCourseAvailablity($target->SUBJECT_CODE, $target->COURSE_NUMBER, $semester);
+  }
 }

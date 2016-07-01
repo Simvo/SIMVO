@@ -46,10 +46,5 @@ $(document).ready(function()
     if($("[id='"+new_sem+"']").length){
       $(this).remove();
     }
-
-
-
-
   });
-
 });

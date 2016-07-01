@@ -4,7 +4,6 @@
 <div class="mdl-grid" style="padding-bottom: 0px">
   <div class="mdl-cell mdl-cell--12-col" style="overflow-x: scroll">
     <div class="mdl-card mdl-shadow--2dp progress_div">
-
       <table id="progress_table" style="margin: 0 auto; width:100% !important;">
         <thead>
           <tr>
@@ -13,7 +12,6 @@
             @endforeach
           </tr>
         </thead>
-
         <tbody>
           <tr>
             @foreach ($progress as $key=>$value)
@@ -21,7 +19,6 @@
             @endforeach
           </tr>
         </tbody>
-
       </table>
     </div>
   </div>
@@ -161,7 +158,6 @@
             </div>
           </div>
         @endif
-
       </div>
     </div>
   </div>

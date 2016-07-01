@@ -52,6 +52,6 @@ trait CurlTrait
 	    $warnings[] = $element->nodeValue;
   	}
 
-    return $warnings;
+    return json_encode($warnings);
   }
 }

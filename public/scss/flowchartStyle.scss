@@ -9,6 +9,24 @@ $background: rgba(236, 240, 241,1.0);
   overflow-x: scroll;;
 }
 
+.course_not_available {
+  color: orange;
+  width: 150px;
+  text-align: center;
+  padding: 3px;
+  font-size: 15px;
+  margin-bottom: 15px;
+}
+
+.course_available{
+  color: blue;
+  width: 150px;
+  text-align: center;
+  padding: 3px;
+  font-size: 15px;
+  margin-bottom: 15px;
+}
+
 .hvr-pulse {
   display: inline-block;
   vertical-align: middle;
@@ -145,6 +163,11 @@ $background: rgba(236, 240, 241,1.0);
       color: white;
     }
   }
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.fill-semester-gap-wrap{
   display: table-cell;
   vertical-align: middle;
 }

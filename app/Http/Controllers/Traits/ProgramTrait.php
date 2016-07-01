@@ -221,6 +221,7 @@ trait ProgramTrait
                   ->where('VERSION', $version)
                   ->where('PROGRAM_ID', $programID)
                   ->where('SET_TITLE_ENGLISH', $group)
+                  ->orderBy('COURSE_NUMBER', 'asc')
                   ->get(['SUBJECT_CODE', 'COURSE_NUMBER', 'COURSE_CREDITS','SET_TYPE']);
 
     $coursesInGroup = [];
@@ -259,7 +260,7 @@ trait ProgramTrait
   {
     $version = DB::table('programs')->where('PROGRAM_ID', $user->programID)
                ->groupBy('VERSION')
-               ->orderBy('Version', 'desc')
+               ->orderBy('Version', 'asc')
                ->First(['VERSION']);
     return $version->VERSION;
   }
