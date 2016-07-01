@@ -1,16 +1,8 @@
 $(document).ready(function()
 {
-  //remove delete button from first semester
-  //$($(".semester")[1]).find(".delete-semester-wrap").remove();
-
-
   renderSortable();
-
   initDeleteListener(".delete-semester");
   initAddSemesterListener(".add-semester");
-
-
-
 });
 
 function initAddSemesterListener(target)
@@ -118,7 +110,7 @@ function deleteSemester(prev_sem, target_sem, next_sem)
   }
   else if(!$("[id='"+prevID+"']").length && !$("[id='"+nextID+"']").length)
   {
-    //remove the later gap button entirely  
+    //remove the later gap button entirely
     $("[id='"+target_sem+"-gap']").parent().remove();
   }
 
