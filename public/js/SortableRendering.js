@@ -40,6 +40,7 @@ function renderSortable()
             ui.item.context.id = response[0];
             $('#'+ui.item.context.id).removeClass("add-to-schedule");
             $( event.target ).children( '.credit_counter' ).children( '.credit_counter_num' ).text( 'CREDITS: ' + response[1]);
+            checkVSB(new_semester, ui, event)
 
             for (var group in response[2])
             {
@@ -67,46 +68,9 @@ function renderSortable()
             var response = JSON.parse( data );
             $( event.target ).children( '.credit_counter' ).children( '.credit_counter_num' ).text( 'CREDITS: ' + response[0]);
             $( ui.sender[ 0 ] ).children( '.credit_counter' ).children( '.credit_counter_num' ).text( 'CREDITS: ' + response[1]);
+            checkVSB(new_semester, ui, event)
           }
         })
-      }
-
-
-      // Check for VSB warnings
-      if(new_semester === vsbActiveSemesters[0] || new_semester === vsbActiveSemesters[1])
-      {
-        $.ajax({
-          type: 'post',
-          url: '/flowchart/check-course-availability',
-          data: {
-            semester: new_semester,
-            scheduleID: ui.item.context.id
-          },
-          success: function(data){
-            var response = JSON.parse(data);
-
-            if(response.length)
-            {
-              var error = "<div class='course_not_available'>";
-              error += response[0];
-              error += "</div>";
-            }
-
-            else
-            {
-              var error = "<div class='course_available'>";
-              error += "Course is available this semester!";
-              error += "</div>";
-
-              $( ".course_available" ).fadeOut( 3000, function() {
-                $( ".course_available" ).remove();
-              } );
-
-            }
-
-            $( event.target ).append( error );
-          }
-        });
       }
     }
   });

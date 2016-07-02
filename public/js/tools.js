@@ -10,6 +10,47 @@ function get_VSB_active_semesters()
   return [fall, winter];
 }
 
+function checkVSB(new_semester, ui, event)
+{
+  var vsbActiveSemesters = get_VSB_active_semesters();
+  // Check for VSB warnings
+  if(new_semester === vsbActiveSemesters[0] || new_semester === vsbActiveSemesters[1])
+  {
+    $.ajax({
+      type: 'post',
+      url: '/flowchart/check-course-availability',
+      data: {
+        semester: new_semester,
+        scheduleID: ui.item.context.id
+      },
+      success: function(data){
+        var response = JSON.parse(data);
+
+        if(response.length)
+        {
+          var error = "<div class='course_not_available'>";
+          error += response[0];
+          error += "</div>";
+        }
+
+        else
+        {
+          var error = "<div class='course_available'>";
+          error += "Course is available this semester!";
+          error += "</div>";
+
+          $( ".course_available" ).fadeOut( 3000, function() {
+            $( ".course_available" ).remove();
+          } );
+
+        }
+
+        $( event.target ).append( error );
+      }
+    });
+  }
+}
+
 function get_semester_letter( semester )
 {
   var term = semester.substring( 0, 4 );
