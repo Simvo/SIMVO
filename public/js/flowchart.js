@@ -70,17 +70,8 @@ function initDeleteListener(target)
     var prev_sem = get_semester_letter( get_previous_semester( get_semester(target_sem)));
     var next_sem = get_semester_letter( get_next_semester( get_semester(target_sem)));
 
+    deleteSemester(prev_sem, target_sem, next_sem);
 
-      if(CourseCount)
-      {
-        //Verify to delete with user
-        alert("Please remove all courses from this semester and try again.");
-      }
-      else
-      {
-        //no verification required
-        deleteSemester(prev_sem, target_sem, next_sem);
-      }
   });
 }
 
@@ -115,4 +106,33 @@ function deleteSemester(prev_sem, target_sem, next_sem)
   }
 
   $("[id='"+target_sem+"-delete']").parent().parent().remove();
+}
+
+function refreshDeleteSemester()
+{
+  for( i = 2; i < $(".semester").length; i++ )
+  {
+    if(isSemesterEmpty($(".semester")[i]))
+    {
+      //not empty
+      if($($(".semester")[i]).find("div.delete-semester-wrap").length)
+      {
+        $($(".semester")[i]).find("div.delete-semester-wrap").remove();
+      }
+    }
+    else
+    {
+      //empty -- append delete
+      if(!$($(".semester")[i]).find("div.delete-semester-wrap").length)
+      {
+        var target_sem = $($(".semester")[i]).find("h5").html();
+        var deleteButton = '<div class="delete-semester-wrap">';
+        deleteButton += '<a href="#" id="' + target_sem + '-delete" class="delete-semester mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab"><i class="material-icons">clear</i></a>';
+        deleteButton += '</div>';
+
+        $($(".semester")[i]).append(deleteButton);
+        initDeleteListener("[id='"+target_sem+"-delete']");
+      }
+    }
+  }
 }

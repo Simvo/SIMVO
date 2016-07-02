@@ -48,7 +48,7 @@ function renderSortable()
                     var target = $( "td[id='" + group + "']" ).text("" + groupProgress[0] + "/" + groupProgress[1]);
                 }
             }
-
+            refreshDeleteSemester();
           }
         })
       }
@@ -67,6 +67,7 @@ function renderSortable()
             console.log( response );
             $( event.target ).children( '.credit_counter' ).children( '.credit_counter_num' ).text( 'CREDITS: ' + response[0]);
             $( ui.sender[ 0 ] ).children( '.credit_counter' ).children( '.credit_counter_num' ).text( 'CREDITS: ' + response[1]);
+            refreshDeleteSemester();
           }
         })
       }

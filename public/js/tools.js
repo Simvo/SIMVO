@@ -109,3 +109,8 @@ function get_next_semester( current )
     semester = semester[ 0 ] + " " + semester[ 1 ] + " "+ semester[0] + semester[1];
     return semester;
   }
+
+  function isSemesterEmpty(sem){
+    var CourseCount = $(sem).find("div.custom_card").length - 1;
+    return CourseCount;
+  }
