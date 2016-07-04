@@ -10,7 +10,7 @@
   	<meta property="og:type" content="website"/>
     <title>S!MVO</title>
     <!-- Stylesheets -->
-    <link href="{{ asset('css/foundation1.css')}}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('css/foundation.css')}}" rel="stylesheet" type="text/css">
     <link href="{{ asset('css/BootstrapStyle.css') }}" rel="stylesheet" type="text/css" >
     <link href="{{ asset('css/registrationPage.css') }}" rel="stylesheet" type="text/css" >
     <link href="{{ asset('css/loginPage.css') }}" rel="stylesheet" type="text/css" >

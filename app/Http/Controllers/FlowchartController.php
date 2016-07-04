@@ -45,7 +45,8 @@ class FlowchartController extends Controller
       {
         $groupsWithCourses = $this->getGroupsWithCourses($user->programID, true)[0];
       }
-      else{
+      else
+      {
         $complementaryCourses = $this->getGroupsWithCourses($user->programID, true)[1];
       }
 
