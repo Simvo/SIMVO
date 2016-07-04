@@ -1,5 +1,6 @@
 $(document).ready(function()
 {
+  //$(document).foundation();
   renderSortable();
   initDeleteListener(".delete-semester");
   initAddSemesterListener(".add-semester");
@@ -27,7 +28,7 @@ function initAddSemesterListener(target)
     new_semester += '</div>';
     new_semester += '</div>';
     new_semester += '<div class="delete-semester-wrap">';
-    new_semester += '<a href="#" id="' + new_sem + '-delete" class="delete-semester mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab"><i class="material-icons">clear</i></a>';
+    new_semester += '<a href="#" style="opacity:0;" id="' + new_sem + '-delete" class="delete-semester mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab"><i class="material-icons">clear</i></a>';
     new_semester += '</div>';
     new_semester += '</div>';
 
@@ -60,6 +61,7 @@ function initAddSemesterListener(target)
 
 function initDeleteListener(target)
 {
+  $(target).animate({opacity: 1}, 300);
   $(target).click(function(e){
     e.preventDefault();
 
@@ -117,7 +119,9 @@ function refreshDeleteSemester()
       //not empty
       if($($(".semester")[i]).find("div.delete-semester-wrap").length)
       {
-        $($(".semester")[i]).find("div.delete-semester-wrap").remove();
+        var target_sem = $($(".semester")[i]).find("h5").html();
+        $("[id='"+target_sem+"-delete']").animate({opacity:0},300,"linear", function (){$(this).parent().remove();});
+        //$($(".semester")[i]).find("div.delete-semester-wrap").remove();
       }
     }
     else
@@ -126,11 +130,12 @@ function refreshDeleteSemester()
       if(!$($(".semester")[i]).find("div.delete-semester-wrap").length)
       {
         var target_sem = $($(".semester")[i]).find("h5").html();
-        var deleteButton = '<div class="delete-semester-wrap">';
-        deleteButton += '<a href="#" id="' + target_sem + '-delete" class="delete-semester mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab"><i class="material-icons">clear</i></a>';
+        var deleteButton = '<div class="delete-semester-wrap" >';
+        deleteButton += '<a href="#" style="opacity:0;" id="' + target_sem + '-delete" class="delete-semester mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab"><i class="material-icons">clear</i></a>';
         deleteButton += '</div>';
 
         $($(".semester")[i]).append(deleteButton);
+
         initDeleteListener("[id='"+target_sem+"-delete']");
       }
     }

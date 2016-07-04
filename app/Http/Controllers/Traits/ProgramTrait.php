@@ -155,6 +155,41 @@ trait ProgramTrait
     return $groups;
   }
 
+  /**
+  * Function that returns All Complementary Groups In a certain Major
+  * @param int: ProgramID
+  * @return String array of all Group names
+  **/
+  public function getComplementaryGroups($programID)
+  {
+    $user = Auth::User();
+
+    $version = $this->getProgramVersion($user);
+
+    $groups_PDO = DB::table('Programs')
+                  ->where('VERSION', $version)
+                  ->where('PROGRAM_ID', $programID)
+                  ->where('SET_TYPE', 'Complementary')
+                  ->whereNotIn('SET_TITLE_ENGLISH',['Required Year 0 (Freshman) Courses'])
+                  ->whereNotNull('SUBJECT_CODE')
+                  ->whereNotNull('COURSE_NUMBER')
+                  ->groupBy('SET_TITLE_ENGLISH')
+                  ->get(['SET_TITLE_ENGLISH', 'SET_BEGIN_TEXT_ENGLISH']);
+
+    $groups = [];
+
+    unset($groups_PDO['Required Year 0 (Freshman) Courses']);
+
+    foreach($groups_PDO as $group)
+    {
+      if(trim($group->SET_TITLE_ENGLISH) != "")
+      {
+        $groups[$group->SET_TITLE_ENGLISH] = [];
+      }
+    }
+
+    return $groups;
+  }
 
 
   /**
@@ -196,11 +231,17 @@ trait ProgramTrait
   **/
   public function getGroupsWithCourses($programID, $filter)
   {
-    $groups = $this->getRequiredGroups($programID);
+    $groups = [];
+    $i;
+    $groups[0] = $this->getRequiredGroups($programID);
+    $groups[1] = $this->getComplementaryGroups($programID);
 
-    foreach($groups as $key=>$value)
+    for($i = 0; $i < 2; $i++)
     {
-      $groups[$key] = $this->getCoursesInGroup($programID, $key, $filter);
+      foreach($groups[$i] as $key=>$value)
+      {
+        $groups[$i][$key] = $this->getCoursesInGroup($programID, $key, $filter);
+      }
     }
 
     return $groups;
@@ -221,7 +262,7 @@ trait ProgramTrait
                   ->where('VERSION', $version)
                   ->where('PROGRAM_ID', $programID)
                   ->where('SET_TITLE_ENGLISH', $group)
-                  ->get(['SUBJECT_CODE', 'COURSE_NUMBER', 'COURSE_CREDITS','SET_TYPE']);
+                  ->get(['SUBJECT_CODE', 'COURSE_NUMBER', 'COURSE_CREDITS','SET_TYPE','COURSE_TITLE']);
 
     $coursesInGroup = [];
 
@@ -238,11 +279,11 @@ trait ProgramTrait
       }
       if($group == 'Required Year 0 (Freshman) Courses')
       {
-        $coursesInGroup[] = [$course->SUBJECT_CODE, $course->COURSE_NUMBER, $course->COURSE_CREDITS, 'Required'];
+        $coursesInGroup[] = [$course->SUBJECT_CODE, $course->COURSE_NUMBER, $course->COURSE_CREDITS, 'Required', $course->COURSE_TITLE];
       }
       else
       {
-        $coursesInGroup[] = [$course->SUBJECT_CODE, $course->COURSE_NUMBER, $course->COURSE_CREDITS, $course->SET_TYPE];
+        $coursesInGroup[] = [$course->SUBJECT_CODE, $course->COURSE_NUMBER, $course->COURSE_CREDITS, $course->SET_TYPE, $course->COURSE_TITLE];
       }
     }
 

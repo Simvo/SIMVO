@@ -27,6 +27,7 @@ class FlowchartController extends Controller
     {
       $user=Auth::User();
       $groupsWithCourses = null;
+      $complementaryCourses = null;
       $schedule = [];
       //Get User's entering semester
       $startingSemester = $user->enteringSemester;
@@ -42,7 +43,10 @@ class FlowchartController extends Controller
       //If (user has not yet setup courses or recommended Stream is not provided)
       if(!$userSetupComplete)
       {
-        $groupsWithCourses = $this->getGroupsWithCourses($user->programID, true);
+        $groupsWithCourses = $this->getGroupsWithCourses($user->programID, true)[0];
+      }
+      else{
+        $complementaryCourses = $this->getGroupsWithCourses($user->programID, true)[1];
       }
 
       if($schedule_check == 0)
@@ -58,6 +62,7 @@ class FlowchartController extends Controller
 
       $progress = $this->generateProgressBar($user);
 
+
       $startingSemester = $this->get_semester($startingSemester);
 
       return view('flowchart', [
@@ -65,6 +70,7 @@ class FlowchartController extends Controller
         'schedule'=> $schedule,
         'progress' => $progress,
         'groupsWithCourses' => $groupsWithCourses,
+        'complementaryCourses' => $complementaryCourses,
         'exemptions' => $exemptions,
         'startingSemester' => $startingSemester
       ]);

@@ -65,5 +65,10 @@
     <script type="text/javascript" src="{{ asset('js/tools.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/registrationPage.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/flowchart.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('/js/foundation.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('/js/foundation.reveal.js') }}"></script>
+    <script type="text/javascript"> $(document).foundation(); </script>
+
+
   </body>
 </html>

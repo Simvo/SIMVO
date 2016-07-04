@@ -156,6 +156,15 @@
   margin: auto;
 }
 
+.complementary_table{
+  margin: auto;
+}
+
+#comp_courses{
+  overflow: scroll;
+}
+
+
 
 #add-semester-wrap #add-semester {
   background-color: #2980b9;
