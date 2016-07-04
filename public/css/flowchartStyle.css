@@ -106,14 +106,17 @@
 
 .complementary_div {
   padding: 20px;
-  height: 200px;
   border-top: 2px solid rgba(243, 156, 18, 0.2);
 }
+
+
 
 .complementary_div legend {
   text-align: center;
   color: rgba(243, 156, 18, 0.6);
 }
+
+
 
 .schedule_wrap {
   overflow: auto;
@@ -122,12 +125,11 @@
 }
 
 .semester {
-  height: 300px;
+  min-height: 200px;
   display: table-cell;
   padding: 0 30px;
   border-radius: 4px;
   margin: 10px;
-  position:relative;
 }
 
 .complementary_area {

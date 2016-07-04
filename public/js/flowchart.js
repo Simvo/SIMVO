@@ -141,3 +141,64 @@ function refreshDeleteSemester()
     }
   }
 }
+
+// Add Complentary Course
+
+  $(".add_comp_course_button").click(function() {
+    var selected = [];
+
+    //console.log("Adding complementary course");
+
+    $(".complentary_table_body tr").each(function() {
+
+      if ($(this).hasClass('is-selected')) {
+        var new_class = [];
+
+        selected.push([$(this).find('td.course_number').text(), $(this).find('td.class_name').text()]);
+        $(this).remove();
+      }
+    });
+    console.log(selected[0][0]);
+    //console.log(selected[0][1]);
+
+    for (var i = 0; i < selected.length; i++) {
+
+      $.ajax({
+        type: "post",
+        url: "/flowchart/add_complementary_course_to_Flowchart",
+        data: {
+          semester: "complementary_course",
+          id: 'new schedule',
+          courseName: selected[i][0],
+        },
+        success: function(data) {
+          var response = JSON.parse(data);
+          console.log(response);
+
+          if (response === 'Error') {
+            //error handler
+          } else {
+            var comp_course = "<div class='custom_card Complementary_course add-to-schedule' id='" + response['SUBJECT_CODE'] + " " + response['COURSE_NUMBER'] + "'>";
+            comp_course += "<div class='card_content'>";
+            comp_course += response['SUBJECT_CODE'] + " " + response['COURSE_NUMBER'];
+            comp_course += "<button id='menu_for_" + response['SUBJECT_CODE'] + " " + response['COURSE_NUMBER']  + "' class='mdl-button mdl-js-button mdl-button--icon'>";
+            comp_course += "<i class='material-icons'>arrow_drop_down</i>";
+            comp_course += "</button>" + response['COURSE_CREDITS'];
+            //comp_course+="</button>";
+            comp_course += "<ul class='mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect' for='menu_for_" + response['SUBJECT_CODE'] + " " + response['COURSE_NUMBER'] + "''>";
+            comp_course += "<li class='mdl-menu__item delete'>Remove</li>";
+            comp_course += "<li class='mdl-menu__item show_flow'>View Flow</li>";
+            comp_course += "</ul>";
+            comp_course += "</div>";
+            comp_course += "</div>";
+
+            $(".complementary_area .sortable").append(comp_course);
+          }
+        }
+      })
+    }
+
+    $('#comp_courses').foundation('reveal', 'close');
+    //location.reload();
+    //componentHandler.upgradeAllRegistered();
+  });

@@ -136,7 +136,7 @@
                     <tbody class="complentary_table_body tech_comp_table">
                     @foreach ($value as $course)
                     <tr id="{{ $course[0] }}">
-                      <td class="mdl-data-table__cell--non-numeric class_name">{{$course[0]}} {{ $course[1] }}</td>
+                      <td class="mdl-data-table__cell--non-numeric course_number">{{$course[0]}} {{ $course[1] }}</td>
                       <td class="mdl-data-table__cell--non-numeric class_name">{{ $course[4] }}</td>
                       <td>{{ $course[2] }}</td>
                     </tr>

@@ -20,6 +20,7 @@ function renderSortable()
       var new_semester = get_semester( event.target.attributes.id.nodeValue );
       var id = ui.item.context.id;
       var classes = ui.item.context.className;
+
       if(classes.includes("add-to-schedule"))
       {
         id = "new schedule";
@@ -64,7 +65,6 @@ function renderSortable()
           },
           success: function( data ) {
             var response = JSON.parse( data );
-            console.log( response );
             $( event.target ).children( '.credit_counter' ).children( '.credit_counter_num' ).text( 'CREDITS: ' + response[0]);
             $( ui.sender[ 0 ] ).children( '.credit_counter' ).children( '.credit_counter_num' ).text( 'CREDITS: ' + response[1]);
             refreshDeleteSemester();
