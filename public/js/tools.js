@@ -26,28 +26,35 @@ function checkVSB(new_semester, ui, event)
       success: function(data){
         var response = JSON.parse(data);
 
-        if(response.length)
+        if(response[0].length)
         {
-          var error = "<div class='course_not_available error' id="+""+">";
-          error += response[0];
+          var error = "<div class='course_not_available error' id='error_"+response[1]+"'>";
+          error += response[0][0];
           error += "</div>";
         }
 
         else
         {
-          var error = "<div class='course_available'>";
+          var error = "<div class='course_available' id='avail_"+ui.item.context.id+"'>";
           error += "Course is available this semester!";
           error += "</div>";
-
-          $( ".course_available" ).fadeOut( 3000, function() {
-            $( ".course_available" ).remove();
-          } );
-
         }
 
         $( event.target ).append( error );
+
+        $("#avail_"+ui.item.context.id).fadeOut(5000, function() {
+          $(this).remove();
+        });
       }
     });
+  }
+}
+
+function removeErrors(idArray)
+{
+  for(var i = 0; i<idArray.length ; i++)
+  {
+    $("#error_" + idArray[i]).remove();
   }
 }
 
@@ -108,6 +115,7 @@ function get_next_semester( current )
     {
       return "Exemption";
     }
+
     var term = semester.split( " " );
 
     var result = term[ 1 ];

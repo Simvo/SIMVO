@@ -8,6 +8,8 @@ use App\Http\Requests;
 use Auth;
 use DB;
 use App\Schedule;
+use App\Error;
+
 
 class FlowchartAJAX extends Controller
 {
@@ -30,10 +32,12 @@ class FlowchartAJAX extends Controller
     $target->semester=$semester;
     $target->save();
 
+    $errors_to_delete = $this->empty_errors($target);
+
     $old_semeterCredits = $this->getSemeterCredits($old_semester, $user);
     $new_semeterCredits = $this->getSemeterCredits($semester, $user);
 
-    return json_encode([$new_semeterCredits, $old_semeterCredits]);
+    return json_encode([$new_semeterCredits, $old_semeterCredits, $errors_to_delete]);
   }
 
   public function add_course_to_Schedule(Request $request)
@@ -87,10 +91,38 @@ class FlowchartAJAX extends Controller
 
   public function vsb_checkCourseAvailablity(Request $request)
   {
+    if(!Auth::Check())
+      return;
+    else
+      $user = Auth::User();
+
     $semester = $request->semester;
     $targetID = $request->scheduleID;
     $target=Schedule::find($targetID);
 
-    return $this->checkCourseAvailablity($target->SUBJECT_CODE, $target->COURSE_NUMBER, $semester);
+    $available = $this->checkCourseAvailablity($target->SUBJECT_CODE, $target->COURSE_NUMBER, $semester);
+
+    $error_id = -1;
+    if(count($available))
+    {
+      $message = $available[0];
+      $error_id = $this->create_error($user->id, $target->id, $message, 'vsb_error');
+    }
+    return json_encode([$available, $error_id]);
+  }
+
+  public function empty_errors($target)
+  {
+    $errors = Error::where('schedule_id', $target->id)->get();
+
+    $id_array = [];
+
+    foreach($errors as $error)
+    {
+      $id_array[] = $error->id;
+      $error->delete();
+    }
+
+    return $id_array;
   }
 }

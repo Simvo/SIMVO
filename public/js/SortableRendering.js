@@ -50,7 +50,6 @@ function renderSortable()
                     var target = $( "td[id='" + group + "']" ).text("" + groupProgress[0] + "/" + groupProgress[1]);
                 }
             }
-
           }
         })
       }
@@ -68,7 +67,8 @@ function renderSortable()
             var response = JSON.parse( data );
             $( event.target ).children( '.credit_counter' ).children( '.credit_counter_num' ).text( 'CREDITS: ' + response[0]);
             $( ui.sender[ 0 ] ).children( '.credit_counter' ).children( '.credit_counter_num' ).text( 'CREDITS: ' + response[1]);
-            checkVSB(new_semester, ui, event)
+            checkVSB(new_semester, ui, event);
+            removeErrors(response[2]);
           }
         })
       }
