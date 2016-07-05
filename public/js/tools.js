@@ -28,7 +28,7 @@ function checkVSB(new_semester, ui, event)
 
         if(response.length)
         {
-          var error = "<div class='course_not_available'>";
+          var error = "<div class='course_not_available error' id="+""+">";
           error += response[0];
           error += "</div>";
         }
