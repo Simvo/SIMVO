@@ -1,3 +1,4 @@
+
 $(document).ready(function()
 {
   //$(document).foundation();
@@ -8,6 +9,7 @@ $(document).ready(function()
 
 function initAddSemesterListener(target)
 {
+  event.stopImmediatePropagation();
   $(target).click(function(e){
     e.preventDefault();
     var last_sem = $(this).attr("id" ).substring(0 , $(this).attr("id" ).length - 4 );
@@ -15,48 +17,127 @@ function initAddSemesterListener(target)
     last_sem = last_sem[ 0 ] + " " + last_sem[ 1 ];
 
     var new_sem = get_semester_letter( get_next_semester( get_semester( last_sem ) ) );
+    var new_sem2 = get_semester_letter( get_next_semester( get_semester( new_sem ) ) );
+    var new_sem2_class = new_sem2.split( " " );
+    new_sem2_class = new_sem2_class[ 0 ] + new_sem2_class[ 1 ];
+    console.log(new_sem + " is new sem");
+    console.log(last_sem + " is last sem");
+    console.log(new_sem2 + " is new sem 2");
+    if(new_sem.substring(0,6) == "SUMMER" && !$(".semester").find("div."+new_sem2_class).length){
+      console.log("yay");
 
-    var new_semester = '<div class="semester">';
-    new_semester += '<h5 style="text-align:center">' + new_sem + '</h5>';
-    new_semester += '<div class="draggable">';
-    new_semester += '<div class="sortable validPosition ' + new_sem.replace( " ", "" ) + '" id="' + new_sem + " " + new_sem.replace( " ", "" ) + '">';
-    new_semester += '<div class="custom_card credit_counter" style="text-align:center;">';
-    new_semester += '<div class="credit_counter_num" style="display: table-cell; vertical-align: middle; font-size:15px">';
-    new_semester += 'CREDITS: 0';
-    new_semester += '</div>';
-    new_semester += '</div>';
-    new_semester += '</div>';
-    new_semester += '</div>';
-    new_semester += '<div class="delete-semester-wrap">';
-    new_semester += '<a href="#" style="opacity:0;" id="' + new_sem + '-delete" class="delete-semester mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab"><i class="material-icons">clear</i></a>';
-    new_semester += '</div>';
-    new_semester += '</div>';
+      //add add-button
+      var new_semester = '<div class="fill-semester-gap-wrap">';
+      new_semester += '<a href="#" id="' + last_sem + '-gap" class="add-semester mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab" style="background-color: #2980b9;"><i class="material-icons" style="color: white">add</i></a>';
+      new_semester += '</div>';
+      // var new_semester = '<div class="semester">';
+      // new_semester += '<h5 style="text-align:center">' + new_sem + '</h5>';
+      // new_semester += '<div class="draggable">';
+      // new_semester += '<div class="sortable validPosition ' + new_sem.replace( " ", "" ) + '" id="' + new_sem + " " + new_sem.replace( " ", "" ) + '">';
+      // new_semester += '<div class="custom_card credit_counter" style="text-align:center;">';
+      // new_semester += '<div class="credit_counter_num" style="display: table-cell; vertical-align: middle; font-size:15px">';
+      // new_semester += 'CREDITS: 0';
+      // new_semester += '</div>';
+      // new_semester += '</div>';
+      // new_semester += '</div>';
+      // new_semester += '</div>';
+      // new_semester += '<div class="delete-semester-wrap">';
+      // new_semester += '<a href="#" style="opacity:0;" id="' + new_sem + '-delete" class="delete-semester mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab"><i class="material-icons">clear</i></a>';
+      // new_semester += '</div>';
+      // new_semester += '</div>';
+      new_semester += '<div class="semester">';
+      new_semester += '<h5 style="text-align:center">' + new_sem2 + '</h5>';
+      new_semester += '<div class="draggable">';
+      new_semester += '<div class="sortable validPosition ' + new_sem2.replace( " ", "" ) + '" id="' + new_sem2 + " " + new_sem2.replace( " ", "" ) + '">';
+      new_semester += '<div class="custom_card credit_counter" style="text-align:center;">';
+      new_semester += '<div class="credit_counter_num" style="display: table-cell; vertical-align: middle; font-size:15px">';
+      new_semester += 'CREDITS: 0';
+      new_semester += '</div>';
+      new_semester += '</div>';
+      new_semester += '</div>';
+      new_semester += '</div>';
+      new_semester += '<div class="delete-semester-wrap">';
+      new_semester += '<a href="#" style="opacity:0;" id="' + new_sem2 + '-delete" class="delete-semester mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab"><i class="material-icons">clear</i></a>';
+      new_semester += '</div>';
+      new_semester += '</div>';
+
+      //$("#course_schedule").append(new_semester);
+      $(this).parent().before( new_semester );
+      renderSortable();
+
+      //add delete listener to new semester
+      deleteSemester(last_sem, new_sem, new_sem2);
+      initDeleteListener("[id='"+new_sem2+"-delete']");
+      initAddSemesterListener("[id='"+last_sem+"-gap']");
 
 
-    //$("#course_schedule").append(new_semester);
-    $(this).parent().before( new_semester );
-    renderSortable();
+      //update the gap
+      $(this).attr("id",new_sem2+"-gap");
 
-    //add delete listener to new semester
-    initDeleteListener("[id='"+new_sem+"-delete']");
-
-    //update the gap
-    $(this).attr("id",new_sem+"-gap");
-
-    //check if the next semester exists
-    last_sem = $(this).attr("id" ).substring(0 , $(this).attr("id" ).length - 4 );
-    last_sem = last_sem.split( " " );
-    last_sem = last_sem[ 0 ] + " " + last_sem[ 1 ];
-    new_sem = formatSemesterID( get_semester_letter( get_next_semester( get_semester( last_sem ) ) ) );
+      //check if the next semester exists
+      test_sem = $(this).attr("id" ).substring(0 , $(this).attr("id" ).length - 4 );
+      test_sem = last_sem.split( " " );
+      test_sem = test_sem[ 0 ] + " " + test_sem[ 1 ];
+      var check_sem = formatSemesterID( get_semester_letter( get_next_semester( get_semester( test_sem ) ) ) );
 
 
-    //if the next semester exists then we dont need the button!
-    if($("[id='"+new_sem+"']").length)
+      //if the next semester exists then we dont need the button!
+      if($("[id='"+check_sem+"']").length)
+      {
+        console.log("we dont need the button!");
+        $(this).parent().remove();
+      }
+    }
+    else
     {
-      $(this).remove();
+      var new_semester = '<div class="semester">';
+      new_semester += '<h5 style="text-align:center">' + new_sem + '</h5>';
+      new_semester += '<div class="draggable">';
+      new_semester += '<div class="sortable validPosition ' + new_sem.replace( " ", "" ) + '" id="' + new_sem + " " + new_sem.replace( " ", "" ) + '">';
+      new_semester += '<div class="custom_card credit_counter" style="text-align:center;">';
+      new_semester += '<div class="credit_counter_num" style="display: table-cell; vertical-align: middle; font-size:15px">';
+      new_semester += 'CREDITS: 0';
+      new_semester += '</div>';
+      new_semester += '</div>';
+      new_semester += '</div>';
+      new_semester += '</div>';
+      new_semester += '<div class="delete-semester-wrap">';
+      new_semester += '<a href="#" style="opacity:0;" id="' + new_sem + '-delete" class="delete-semester mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab"><i class="material-icons">clear</i></a>';
+      new_semester += '</div>';
+      new_semester += '</div>';
+
+
+
+
+      //$("#course_schedule").append(new_semester);
+      $(this).parent().before( new_semester );
+      renderSortable();
+
+      //add delete listener to new semester
+      initDeleteListener("[id='"+new_sem+"-delete']");
+
+      //update the gap
+      $(this).attr("id",new_sem+"-gap");
+      console.log("vanilla gap updated!!!");
+
+      //check if the next semester exists
+      var test_sem = $(this).attr("id" ).substring(0 , $(this).attr("id" ).length - 4 );
+      test_sem = test_sem.split( " " );
+      test_sem = test_sem[ 0 ] + " " + test_sem[ 1 ];
+      var check_sem = formatSemesterID( get_semester_letter( get_next_semester( get_semester( test_sem ) ) ) );
+
+
+      //if the next semester exists then we dont need the button!
+      if($("[id='"+check_sem+"']").length)
+      {
+        console.log("we dont need the button!");
+        $(this).parent().remove();
+      }
     }
 
+
   });
+
 }
 
 function initDeleteListener(target)
@@ -127,7 +208,7 @@ function refreshDeleteSemester()
     else
     {
       //empty -- append delete
-      if(!$($(".semester")[i]).find("div.delete-semester-wrap").length)
+      if(!$($(".semester")[i]).find("div.delete-semester-wrap").length && !$($(".semester")[i]).find("div.complementary_area").length)
       {
         var target_sem = $($(".semester")[i]).find("h5").html();
         var deleteButton = '<div class="delete-semester-wrap" >';
