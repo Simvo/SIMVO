@@ -28,6 +28,7 @@ class FlowchartController extends Controller
       $user=Auth::User();
       $groupsWithCourses = null;
       $complementaryCourses = null;
+
       $schedule = [];
       //Get User's entering semester
       $startingSemester = $user->enteringSemester;
@@ -40,14 +41,19 @@ class FlowchartController extends Controller
                         ->count();
       $userSetupComplete = $this->checkUserSetupStatus($user);
 
+      //all courses in the users program. Index 0 is required, 1 is complementaries, 2 is electives.
+      $courses = $this->getGroupsWithCourses($user->programID, true);
+
       //If (user has not yet setup courses or recommended Stream is not provided)
       if(!$userSetupComplete)
       {
-        $groupsWithCourses = $this->getGroupsWithCourses($user->programID, true)[0];
+        $groupsWithCourses = $courses[0];
       }
       else
       {
-        $complementaryCourses = $this->getGroupsWithCourses($user->programID, true)[1];
+
+        $complementaryCourses[0] = $courses[1];
+        $complementaryCourses[1] = $courses[2];
       }
 
       if($schedule_check == 0)

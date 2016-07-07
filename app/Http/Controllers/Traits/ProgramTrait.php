@@ -178,14 +178,19 @@ trait ProgramTrait
 
     $groups = [];
 
-    unset($groups_PDO['Required Year 0 (Freshman) Courses']);
-
     foreach($groups_PDO as $group)
     {
-      if(trim($group->SET_TITLE_ENGLISH) != "")
+      //Index 0 is complementaries ------- Index 1 is electives
+      if(trim($group->SET_TITLE_ENGLISH) != "" && strpos($group->SET_TITLE_ENGLISH, "Group", 0 ) === false )
       {
-        $groups[$group->SET_TITLE_ENGLISH] = [];
+        $groups[0][$group->SET_TITLE_ENGLISH] = [];
       }
+      else {
+        $groups[1][$group->SET_TITLE_ENGLISH] = [];
+      }
+
+
+
     }
 
     return $groups;
@@ -234,9 +239,9 @@ trait ProgramTrait
     $groups = [];
     $i;
     $groups[0] = $this->getRequiredGroups($programID);
-    $groups[1] = $this->getComplementaryGroups($programID);
-
-    for($i = 0; $i < 2; $i++)
+    $groups[1] = $this->getComplementaryGroups($programID)[0]; //complementaries
+    $groups[2] = $this->getComplementaryGroups($programID)[1]; //electives
+    for($i = 0; $i < 3; $i++)
     {
       foreach($groups[$i] as $key=>$value)
       {

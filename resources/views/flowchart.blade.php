@@ -122,7 +122,7 @@
               </div>
               <div id="comp_courses" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
 
-                @foreach ($complementaryCourses as $key=>$value)
+                @foreach ($complementaryCourses[0] as $key=>$value)
                   <h4 style="text-align:center">{{$key}}  ({{$progress[$key][1]}} credits)</h4>
                   <table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp complementary_table">
                     <thead>
@@ -165,6 +165,38 @@
                   </div>
                 </div>
               </div>
+
+              <div id="electives_courses" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+
+                @foreach ($complementaryCourses[1] as $key=>$value)
+                  <h4 style="text-align:center">{{$key}}  ({{$progress[$key][1]}} credits)</h4>
+                  <table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp complementary_table">
+                    <thead>
+                      <tr>
+                        <th class="mdl-data-table__cell--non-numeric">Course Number</th>
+                        <th class="mdl-data-table__cell--non-numeric">Course Name</th>
+                        <th>Credits</th>
+                      </tr>
+                    </thead>
+
+                    <tbody class="elective_table_body tech_comp_table">
+                    @foreach ($value as $course)
+                    <tr id="{{ $course[0] }}">
+                      <td class="mdl-data-table__cell--non-numeric course_number">{{$course[0]}} {{ $course[1] }}</td>
+                      <td class="mdl-data-table__cell--non-numeric class_name">{{ $course[4] }}</td>
+                      <td>{{ $course[2] }}</td>
+                    </tr>
+                    @endforeach
+                    </tbody>
+                  </table>
+                  @endforeach
+
+                  <button type="button" class="mdl-button mdl-js-button mdl-button--raised add_elec_course_button">Add</button>
+                  <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+
+              </div>
+
+
             </fieldset>
           </div>
         @else

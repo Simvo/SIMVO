@@ -162,7 +162,7 @@
   margin: auto;
 }
 
-#comp_courses{
+.reveal-modal{
   height:80%;
   overflow: scroll;
 }
