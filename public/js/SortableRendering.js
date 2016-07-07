@@ -69,6 +69,7 @@ function renderSortable()
             $( ui.sender[ 0 ] ).children( '.credit_counter' ).children( '.credit_counter_num' ).text( 'CREDITS: ' + response[1]);
             checkVSB(new_semester, ui, event);
             removeErrors(response[2]);
+            console.log(response);
           }
         })
       }

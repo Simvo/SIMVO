@@ -28,7 +28,7 @@ function checkVSB(new_semester, ui, event)
 
         if(response[0].length)
         {
-          var error = "<div class='course_not_available error' id='error_"+response[1]+"'>";
+          var error = "<div class='vsb_error error' id='error_"+response[1]+"'>";
           error += response[0][0];
           error += "</div>";
         }
@@ -54,6 +54,7 @@ function removeErrors(idArray)
 {
   for(var i = 0; i<idArray.length ; i++)
   {
+    console.log("deleting ERROR: " + idArray[i]);
     $("#error_" + idArray[i]).remove();
   }
 }

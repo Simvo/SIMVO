@@ -8,6 +8,7 @@ use Auth;
 use App\Schedule;
 use App\UICourse;
 use DB;
+use App\Error;
 
 
 use App\Http\Requests;
@@ -57,13 +58,15 @@ class FlowchartController extends Controller
       }
 
       $progress = $this->generateProgressBar($user);
+      $errors = $this->getErrors($user);
 
       return view('flowchart', [
         'user'=>$user,
         'schedule'=> $schedule,
         'progress' => $progress,
         'groupsWithCourses' => $groupsWithCourses,
-        'exemptions' => $exemptions
+        'exemptions' => $exemptions,
+        'course_errors' => $errors
       ]);
     }
 
@@ -144,4 +147,29 @@ class FlowchartController extends Controller
       return true;
     }
 
+    public function getErrors($user)
+    {
+      $all_errors = Error::where('errors.user_id', $user->id)
+                ->join('schedules', 'schedules.id', '=', 'errors.schedule_id')
+                ->groupBy('schedules.semester')
+                ->get(['schedules.semester']);
+
+      $errors = [];
+      foreach($all_errors as $e)
+      {
+        $errors_in_semester = Error::where('errors.user_id', $user->id)
+                 ->join('schedules', 'schedules.id', '=', 'errors.schedule_id')
+                 ->where('schedules.semester', $e->semester)
+                 ->get(['errors.id', 'errors.type', 'errors.message']);
+
+        $errors[$this->get_semester($e->semester)] = [];
+
+        foreach($errors_in_semester as $error)
+        {
+          $errors[$this->get_semester($e->semester)][] = [$error->id, $error->type, $error->message];
+        }
+      }
+
+      return $errors;
+    }
 }
