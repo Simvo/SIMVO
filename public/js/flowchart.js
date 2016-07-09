@@ -20,12 +20,9 @@ function initAddSemesterListener(target)
     var new_sem2 = get_semester_letter( get_next_semester( get_semester( new_sem ) ) );
     var new_sem2_class = new_sem2.split( " " );
     new_sem2_class = new_sem2_class[ 0 ] + new_sem2_class[ 1 ];
-    console.log(new_sem + " is new sem");
-    console.log(last_sem + " is last sem");
-    console.log(new_sem2 + " is new sem 2");
-    if(new_sem.substring(0,6) == "SUMMER" && !$(".semester").find("div."+new_sem2_class).length){
-      console.log("yay");
 
+    if(new_sem.substring(0,6) == "SUMMER" && !$(".semester").find("div."+new_sem2_class).length)
+    {
       //add add-button
       var new_semester = '<div class="fill-semester-gap-wrap">';
       new_semester += '<a href="#" id="' + last_sem + '-gap" class="add-semester mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab" style="background-color: #2980b9;"><i class="material-icons" style="color: white">add</i></a>';
@@ -60,21 +57,26 @@ function initAddSemesterListener(target)
 
       //check if the next semester exists
       test_sem = new_sem2
-      console.log(test_sem + " is test sem");
       test_sem = test_sem.split( " " );
       test_sem = test_sem[ 0 ] + " " + test_sem[ 1 ];
       var check_sem = formatSemesterID( get_semester_letter( get_next_semester( get_semester( new_sem2 ) ) ) );
-      console.log(check_sem + " is check sem");
 
       //if the next semester exists then we dont need the button!
       if($("[id='"+check_sem+"']").length)
       {
-        console.log("we dont need the button!");
+        $(this).parent().remove();
+      }
+      else
+      {
+        //update the gap
+        var newAddButton = '<div class="fill-semester-gap-wrap">';
+        newAddButton += '<a href="#" id="' + new_sem2 + '-gap" class="add-semester mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab" style="background-color: #2980b9;"><i class="material-icons" style="color: white">add</i></a>';
+        newAddButton += '</div>';
+        $(this).parent().before( newAddButton );
+        initAddSemesterListener("[id='"+new_sem2+"-gap']")
         $(this).parent().remove();
       }
 
-      //update the gap
-      $(this).attr("id",new_sem2+"-gap");
     }
     else
     {
@@ -94,9 +96,6 @@ function initAddSemesterListener(target)
       new_semester += '</div>';
       new_semester += '</div>';
 
-
-
-
       //$("#course_schedule").append(new_semester);
       $(this).parent().before( new_semester );
       renderSortable();
@@ -104,25 +103,26 @@ function initAddSemesterListener(target)
       //add delete listener to new semester
       initDeleteListener("[id='"+new_sem+"-delete']");
 
-
-
       //check if the next semester exists
       var test_sem = new_sem;
       test_sem = test_sem.split( " " );
       test_sem = test_sem[ 0 ] + " " + test_sem[ 1 ];
       var check_sem = formatSemesterID( get_semester_letter( get_next_semester( get_semester( new_sem ) ) ) );
 
-
       //if the next semester exists then we dont need the button!
       if($("[id='"+check_sem+"']").length)
       {
-        console.log("we dont need the button!");
         $(this).parent().remove();
       }
-
-      //update the gap
-      $(this).attr("id",new_sem+"-gap");
-      console.log("vanilla gap updated!!!");
+      else
+      {
+        var newAddButton = '<div class="fill-semester-gap-wrap">';
+        newAddButton += '<a href="#" id="' + new_sem + '-gap" class="add-semester mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab" style="background-color: #2980b9;"><i class="material-icons" style="color: white">add</i></a>';
+        newAddButton += '</div>';
+        $(this).parent().before( newAddButton );
+        initAddSemesterListener("[id='"+new_sem+"-gap']")
+        $(this).parent().remove();
+      }
     }
 
 
@@ -217,24 +217,24 @@ function refreshDeleteSemester()
 
 // Add Complentary Course
 
-  $(".add_comp_course_button").click(function() {
+  $(".add_comp_course_button").click(function()
+  {
     var selected = [];
 
-    //console.log("Adding complementary course");
 
-    $(".complentary_table_body tr").each(function() {
-
-      if ($(this).hasClass('is-selected')) {
+    $(".complentary_table_body tr").each(function()
+    {
+      if ($(this).hasClass('is-selected'))
+      {
         var new_class = [];
 
         selected.push([$(this).find('td.course_number').text(), $(this).find('td.class_name').text()]);
         $(this).remove();
       }
     });
-    console.log(selected[0][0]);
-    //console.log(selected[0][1]);
 
-    for (var i = 0; i < selected.length; i++) {
+    for (var i = 0; i < selected.length; i++)
+    {
 
       $.ajax({
         type: "post",
@@ -272,8 +272,7 @@ function refreshDeleteSemester()
     }
 
     $('#comp_courses').foundation('reveal', 'close');
-    //location.reload();
-    //componentHandler.upgradeAllRegistered();
+
   });
 
   //add elective course!
@@ -281,7 +280,6 @@ function refreshDeleteSemester()
     $(".add_elec_course_button").click(function() {
       var selected = [];
 
-      //console.log("Adding complementary course");
 
       $(".elective_table_body tr").each(function() {
 
@@ -292,8 +290,7 @@ function refreshDeleteSemester()
           $(this).remove();
         }
       });
-      console.log(selected[0][0]);
-      //console.log(selected[0][1]);
+
 
       for (var i = 0; i < selected.length; i++) {
 
@@ -307,7 +304,6 @@ function refreshDeleteSemester()
           },
           success: function(data) {
             var response = JSON.parse(data);
-            console.log(response);
 
             if (response === 'Error') {
               //error handler
