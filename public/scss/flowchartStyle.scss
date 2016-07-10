@@ -6,7 +6,7 @@ $background: rgba(236, 240, 241,1.0);
   padding: 5px;
   min-height: 50px !important;
   width: 100% !important;
-  overflow-x: scroll;;
+  overflow-x: scroll;
 }
 
 .hvr-pulse {
@@ -38,6 +38,7 @@ $background: rgba(236, 240, 241,1.0);
     transform: scale(0.9);
   }
 }
+
 @keyframes hvr-pulse {
   25% {
     -webkit-transform: scale(1.1);
@@ -49,12 +50,12 @@ $background: rgba(236, 240, 241,1.0);
   }
 }
 
-#progress_table{
+#progress_table {
   overflow-x: scroll;
 }
 
 .progress_cell {
-  color: $primary-color;
+  color: #f44235;
   text-align: center !important;
   font-family: "Helvetica","Arial",sans-serif;
 }
@@ -66,61 +67,69 @@ $background: rgba(236, 240, 241,1.0);
 
 .area_1_card.mdl-card {
   width: 100%;
-  .mdl-card--border {
-    padding: 20px;
-    width: 99%;
-  }
 }
+
+.area_1_card.mdl-card .mdl-card--border {
+  padding: 20px;
+  width: 99%;
+}
+
 .area_1_card > .mdl-card__title {
   color: #fff;
   height: 176px;
-  background: url('../assets/demos/welcome_card.jpg') center / cover;
+  background: url("../assets/demos/welcome_card.jpg") center/cover;
 }
+
 .area_1_card > .mdl-card__menu {
   color: #fff;
 }
-.area_1_card {
-  .mdl-card--border {
-    display: table-row;
-  }
+
+.area_1_card .mdl-card--border {
+  display: table-row;
 }
 
 .my_program {
-  border-top: 2px solid lighten($primary-color, 30%) !important;
-  legend {
-    text-align: center;
-    color: $primary-color;
-  }
+  border-top: 2px solid #fccac6 !important;
+}
+
+.my_program legend {
+  text-align: center;
+  color: #f44235;
 }
 
 .elective_div {
   padding: 20px;
   height: 200px;
-  border-top: 2px solid rgba(39, 174, 96,0.2);
-  legend {
-    text-align: center;
-    color: rgba(39, 174, 96,0.6);
-  }
+  border-top: 2px solid rgba(39, 174, 96, 0.2);
+}
+
+.elective_div legend {
+  text-align: center;
+  color: rgba(39, 174, 96, 0.6);
 }
 
 .complementary_div {
   padding: 20px;
-  height: 200px;
-  border-top: 2px solid rgba(243, 156, 18,0.2);
-  legend {
-    text-align: center;
-    color: rgba(243, 156, 18,0.6);
-  }
+  border-top: 2px solid rgba(243, 156, 18, 0.2);
 }
+
+
+
+.complementary_div legend {
+  text-align: center;
+  color: rgba(243, 156, 18, 0.6);
+}
+
+
 
 .schedule_wrap {
   overflow: auto;
-  overflow-y: hidden; // hide vertical
+  overflow-y: hidden;
   width: 100%;
 }
 
 .semester {
-  height: 300px;
+  min-height: 200px;
   display: table-cell;
   padding: 0 30px;
   border-radius: 4px;
@@ -134,17 +143,44 @@ $background: rgba(236, 240, 241,1.0);
 
 .schedule_wrap {
   overflow: auto;
-  overflow-y: hidden; // hide vertical
+  overflow-y: hidden;
   width: 100%;
 }
 
 #add-semester-wrap {
-  #add-semester{
-    background-color: rgba(41, 128, 185,1.0);
-    i{
-      color: white;
-    }
-  }
   display: table-cell;
   vertical-align: middle;
+}
+
+.fill-semester-gap-wrap {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.delete-semester-wrap{
+  width:40px;
+  margin: auto;
+}
+
+#course_schedule{
+  position: relative;
+}
+
+.complementary_table{
+  margin: auto;
+}
+
+.reveal-modal{
+  height:80%;
+  overflow: scroll;
+}
+
+
+
+#add-semester-wrap #add-semester {
+  background-color: #2980b9;
+}
+
+#add-semester-wrap #add-semester i {
+  color: white;
 }
