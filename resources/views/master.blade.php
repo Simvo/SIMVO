@@ -10,6 +10,7 @@
   	<meta property="og:type" content="website"/>
     <title>S!MVO</title>
     <!-- Stylesheets -->
+    <link href="{{ asset('css/foundation.css')}}" rel="stylesheet" type="text/css">
     <link href="{{ asset('css/BootstrapStyle.css') }}" rel="stylesheet" type="text/css" >
     <link href="{{ asset('css/registrationPage.css') }}" rel="stylesheet" type="text/css" >
     <link href="{{ asset('css/loginPage.css') }}" rel="stylesheet" type="text/css" >
@@ -65,5 +66,10 @@
     <script type="text/javascript" src="{{ asset('js/tools.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/registrationPage.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/flowchart.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('/js/foundation.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('/js/foundation.reveal.js') }}"></script>
+    <script type="text/javascript"> $(document).foundation(); </script>
+
+
   </body>
 </html>
