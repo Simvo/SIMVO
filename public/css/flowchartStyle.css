@@ -158,6 +158,10 @@
   margin: auto;
 }
 
+#course_schedule{
+  position: relative;
+}
+
 .complementary_table{
   margin: auto;
 }

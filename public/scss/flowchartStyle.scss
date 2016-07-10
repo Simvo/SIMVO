@@ -147,6 +147,21 @@ $background: rgba(236, 240, 241,1.0);
   width: 100%;
 }
 
+.fill-semester-gap-wrap {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.delete-semester-wrap{
+  width:40px;
+  margin: auto;
+}
+
+#course_schedule{
+  position: relative;
+}
+
+
 
 
 #add-semester-wrap {
