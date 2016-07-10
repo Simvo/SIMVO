@@ -1,4 +1,3 @@
-
 $(document).ready(function()
 {
   //$(document).foundation();
@@ -125,8 +124,6 @@ function initAddSemesterListener(target)
       }
     }
 
-<<<<<<< HEAD
-=======
 
   });
 
@@ -149,7 +146,6 @@ function initDeleteListener(target)
 
     deleteSemester(prev_sem, target_sem, next_sem);
 
->>>>>>> f82c0d3f9f0f41c5aa56ded3243b92ff4e8b156a
   });
 }
 
