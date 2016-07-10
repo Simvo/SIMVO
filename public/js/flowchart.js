@@ -248,9 +248,12 @@ function refreshDeleteSemester()
           var response = JSON.parse(data);
           console.log(response);
 
-          if (response === 'Error') {
+          if (response === 'Error')
+          {
             //error handler
-          } else {
+          }
+          else
+          {
             var comp_course = "<div class='custom_card Complementary_course add-to-schedule' id='" + response['SUBJECT_CODE'] + " " + response['COURSE_NUMBER'] + "'>";
             comp_course += "<div class='card_content'>";
             comp_course += response['SUBJECT_CODE'] + " " + response['COURSE_NUMBER'];
@@ -294,8 +297,8 @@ function refreshDeleteSemester()
       });
 
 
-      for (var i = 0; i < selected.length; i++) {
-
+      for (var i = 0; i < selected.length; i++)
+      {
         $.ajax({
           type: "post",
           url: "/flowchart/add_complementary_course_to_Flowchart",
@@ -307,16 +310,18 @@ function refreshDeleteSemester()
           success: function(data) {
             var response = JSON.parse(data);
 
-            if (response === 'Error') {
+            if (response === 'Error')
+            {
               //error handler
-            } else {
+            }
+            else
+            {
               var comp_course = "<div class='custom_card Elective_course add-to-schedule' id='" + response['SUBJECT_CODE'] + " " + response['COURSE_NUMBER'] + "'>";
               comp_course += "<div class='card_content'>";
               comp_course += response['SUBJECT_CODE'] + " " + response['COURSE_NUMBER'];
               comp_course += "<button id='menu_for_" + response['SUBJECT_CODE'] + " " + response['COURSE_NUMBER']  + "' class='mdl-button mdl-js-button mdl-button--icon'>";
               comp_course += "<i class='material-icons'>arrow_drop_down</i>";
               comp_course += "</button>" + response['COURSE_CREDITS'];
-              //comp_course+="</button>";
               comp_course += "<ul class='mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect' for='menu_for_" + response['SUBJECT_CODE'] + " " + response['COURSE_NUMBER'] + "''>";
               comp_course += "<li class='mdl-menu__item show_flow'>Show Pre-Requisites</li>";
               comp_course += "<li class='mdl-menu__item delete'>Remove</li>";
@@ -335,6 +340,4 @@ function refreshDeleteSemester()
 
 
       $('#comp_courses').foundation('reveal', 'close');
-      //location.reload();
-      //componentHandler.upgradeAllRegistered();
     });
