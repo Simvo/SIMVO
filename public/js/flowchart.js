@@ -257,15 +257,17 @@ function refreshDeleteSemester()
             comp_course += "<button id='menu_for_" + response['SUBJECT_CODE'] + " " + response['COURSE_NUMBER']  + "' class='mdl-button mdl-js-button mdl-button--icon'>";
             comp_course += "<i class='material-icons'>arrow_drop_down</i>";
             comp_course += "</button>" + response['COURSE_CREDITS'];
-            //comp_course+="</button>";
             comp_course += "<ul class='mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect' for='menu_for_" + response['SUBJECT_CODE'] + " " + response['COURSE_NUMBER'] + "''>";
-            comp_course += "<li class='mdl-menu__item delete'>Remove</li>";
-            comp_course += "<li class='mdl-menu__item show_flow'>View Flow</li>";
+            comp_course += "<li class='mdl-menu__item delete'>Show Pre-Requisites</li>";
+            comp_course += "<li class='mdl-menu__item show_flow'>Remove</li>";
             comp_course += "</ul>";
             comp_course += "</div>";
             comp_course += "</div>";
 
             $(".complementary_area .sortable").append(comp_course);
+
+            //Dynamically render MDL
+            componentHandler.upgradeDom();
           }
         }
       })
@@ -316,17 +318,21 @@ function refreshDeleteSemester()
               comp_course += "</button>" + response['COURSE_CREDITS'];
               //comp_course+="</button>";
               comp_course += "<ul class='mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect' for='menu_for_" + response['SUBJECT_CODE'] + " " + response['COURSE_NUMBER'] + "''>";
+              comp_course += "<li class='mdl-menu__item show_flow'>Show Pre-Requisites</li>";
               comp_course += "<li class='mdl-menu__item delete'>Remove</li>";
-              comp_course += "<li class='mdl-menu__item show_flow'>View Flow</li>";
               comp_course += "</ul>";
               comp_course += "</div>";
               comp_course += "</div>";
 
               $(".elective_area .sortable").append(comp_course);
+
+              //Dynamically render MDL
+              componentHandler.upgradeDom();
             }
           }
         })
       }
+
 
       $('#comp_courses').foundation('reveal', 'close');
       //location.reload();
