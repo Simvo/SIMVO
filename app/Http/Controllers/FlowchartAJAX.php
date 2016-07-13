@@ -89,12 +89,25 @@ public function add_complementary_course_to_Flowchart(Request $request)
     return json_encode($course);
 }
 
-public function delete_course_from_flowchart(Request $request)
+public function delete_course_from_schedule(Request $request)
 {
   if(!Auth::Check())
     return;
   else
     $user = Auth::User();
+
+    $courseID = $request->id;
+
+    $course = Schedule::where('user_id', $user->id)
+              ->where('id', $courseID);
+    $semester = $course->first()->semester;
+
+    $course->delete();
+
+    $new_semeterCredits = $this->getSemeterCredits($semester, $user);
+    $progress = $this->generateProgressBar($user);
+
+    return json_encode([$courseID, $new_semeterCredits, $progress, $semester]);
 
 
 }

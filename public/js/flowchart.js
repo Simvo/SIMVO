@@ -347,50 +347,46 @@ function refreshDeleteSemester()
 
         if($(this).parent().parent().parent().parent().hasClass("add-to-schedule"))
         {
-          //courses that havent been added to the schedule have no need for a database call
+          //courses that have NOT been added to the schedule have no need for a database call
           $(this).parent().parent().parent().parent().remove();
         }
         else
         {
           var courseID = $(this).attr("id").substring(7, $(this).attr("id").length);
-          console.log(courseID);
           //delete from database
-          // $.ajax({
-          //   type: "post",
-          //   url: "/flowchart/add_complementary_course_to_Flowchart",
-          //   data: {
-          //
-          //     id: 'new schedule',
-          //   },
-          //   success: function(data) {
-          //     var response = JSON.parse(data);
-          //
-          //     if (response === 'Error')
-          //     {
-          //       //error handler
-          //     }
-          //     else
-          //     {
-          //       var comp_course = "<div class='custom_card Elective_course add-to-schedule' id='" + response['SUBJECT_CODE'] + " " + response['COURSE_NUMBER'] + "'>";
-          //       comp_course += "<div class='card_content'>";
-          //       comp_course += response['SUBJECT_CODE'] + " " + response['COURSE_NUMBER'];
-          //       comp_course += "<button id='menu_for_" + response['SUBJECT_CODE'] + " " + response['COURSE_NUMBER']  + "' class='mdl-button mdl-js-button mdl-button--icon'>";
-          //       comp_course += "<i class='material-icons'>arrow_drop_down</i>";
-          //       comp_course += "</button>" + response['COURSE_CREDITS'];
-          //       comp_course += "<ul class='mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect' for='menu_for_" + response['SUBJECT_CODE'] + " " + response['COURSE_NUMBER'] + "''>";
-          //       comp_course += "<li class='mdl-menu__item show_flow'>Show Pre-Requisites</li>";
-          //       comp_course += "<li class='mdl-menu__item delete'>Remove</li>";
-          //       comp_course += "</ul>";
-          //       comp_course += "</div>";
-          //       comp_course += "</div>";
-          //
-          //       $(".elective_area .sortable").append(comp_course);
-          //
-          //       //Dynamically render MDL
-          //       componentHandler.upgradeDom();
-          //     }
-          //   }
-          // })
+          $.ajax({
+            type: "delete",
+            url: "/flowchart/delete_course_from_schedule",
+            data: {
+              id: courseID,
+            },
+            success: function(data) {
+              var response = JSON.parse(data);
+              if (response === 'Error')
+              {
+                //error handler
+              }
+              else
+              {
+                var semester = get_semester_letter(response[3]);
+                semester = semester.split(" ");
+                semester = semester[0] + semester[1];
+                $("#" + response[0]).remove();
+                $("."+semester).children( '.credit_counter' ).children( '.credit_counter_num' ).text( 'CREDITS: ' + response[1]);
+
+
+                for (var group in response[2])
+                {
+                    if (response[2].hasOwnProperty(group))
+                    {
+                        var groupProgress = response[2][group];
+                        var target = $( "td[id='" + group + "']" ).text("" + groupProgress[0] + "/" + groupProgress[1]);
+                    }
+                }
+                refreshDeleteSemester();
+              }
+            }
+          });
 
 
 
