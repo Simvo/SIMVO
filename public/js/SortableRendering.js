@@ -21,6 +21,7 @@ function renderSortable()
       var vsbActiveSemesters = get_VSB_active_semesters();
       var id = ui.item.context.id;
       var classes = ui.item.context.className;
+
       if(classes.includes("add-to-schedule"))
       {
         id = "new schedule";
@@ -50,6 +51,7 @@ function renderSortable()
                     var target = $( "td[id='" + group + "']" ).text("" + groupProgress[0] + "/" + groupProgress[1]);
                 }
             }
+            refreshDeleteSemester();
           }
         })
       }
@@ -70,6 +72,7 @@ function renderSortable()
             checkVSB(new_semester, ui, event);
             removeErrors(response[2]);
             console.log(response);
+            refreshDeleteSemester();
           }
         })
       }

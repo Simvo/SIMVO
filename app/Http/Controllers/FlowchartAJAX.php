@@ -69,6 +69,25 @@ class FlowchartAJAX extends Controller
     return json_encode([$new_id,$new_semeterCredits, $progress]);
   }
 
+public function add_complementary_course_to_Flowchart(Request $request)
+{
+  if(!Auth::Check())
+    return;
+  else
+    $user = Auth::User();
+
+    $courseName = $request->courseName;
+    $semester = $request->semester;
+    $parts = explode(" ", $courseName);
+
+    $course = DB::table('programs')->where('PROGRAM_ID',$user->programID)
+              ->where('SUBJECT_CODE', $parts[0])
+              ->where('COURSE_NUMBER', $parts[1])
+              ->first(['SUBJECT_CODE', 'COURSE_NUMBER', 'SET_TYPE', 'COURSE_CREDITS', 'SET_TITLE_ENGLISH']);
+
+    return json_encode($course);
+}
+
   public function getSemeterCredits($semester, $user)
   {
     $courses = Schedule::where('user_id', $user->id)

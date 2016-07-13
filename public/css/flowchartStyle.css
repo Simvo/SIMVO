@@ -124,7 +124,6 @@
 
 .complementary_div {
   padding: 20px;
-  height: 200px;
   border-top: 2px solid rgba(243, 156, 18, 0.2);
 }
 
@@ -140,7 +139,7 @@
 }
 
 .semester {
-  height: 300px;
+  min-height: 200px;
   display: table-cell;
   padding: 0 30px;
   border-radius: 4px;
@@ -163,6 +162,32 @@
   vertical-align: middle;
 }
 
+<<<<<<< HEAD
+=======
+.fill-semester-gap-wrap {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.delete-semester-wrap {
+  width: 40px;
+  margin: auto;
+}
+
+#course_schedule {
+  position: relative;
+}
+
+.complementary_table {
+  margin: auto;
+}
+
+.reveal-modal {
+  height: 80%;
+  overflow: scroll;
+}
+
+>>>>>>> origin/dev
 #add-semester-wrap #add-semester {
   background-color: #2980b9;
 }

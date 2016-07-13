@@ -18,7 +18,7 @@ class FlowchartController extends Controller
 
   use Traits\NewObjectsTrait;
   use Traits\ProgramTrait;
-  use Traits\tools;
+  use Traits\Tools;
     /**
     * Function called upon GET request. Will determine if schedule needs to be generated or simply displayed
     * Consists of generating four main parts.
@@ -28,6 +28,8 @@ class FlowchartController extends Controller
     {
       $user=Auth::User();
       $groupsWithCourses = null;
+      $complementaryCourses = null;
+
       $schedule = [];
       //Get User's entering semester
       $startingSemester = $user->enteringSemester;
@@ -40,10 +42,19 @@ class FlowchartController extends Controller
                         ->count();
       $userSetupComplete = $this->checkUserSetupStatus($user);
 
+      //all courses in the users program. Index 0 is required, 1 is complementaries, 2 is electives.
+      $courses = $this->getGroupsWithCourses($user->programID, true);
+
       //If (user has not yet setup courses or recommended Stream is not provided)
       if(!$userSetupComplete)
       {
-        $groupsWithCourses = $this->getGroupsWithCourses($user->programID, true);
+        $groupsWithCourses = $courses[0];
+      }
+      else
+      {
+
+        $complementaryCourses[0] = $courses[1];
+        $complementaryCourses[1] = $courses[2];
       }
 
       if($schedule_check == 0)
@@ -60,13 +71,18 @@ class FlowchartController extends Controller
       $progress = $this->generateProgressBar($user);
       $errors = $this->getErrors($user);
 
+
+      $startingSemester = $this->get_semester($startingSemester);
+
       return view('flowchart', [
         'user'=>$user,
         'schedule'=> $schedule,
         'progress' => $progress,
         'groupsWithCourses' => $groupsWithCourses,
+        'course_errors' => $errors,
+        'complementaryCourses' => $complementaryCourses,
         'exemptions' => $exemptions,
-        'course_errors' => $errors
+        'startingSemester' => $startingSemester
       ]);
     }
 
@@ -96,6 +112,9 @@ class FlowchartController extends Controller
     public function generateSchedule($user)
     {
       $the_schedule = [];
+
+      //Always have their starting semester available -- therefore if they accidentally remove all classes from it and refresh, it will remain.
+      $the_schedule[$this->get_semester($user->enteringSemester)] = [0,[],$user->enteringSemester];
 
       $user_schedule=Schedule::where('user_id', $user->id)
       ->whereNotIn('semester', ['complementary_course', 'elective_course'])
