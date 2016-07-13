@@ -41,4 +41,8 @@ Route::post('/flowchart/move-course', 'FlowchartAJAX@move_course');
 
 Route::post('/flowchart/add-course-to-Schedule', 'FlowchartAJAX@add_course_to_Schedule');
 
+
+Route::post('/flowchart/check-course-availability','FlowchartAJAX@vsb_checkCourseAvailablity');
+
 Route::post('/flowchart/add_complementary_course_to_Flowchart', 'FlowchartAJAX@add_complementary_course_to_Flowchart');
+
