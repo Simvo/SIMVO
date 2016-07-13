@@ -47,6 +47,7 @@ class FlowchartAJAX extends Controller
     else
       $user = Auth::User();
 
+    $courseType = $request->courseType;
     $courseName = $request->courseName;
     $semester = $request->semester;
     $parts = explode(" ", $courseName);
@@ -61,7 +62,7 @@ class FlowchartAJAX extends Controller
       $new_id = $this->create_schedule($user->id, $semester, $course->SUBJECT_CODE, $course->COURSE_NUMBER, 'Required');
     }
     else
-      $new_id = $this->create_schedule($user->id, $semester, $course->SUBJECT_CODE, $course->COURSE_NUMBER, $course->SET_TYPE);
+      $new_id = $this->create_schedule($user->id, $semester, $course->SUBJECT_CODE, $course->COURSE_NUMBER, $courseType);
 
     $new_semeterCredits = $this->getSemeterCredits($semester, $user);
     $progress = $this->generateProgressBar($user);
@@ -86,6 +87,16 @@ public function add_complementary_course_to_Flowchart(Request $request)
               ->first(['SUBJECT_CODE', 'COURSE_NUMBER', 'SET_TYPE', 'COURSE_CREDITS', 'SET_TITLE_ENGLISH']);
 
     return json_encode($course);
+}
+
+public function delete_course_from_flowchart(Request $request)
+{
+  if(!Auth::Check())
+    return;
+  else
+    $user = Auth::User();
+
+
 }
 
   public function getSemeterCredits($semester, $user)
