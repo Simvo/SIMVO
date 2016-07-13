@@ -1,3 +1,64 @@
+function get_VSB_active_semesters()
+{
+  var d = new Date();
+  var month = d.getMonth();
+  var year = d.getFullYear();
+  var fall = year + "09";
+  if(5<month<=12)year++;
+  var winter = year + "01";
+
+  return [fall, winter];
+}
+
+function checkVSB(new_semester, ui, event)
+{
+  var vsbActiveSemesters = get_VSB_active_semesters();
+  // Check for VSB warnings
+  if(new_semester === vsbActiveSemesters[0] || new_semester === vsbActiveSemesters[1])
+  {
+    $.ajax({
+      type: 'post',
+      url: '/flowchart/check-course-availability',
+      data: {
+        semester: new_semester,
+        scheduleID: ui.item.context.id
+      },
+      success: function(data){
+        var response = JSON.parse(data);
+
+        if(response[0].length)
+        {
+          var error = "<div class='vsb_error error' id='error_"+response[1]+"'>";
+          error += response[0][0];
+          error += "</div>";
+        }
+
+        else
+        {
+          var error = "<div class='course_available' id='avail_"+ui.item.context.id+"'>";
+          error += "Course is available this semester!";
+          error += "</div>";
+        }
+
+        $( event.target ).append( error );
+
+        $("#avail_"+ui.item.context.id).fadeOut(5000, function() {
+          $(this).remove();
+        });
+      }
+    });
+  }
+}
+
+function removeErrors(idArray)
+{
+  for(var i = 0; i<idArray.length ; i++)
+  {
+    console.log("deleting ERROR: " + idArray[i]);
+    $("#error_" + idArray[i]).remove();
+  }
+}
+
 function get_semester_letter( semester )
 {
   var term = semester.substring( 0, 4 );
@@ -83,6 +144,7 @@ function get_next_semester( current )
     {
       return "Exemption";
     }
+
     var term = semester.split( " " );
 
     var result = term[ 1 ];

@@ -18,6 +18,7 @@ function renderSortable()
       receive: function( event, ui ) {
 
       var new_semester = get_semester( event.target.attributes.id.nodeValue );
+      var vsbActiveSemesters = get_VSB_active_semesters();
       var id = ui.item.context.id;
       var classes = ui.item.context.className;
 
@@ -40,6 +41,7 @@ function renderSortable()
             ui.item.context.id = response[0];
             $('#'+ui.item.context.id).removeClass("add-to-schedule");
             $( event.target ).children( '.credit_counter' ).children( '.credit_counter_num' ).text( 'CREDITS: ' + response[1]);
+            checkVSB(new_semester, ui, event)
 
             for (var group in response[2])
             {
@@ -67,6 +69,9 @@ function renderSortable()
             var response = JSON.parse( data );
             $( event.target ).children( '.credit_counter' ).children( '.credit_counter_num' ).text( 'CREDITS: ' + response[0]);
             $( ui.sender[ 0 ] ).children( '.credit_counter' ).children( '.credit_counter_num' ).text( 'CREDITS: ' + response[1]);
+            checkVSB(new_semester, ui, event);
+            removeErrors(response[2]);
+            console.log(response);
             refreshDeleteSemester();
           }
         })

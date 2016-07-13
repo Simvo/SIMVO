@@ -123,8 +123,6 @@ function initAddSemesterListener(target)
         $(this).parent().remove();
       }
     }
-
-
   });
 
 }

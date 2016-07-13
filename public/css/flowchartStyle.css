@@ -5,6 +5,24 @@
   overflow-x: scroll;
 }
 
+.vsb_error {
+  color: orange;
+  width: 150px;
+  text-align: center;
+  padding: 3px;
+  font-size: 15px;
+  margin-bottom: 15px;
+}
+
+.course_available {
+  color: blue;
+  width: 150px;
+  text-align: center;
+  padding: 3px;
+  font-size: 15px;
+  margin-bottom: 15px;
+}
+
 .hvr-pulse {
   display: inline-block;
   vertical-align: middle;
@@ -144,6 +162,8 @@
   vertical-align: middle;
 }
 
+<<<<<<< HEAD
+=======
 .fill-semester-gap-wrap {
   display: table-cell;
   vertical-align: middle;
@@ -167,10 +187,16 @@
   overflow: scroll;
 }
 
+>>>>>>> origin/dev
 #add-semester-wrap #add-semester {
   background-color: #2980b9;
 }
 
 #add-semester-wrap #add-semester i {
   color: white;
+}
+
+.fill-semester-gap-wrap {
+  display: table-cell;
+  vertical-align: middle;
 }

@@ -176,7 +176,7 @@ trait ProgramTrait
                   ->groupBy('SET_TITLE_ENGLISH')
                   ->get(['SET_TITLE_ENGLISH', 'SET_BEGIN_TEXT_ENGLISH']);
 
-    $groups = [];
+    $groups = [[],[]];
 
     foreach($groups_PDO as $group)
     {
@@ -267,6 +267,7 @@ trait ProgramTrait
                   ->where('VERSION', $version)
                   ->where('PROGRAM_ID', $programID)
                   ->where('SET_TITLE_ENGLISH', $group)
+                  ->orderBy('COURSE_NUMBER', 'asc')
                   ->get(['SUBJECT_CODE', 'COURSE_NUMBER', 'COURSE_CREDITS','SET_TYPE','COURSE_TITLE']);
 
     $coursesInGroup = [];
@@ -305,7 +306,7 @@ trait ProgramTrait
   {
     $version = DB::table('programs')->where('PROGRAM_ID', $user->programID)
                ->groupBy('VERSION')
-               ->orderBy('Version', 'desc')
+               ->orderBy('Version', 'asc')
                ->First(['VERSION']);
     return $version->VERSION;
   }
