@@ -195,7 +195,7 @@ function refreshDeleteSemester()
     else
     {
       //empty -- append delete
-      if(!$($(".semester")[i]).find("div.delete-semester-wrap").length && !$($(".semester")[i]).find("div.complementary_area").length)
+      if(!$($(".semester")[i]).find("div.delete-semester-wrap").length && !$($(".semester")[i]).find("div.complementary_area").length && !$($(".semester")[i]).find("div.elective_area").length)
       {
         var target_sem = $($(".semester")[i]).find("h5").html();
         var deleteButton = '<div class="delete-semester-wrap" >';
@@ -336,7 +336,7 @@ function refreshDeleteSemester()
       }
 
 
-      $('#comp_courses').foundation('reveal', 'close');
+      $('#electives_courses').foundation('reveal', 'close');
     });
 
 
