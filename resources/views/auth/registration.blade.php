@@ -81,7 +81,7 @@
                 </td>
               </tr>
 
-              <tr>
+              {{-- <tr>
                 <td>
                   Your Current Faculty
                 </td>
@@ -128,7 +128,7 @@
                     <span class="mdl-radio__label">Other (AP, French BAC, IB etc)</span>
                   </label>
                 </td>
-              </tr>
+              </tr> --}}
 
             </table>
 
