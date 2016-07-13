@@ -19,7 +19,6 @@ class CreateDegreesTable extends Migration
           $table->integer('program_id');
           $table->integer('version_id');
           $table->string('enteringSemester');
-          $table->integer('course_setup_complete');
           $table->integer('stream_version');
           $table->timestamps();
         });

@@ -9,6 +9,7 @@ use App\User;
 use DB;
 use App\Schedule;
 use App\Error;
+use App\Degree;
 
 trait NewObjectsTrait
 {
@@ -21,6 +22,19 @@ trait NewObjectsTrait
     $sched->COURSE_NUMBER = $COURSE_NUMBER;
     $sched->status = $SET_TYPE;
     $sched->save();
+
+    return $sched->id;
+  }
+
+  public function createDegree($user_id, $faculty, $program_id, $version_id, $enteringSemester, $stream_version)
+  {
+    $degree = new Degree();
+    $degree->user_id = $user_id;
+    $degree->faculty = $faculty;
+    $degree->program_id = $program_id;
+    $degree->version_id = $enteringSemester;
+    $degree->stream_version = $stream_version;
+    $degree->save();
 
     return $sched->id;
   }

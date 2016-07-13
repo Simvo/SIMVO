@@ -11,6 +11,10 @@ $(document).ready(function(){
   $('#faculty-select').change(function(){
     LoadMajors();
   });
+
+  $('#major-select').change(function(){
+    LoadStreams();
+  });
 });
 
 
@@ -37,5 +41,16 @@ function LoadMajors(){
         }
       }
     })
+  }
+}
+
+function LoadStreams(){
+  var selectedMajor = $('#major-select option:selected').text();
+  $('#stream-select').empty();
+
+  if(selectedMajor !== "None")
+  {
+    var option = '<option value="-1">Custom</option>';
+    $('#stream-select').append(option);
   }
 }

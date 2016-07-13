@@ -247,7 +247,12 @@
     </div>
     <div class="mdl-cell mdl-cell--8-col">
       <h4 id="make-degree_title">Hey {{$user->firstName}}! Looks like you are new here. Let's Get you started with S!MVO</h4>
-      {!! Form::open(['style'=>'width:100%']) !!}
+      {!! Form::open(['route' => 'newUserCreateDegree','style'=>'width:100%']) !!}
+      <ul class="list-style-none">
+        @foreach ($errors->all() as $error)
+            <li class="submit_error">{{ $error }}</li>
+        @endforeach
+      </ul>
       <table>
         <tr>
           <td>
@@ -273,6 +278,17 @@
 
         <tr>
           <td>
+            Select a Stream
+          </td>
+          <td>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label program_input">
+              <select name="Stream" id="stream-select" class="reg_dropdown form-control"></select>
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td>
             Semester You Entered Selected Program
           </td>
           <td>
@@ -282,16 +298,6 @@
           </td>
         </tr>
 
-        <tr>
-          <td>
-            Select a Stream
-          </td>
-          <td>
-            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label program_input">
-              <select name="Major" id="major-select" class="reg_dropdown form-control"></select>
-            </div>
-          </td>
-        </tr>
 
       </table>
       {!! Form::submit('Submit', ['class'=> 'mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent new_user_submit']) !!}

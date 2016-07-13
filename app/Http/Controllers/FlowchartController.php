@@ -117,6 +117,22 @@ class FlowchartController extends Controller
         return $degrees;
       }
     }
+
+    public function newUserCreateDegree(Request $request)
+    {
+      $user=Auth::User();
+
+      $this->validate($request, [
+        'Faculty'=>'required|exists:users,email',
+        'Major'=>'required|min:8',
+        'Semester'=>'required',
+        'Stream'=>'required'
+        ]);
+
+      $degree_id = $this->createDegree();
+      $this->generateFlowChart();
+    }
+
     public function getExemptions($user)
     {
       $exemptions_PDO = Schedule::where('user_id',$user->id)
