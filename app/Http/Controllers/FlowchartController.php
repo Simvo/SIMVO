@@ -27,16 +27,22 @@ class FlowchartController extends Controller
       $degrees = $this->getDegrees($user);
       if($degrees == -1)
       {
+        $faculties = $this->getFaculties();
+        array_unshift($faculties, "Select");
+        $semesters = $this->generateListOfSemesters(10);
         $new_user = true;
         return view('flowchart', [
           'user'=>$user,
           'newUser' => $new_user,
+          'degreeLoaded' => false,
           'schedule'=> [],
           'progress' => [],
           'groupsWithCourses' => [],
           'complementaryCourses' => [],
           'exemptions' => [],
-          'startingSemester' => ""
+          'startingSemester' => "",
+          'faculties'=> $faculties,
+          'semesters' => $semesters
         ]);
       }
       else
@@ -46,6 +52,7 @@ class FlowchartController extends Controller
         return view('flowchart', [
           'user'=>$user,
           'newUser' => $new_user,
+          'degreeLoaded' => true,
           'schedule'=> $flowchart['Schedule'],
           'progress' => $flowchart['Progress'],
           'groupsWithCourses' => $flowchart['Groups With Courses'],

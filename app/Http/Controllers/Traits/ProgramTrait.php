@@ -188,11 +188,7 @@ trait ProgramTrait
       else {
         $groups[1][$group->SET_TITLE_ENGLISH] = [];
       }
-
-
-
     }
-
     return $groups;
   }
 
