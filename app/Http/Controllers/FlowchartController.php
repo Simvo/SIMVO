@@ -20,17 +20,24 @@ class FlowchartController extends Controller
     public function generateFlowChart()
     {
       $user=Auth::User();
+
       $groupsWithCourses = null;
       $complementaryCourses = null;
+
       $degree = null;
-      $new_user = false;
       $degrees = $this->getDegrees($user);
-      if($degrees == -1)
+
+      $new_user = false;
+
+      if(count($degrees) == 0)
       {
         $faculties = $this->getFaculties();
         array_unshift($faculties, "Select");
+
         $semesters = $this->generateListOfSemesters(10);
+
         $new_user = true;
+
         return view('flowchart', [
           'user'=>$user,
           'newUser' => $new_user,
@@ -47,8 +54,10 @@ class FlowchartController extends Controller
       }
       else
       {
-        $degree = $this->getDefaultDegree();
-        $flowchart = $this->createDegree($degree);
+        //$degree = $this->getDefaultDegree();
+        $degree = $degrees[0];
+        $flowchart = $this->generateDegree($degree);
+
         return view('flowchart', [
           'user'=>$user,
           'newUser' => $new_user,
@@ -62,19 +71,25 @@ class FlowchartController extends Controller
         ]);
       }
     }
-    public function createDegree($degree)
+
+    public function generateDegree($degree)
     {
+      $user=Auth::User();
+
+      $groupsWithCourses = [];
+      $complementaryCourses = null;
+
       $schedule = [];
       //Get User's entering semester
       $startingSemester = $degree->enteringSemester;
       //load excpemtions
       $exemptions = $this->getExemptions($degree);
-      $schedule_check = Schedule::where('user_id', $user->id)
+      $schedule_check = Schedule::where('degree_id', $degree->id)
                         ->where('semester', "<>", 'exemption')
                         ->count();
-      $userSetupComplete = $this->checkUserSetupStatus($user);
+      $userSetupComplete = $this->checkUserSetupStatus($degree);
       //all courses in the users program. Index 0 is required, 1 is complementaries, 2 is electives.
-      $courses = $this->getGroupsWithCourses($user->programID, true);
+      $courses = $this->getGroupsWithCourses($degree, true);
       //If (user has not yet setup courses or recommended Stream is not provided)
       if(!$userSetupComplete)
       {
@@ -87,15 +102,17 @@ class FlowchartController extends Controller
       }
       if($schedule_check == 0)
       {
-        $schedule[$this->get_semester($user->enteringSemester)] = [0,[],$startingSemester];
+        $schedule[$this->get_semester($degree->enteringSemester)] = [0,[],$startingSemester];
       }
       //if user has not completed initial setup: ie, some courses are in the schedule but some remain in the setup area
       else if($schedule_check > 0)
       {
-        $schedule = $this->generateSchedule($user);
+        $schedule = $this->generateSchedule($degree);
       }
-      $progress = $this->generateProgressBar($user);
+
+      $progress = $this->generateProgressBar($degree);
       $startingSemester = $this->get_semester($startingSemester);
+
       return [
         'Schedule'=> $schedule,
         'Progress' => $progress,
@@ -105,17 +122,12 @@ class FlowchartController extends Controller
         'Starting Semester' => $startingSemester,
       ];
     }
+
     public function getDegrees($user)
     {
       $degrees = Degree::where('user_id', $user->id)->get();
-      if(count($degrees) == 0)
-      {
-        return -1;
-      }
-      else
-      {
-        return $degrees;
-      }
+
+      return $degrees;
     }
 
     public function newUserCreateDegree(Request $request)
@@ -123,14 +135,25 @@ class FlowchartController extends Controller
       $user=Auth::User();
 
       $this->validate($request, [
-        'Faculty'=>'required|exists:users,email',
-        'Major'=>'required|min:8',
-        'Semester'=>'required',
+        'Faculty'=>'required|digits:1,2',
+        'Major'=>'required',
+        'Semester'=>'required|digits:1,2',
         'Stream'=>'required'
         ]);
 
-      $degree_id = $this->createDegree();
-      $this->generateFlowChart();
+      $semesters = $this->generateListOfSemesters(10);
+      $faculties = $this->getFaculties();
+
+      $degree_id = $this->createDegree(
+        $user->id,
+        $faculties[$request->Faculty - 1],
+        $request->Major,
+        1,
+        $this->encode_semester($semesters[$request->Semester]),
+        -1
+      );
+
+      return redirect('flowchart');
     }
 
     public function getExemptions($user)
@@ -183,12 +206,12 @@ class FlowchartController extends Controller
       }
       return $the_schedule;
     }
-    public function checkUserSetupStatus($user)
+    public function checkUserSetupStatus($degree)
     {
-      $requiredGroups = $this->getRequiredGroups($user->programID);
+      $requiredGroups = $this->getRequiredGroups($degree);
       foreach($requiredGroups as $key=>$group)
       {
-        $coursesInGroup = $this->getCoursesInGroup($user->programID, $key, true);
+        $coursesInGroup = $this->getCoursesInGroup($degree, $key, true);
         if(count($coursesInGroup) > 0) return false;
       }
       return true;

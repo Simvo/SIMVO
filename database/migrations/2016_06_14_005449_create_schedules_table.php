@@ -17,6 +17,7 @@ class CreateSchedulesTable extends Migration
           $table->string('SUBJECT_CODE');
           $table->string('COURSE_NUMBER');
           $table->integer('user_id');
+          $table->integer('degree_id');
           $table->string('semester');
           $table->string('status');
           $table->string('grade');

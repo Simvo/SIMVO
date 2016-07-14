@@ -36,7 +36,7 @@ trait NewObjectsTrait
     $degree->stream_version = $stream_version;
     $degree->save();
 
-    return $sched->id;
+    return $degree->id;
   }
 
   public function create_error($user_id, $sched_id, $message, $type)
