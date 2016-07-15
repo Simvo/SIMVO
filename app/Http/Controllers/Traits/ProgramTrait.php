@@ -202,10 +202,8 @@ trait ProgramTrait
   {
     $user = Auth::User();
 
-    //$version = $this->getProgramVersion($user);
-
     $groups_PDO = DB::table('Programs')
-                  ->where('VERSION', 1)
+                  ->where('VERSION', $degree->version_id)
                   ->where('PROGRAM_ID', $degree->program_id)
                   ->whereNotNull('SUBJECT_CODE')
                   ->whereNotNull('COURSE_NUMBER')
@@ -218,9 +216,14 @@ trait ProgramTrait
     {
       if(!is_null($group->SET_TITLE_ENGLISH) && !is_null($group->SET_BEGIN_TEXT_ENGLISH))
       {
-        $groups[$group->SET_TITLE_ENGLISH] = $this->extractCreditFromDesc($group->SET_BEGIN_TEXT_ENGLISH);
+        $creditsInGroup = $this->extractCreditFromDesc($group->SET_BEGIN_TEXT_ENGLISH);
+        if($creditsInGroup > 0)
+        {
+          $groups[$group->SET_TITLE_ENGLISH] = $creditsInGroup;
+        }
       }
     }
+
     arsort($groups);
     return $groups;
   }

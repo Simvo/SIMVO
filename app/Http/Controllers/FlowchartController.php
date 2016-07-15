@@ -2,11 +2,13 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Auth;
+use Session;
 use App\Schedule;
 use App\UICourse;
 use App\Degree;
 use DB;
 use App\Http\Requests;
+
 class FlowchartController extends Controller
 {
   use Traits\NewObjectsTrait;
@@ -56,6 +58,8 @@ class FlowchartController extends Controller
       {
         //$degree = $this->getDefaultDegree();
         $degree = $degrees[0];
+        Session::put('degree', $degree);
+
         $flowchart = $this->generateDegree($degree);
 
         return view('flowchart', [
@@ -80,16 +84,22 @@ class FlowchartController extends Controller
       $complementaryCourses = null;
 
       $schedule = [];
+
       //Get User's entering semester
       $startingSemester = $degree->enteringSemester;
+
       //load excpemtions
       $exemptions = $this->getExemptions($degree);
+
       $schedule_check = Schedule::where('degree_id', $degree->id)
                         ->where('semester', "<>", 'exemption')
                         ->count();
+
       $userSetupComplete = $this->checkUserSetupStatus($degree);
+
       //all courses in the users program. Index 0 is required, 1 is complementaries, 2 is electives.
       $courses = $this->getGroupsWithCourses($degree, true);
+
       //If (user has not yet setup courses or recommended Stream is not provided)
       if(!$userSetupComplete)
       {
@@ -156,24 +166,27 @@ class FlowchartController extends Controller
       return redirect('flowchart');
     }
 
-    public function getExemptions($user)
+    public function getExemptions($degree)
     {
-      $exemptions_PDO = Schedule::where('user_id',$user->id)
+      $exemptions_PDO = Schedule::where('degree_id',$degree->id)
                         ->where('semester', 'exemption')
                         ->get();
       $exemptions = [];
       $sum = 0;
+
       foreach ($exemptions_PDO as $exemption)
       {
-        $status = DB::table('programs')->where('PROGRAM_ID', $user->programID)
+        $status = DB::table('programs')->where('PROGRAM_ID', $degree->programID)
                   ->where('SUBJECT_CODE', $exemption->SUBJECT_CODE)
                   ->where('COURSE_NUMBER', $exemption->COURSE_NUMBER)
                   ->first(['COURSE_CREDITS']);
+
         $sum += $status->COURSE_CREDITS;
         $exemptions[] = [$exemption->id, $exemption->SUBJECT_CODE, $exemption->COURSE_NUMBER, $status->COURSE_CREDITS, $exemption->status];
       }
       return [$exemptions,$sum];
     }
+
     public function generateSchedule($user)
     {
       $the_schedule = [];

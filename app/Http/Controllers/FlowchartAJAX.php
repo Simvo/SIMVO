@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use Auth;
 use DB;
+use Session;
 use App\Schedule;
 use App\Error;
 
@@ -42,29 +43,26 @@ class FlowchartAJAX extends Controller
 
   public function add_course_to_Schedule(Request $request)
   {
-    if(!Auth::Check())
-      return;
-    else
-      $user = Auth::User();
+    $degree = Session::get('degree');
 
     $courseName = $request->courseName;
     $semester = $request->semester;
     $parts = explode(" ", $courseName);
 
-    $course = DB::table('programs')->where('PROGRAM_ID',$user->programID)
+    $course = DB::table('programs')->where('PROGRAM_ID',$degree->program_id)
               ->where('SUBJECT_CODE', $parts[0])
               ->where('COURSE_NUMBER', $parts[1])
               ->first(['SUBJECT_CODE', 'COURSE_NUMBER', 'SET_TYPE', 'COURSE_CREDITS', 'SET_TITLE_ENGLISH']);
 
     if($course->SET_TITLE_ENGLISH == 'Required Year 0 (Freshman) Courses')
     {
-      $new_id = $this->create_schedule($user->id, $semester, $course->SUBJECT_CODE, $course->COURSE_NUMBER, 'Required');
+      $new_id = $this->create_schedule($degree, $semester, $course->SUBJECT_CODE, $course->COURSE_NUMBER, 'Required');
     }
     else
-      $new_id = $this->create_schedule($user->id, $semester, $course->SUBJECT_CODE, $course->COURSE_NUMBER, $course->SET_TYPE);
+      $new_id = $this->create_schedule($degree, $semester, $course->SUBJECT_CODE, $course->COURSE_NUMBER, $course->SET_TYPE);
 
-    $new_semeterCredits = $this->getSemeterCredits($semester, $user);
-    $progress = $this->generateProgressBar($user);
+    $new_semeterCredits = $this->getSemeterCredits($semester, $degree);
+    $progress = $this->generateProgressBar($degree);
 
     return json_encode([$new_id,$new_semeterCredits, $progress]);
   }

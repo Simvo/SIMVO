@@ -116,7 +116,7 @@
             @endforeach
           @endif
         </div>
-        @if (count($groupsWithCourses))
+        @if (count($groupsWithCourses) == 0)
           <div class="mdl-grid">
             <fieldset class="complementary_div mdl-cell mdl-cell--6-col">
               <legend>COMPLEMENTARY COURSES</legend>
@@ -204,8 +204,6 @@
                   <a class="close-reveal-modal" aria-label="Close">&#215;</a>
 
               </div>
-
-
             </fieldset>
           </div>
         @else

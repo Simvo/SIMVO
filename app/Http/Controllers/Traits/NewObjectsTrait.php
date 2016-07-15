@@ -13,10 +13,11 @@ use App\Degree;
 
 trait NewObjectsTrait
 {
-  public function create_schedule($user_id, $semester, $SUBJECT_CODE, $COURSE_NUMBER, $SET_TYPE)
+  public function create_schedule($degree, $semester, $SUBJECT_CODE, $COURSE_NUMBER, $SET_TYPE)
   {
     $sched = new Schedule();
-    $sched->user_id = $user_id;
+    $sched->user_id = $degree->user_id;
+    $sched->degree_id = $degree->id;
     $sched->semester = $semester;
     $sched->SUBJECT_CODE = $SUBJECT_CODE;
     $sched->COURSE_NUMBER = $COURSE_NUMBER;
