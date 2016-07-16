@@ -1,6 +1,8 @@
 $(document).ready(function()
 {
   renderSortable();
+  initAddCompCourseButton();
+  initAddElectiveCourseButton();
   initDeleteSemesterListener(".delete-semester");
   initAddSemesterListener(".add-semester");
   initRemoveCourseListener(".remove-course")
@@ -211,13 +213,14 @@ function refreshDeleteSemester()
 }
 
 // Add Complentary Course
-
+function initAddCompCourseButton()
+{
   $(".add_comp_course_button").click(function()
   {
     var selected = [];
 
 
-    $(".complentary_table_body tr").each(function()
+    $(".complementary_table_body tr").each(function()
     {
       if ($(this).hasClass('is-selected'))
       {
@@ -275,9 +278,11 @@ function refreshDeleteSemester()
     $('#comp_courses').foundation('reveal', 'close');
 
   });
+}
 
   //add elective course!
-
+  function initAddElectiveCourseButton()
+  {
     $(".add_elec_course_button").click(function() {
       var selected = [];
 
@@ -338,6 +343,7 @@ function refreshDeleteSemester()
 
       $('#electives_courses').foundation('reveal', 'close');
     });
+  }
 
 
     function initRemoveCourseListener(target)
@@ -349,6 +355,7 @@ function refreshDeleteSemester()
         {
           //courses that have NOT been added to the schedule have no need for a database call
           $(this).parent().parent().parent().parent().remove();
+          refreshComplementaryCourses();
         }
         else
         {
@@ -384,6 +391,7 @@ function refreshDeleteSemester()
                     }
                 }
                 refreshDeleteSemester();
+                refreshComplementaryCourses();
               }
             }
           });
@@ -393,5 +401,92 @@ function refreshDeleteSemester()
 
         }
 
+      });
+    }
+
+    function refreshComplementaryCourses()
+    {
+      $.ajax({
+        type: "get",
+        url: "/flowchart/refresh_complementary_courses",
+
+        success: function(data) {
+          var response = JSON.parse(data);
+          if (response === 'Error')
+          {
+            //error handler
+          }
+          else
+          {
+
+            var html = "";
+
+            for(var key in response[0])
+            {
+              html = '<table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp complementary_table" id="complementary_table_'+key+'">';
+              html += '<thead>';
+              html += '<tr>';
+              html += '<th class="mdl-data-table__cell--non-numeric">Course Number</th>';
+              html += '<th class="mdl-data-table__cell--non-numeric">Course Name</th>';
+              html += '<th>Credits</th>';
+              html += '</tr>';
+              html += '</thead>';
+              html += '<tbody class="complementary_table_body tech_comp_table">';
+              for( var i = 0; i < response[0][key].length; i++)
+              {
+                if(  !$("[id='"+ response[0][key][i][0] + " " + response[0][key][i][1] +"']").length)
+                {
+                  html += '<tr id="' + response[0][key][i][0] + response[0][key][i][1] + '">';
+                  html += '<td class="mdl-data-table__cell--non-numeric course_number">' + response[0][key][i][0] + " " + response[0][key][i][1] + '</td>';
+                  html += '<td class="mdl-data-table__cell--non-numeric class_name">' + response[0][key][i][4] +'</td>';
+                  html += '<td>' + response[0][key][i][2] +'</td>';
+                  html += '</tr>';
+                }
+              }
+              html += '</tbody>';
+              html += '</table>';
+
+
+              $("[id='complementary_table_"+key+"']").remove();
+              $("[id='complementary_table_header_"+key+"']").after(html);
+            }
+
+
+            //Refresh elective table
+
+            for(var key in response[1])
+            {
+              html = '<table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp elective_table" id="elective_table_'+key+'">';
+              html += '<thead>';
+              html += '<tr>';
+              html += '<th class="mdl-data-table__cell--non-numeric">Course Number</th>';
+              html += '<th class="mdl-data-table__cell--non-numeric">Course Name</th>';
+              html += '<th>Credits</th>';
+              html += '</tr>';
+              html += '</thead>';
+              html += '<tbody class="elective_table_body tech_comp_table">';
+              for( var i = 0; i < response[1][key].length; i++)
+              {
+                if(  !$("[id='"+ response[1][key][i][0] + " " + response[1][key][i][1] +"']").length)
+                {
+                  html += '<tr id="' + response[1][key][i][0] + response[1][key][i][1] + '">';
+                  html += '<td class="mdl-data-table__cell--non-numeric course_number">' + response[1][key][i][0] + " " + response[1][key][i][1] + '</td>';
+                  html += '<td class="mdl-data-table__cell--non-numeric class_name">' + response[1][key][i][4] +'</td>';
+                  html += '<td>' + response[1][key][i][2] +'</td>';
+                  html += '</tr>';
+                }
+              }
+              html += '</tbody>';
+              html += '</table>';
+
+
+              $("[id='elective_table_"+key+"']").remove();
+              $("[id='elective_table_header_"+key+"']").after(html);
+            }
+
+            //Dynamically render MDL
+            componentHandler.upgradeDom();
+          }
+        }
       });
     }

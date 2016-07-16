@@ -43,6 +43,7 @@ Route::post('/flowchart/add-course-to-Schedule', 'FlowchartAJAX@add_course_to_Sc
 
 Route::delete('/flowchart/delete_course_from_schedule', 'FlowchartAJAX@delete_course_from_schedule');
 
+Route::get('/flowchart/refresh_complementary_courses', 'FlowchartAJAX@refresh_complementary_courses');
 
 
 Route::post('/flowchart/check-course-availability','FlowchartAJAX@vsb_checkCourseAvailablity');

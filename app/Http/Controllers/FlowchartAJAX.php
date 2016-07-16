@@ -70,6 +70,30 @@ class FlowchartAJAX extends Controller
     return json_encode([$new_id,$new_semeterCredits, $progress]);
   }
 
+  public function refresh_complementary_courses()
+  {
+
+    if(!Auth::Check())
+      return;
+    else
+      $user = Auth::User();
+
+    $programID = $user->programID;
+
+
+    $groups = $this->getComplementaryGroups($programID); //complementaries index 0 is complementary, 1 is electives
+
+    for($i = 0; $i < 2; $i++)
+    {
+      foreach($groups[$i] as $key=>$value)
+      {
+        $groups[$i][$key] = $this->getCoursesInGroup($programID, $key, true);
+      }
+    }
+
+    return json_encode($groups);
+  }
+
 public function add_complementary_course_to_Flowchart(Request $request)
 {
   if(!Auth::Check())
