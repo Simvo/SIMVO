@@ -301,13 +301,20 @@ trait ProgramTrait
   * @param User: user
   * @return int: version number
   **/
-  public function getProgramVersion($user)
+  public function getProgramVersions($program_id)
   {
-    $version = DB::table('programs')->where('PROGRAM_ID', $user->programID)
+    $version_PDO = DB::table('programs')->where('PROGRAM_ID', $program_id)
                ->groupBy('VERSION')
                ->orderBy('Version', 'asc')
-               ->First(['VERSION']);
-    return $version->VERSION;
+               ->get(['VERSION']);
+
+    $versions = [];
+    foreach($version_PDO as $version)
+    {
+      $versions[] = $version->VERSION;
+    }
+
+    return $versions;
   }
 
   /**

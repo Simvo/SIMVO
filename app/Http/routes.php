@@ -39,10 +39,11 @@ Route::post('/flowchart/new-user-create-degree', ['as'=>'newUserCreateDegree', '
 
 Route::post('/auth/registration/get-majors', 'RegistrationController@getMajorsInFaculty');
 
+Route::post('/auth/registration/get-versions', 'RegistrationController@getProgramVersionsInMajor');
+
 Route::post('/flowchart/move-course', 'FlowchartAJAX@move_course');
 
 Route::post('/flowchart/add-course-to-Schedule', 'FlowchartAJAX@add_course_to_Schedule');
-
 
 Route::post('/flowchart/check-course-availability','FlowchartAJAX@vsb_checkCourseAvailablity');
 

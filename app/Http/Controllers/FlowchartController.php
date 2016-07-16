@@ -46,8 +46,8 @@ class FlowchartController extends Controller
           'degreeLoaded' => false,
           'schedule'=> [],
           'progress' => [],
-          'groupsWithCourses' => [],
-          'complementaryCourses' => [],
+          'groupsWithCourses' => null,
+          'complementaryCourses' => null,
           'exemptions' => [],
           'startingSemester' => "",
           'faculties'=> $faculties,
@@ -56,7 +56,6 @@ class FlowchartController extends Controller
       }
       else
       {
-        //$degree = $this->getDefaultDegree();
         $degree = $degrees[0];
         Session::put('degree', $degree);
 
@@ -154,7 +153,7 @@ class FlowchartController extends Controller
       $semesters = $this->generateListOfSemesters(10);
       $faculties = $this->getFaculties();
 
-      $degree_id = $this->createDegree(
+      $degree_id = $this->create_degree(
         $user->id,
         $faculties[$request->Faculty - 1],
         $request->Major,
@@ -176,7 +175,7 @@ class FlowchartController extends Controller
 
       foreach ($exemptions_PDO as $exemption)
       {
-        $status = DB::table('programs')->where('PROGRAM_ID', $degree->programID)
+        $status = DB::table('programs')->where('PROGRAM_ID', $degree->program_id)
                   ->where('SUBJECT_CODE', $exemption->SUBJECT_CODE)
                   ->where('COURSE_NUMBER', $exemption->COURSE_NUMBER)
                   ->first(['COURSE_CREDITS']);

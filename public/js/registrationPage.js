@@ -14,6 +14,7 @@ $(document).ready(function(){
 
   $('#major-select').change(function(){
     LoadStreams();
+    LoadVersions();
   });
 });
 
@@ -52,5 +53,31 @@ function LoadStreams(){
   {
     var option = '<option value="-1">Custom</option>';
     $('#stream-select').append(option);
+  }
+}
+
+//Loads all version of program
+function LoadVersions(){
+  var selectedMajor = $('#major-select option:selected').val();
+  $('#version-select').empty();
+
+  if(selectedMajor !== "None")
+  {
+    $.ajax({
+      type: 'post',
+      url: '/auth/registration/get-versions',
+      data: { program_id : selectedMajor},
+      success: function(data) {
+
+        var response = JSON.parse(data);
+
+        for(var i =0; i<response.length; i++)
+        {
+          var option = '<option value="'+response[i]+'">' + response[i]+ '</option>';
+
+          $('#version-select').append(option);
+        }
+      }
+    })
   }
 }
