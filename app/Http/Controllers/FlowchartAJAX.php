@@ -26,6 +26,8 @@ class FlowchartAJAX extends Controller
     else
       $user = Auth::User();
 
+    $degree = Session::get('degree');
+
     $semester=$request->semester;
     $sched_id=$request->id;
     $target=Schedule::find($sched_id);
@@ -35,8 +37,8 @@ class FlowchartAJAX extends Controller
 
     $errors_to_delete = $this->empty_errors($target);
 
-    $old_semeterCredits = $this->getSemeterCredits($old_semester, $user);
-    $new_semeterCredits = $this->getSemeterCredits($semester, $user);
+    $old_semeterCredits = $this->getSemesterCredits($old_semester, $degree);
+    $new_semeterCredits = $this->getSemesterCredits($semester, $degree);
 
     return json_encode([$new_semeterCredits, $old_semeterCredits, $errors_to_delete]);
   }
@@ -61,7 +63,7 @@ class FlowchartAJAX extends Controller
     else
       $new_id = $this->create_schedule($degree, $semester, $course->SUBJECT_CODE, $course->COURSE_NUMBER, $course->SET_TYPE);
 
-    $new_semeterCredits = $this->getSemeterCredits($semester, $degree);
+    $new_semeterCredits = $this->getSemesterCredits($semester, $degree);
     $progress = $this->generateProgressBar($degree);
 
     return json_encode([$new_id,$new_semeterCredits, $progress]);
@@ -74,21 +76,24 @@ public function add_complementary_course_to_Flowchart(Request $request)
   else
     $user = Auth::User();
 
-    $courseName = $request->courseName;
-    $semester = $request->semester;
-    $parts = explode(" ", $courseName);
+  $degree = Session::get('degree');
 
-    $course = DB::table('programs')->where('PROGRAM_ID',$user->programID)
-              ->where('SUBJECT_CODE', $parts[0])
-              ->where('COURSE_NUMBER', $parts[1])
-              ->first(['SUBJECT_CODE', 'COURSE_NUMBER', 'SET_TYPE', 'COURSE_CREDITS', 'SET_TITLE_ENGLISH']);
+  $courseName = $request->courseName;
+  $semester = $request->semester;
+  $parts = explode(" ", $courseName);
 
-    return json_encode($course);
+  $course = DB::table('programs')->where('PROGRAM_ID',$degree->program_id)
+            ->where('SUBJECT_CODE', $parts[0])
+            ->where('COURSE_NUMBER', $parts[1])
+            ->first(['SUBJECT_CODE', 'COURSE_NUMBER', 'SET_TYPE', 'COURSE_CREDITS', 'SET_TITLE_ENGLISH']);
+
+  return json_encode($course);
 }
 
-  public function getSemeterCredits($semester, $user)
+  public function getSemesterCredits($semester, $degree)
   {
-    $courses = Schedule::where('user_id', $user->id)
+
+    $courses = Schedule::where('degree_id', $degree->id)
                ->where('semester', $semester)
                ->get(['SUBJECT_CODE', 'COURSE_NUMBER']);
 

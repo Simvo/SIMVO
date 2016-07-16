@@ -164,10 +164,8 @@ trait ProgramTrait
   {
     $user = Auth::User();
 
-    //$version = $this->getProgramVersion($user);
-
     $groups_PDO = DB::table('Programs')
-                  ->where('VERSION', 1)
+                  ->where('VERSION', $degree->version_id)
                   ->where('PROGRAM_ID', $degree->program_id)
                   ->where('SET_TYPE', 'Complementary')
                   ->whereNotIn('SET_TITLE_ENGLISH',['Required Year 0 (Freshman) Courses'])
@@ -189,6 +187,7 @@ trait ProgramTrait
         $groups[1][$group->SET_TITLE_ENGLISH] = [];
       }
     }
+
     return $groups;
   }
 
