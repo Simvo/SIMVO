@@ -350,6 +350,9 @@ function initAddCompCourseButton()
     {
       $(target).click(function(e){
         e.preventDefault();
+        // var id = target.split("_");
+        // id = id[1] + " " + id[2];
+        // console.log(id + "is the id");
 
         if($(this).parent().parent().parent().parent().hasClass("add-to-schedule"))
         {
