@@ -126,9 +126,12 @@ public function delete_course_from_schedule(Request $request)
 
   $courseID = $request->id;
 
+  $course = Schedule::where('id', $courseID);
+
+  $semester = $course->first()->semester;
+
   $degree = Session::get('degree');
 
-  $course = Schedule::find($courseID);
   $semester = $course->semester;
 
   $course->delete();
