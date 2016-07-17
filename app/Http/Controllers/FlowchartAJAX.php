@@ -64,7 +64,7 @@ class FlowchartAJAX extends Controller
 
     else
     {
-      $new_id = $this->create_schedule($user->id, $semester, $course->SUBJECT_CODE, $course->COURSE_NUMBER, $courseType);
+      $new_id = $this->create_schedule($degree, $semester, $course->SUBJECT_CODE, $course->COURSE_NUMBER, $courseType);
     }
 
     $new_semeterCredits = $this->getSemesterCredits($semester, $degree);
@@ -81,16 +81,15 @@ class FlowchartAJAX extends Controller
     else
       $user = Auth::User();
 
-    $programID = $user->programID;
+    $degree = Session::get('degree');
 
-
-    $groups = $this->getComplementaryGroups($programID); //complementaries index 0 is complementary, 1 is electives
+    $groups = $this->getComplementaryGroups($degree); //complementaries index 0 is complementary, 1 is electives
 
     for($i = 0; $i < 2; $i++)
     {
       foreach($groups[$i] as $key=>$value)
       {
-        $groups[$i][$key] = $this->getCoursesInGroup($programID, $key, true);
+        $groups[$i][$key] = $this->getCoursesInGroup($degree, $key, true);
       }
     }
 
@@ -125,19 +124,20 @@ public function delete_course_from_schedule(Request $request)
   else
     $user = Auth::User();
 
-    $courseID = $request->id;
+  $courseID = $request->id;
 
-    $course = Schedule::where('user_id', $user->id)
-              ->where('id', $courseID);
-    $semester = $course->first()->semester;
+  $degree = Session::get('degree');
 
-    $course->delete();
+  $course = Schedule::find($courseID);
+  $semester = $course->semester;
 
-    $new_semeterCredits = $this->getSemeterCredits($semester, $user);
-    $progress = $this->generateProgressBar($user);
+  $course->delete();
 
-    return json_encode([$courseID, $new_semeterCredits, $progress, $semester]);
-  }
+  $new_semeterCredits = $this->getSemesterCredits($semester, $degree);
+  $progress = $this->generateProgressBar($degree);
+
+  return json_encode([$courseID, $new_semeterCredits, $progress, $semester]);
+}
 
 
   public function getSemesterCredits($semester, $degree)
