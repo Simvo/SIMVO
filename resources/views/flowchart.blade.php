@@ -240,7 +240,7 @@
 
 <!-- If new User, init first instance of Degree -->
 @if($newUser)
-<div id="make_degree" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="false" role="dialog">
+<div id="make_degree" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="false" role="dialog" data-options="close_on_background_click:false">
   <div class="mdl-grid">
     <div class="mdl-cell mdl-cell--2-col">
     </div>

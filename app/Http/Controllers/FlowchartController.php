@@ -6,6 +6,7 @@ use Session;
 use App\Schedule;
 use App\UICourse;
 use App\Degree;
+use App\Error;
 use DB;
 use App\Http\Requests;
 
@@ -69,6 +70,7 @@ class FlowchartController extends Controller
           'progress' => $flowchart['Progress'],
           'groupsWithCourses' => $flowchart['Groups With Courses'],
           'complementaryCourses' => $flowchart['Complementary Courses'],
+          'course_errors' => $flowchart['Errors'],
           'exemptions' => $flowchart['Exemptions'],
           'startingSemester' => $flowchart['Starting Semester']
         ]);
@@ -121,6 +123,7 @@ class FlowchartController extends Controller
 
       $progress = $this->generateProgressBar($degree);
       $startingSemester = $this->get_semester($startingSemester);
+      $errors = $this->getErrors($user);
 
       return [
         'Schedule'=> $schedule,
@@ -129,6 +132,7 @@ class FlowchartController extends Controller
         'Groups With Courses' => $groupsWithCourses,
         'Complementary Courses'=> $complementaryCourses,
         'Starting Semester' => $startingSemester,
+        'Errors' => $errors
       ];
     }
 
@@ -227,5 +231,27 @@ class FlowchartController extends Controller
         if(count($coursesInGroup) > 0) return false;
       }
       return true;
+    }
+
+    public function getErrors($user)
+    {
+      $all_errors = Error::where('errors.user_id', $user->id)
+                ->join('schedules', 'schedules.id', '=', 'errors.schedule_id')
+                ->groupBy('schedules.semester')
+                ->get(['schedules.semester']);
+      $errors = [];
+      foreach($all_errors as $e)
+      {
+        $errors_in_semester = Error::where('errors.user_id', $user->id)
+                 ->join('schedules', 'schedules.id', '=', 'errors.schedule_id')
+                 ->where('schedules.semester', $e->semester)
+                 ->get(['errors.id', 'errors.type', 'errors.message']);
+        $errors[$this->get_semester($e->semester)] = [];
+        foreach($errors_in_semester as $error)
+        {
+          $errors[$this->get_semester($e->semester)][] = [$error->id, $error->type, $error->message];
+        }
+      }
+      return $errors;
     }
 }
