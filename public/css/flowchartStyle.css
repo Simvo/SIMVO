@@ -14,6 +14,10 @@
   margin-bottom: 15px;
 }
 
+#make_degree {
+  height: 90%;
+}
+
 .course_available {
   color: blue;
   width: 150px;
@@ -162,8 +166,6 @@
   vertical-align: middle;
 }
 
-<<<<<<< HEAD
-=======
 .fill-semester-gap-wrap {
   display: table-cell;
   vertical-align: middle;
@@ -191,7 +193,6 @@
   overflow: scroll;
 }
 
->>>>>>> origin/dev
 #add-semester-wrap #add-semester {
   background-color: #2980b9;
 }
@@ -200,7 +201,6 @@
   color: white;
 }
 
-.fill-semester-gap-wrap {
-  display: table-cell;
-  vertical-align: middle;
+#make-degree_title {
+  text-align: center;
 }
