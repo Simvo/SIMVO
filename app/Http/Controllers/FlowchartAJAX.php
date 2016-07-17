@@ -47,6 +47,7 @@ class FlowchartAJAX extends Controller
     else
       $user = Auth::User();
 
+    $courseType = $request->courseType;
     $courseName = $request->courseName;
     $semester = $request->semester;
     $parts = explode(" ", $courseName);
@@ -61,12 +62,36 @@ class FlowchartAJAX extends Controller
       $new_id = $this->create_schedule($user->id, $semester, $course->SUBJECT_CODE, $course->COURSE_NUMBER, 'Required');
     }
     else
-      $new_id = $this->create_schedule($user->id, $semester, $course->SUBJECT_CODE, $course->COURSE_NUMBER, $course->SET_TYPE);
+      $new_id = $this->create_schedule($user->id, $semester, $course->SUBJECT_CODE, $course->COURSE_NUMBER, $courseType);
 
     $new_semeterCredits = $this->getSemeterCredits($semester, $user);
     $progress = $this->generateProgressBar($user);
 
     return json_encode([$new_id,$new_semeterCredits, $progress]);
+  }
+
+  public function refresh_complementary_courses()
+  {
+
+    if(!Auth::Check())
+      return;
+    else
+      $user = Auth::User();
+
+    $programID = $user->programID;
+
+
+    $groups = $this->getComplementaryGroups($programID); //complementaries index 0 is complementary, 1 is electives
+
+    for($i = 0; $i < 2; $i++)
+    {
+      foreach($groups[$i] as $key=>$value)
+      {
+        $groups[$i][$key] = $this->getCoursesInGroup($programID, $key, true);
+      }
+    }
+
+    return json_encode($groups);
   }
 
 public function add_complementary_course_to_Flowchart(Request $request)
@@ -86,6 +111,29 @@ public function add_complementary_course_to_Flowchart(Request $request)
               ->first(['SUBJECT_CODE', 'COURSE_NUMBER', 'SET_TYPE', 'COURSE_CREDITS', 'SET_TITLE_ENGLISH']);
 
     return json_encode($course);
+}
+
+public function delete_course_from_schedule(Request $request)
+{
+  if(!Auth::Check())
+    return;
+  else
+    $user = Auth::User();
+
+    $courseID = $request->id;
+
+    $course = Schedule::where('user_id', $user->id)
+              ->where('id', $courseID);
+    $semester = $course->first()->semester;
+
+    $course->delete();
+
+    $new_semeterCredits = $this->getSemeterCredits($semester, $user);
+    $progress = $this->generateProgressBar($user);
+
+    return json_encode([$courseID, $new_semeterCredits, $progress, $semester]);
+
+
 }
 
   public function getSemeterCredits($semester, $user)

@@ -21,6 +21,7 @@ function renderSortable()
       var vsbActiveSemesters = get_VSB_active_semesters();
       var id = ui.item.context.id;
       var classes = ui.item.context.className;
+      var courseType = classes.split(" ")[1].split("_")[0];
 
       if(classes.includes("add-to-schedule"))
       {
@@ -34,12 +35,19 @@ function renderSortable()
           data: {
             courseName: courseName,
             semester: new_semester,
-            id: id
+            id: id,
+            courseType: courseType,
+
           },
           success: function( data ) {
             var response = JSON.parse(data);
             ui.item.context.id = response[0];
             $('#'+ui.item.context.id).removeClass("add-to-schedule");
+            $('#'+ui.item.context.id).find(".remove-course").attr("id", "remove_"+ui.item.context.id);
+            $('#'+ui.item.context.id).find(".show-prereqs").attr("id", "show_prereqs_"+ui.item.context.id);
+
+
+
             $( event.target ).children( '.credit_counter' ).children( '.credit_counter_num' ).text( 'CREDITS: ' + response[1]);
             checkVSB(new_semester, ui, event)
 
@@ -71,7 +79,6 @@ function renderSortable()
             $( ui.sender[ 0 ] ).children( '.credit_counter' ).children( '.credit_counter_num' ).text( 'CREDITS: ' + response[1]);
             checkVSB(new_semester, ui, event);
             removeErrors(response[2]);
-            console.log(response);
             refreshDeleteSemester();
           }
         })

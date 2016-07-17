@@ -47,7 +47,7 @@
 
                     <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="menu_for_{{ $exemption[0] }}">
                       <li class="mdl-menu__item show_flow" id="show_flow_{{ $exemption[0] }}">Show Pre-Requisites</li>
-                      @if($exemption[3]!='Required')
+                      @if($exemption[4]!='Required')
                         <li class="mdl-menu__item delete" id="remove_{{ $exemption[0] }}">Remove</li>
                       @endif
                     </ul>
@@ -77,9 +77,9 @@
                       </button> {{ $class[3] }}
 
                       <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="menu_for_{{ $class[0] }}">
-                        <li class="mdl-menu__item show_flow" id="show_flow_{{ $class[0] }}">Show Pre-Requisites</li>
-                        @if($class[3]!='Required')
-                          <li class="mdl-menu__item delete" id="remove_{{ $class[0] }}">Remove</li>
+                        <li class="mdl-menu__item show-prereqs" id="show_prereqs_{{ $class[0] }}">Show Pre-Requisites</li>
+                        @if($class[4]!='Required')
+                          <li class="mdl-menu__item remove-course" id="remove_{{ $class[0] }}">Remove</li>
                         @endif
                       </ul>
                     </div>
@@ -126,8 +126,8 @@
               <div id="comp_courses" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
 
                 @foreach ($complementaryCourses[0] as $key=>$value)
-                  <h4 style="text-align:center">{{$key}}  ({{$progress[$key][1]}} credits)</h4>
-                  <table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp complementary_table">
+                  <h4 id="complementary_table_header_{{$key}}" style="text-align:center">{{$key}}  ({{$progress[$key][1]}} credits)</h4>
+                  <table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp complementary_table" id="complementary_table_{{$key}}">
                     <thead>
                       <tr>
                         <th class="mdl-data-table__cell--non-numeric">Course Number</th>
@@ -136,9 +136,9 @@
                       </tr>
                     </thead>
 
-                    <tbody class="complentary_table_body tech_comp_table">
+                    <tbody class="complementary_table_body tech_comp_table">
                     @foreach ($value as $course)
-                    <tr id="{{ $course[0] }}">
+                    <tr id="{{ $course[0] }}{{ $course[1] }}">
                       <td class="mdl-data-table__cell--non-numeric course_number">{{$course[0]}} {{ $course[1] }}</td>
                       <td class="mdl-data-table__cell--non-numeric class_name">{{ $course[4] }}</td>
                       <td>{{ $course[2] }}</td>
@@ -172,8 +172,8 @@
               <div id="electives_courses" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
 
                 @foreach ($complementaryCourses[1] as $key=>$value)
-                  <h4 style="text-align:center">{{$key}}  ({{$progress[$key][1]}} credits)</h4>
-                  <table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp complementary_table">
+                  <h4 id="elective_table_header_{{$key}}" style="text-align:center">{{$key}}  ({{$progress[$key][1]}} credits)</h4>
+                  <table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp elective_table" id="elective_table_{{$key}}">
                     <thead>
                       <tr>
                         <th class="mdl-data-table__cell--non-numeric">Course Number</th>
