@@ -60,6 +60,7 @@ class FlowchartAJAX extends Controller
     {
       $new_id = $this->create_schedule($degree, $semester, $course->SUBJECT_CODE, $course->COURSE_NUMBER, 'Required');
     }
+
     else
       $new_id = $this->create_schedule($degree, $semester, $course->SUBJECT_CODE, $course->COURSE_NUMBER, $course->SET_TYPE);
 
@@ -120,7 +121,7 @@ public function add_complementary_course_to_Flowchart(Request $request)
 
     $semester = $request->semester;
     $targetID = $request->scheduleID;
-    $target=Schedule::find($targetID);
+    $target = Schedule::find($targetID);
 
     $available = $this->checkCourseAvailablity($target->SUBJECT_CODE, $target->COURSE_NUMBER, $semester);
 

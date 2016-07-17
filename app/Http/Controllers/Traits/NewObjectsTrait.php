@@ -27,12 +27,14 @@ trait NewObjectsTrait
     return $sched->id;
   }
 
-  public function create_degree($user_id, $faculty, $program_id, $version_id, $enteringSemester, $stream_version)
+  public function create_degree($user_id, $faculty, $program_id, $program_name, $program_credits, $version_id, $enteringSemester, $stream_version)
   {
     $degree = new Degree();
     $degree->user_id = $user_id;
     $degree->faculty = $faculty;
     $degree->program_id = $program_id;
+    $degree->program_name = $program_name;
+    $degree->program_credits = $program_credits;
     $degree->version_id = $version_id;
     $degree->enteringSemester = $enteringSemester;
     $degree->stream_version = $stream_version;
