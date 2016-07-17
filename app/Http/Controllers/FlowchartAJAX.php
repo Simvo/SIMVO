@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use Auth;
 use DB;
+use Session;
 use App\Schedule;
 use App\Error;
 
@@ -25,6 +26,8 @@ class FlowchartAJAX extends Controller
     else
       $user = Auth::User();
 
+    $degree = Session::get('degree');
+
     $semester=$request->semester;
     $sched_id=$request->id;
     $target=Schedule::find($sched_id);
@@ -34,38 +37,38 @@ class FlowchartAJAX extends Controller
 
     $errors_to_delete = $this->empty_errors($target);
 
-    $old_semeterCredits = $this->getSemeterCredits($old_semester, $user);
-    $new_semeterCredits = $this->getSemeterCredits($semester, $user);
+    $old_semeterCredits = $this->getSemesterCredits($old_semester, $degree);
+    $new_semeterCredits = $this->getSemesterCredits($semester, $degree);
 
     return json_encode([$new_semeterCredits, $old_semeterCredits, $errors_to_delete]);
   }
 
   public function add_course_to_Schedule(Request $request)
   {
-    if(!Auth::Check())
-      return;
-    else
-      $user = Auth::User();
+    $degree = Session::get('degree');
 
     $courseType = $request->courseType;
     $courseName = $request->courseName;
     $semester = $request->semester;
     $parts = explode(" ", $courseName);
 
-    $course = DB::table('programs')->where('PROGRAM_ID',$user->programID)
+    $course = DB::table('programs')->where('PROGRAM_ID',$degree->program_id)
               ->where('SUBJECT_CODE', $parts[0])
               ->where('COURSE_NUMBER', $parts[1])
               ->first(['SUBJECT_CODE', 'COURSE_NUMBER', 'SET_TYPE', 'COURSE_CREDITS', 'SET_TITLE_ENGLISH']);
 
     if($course->SET_TITLE_ENGLISH == 'Required Year 0 (Freshman) Courses')
     {
-      $new_id = $this->create_schedule($user->id, $semester, $course->SUBJECT_CODE, $course->COURSE_NUMBER, 'Required');
+      $new_id = $this->create_schedule($degree, $semester, $course->SUBJECT_CODE, $course->COURSE_NUMBER, 'Required');
     }
-    else
-      $new_id = $this->create_schedule($user->id, $semester, $course->SUBJECT_CODE, $course->COURSE_NUMBER, $courseType);
 
-    $new_semeterCredits = $this->getSemeterCredits($semester, $user);
-    $progress = $this->generateProgressBar($user);
+    else
+    {
+      $new_id = $this->create_schedule($degree, $semester, $course->SUBJECT_CODE, $course->COURSE_NUMBER, $courseType);
+    }
+
+    $new_semeterCredits = $this->getSemesterCredits($semester, $degree);
+    $progress = $this->generateProgressBar($degree);
 
     return json_encode([$new_id,$new_semeterCredits, $progress]);
   }
@@ -78,16 +81,15 @@ class FlowchartAJAX extends Controller
     else
       $user = Auth::User();
 
-    $programID = $user->programID;
+    $degree = Session::get('degree');
 
-
-    $groups = $this->getComplementaryGroups($programID); //complementaries index 0 is complementary, 1 is electives
+    $groups = $this->getComplementaryGroups($degree); //complementaries index 0 is complementary, 1 is electives
 
     for($i = 0; $i < 2; $i++)
     {
       foreach($groups[$i] as $key=>$value)
       {
-        $groups[$i][$key] = $this->getCoursesInGroup($programID, $key, true);
+        $groups[$i][$key] = $this->getCoursesInGroup($degree, $key, true);
       }
     }
 
@@ -101,16 +103,18 @@ public function add_complementary_course_to_Flowchart(Request $request)
   else
     $user = Auth::User();
 
-    $courseName = $request->courseName;
-    $semester = $request->semester;
-    $parts = explode(" ", $courseName);
+  $degree = Session::get('degree');
 
-    $course = DB::table('programs')->where('PROGRAM_ID',$user->programID)
-              ->where('SUBJECT_CODE', $parts[0])
-              ->where('COURSE_NUMBER', $parts[1])
-              ->first(['SUBJECT_CODE', 'COURSE_NUMBER', 'SET_TYPE', 'COURSE_CREDITS', 'SET_TITLE_ENGLISH']);
+  $courseName = $request->courseName;
+  $semester = $request->semester;
+  $parts = explode(" ", $courseName);
 
-    return json_encode($course);
+  $course = DB::table('programs')->where('PROGRAM_ID',$degree->program_id)
+            ->where('SUBJECT_CODE', $parts[0])
+            ->where('COURSE_NUMBER', $parts[1])
+            ->first(['SUBJECT_CODE', 'COURSE_NUMBER', 'SET_TYPE', 'COURSE_CREDITS', 'SET_TITLE_ENGLISH']);
+
+  return json_encode($course);
 }
 
 public function delete_course_from_schedule(Request $request)
@@ -120,25 +124,29 @@ public function delete_course_from_schedule(Request $request)
   else
     $user = Auth::User();
 
-    $courseID = $request->id;
+  $courseID = $request->id;
 
-    $course = Schedule::where('id', $courseID);
+  $course = Schedule::where('id', $courseID);
 
-    $semester = $course->first()->semester;
+  $semester = $course->first()->semester;
 
-    $course->delete();
+  $degree = Session::get('degree');
 
-    $new_semeterCredits = $this->getSemeterCredits($semester, $user);
-    $progress = $this->generateProgressBar($user);
+  $semester = $course->semester;
 
-    return json_encode([$courseID, $new_semeterCredits, $progress, $semester]);
+  $course->delete();
 
+  $new_semeterCredits = $this->getSemesterCredits($semester, $degree);
+  $progress = $this->generateProgressBar($degree);
 
+  return json_encode([$courseID, $new_semeterCredits, $progress, $semester]);
 }
 
-  public function getSemeterCredits($semester, $user)
+
+  public function getSemesterCredits($semester, $degree)
   {
-    $courses = Schedule::where('user_id', $user->id)
+
+    $courses = Schedule::where('degree_id', $degree->id)
                ->where('semester', $semester)
                ->get(['SUBJECT_CODE', 'COURSE_NUMBER']);
 
@@ -165,7 +173,7 @@ public function delete_course_from_schedule(Request $request)
 
     $semester = $request->semester;
     $targetID = $request->scheduleID;
-    $target=Schedule::find($targetID);
+    $target = Schedule::find($targetID);
 
     $available = $this->checkCourseAvailablity($target->SUBJECT_CODE, $target->COURSE_NUMBER, $semester);
 
