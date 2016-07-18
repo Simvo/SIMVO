@@ -70,7 +70,7 @@ class FlowchartAJAX extends Controller
     $new_semeterCredits = $this->getSemesterCredits($semester, $degree);
     $progress = $this->generateProgressBar($degree);
 
-    return json_encode([$new_id,$new_semeterCredits, $progress]);
+    return json_encode([$new_id,$new_semeterCredits, $progress, $course]);
   }
 
   public function refresh_complementary_courses()
@@ -126,7 +126,7 @@ public function delete_course_from_schedule(Request $request)
 
   $courseID = $request->id;
 
-  $course = Schedule::where('id', $courseID);
+  $course = Schedule::find($courseID);
 
   $semester = $course->first()->semester;
 
