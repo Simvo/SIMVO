@@ -37,35 +37,37 @@
         </fieldset>
         <div id="course_schedule" class="schedule_wrap" style="padding-bottom: 50px">
           <!-- Exemption Semester -->
-          <div class="semester">
-              <h5 style="text-align:center">Exemptions</h5>
-              <div class="draggable">
-                <div class="validPosition sortable Exemption" id="Exemption">
-                @foreach($exemptions[0] as $exemption)
-                <div class="custom_card {{ $exemption[4] }}_course" id="{{ $exemption[0] }}">
-                  <div class="card_content">
-                    {{ $exemption[1] }} &nbsp {{ $exemption[2] }}
-                    <button id="menu_for_{{ $exemption[0] }}" class="mdl-button mdl-js-button mdl-button--icon">
-                      <i class="material-icons">arrow_drop_down</i>
-                    </button> {{ $exemption[3] }}
+           @if ($degreeLoaded)
+            <div class="semester">
+                <h5 style="text-align:center">Exemptions</h5>
+                <div class="draggable">
+                  <div class="validPosition sortable Exemption" id="Exemption">
+                  @foreach($exemptions[0] as $exemption)
+                  <div class="custom_card {{ $exemption[4] }}_course" id="{{ $exemption[0] }}">
+                    <div class="card_content">
+                      {{ $exemption[1] }} &nbsp {{ $exemption[2] }}
+                      <button id="menu_for_{{ $exemption[0] }}" class="mdl-button mdl-js-button mdl-button--icon">
+                        <i class="material-icons">arrow_drop_down</i>
+                      </button> {{ $exemption[3] }}
 
-                    <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="menu_for_{{ $exemption[0] }}">
-                      <li class="mdl-menu__item show_flow" id="show_flow_{{ $exemption[0] }}">Show Pre-Requisites</li>
-                      @if($exemption[4]!='Required')
-                        <li class="mdl-menu__item delete" id="remove_{{ $exemption[0] }}">Remove</li>
-                      @endif
-                    </ul>
+                      <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="menu_for_{{ $exemption[0] }}">
+                        <li class="mdl-menu__item show_flow" id="show_flow_{{ $exemption[0] }}">Show Pre-Requisites</li>
+                        @if($exemption[4]!='Required')
+                          <li class="mdl-menu__item delete" id="remove_{{ $exemption[0] }}">Remove</li>
+                        @endif
+                      </ul>
+                    </div>
                   </div>
-                </div>
-                @endforeach
-                <div class="custom_card credit_counter" style="text-align:center;">
-                  <div class="credit_counter_num" style="display: table-cell; vertical-align: middle; font-size:15px">
-                    CREDITS:{{$exemptions[1]}}
+                  @endforeach
+                  <div class="custom_card credit_counter" style="text-align:center;">
+                    <div class="credit_counter_num" style="display: table-cell; vertical-align: middle; font-size:15px">
+                      CREDITS:{{$exemptions[1]}}
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+          @endif
           <!-- List of Semesters -->
           @foreach($schedule as $key => $classes)
           <div class="semester">
@@ -238,4 +240,87 @@
     </div>
   </div>
 </div>
+<!-- If new User, init first instance of Degree -->
+@if($newUser)
+<div id="make_degree" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="false" role="dialog" data-options="close_on_background_click:false">
+  <div class="mdl-grid">
+    <div class="mdl-cell mdl-cell--2-col">
+    </div>
+    <div class="mdl-cell mdl-cell--8-col">
+      <h4 id="make-degree_title">Hey {{$user->firstName}}! Looks like you are new here. Let's Get you started with S!MVO</h4>
+      {!! Form::open(['route' => 'newUserCreateDegree','style'=>'width:100%']) !!}
+      <ul class="list-style-none">
+        @foreach ($errors->all() as $error)
+            <li class="submit_error">{{ $error }}</li>
+        @endforeach
+      </ul>
+      <table>
+        <tr>
+          <td>
+            Faculty
+          </td>
+          <td>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label program_input">
+            {!! Form::select('Faculty', $faculties, null, ['class'=> 'reg_dropdown form-control', 'id'=>'faculty-select']) !!}
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            Major
+          </td>
+          <td>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label program_input">
+              <select name="Major" id="major-select" class="reg_dropdown form-control"></select>
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            Version
+          </td>
+          <td>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label program_input">
+              <select name="Version" id="version-select" class="reg_dropdown form-control"></select>
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            Select a Stream
+          </td>
+          <td>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label program_input">
+              <select name="Stream" id="stream-select" class="reg_dropdown form-control"></select>
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            Semester You Entered Selected Program
+          </td>
+          <td>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label program_input">
+              {!! Form::select('Semester', $semesters, null, ['class'=> 'reg_dropdown form-control']) !!}
+            </div>
+          </td>
+        </tr>
+
+
+      </table>
+      {!! Form::submit('Submit', ['class'=> 'mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent new_user_submit']) !!}
+      {!! Form::close() !!}
+    </div>
+    <div class="mdl-cell mdl-cell--2-col">
+    </div>
+  </div>
+</div>
+<script>
+  $(document).ready(function(){$('#make_degree').foundation('reveal', 'open')});
+</script>
+@endif
 @endsection
