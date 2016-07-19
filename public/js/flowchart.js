@@ -302,6 +302,17 @@ function initAddCompCourseButton()
 
 
             $(target_sem.find("div.credit_counter")).before(comp_course);
+            $(target_sem.find('div.credit_counter_num' )).text( 'CREDITS: ' + response[1]); 
+
+
+            for (var group in response[2])
+            {
+                if (response[2].hasOwnProperty(group))
+                {
+                    var groupProgress = response[2][group];
+                    var target = $( "td[id='" + group + "']" ).text("" + groupProgress[0] + "/" + groupProgress[1]);
+                }
+            }
 
             initRemoveCourseListener("#remove_"+ response[0]);
             //Dynamically render MDL
@@ -384,6 +395,16 @@ function initAddCompCourseButton()
               comp_course += "</div>";
 
               $(target_sem.find("div.credit_counter")).before(comp_course);
+              $(target_sem.find('div.credit_counter_num' )).text( 'CREDITS: ' + response[1]);
+
+              for (var group in response[2])
+              {
+                  if (response[2].hasOwnProperty(group))
+                  {
+                      var groupProgress = response[2][group];
+                      var target = $( "td[id='" + group + "']" ).text("" + groupProgress[0] + "/" + groupProgress[1]);
+                  }
+              }
 
               initRemoveCourseListener("#remove_" + response[0]);
               //Dynamically render MDL
