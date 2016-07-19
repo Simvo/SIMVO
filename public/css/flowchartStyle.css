@@ -155,6 +155,16 @@
   width: 20%;
 }
 
+.reveal_complementary_courses{
+  /*left: calc(50% - 20px);*/
+  width: 80%;
+  margin-bottom: 10px;
+  padding-top: 5px;
+  height: 40px;
+  font-size: 15px;
+}
+
+
 .schedule_wrap {
   overflow: auto;
   overflow-y: hidden;

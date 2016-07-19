@@ -70,7 +70,7 @@ class FlowchartAJAX extends Controller
     $new_semeterCredits = $this->getSemesterCredits($semester, $degree);
     $progress = $this->generateProgressBar($degree);
 
-    return json_encode([$new_id,$new_semeterCredits, $progress, $course]);
+    return json_encode([$new_id,$new_semeterCredits, $progress, $course, $courseType]);
   }
 
   public function refresh_complementary_courses()

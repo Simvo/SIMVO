@@ -39,6 +39,12 @@ function initAddSemesterListener(target)
       new_semester += '</div>';
       new_semester += '<div class="semester">';
       new_semester += '<h5 style="text-align:center">' + new_sem2 + '</h5>';
+      if($("#required-group-div").length == 0)
+      {
+        new_semester += '<a href="#" id="reveal_complementary_courses_' + new_sem.replace( " ", "" ) + '" data-reveal-id="comp_courses" class="mdl-button mdl-js-button mdl-js-ripple-effect semester-add-comp-course-button reveal_complementary_courses" style="background-color: #aaedff">';
+        new_semester += 'Add Course';
+        new_semester += '</a>';
+      }
       new_semester += '<div class="draggable">';
       new_semester += '<div class="sortable validPosition ' + new_sem2.replace( " ", "" ) + '" id="' + new_sem2 + " " + new_sem2.replace( " ", "" ) + '">';
       new_semester += '<div class="custom_card credit_counter" style="text-align:center;">';
@@ -59,7 +65,7 @@ function initAddSemesterListener(target)
       //add delete listener to new semester
       initDeleteSemesterListener("[id='"+new_sem2+"-delete']");
       initAddSemesterListener("[id='"+last_sem+"-gap']");
-
+      initModalRevealListener("#reveal_complementary_courses_" + new_sem.replace( " ", "" ));
 
 
 
@@ -90,6 +96,12 @@ function initAddSemesterListener(target)
     {
       var new_semester = '<div class="semester">';
       new_semester += '<h5 style="text-align:center">' + new_sem + '</h5>';
+      if($("#required-group-div").length == 0)
+      {
+        new_semester += '<a href="#" id="reveal_complementary_courses_' + new_sem.replace( " ", "" ) + '" data-reveal-id="comp_courses" class="mdl-button mdl-js-button mdl-js-ripple-effect semester-add-comp-course-button reveal_complementary_courses" style="background-color: #aaedff">';
+        new_semester += 'Add Course';
+        new_semester += '</a>';
+      }
       new_semester += '<div class="draggable">';
       new_semester += '<div class="sortable validPosition ' + new_sem.replace( " ", "" ) + '" id="' + new_sem + " " + new_sem.replace( " ", "" ) + '">';
       new_semester += '<div class="custom_card credit_counter" style="text-align:center;">';
@@ -110,6 +122,7 @@ function initAddSemesterListener(target)
 
       //add delete listener to new semester
       initDeleteSemesterListener("[id='"+new_sem+"-delete']");
+      initModalRevealListener("#reveal_complementary_courses_" + new_sem.replace( " ", "" ));
 
       //check if the next semester exists
       var test_sem = new_sem;
@@ -241,9 +254,15 @@ function initAddCompCourseButton()
     {
       if ($(this).hasClass('is-selected'))
       {
-        var new_class = [];
+        selected.push([$(this).find('td.course_number').text(), $(this).find('td.class_name').text(), 'Complementary']);
+        $(this).remove();
+      }
+    });
 
-        selected.push([$(this).find('td.course_number').text(), $(this).find('td.class_name').text()]);
+    $(".elective_table_body tr").each(function() {
+
+      if ($(this).hasClass('is-selected')) {
+        selected.push([$(this).find('td.course_number').text(), $(this).find('td.class_name').text(), 'Elective']);
         $(this).remove();
       }
     });
@@ -258,7 +277,7 @@ function initAddCompCourseButton()
           semester: semester,
           id: 'new schedule',
           courseName: selected[i][0],
-          courseType: 'Complementary',
+          courseType: selected[i][[2]],
         },
         success: function(data) {
           var response = JSON.parse(data);
@@ -268,7 +287,7 @@ function initAddCompCourseButton()
           }
           else
           {
-            var comp_course = "<div class='custom_card Complementary_course' id='" + response[0] + "'>";
+            var comp_course = "<div class='custom_card " + response[4] + "_course' id='" + response[0] + "'>";
             comp_course += "<div class='card_content'>";
             comp_course += response[3]['SUBJECT_CODE'] + " &nbsp " + response[3]['COURSE_NUMBER'] + "&nbsp";
             comp_course += "<button id='menu_for_" + response[0] + "' class='mdl-button mdl-js-button mdl-button--icon'>";
@@ -287,6 +306,7 @@ function initAddCompCourseButton()
             initRemoveCourseListener("#remove_"+ response[0]);
             //Dynamically render MDL
             componentHandler.upgradeDom();
+            refreshDeleteSemester();
           }
         }
       })
@@ -304,19 +324,27 @@ function initAddCompCourseButton()
     $(".add_elec_course_button").click(function() {
       var target_sem = $($($("#course_schedule").find($("a.Complementary_Add_Target"))).parent());
       var semester = $(target_sem.find("div.sortable")).attr("id");
+      console.log(semester);
       semester = semester.split(" ");
       semester = semester[0] + " " + semester[1];
       semester = get_semester(semester);
       var selected = [];
 
 
+      $(".complementary_table_body tr").each(function()
+      {
+        if ($(this).hasClass('is-selected'))
+        {
+          selected.push([$(this).find('td.course_number').text(), $(this).find('td.class_name').text(), 'Complementary']);
+          $(this).remove();
+        }
+      });
 
       $(".elective_table_body tr").each(function() {
 
-        if ($(this).hasClass('is-selected')) {
-          var new_class = [];
-
-          selected.push([$(this).find('td.course_number').text(), $(this).find('td.class_name').text()]);
+        if ($(this).hasClass('is-selected'))
+        {
+          selected.push([$(this).find('td.course_number').text(), $(this).find('td.class_name').text(), 'Elective']);
           $(this).remove();
         }
       });
@@ -331,7 +359,7 @@ function initAddCompCourseButton()
             semester: semester,
             id: 'new schedule',
             courseName: selected[i][0],
-            courseType: 'Elective',
+            courseType: selected[i][2],
           },
           success: function(data) {
             var response = JSON.parse(data);
@@ -342,7 +370,7 @@ function initAddCompCourseButton()
             }
             else
             {
-              var comp_course = "<div class='custom_card Elective_course' id='" + response[0] + "'>";
+              var comp_course = "<div class='custom_card " + response[4] +"_course' id='" + response[0] + "'>";
               comp_course += "<div class='card_content'>";
               comp_course += response[3]['SUBJECT_CODE'] + " &nbsp " + response[3]['COURSE_NUMBER'] + "&nbsp";
               comp_course += "<button id='menu_for_" + response[0] + "' class='mdl-button mdl-js-button mdl-button--icon'>";
@@ -360,6 +388,7 @@ function initAddCompCourseButton()
               initRemoveCourseListener("#remove_" + response[0]);
               //Dynamically render MDL
               componentHandler.upgradeDom();
+              refreshDeleteSemester();
 
             }
           }
@@ -403,9 +432,18 @@ function initAddCompCourseButton()
               }
               else
               {
-                var semester = get_semester_letter(response[3]);
-                semester = semester.split(" ");
-                semester = semester[0] + semester[1];
+                if(response[3]!='Exemption')
+                {
+                  var semester = get_semester_letter(response[3]);
+                  semester = semester.split(" ");
+                  semester = semester[0] + semester[1];
+                }
+                else
+                {
+                  var semester = 'Exemption';
+                }
+
+
                 $("#" + response[0]).remove();
                 $("."+semester).children( '.credit_counter' ).children( '.credit_counter_num' ).text( 'CREDITS: ' + response[1]);
 

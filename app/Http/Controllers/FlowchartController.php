@@ -107,11 +107,10 @@ class FlowchartController extends Controller
     {
       $groupsWithCourses = $courses[0];
     }
-    else
-    {
-      $complementaryCourses[0] = $courses[1];
-      $complementaryCourses[1] = $courses[2];
-    }
+
+    $complementaryCourses[0] = $courses[1];
+    $complementaryCourses[1] = $courses[2];
+
     if($schedule_check == 0)
     {
       $schedule[$this->get_semester($degree->enteringSemester)] = [0,[],$startingSemester];

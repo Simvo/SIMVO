@@ -51,9 +51,9 @@
                       </button> {{ $exemption[3] }}
 
                       <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="menu_for_{{ $exemption[0] }}">
-                        <li class="mdl-menu__item show_flow" id="show_flow_{{ $exemption[0] }}">Show Pre-Requisites</li>
+                        <li class="mdl-menu__item show-prereqs" id="show_prereqs_{{ $exemption[0] }}">Show Pre-Requisites</li>
                         @if($exemption[4]!='Required')
-                          <li class="mdl-menu__item delete" id="remove_{{ $exemption[0] }}">Remove</li>
+                          <li class="mdl-menu__item remove-course" id="remove_{{ $exemption[0] }}">Remove</li>
                         @endif
                       </ul>
                     </div>
@@ -72,6 +72,13 @@
           @foreach($schedule as $key => $classes)
           <div class="semester">
             <h5 style="text-align:center" >{{ $key }}</h5>
+            @if (!is_null($groupsWithCourses))
+              @if (count($groupsWithCourses) == 0)
+                <a href="#" id="reveal_complementary_courses_{{str_replace(" ", "", $key)}}" data-reveal-id="comp_courses" class="mdl-button mdl-js-button mdl-js-ripple-effect semester-add-comp-course-button reveal_complementary_courses" style="background-color: #aaedff">
+                  Add Course
+                </a>
+              @endif
+            @endif
             <div class="draggable" >
               <div class="validPosition sortable {{ str_replace(" ", "", $key) }}" id="{{ $key . " " . str_replace(" ", "", $key) }}" >
                 @foreach($classes[1] as $class)
@@ -105,11 +112,7 @@
                 @endif
               </div>
             </div>
-            @if (!is_null($groupsWithCourses))
-              @if (count($groupsWithCourses) == 0)
-                <a href="#" id="reveal_complementary_courses" data-reveal-id="comp_courses" class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab semester-add-comp-course-button" style="background-color: rgba(243, 156, 18,0.6)"><i class="material-icons" style="color: white">add</i></a>
-              @endif
-            @endif
+
 
           </div>
 
@@ -122,109 +125,80 @@
 
           @endforeach
         </div>
-        @if (!is_null($groupsWithCourses))
-         @if (count($groupsWithCourses) == 0)
-          <div class="mdl-grid" style="padding-bottom: 20px;">
-            <fieldset class="complementary_div mdl-cell mdl-cell--6-col">
-              <legend>COMPLEMENTARY COURSES</legend>
-              <div class="schedule_wrap">
-                <div class="semester">
-                  <div class="draggable complementary_area">
-                    <div class="sortable">
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div id="comp_courses" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
 
-                <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
-                  <div class="mdl-tabs__tab-bar">
-                      <a href="#complementary_tab" class="mdl-tabs__tab is-active">Complementaries</a>
-                      <a href="#elective_tab" class="mdl-tabs__tab">Electives</a>
-                      <a href="#custom_tab" class="mdl-tabs__tab">Custom</a>
+        <div id="comp_courses" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
 
-                  </div>
-                  <div class="mdl-tabs__panel is-active" id="complementary_tab">
-                    @foreach ($complementaryCourses[0] as $key=>$value)
-                      <h4 id="complementary_table_header_{{$key}}" style="text-align:center">{{$key}}  ({{$progress[$key][1]}} credits)</h4>
-                      <table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp complementary_table" id="complementary_table_{{$key}}">
-                        <thead>
-                          <tr>
-                            <th class="mdl-data-table__cell--non-numeric">Course Number</th>
-                            <th class="mdl-data-table__cell--non-numeric">Course Name</th>
-                            <th>Credits</th>
-                          </tr>
-                        </thead>
+          <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
+            <div class="mdl-tabs__tab-bar">
+                <a href="#complementary_tab" class="mdl-tabs__tab is-active">Complementaries</a>
+                <a href="#elective_tab" class="mdl-tabs__tab">Electives</a>
+                <a href="#custom_tab" class="mdl-tabs__tab">Custom</a>
 
-                        <tbody class="complementary_table_body tech_comp_table">
-                        @foreach ($value as $course)
-                        <tr id="{{ $course[0] }}{{ $course[1] }}">
-                          <td class="mdl-data-table__cell--non-numeric course_number">{{$course[0]}} {{ $course[1] }}</td>
-                          <td class="mdl-data-table__cell--non-numeric class_name">{{ $course[4] }}</td>
-                          <td>{{ $course[2] }}</td>
-                        </tr>
-                        @endforeach
-                        </tbody>
-                      </table>
-                      @endforeach
-
-                      <button type="button" class="mdl-button mdl-js-button mdl-button--raised add_comp_course_button">Add</button>
-                      <a class="close-reveal-modal" aria-label="Close">&#215;</a>
-                  </div>
-                  <div class="mdl-tabs__panel" id="elective_tab">
-                    @foreach ($complementaryCourses[1] as $key=>$value)
-                      <h4 id="elective_table_header_{{$key}}" style="text-align:center">{{$key}}  ({{$progress[$key][1]}} credits)</h4>
-                      <table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp elective_table" id="elective_table_{{$key}}">
-                        <thead>
-                          <tr>
-                            <th class="mdl-data-table__cell--non-numeric">Course Number</th>
-                            <th class="mdl-data-table__cell--non-numeric">Course Name</th>
-                            <th>Credits</th>
-                          </tr>
-                        </thead>
-
-                        <tbody class="elective_table_body tech_comp_table">
-                        @foreach ($value as $course)
-                        <tr id="{{ $course[0] }}">
-                          <td class="mdl-data-table__cell--non-numeric course_number">{{$course[0]}} {{ $course[1] }}</td>
-                          <td class="mdl-data-table__cell--non-numeric class_name">{{ $course[4] }}</td>
-                          <td>{{ $course[2] }}</td>
-                        </tr>
-                        @endforeach
-                        </tbody>
-                      </table>
-                      @endforeach
-
-                      <button type="button" class="mdl-button mdl-js-button mdl-button--raised add_elec_course_button">Add</button>
-                      <a class="close-reveal-modal" aria-label="Close">&#215;</a>
-                    </div>
-                    <div class="mdl-tabs__panel" id="custom_tab">
-                    </div>
-                </div>
-              </div>
-
-
-              </fieldset>
-
-              <fieldset class="elective_div mdl-cell mdl-cell--6-col">
-                <legend>ELECTIVES</legend>
-
-                <div class="schedule_wrap">
-                  <div class="semester">
-                    <div class="draggable elective_area">
-                      <div class="sortable">
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-
-
-
-              </fieldset>
             </div>
-          @else
-            <div class="mdl-grid" style="padding-bottom: 50px;">
+            <div class="mdl-tabs__panel is-active" id="complementary_tab">
+              @foreach ($complementaryCourses[0] as $key=>$value)
+                <h4 id="complementary_table_header_{{$key}}" style="text-align:center">{{$key}}  ({{$progress[$key][1]}} credits)</h4>
+                <table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp complementary_table" id="complementary_table_{{$key}}">
+                  <thead>
+                    <tr>
+                      <th class="mdl-data-table__cell--non-numeric">Course Number</th>
+                      <th class="mdl-data-table__cell--non-numeric">Course Name</th>
+                      <th>Credits</th>
+                    </tr>
+                  </thead>
+
+                  <tbody class="complementary_table_body tech_comp_table">
+                  @foreach ($value as $course)
+                  <tr id="{{ $course[0] }}{{ $course[1] }}">
+                    <td class="mdl-data-table__cell--non-numeric course_number">{{$course[0]}} {{ $course[1] }}</td>
+                    <td class="mdl-data-table__cell--non-numeric class_name">{{ $course[4] }}</td>
+                    <td>{{ $course[2] }}</td>
+                  </tr>
+                  @endforeach
+                  </tbody>
+                </table>
+                @endforeach
+
+                <button type="button" class="mdl-button mdl-js-button mdl-button--raised add_comp_course_button">Add</button>
+                <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+            </div>
+            <div class="mdl-tabs__panel" id="elective_tab">
+              @foreach ($complementaryCourses[1] as $key=>$value)
+                <h4 id="elective_table_header_{{$key}}" style="text-align:center">{{$key}}  ({{$progress[$key][1]}} credits)</h4>
+                <table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp elective_table" id="elective_table_{{$key}}">
+                  <thead>
+                    <tr>
+                      <th class="mdl-data-table__cell--non-numeric">Course Number</th>
+                      <th class="mdl-data-table__cell--non-numeric">Course Name</th>
+                      <th>Credits</th>
+                    </tr>
+                  </thead>
+
+                  <tbody class="elective_table_body tech_comp_table">
+                  @foreach ($value as $course)
+                  <tr id="{{ $course[0] }}">
+                    <td class="mdl-data-table__cell--non-numeric course_number">{{$course[0]}} {{ $course[1] }}</td>
+                    <td class="mdl-data-table__cell--non-numeric class_name">{{ $course[4] }}</td>
+                    <td>{{ $course[2] }}</td>
+                  </tr>
+                  @endforeach
+                  </tbody>
+                </table>
+                @endforeach
+
+                <button type="button" class="mdl-button mdl-js-button mdl-button--raised add_elec_course_button">Add</button>
+                <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+              </div>
+              <div class="mdl-tabs__panel" id="custom_tab">
+              </div>
+          </div>
+        </div>
+
+
+
+          @if(!is_null($groupsWithCourses))
+            @if (count($groupsWithCourses) != 0)
+            <div id="required-group-div" class="mdl-grid" style="padding-bottom: 50px;">
               <div class="group-container">
                 @foreach ($groupsWithCourses as $key=>$value)
                   <div class="group-row">

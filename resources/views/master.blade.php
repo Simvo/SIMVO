@@ -9,6 +9,10 @@
     <meta property="og:image" content="http://www.international.gouv.qc.ca/Content/Users/Documents/FicheContenu/263.jpg"/>
   	<meta property="og:type" content="website"/>
     <title>S!MVO</title>
+    <!-- Stylesheets for Material Design and FontAwesome-->
+    <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.red-indigo.min.css"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <!-- Stylesheets -->
     <link href="{{ asset('css/foundation.css')}}" rel="stylesheet" type="text/css">
     <link href="{{ asset('css/BootstrapStyle.css') }}" rel="stylesheet" type="text/css" >
@@ -19,10 +23,6 @@
     <link href="{{ asset('css/landing.css')}}" rel="stylesheet" type="text/css">
     <link href="{{ asset('css/flowchartGroup.css') }}" rel="stylesheet" type="text/css" >
     <link href="{{ asset('css/CustomCard.css')}}" rel="stylesheet" type="text/css">
-    <!-- Stylesheets for Material Design and FontAwesome-->
-    <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.red-indigo.min.css"/>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <!-- Javascript libraries -->
     <script src="https://code.jquery.com/jquery-2.2.3.min.js"   integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo="   crossorigin="anonymous"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
