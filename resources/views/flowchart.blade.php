@@ -71,7 +71,7 @@
           <!-- List of Semesters -->
           @foreach($schedule as $key => $classes)
           <div class="semester">
-            <h5 style="text-align:center" >{{ $key }}</h5>
+            <h5 style="text-align:center" class="semester-header" id="{{str_replace(" ", "", $key)}}_header">{{ $key }}</h5>
             @if (!is_null($groupsWithCourses))
               @if (count($groupsWithCourses) == 0)
                 <a href="#" id="reveal_complementary_courses_{{str_replace(" ", "", $key)}}" data-reveal-id="comp_courses" class="mdl-button mdl-js-button mdl-js-ripple-effect semester-add-comp-course-button reveal_complementary_courses" style="background-color: #aaedff">
@@ -124,6 +124,36 @@
           @endif
 
           @endforeach
+        </div>
+
+        <div id="add_course_tutorial" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+          <h3 id="tutorial-header"> Congratulations on placing your required courses!</h3>
+          <h5>
+            Now you can start choosing Complementary Courses and Electives
+          </h5>
+          <div class="tutorial-div">
+            <h5>1) Choose your desired semester </h5>
+            <img src="tutorial1.png" alt="" />
+            <br>
+          </div>
+          <div class="tutorial-div">
+            <h5> 2) Select the courses you wish to add </h5>
+            <img src="tutorial2.png" alt="" />
+            <br>
+          </div>
+          <div class="tutorial-div">
+            <h5> 3) Click Add </h5>
+            <img src="tutorial3.png" alt="" />
+            <br>
+          </div>
+          <div class="tutorial-div">
+            <h5> BAM! You're done!</h5>
+            <img src="tutorial4.png" alt="" />
+          </div>
+
+
+
+
         </div>
 
         <div id="comp_courses" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">

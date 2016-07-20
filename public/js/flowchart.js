@@ -6,10 +6,29 @@ $(document).ready(function()
   initDeleteSemesterListener(".delete-semester");
   initAddSemesterListener(".add-semester");
   initRemoveCourseListener(".remove-course");
-  initModalRevealListener(".semester-add-comp-course-button");
+  initComplementaryModalRevealListener(".semester-add-comp-course-button");
 });
 
-function initModalRevealListener(target)
+function startAddCourseTutorial()
+{
+   $('#add_course_tutorial').foundation('reveal','open');
+   //Add all the add course buttons
+   var semesters = $(".semester-header");
+   for( var i = 0; i < semesters.length; i++)
+   {
+     var target = $(semesters[i]);
+     var id = target.attr("id").substring(0, target.attr("id").length - 7);
+     console.log(id);
+     var html = '<a href="#" id="reveal_complementary_courses_' + id + '" data-reveal-id="comp_courses" class="mdl-button mdl-js-button mdl-js-ripple-effect semester-add-comp-course-button reveal_complementary_courses" style="background-color: #aaedff">';
+     html += 'Add Course';
+     html += '</a>';
+     target.after(html);
+   }
+   initComplementaryModalRevealListener(".semester-add-comp-course-button");
+
+}
+
+function initComplementaryModalRevealListener(target)
 {
   $(target).click(function(e){
     $($("#course_schedule").find($("a.Complementary_Add_Target"))).removeClass("Complementary_Add_Target");
@@ -38,7 +57,7 @@ function initAddSemesterListener(target)
       new_semester += '<a href="#" id="' + last_sem + '-gap" class="add-semester mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab" style="background-color: #2980b9;"><i class="material-icons" style="color: white">add</i></a>';
       new_semester += '</div>';
       new_semester += '<div class="semester">';
-      new_semester += '<h5 style="text-align:center">' + new_sem2 + '</h5>';
+      new_semester += '<h5 style="text-align:center" class="semester-header" id="' + new_sem2.replace( " ", "" ) + '_header">' + new_sem2 + '</h5>';
       if($("#required-group-div").length == 0)
       {
         new_semester += '<a href="#" id="reveal_complementary_courses_' + new_sem.replace( " ", "" ) + '" data-reveal-id="comp_courses" class="mdl-button mdl-js-button mdl-js-ripple-effect semester-add-comp-course-button reveal_complementary_courses" style="background-color: #aaedff">';
@@ -65,7 +84,7 @@ function initAddSemesterListener(target)
       //add delete listener to new semester
       initDeleteSemesterListener("[id='"+new_sem2+"-delete']");
       initAddSemesterListener("[id='"+last_sem+"-gap']");
-      initModalRevealListener("#reveal_complementary_courses_" + new_sem.replace( " ", "" ));
+      initComplementaryModalRevealListener("#reveal_complementary_courses_" + new_sem.replace( " ", "" ));
 
 
 
@@ -95,7 +114,7 @@ function initAddSemesterListener(target)
     else
     {
       var new_semester = '<div class="semester">';
-      new_semester += '<h5 style="text-align:center">' + new_sem + '</h5>';
+      new_semester += '<h5 style="text-align:center" class="semester-header" id="' + new_sem.replace( " ", "" ) + '_header">' + new_sem + '</h5>';
       if($("#required-group-div").length == 0)
       {
         new_semester += '<a href="#" id="reveal_complementary_courses_' + new_sem.replace( " ", "" ) + '" data-reveal-id="comp_courses" class="mdl-button mdl-js-button mdl-js-ripple-effect semester-add-comp-course-button reveal_complementary_courses" style="background-color: #aaedff">';
@@ -122,7 +141,7 @@ function initAddSemesterListener(target)
 
       //add delete listener to new semester
       initDeleteSemesterListener("[id='"+new_sem+"-delete']");
-      initModalRevealListener("#reveal_complementary_courses_" + new_sem.replace( " ", "" ));
+      initComplementaryModalRevealListener("#reveal_complementary_courses_" + new_sem.replace( " ", "" ));
 
       //check if the next semester exists
       var test_sem = new_sem;
@@ -302,7 +321,7 @@ function initAddCompCourseButton()
 
 
             $(target_sem.find("div.credit_counter")).before(comp_course);
-            $(target_sem.find('div.credit_counter_num' )).text( 'CREDITS: ' + response[1]); 
+            $(target_sem.find('div.credit_counter_num' )).text( 'CREDITS: ' + response[1]);
 
 
             for (var group in response[2])
