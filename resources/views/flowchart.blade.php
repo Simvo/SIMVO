@@ -156,7 +156,7 @@
 
         </div>
         @if(!is_null($complementaryCourses[0]) && !is_null($complementaryCourses[1]))
-          @if (count($complementaryCourses[0]) != 0 && count($complementaryCourses[1]) != 0)
+
         <div id="comp_courses" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
 
           <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
@@ -256,7 +256,7 @@
               </div>
           </div>
         </div>
-        @endif
+        
         @endif
 
 
