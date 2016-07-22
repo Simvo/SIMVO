@@ -213,6 +213,11 @@
   margin: auto;
 }
 
+.required_table{
+  margin:auto;
+
+}
+
 .reveal-modal {
   height: 80%;
   overflow: scroll;

@@ -13,17 +13,17 @@ function startAddCourseTutorial()
 {
    $('#add_course_tutorial').foundation('reveal','open');
    //Add all the add course buttons
-   var semesters = $(".semester-header");
-   for( var i = 0; i < semesters.length; i++)
-   {
-     var target = $(semesters[i]);
-     var id = target.attr("id").substring(0, target.attr("id").length - 7);
-     var html = '<a href="#" id="reveal_complementary_courses_' + id + '" data-reveal-id="comp_courses" class="mdl-button mdl-js-button mdl-js-ripple-effect semester-add-comp-course-button reveal_complementary_courses" style="background-color: #aaedff">';
-     html += 'Add Course';
-     html += '</a>';
-     target.after(html);
-   }
-   initComplementaryModalRevealListener(".semester-add-comp-course-button");
+  //  var semesters = $(".semester-header");
+  //  for( var i = 0; i < semesters.length; i++)
+  //  {
+  //    var target = $(semesters[i]);
+  //    var id = target.attr("id").substring(0, target.attr("id").length - 7);
+  //    var html = '<a href="#" id="reveal_complementary_courses_' + id + '" data-reveal-id="comp_courses" class="mdl-button mdl-js-button mdl-js-ripple-effect semester-add-comp-course-button reveal_complementary_courses" style="background-color: #aaedff">';
+  //    html += 'Add Course';
+  //    html += '</a>';
+  //    target.after(html);
+  //  }
+  //  initComplementaryModalRevealListener(".semester-add-comp-course-button");
 
 }
 
@@ -267,6 +267,14 @@ function initAddCompCourseButton()
 
     var selected = [];
 
+    $(".required_table_body tr").each(function()
+    {
+      if ($(this).hasClass('is-selected'))
+      {
+        selected.push([$(this).find('td.course_number').text(), $(this).find('td.class_name').text(), 'Required']);
+        $(this).remove();
+      }
+    });
 
     $(".complementary_table_body tr").each(function()
     {
