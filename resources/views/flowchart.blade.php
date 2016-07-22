@@ -81,6 +81,7 @@
             @endif
             <div class="draggable" >
               <div class="validPosition sortable {{ str_replace(" ", "", $key) }}" id="{{ $key . " " . str_replace(" ", "", $key) }}" >
+
                 @foreach($classes[1] as $class)
                   <div class="custom_card {{ $class[4] }}_course" id="{{ $class[0] }}">
                     <div class="card_content">
@@ -98,6 +99,7 @@
                     </div>
                   </div>
                 @endforeach
+
                 <div class="custom_card credit_counter" style="text-align:center;">
                   <div class="credit_counter_num" style="display: table-cell; vertical-align: middle; font-size:15px">
                     CREDITS: {{ $classes[0] }}
@@ -155,7 +157,8 @@
 
 
         </div>
-
+        @if(!is_null($complementaryCourses[0]) && !is_null($complementaryCourses[1]))
+          @if (count($complementaryCourses[0]) != 0 && count($complementaryCourses[1]) != 0)
         <div id="comp_courses" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
 
           <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
@@ -166,6 +169,7 @@
 
             </div>
             <div class="mdl-tabs__panel is-active" id="complementary_tab">
+
               @foreach ($complementaryCourses[0] as $key=>$value)
                 <h4 id="complementary_table_header_{{$key}}" style="text-align:center">{{$key}}  ({{$progress[$key][1]}} credits)</h4>
                 <table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp complementary_table" id="complementary_table_{{$key}}">
@@ -223,6 +227,8 @@
               </div>
           </div>
         </div>
+        @endif
+        @endif
 
 
 
@@ -243,19 +249,8 @@
                                 <i class="material-icons">arrow_drop_down</i>
                               </button>
                               <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="menu_for_{{ $course[0] }}{{ $course[1] }}">
-                                <li class="mdl-menu__item show-prereqs" id="show_prereqs_{{ $class[0] }}">Show Pre-Requisites</li>
+                                <li class="mdl-menu__item show-prereqs" id="show_prereqs_{{ $course[0] }}">Show Pre-Requisites</li>
                               </ul>
-
-                              <!-- <button id="menu_for_{{ $class[0] }}" class="mdl-button mdl-js-button mdl-button--icon">
-                                <i class="material-icons">arrow_drop_down</i>
-                              </button> {{ $class[3] }}
-
-                              <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="menu_for_{{ $class[0] }}">
-                                <li class="mdl-menu__item show-prereqs" id="show_prereqs_{{ $class[0] }}">Show Pre-Requisites</li>
-                                @if($class[4]!='Required')
-                                  <li class="mdl-menu__item remove-course" id="remove_{{ $class[0] }}">Remove</li>
-                                @endif
-                              </ul> -->
                               {{ $course[2] }}
                             </div>
                           </div>

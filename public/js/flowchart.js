@@ -18,7 +18,6 @@ function startAddCourseTutorial()
    {
      var target = $(semesters[i]);
      var id = target.attr("id").substring(0, target.attr("id").length - 7);
-     console.log(id);
      var html = '<a href="#" id="reveal_complementary_courses_' + id + '" data-reveal-id="comp_courses" class="mdl-button mdl-js-button mdl-js-ripple-effect semester-add-comp-course-button reveal_complementary_courses" style="background-color: #aaedff">';
      html += 'Add Course';
      html += '</a>';
@@ -354,7 +353,6 @@ function initAddCompCourseButton()
     $(".add_elec_course_button").click(function() {
       var target_sem = $($($("#course_schedule").find($("a.Complementary_Add_Target"))).parent());
       var semester = $(target_sem.find("div.sortable")).attr("id");
-      console.log(semester);
       semester = semester.split(" ");
       semester = semester[0] + " " + semester[1];
       semester = get_semester(semester);
