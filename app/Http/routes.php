@@ -27,11 +27,20 @@ Route::get('/auth/registration', ['as'=>'registration', 'uses'=>'RegistrationCon
 
 Route::get('/flowchart', ['as'=>'flowchart', 'middleware' => 'auth', 'uses'=>'FlowchartController@generateFlowChart']);
 
+Route::get('password/email', 'Auth\PasswordController@getEmail');
+
+Route::get('password/reset/{token}', 'Auth\PasswordController@getReset');
+
+
 /* POST */
 
 Route::post('auth/registration', ['as'=>'registrationForm', 'uses'=>'RegistrationController@newUserRegistration']);
 
 Route::post('/auth/login', ['as'=>'login', 'uses'=>'RegistrationController@login']);
+
+Route::post('password/email', 'Auth\PasswordController@postEmail');
+
+Route::post('password/reset', 'Auth\PasswordController@postReset');
 
 /* AJAX */
 
@@ -41,8 +50,6 @@ Route::post('/flowchart/move-course', 'FlowchartAJAX@move_course');
 
 Route::post('/flowchart/add-course-to-Schedule', 'FlowchartAJAX@add_course_to_Schedule');
 
-
 Route::post('/flowchart/check-course-availability','FlowchartAJAX@vsb_checkCourseAvailablity');
 
 Route::post('/flowchart/add_complementary_course_to_Flowchart', 'FlowchartAJAX@add_complementary_course_to_Flowchart');
-

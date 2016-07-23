@@ -56,6 +56,8 @@
           @yield('login')
           @yield('registration')
           @yield('flowchart')
+          @yield('passwordforgot')
+          @yield('passwordreset')
         </div>
       </main>
     </div>

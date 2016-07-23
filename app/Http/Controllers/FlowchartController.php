@@ -34,12 +34,15 @@ class FlowchartController extends Controller
       //Get User's entering semester
       $startingSemester = $user->enteringSemester;
 
-      //load excpemtions
+      //load exceptions
       $exemptions = $this->getExemptions($user);
+
 
       $schedule_check = Schedule::where('user_id', $user->id)
                         ->where('semester', "<>", 'exemption')
                         ->count();
+
+
       $userSetupComplete = $this->checkUserSetupStatus($user);
 
       //all courses in the users program. Index 0 is required, 1 is complementaries, 2 is electives.

@@ -1,2 +1,5 @@
-
+.env
 prepros.cfg
+.gitignore
+composer
+vendor/
