@@ -48,11 +48,10 @@ class FlowchartController extends Controller
         'schedule'=> [],
         'progress' => [],
         'groupsWithCourses' => null,
-        'complementaryCourses' => null,
         'exemptions' => [],
         'startingSemester' => "",
         'faculties'=> $faculties,
-        'semesters' => $semesters
+        'semesters' => $semesters,
       ]);
     }
     else
@@ -70,7 +69,6 @@ class FlowchartController extends Controller
         'schedule'=> $flowchart['Schedule'],
         'progress' => $flowchart['Progress'],
         'groupsWithCourses' => $flowchart['Groups With Courses'],
-        'complementaryCourses' => $flowchart['Complementary Courses'],
         'course_errors' => $flowchart['Errors'],
         'exemptions' => $flowchart['Exemptions'],
         'startingSemester' => $flowchart['Starting Semester']
@@ -99,17 +97,12 @@ class FlowchartController extends Controller
 
     $userSetupComplete = $this->checkUserSetupStatus($degree);
 
-    //all courses in the users program. Index 0 is required, 1 is complementaries, 2 is electives.
+    //all courses in the users program. 
     $courses = $this->getGroupsWithCourses($degree, true);
+    $groupsWithCourses['Required'] = $courses[0];
+    $groupsWithCourses['Complementary'] = $courses[1];
+    $groupsWithCourses['Elective'] = $courses[2];
 
-    //If (user has not yet setup courses or recommended Stream is not provided)
-    if(!$userSetupComplete)
-    {
-      $groupsWithCourses = $courses[0];
-    }
-
-    $complementaryCourses[0] = $courses[1];
-    $complementaryCourses[1] = $courses[2];
 
     if($schedule_check == 0)
     {
@@ -125,12 +118,12 @@ class FlowchartController extends Controller
     $startingSemester = $this->get_semester($startingSemester);
     $errors = $this->getErrors($user);
 
+
     return [
       'Schedule'=> $schedule,
       'Progress' => $progress,
       'Exemptions' => $exemptions,
       'Groups With Courses' => $groupsWithCourses,
-      'Complementary Courses'=> $complementaryCourses,
       'Starting Semester' => $startingSemester,
       'Errors' => $errors
     ];
