@@ -83,6 +83,7 @@ class FlowchartAJAX extends Controller
 
     $degree = Session::get('degree');
 
+
     $groups = $this->getComplementaryGroups($degree); //complementaries index 0 is complementary, 1 is electives
 
     for($i = 0; $i < 2; $i++)
@@ -92,8 +93,11 @@ class FlowchartAJAX extends Controller
         $groups[$i][$key] = $this->getCoursesInGroup($degree, $key, true);
       }
     }
+    $returnGroups['Complementary'] = $groups[0];
+    $returnGroups['Elective'] = $groups[1];
+    $groupCredits = $this->getGroupsWithCredits($degree);
 
-    return json_encode($groups);
+    return json_encode([$returnGroups, $groupCredits]);
   }
 
 public function add_complementary_course_to_Flowchart(Request $request)
