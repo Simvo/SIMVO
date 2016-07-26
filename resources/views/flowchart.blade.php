@@ -166,9 +166,9 @@
               @foreach($groupsWithCourses as $tabtitle => $Courses)
                 @if(!is_null($Courses))
                   @if($tabtitle == 'Complementary')
-                    <a href="#{{$tabtitle}}_tab" class="mdl-tabs__tab is-active">{{$tabtitle}}</a>
+                    <a href="#{{$tabtitle}}_tab_panel" id="{{$tabtitle}}_tab" class="mdl-tabs__tab is-active">{{$tabtitle}}</a>
                   @else
-                    <a href="#{{$tabtitle}}_tab" class="mdl-tabs__tab">{{$tabtitle}}</a>
+                    <a href="#{{$tabtitle}}_tab_panel" id="{{$tabtitle}}_tab" class="mdl-tabs__tab">{{$tabtitle}}</a>
                   @endif
                 @endif
               @endforeach
@@ -178,9 +178,9 @@
 
             @foreach($groupsWithCourses as $tabtitle => $Courses)
             @if($tabtitle == 'Complementary')
-              <div class="mdl-tabs__panel is-active" id="{{$tabtitle}}_tab">
+              <div class="mdl-tabs__panel is-active" id="{{$tabtitle}}_tab_panel">
             @else
-              <div class="mdl-tabs__panel" id="{{$tabtitle}}_tab">
+              <div class="mdl-tabs__panel" id="{{$tabtitle}}_tab_panel">
             @endif
 
               @if(!is_null($Courses))
