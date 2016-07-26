@@ -70,7 +70,7 @@ class FlowchartAJAX extends Controller
     $new_semeterCredits = $this->getSemesterCredits($semester, $degree);
     $progress = $this->generateProgressBar($degree);
 
-    return json_encode([$new_id,$new_semeterCredits, $progress, $course, $courseType]);
+    return json_encode([$new_id,$new_semeterCredits, $progress]);
   }
 
   public function refresh_complementary_courses()
@@ -83,15 +83,17 @@ class FlowchartAJAX extends Controller
 
     $degree = Session::get('degree');
 
+    $groups = $this->getComplementaryGroups($degree); //complementaries index 0 is complementary, 1 is electives
 
-    $groups = $this->getGroupsWithCourses($degree, true);
+    for($i = 0; $i < 2; $i++)
+    {
+      foreach($groups[$i] as $key=>$value)
+      {
+        $groups[$i][$key] = $this->getCoursesInGroup($degree, $key, true);
+      }
+    }
 
-    $returnGroups['Required'] = $groups[0];
-    $returnGroups['Complementary'] = $groups[1];
-    $returnGroups['Elective'] = $groups[2];
-    $groupCredits = $this->getGroupsWithCredits($degree);
-
-    return json_encode([$returnGroups, $groupCredits]);
+    return json_encode($groups);
   }
 
 public function add_complementary_course_to_Flowchart(Request $request)
@@ -124,7 +126,7 @@ public function delete_course_from_schedule(Request $request)
 
   $courseID = $request->id;
 
-  $course = Schedule::find($courseID);
+  $course = Schedule::where('id', $courseID);
 
   $semester = $course->first()->semester;
 
