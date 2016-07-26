@@ -60,6 +60,34 @@ function renderSortable()
                 }
             }
             refreshDeleteSemester();
+
+            //Check if add complementary tutorial should start
+            if($('#'+ui.item.context.id).hasClass('Required_course'))
+            {
+              var startTutorial = false;
+              var reqgroups = $("#required-group-div").find("div.sortable");
+              for(var i = 0; i < reqgroups.length; i++)
+              {
+                if($(reqgroups[i]).children().length != 0)
+                {
+                  startTutorial = false;
+                  break;
+                }
+                else
+                {
+                    startTutorial = true;
+                }
+              }
+              if(startTutorial)
+              {
+                console.log("start dat tutorial!");
+                $("#required-group-div").animate({'height': '0px'},{duration: 500, queue: false } );
+                $("#required-group-div").animate({'padding-bottom': '0px'}, {duration: 500, queue: false });
+                $("#required-group-div").animate({'opacity': 0}, {duration: 500, queue: false, complete: function (){$("#required-group-div").remove();}});
+                startAddCourseTutorial();
+              }
+
+            }
           }
         })
       }

@@ -2,11 +2,24 @@ $(document).ready(function()
 {
   renderSortable();
   initAddCompCourseButton();
-  initAddElectiveCourseButton();
   initDeleteSemesterListener(".delete-semester");
   initAddSemesterListener(".add-semester");
-  initRemoveCourseListener(".remove-course")
+  initRemoveCourseListener(".remove-course");
+  initComplementaryModalRevealListener(".semester-add-comp-course-button");
 });
+
+function startAddCourseTutorial()
+{
+   $('#add_course_tutorial').foundation('reveal','open');
+}
+
+function initComplementaryModalRevealListener(target)
+{
+  $(target).click(function(e){
+    $($("#course_schedule").find($("a.Complementary_Add_Target"))).removeClass("Complementary_Add_Target");
+    $(this).addClass("Complementary_Add_Target");
+  });
+}
 
 function initAddSemesterListener(target)
 {
@@ -29,7 +42,13 @@ function initAddSemesterListener(target)
       new_semester += '<a href="#" id="' + last_sem + '-gap" class="add-semester mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab" style="background-color: #2980b9;"><i class="material-icons" style="color: white">add</i></a>';
       new_semester += '</div>';
       new_semester += '<div class="semester">';
-      new_semester += '<h5 style="text-align:center">' + new_sem2 + '</h5>';
+      new_semester += '<h5 style="text-align:center" class="semester-header" id="' + new_sem2.replace( " ", "" ) + '_header">' + new_sem2 + '</h5>';
+      if($("#required-group-div").length == 0)
+      {
+        new_semester += '<a href="#" id="reveal_complementary_courses_' + new_sem.replace( " ", "" ) + '" data-reveal-id="comp_courses" class="mdl-button mdl-js-button mdl-js-ripple-effect semester-add-comp-course-button reveal_complementary_courses" style="background-color: #aaedff">';
+        new_semester += 'Add Course';
+        new_semester += '</a>';
+      }
       new_semester += '<div class="draggable">';
       new_semester += '<div class="sortable validPosition ' + new_sem2.replace( " ", "" ) + '" id="' + new_sem2 + " " + new_sem2.replace( " ", "" ) + '">';
       new_semester += '<div class="custom_card credit_counter" style="text-align:center;">';
@@ -50,7 +69,7 @@ function initAddSemesterListener(target)
       //add delete listener to new semester
       initDeleteSemesterListener("[id='"+new_sem2+"-delete']");
       initAddSemesterListener("[id='"+last_sem+"-gap']");
-
+      initComplementaryModalRevealListener("#reveal_complementary_courses_" + new_sem.replace( " ", "" ));
 
 
 
@@ -80,7 +99,13 @@ function initAddSemesterListener(target)
     else
     {
       var new_semester = '<div class="semester">';
-      new_semester += '<h5 style="text-align:center">' + new_sem + '</h5>';
+      new_semester += '<h5 style="text-align:center" class="semester-header" id="' + new_sem.replace( " ", "" ) + '_header">' + new_sem + '</h5>';
+      if($("#required-group-div").length == 0)
+      {
+        new_semester += '<a href="#" id="reveal_complementary_courses_' + new_sem.replace( " ", "" ) + '" data-reveal-id="comp_courses" class="mdl-button mdl-js-button mdl-js-ripple-effect semester-add-comp-course-button reveal_complementary_courses" style="background-color: #aaedff">';
+        new_semester += 'Add Course';
+        new_semester += '</a>';
+      }
       new_semester += '<div class="draggable">';
       new_semester += '<div class="sortable validPosition ' + new_sem.replace( " ", "" ) + '" id="' + new_sem + " " + new_sem.replace( " ", "" ) + '">';
       new_semester += '<div class="custom_card credit_counter" style="text-align:center;">';
@@ -101,6 +126,7 @@ function initAddSemesterListener(target)
 
       //add delete listener to new semester
       initDeleteSemesterListener("[id='"+new_sem+"-delete']");
+      initComplementaryModalRevealListener("#reveal_complementary_courses_" + new_sem.replace( " ", "" ));
 
       //check if the next semester exists
       var test_sem = new_sem;
@@ -126,6 +152,8 @@ function initAddSemesterListener(target)
   });
 
 }
+
+
 
 
 
@@ -217,59 +245,88 @@ function initAddCompCourseButton()
 {
   $(".add_comp_course_button").click(function()
   {
+    var target_sem = $($($("#course_schedule").find($("a.Complementary_Add_Target"))).parent());
+    var semester = $(target_sem.find("div.sortable")).attr("id");
+    semester = semester.split(" ");
+    semester = semester[0] + " " + semester[1];
+    semester = get_semester(semester);
+    var courseType = ['Required', 'Complementary', 'Elective'];
     var selected = [];
 
-
-    $(".complementary_table_body tr").each(function()
+    for(var i = 0; i < 3; i++)
     {
-      if ($(this).hasClass('is-selected'))
+      $("." + courseType[i] +"_table_body tr").each(function()
       {
-        var new_class = [];
-
-        selected.push([$(this).find('td.course_number').text(), $(this).find('td.class_name').text()]);
-        $(this).remove();
+        if ($(this).hasClass('is-selected'))
+        {
+          selected.push([$(this).find('td.course_number').text(), $(this).find('td.class_name').text(), courseType[i] ]);
+          $(this).remove();
+        }
+      });
+      for(var k = 0; k < $("." + courseType[i] +"_table_body").length; k++)
+      {
+        var target = $($("." + courseType[i] +"_table_body")[k]);
+        if(target.length != 0)
+        {
+          var parent = target.parent().attr("id");
+          var id = parent.substring(courseType[i].length + 7, parent.length);
+          $("[id='" + courseType[i] +"_table_header_"+id+"']").remove();
+          $("[id='" + courseType[i] +"_table_"+id+"']").remove();
+        }
       }
-    });
+    }
+
 
     for (var i = 0; i < selected.length; i++)
     {
 
       $.ajax({
         type: "post",
-        url: "/flowchart/add_complementary_course_to_Flowchart",
+        url: "/flowchart/add-course-to-Schedule",
         data: {
-          semester: "complementary_course",
+          semester: semester,
           id: 'new schedule',
           courseName: selected[i][0],
+          courseType: selected[i][[2]],
         },
         success: function(data) {
           var response = JSON.parse(data);
-          console.log(response);
-
           if (response === 'Error')
           {
             //error handler
           }
           else
           {
-            var comp_course = "<div class='custom_card Complementary_course add-to-schedule' id='" + response['SUBJECT_CODE'] + " " + response['COURSE_NUMBER'] + "'>";
+            var comp_course = "<div class='custom_card " + response[4] + "_course' id='" + response[0] + "'>";
             comp_course += "<div class='card_content'>";
-            comp_course += response['SUBJECT_CODE'] + " " + response['COURSE_NUMBER'];
-            comp_course += "<button id='menu_for_" + response['SUBJECT_CODE'] + " " + response['COURSE_NUMBER']  + "' class='mdl-button mdl-js-button mdl-button--icon'>";
+            comp_course += response[3]['SUBJECT_CODE'] + " &nbsp " + response[3]['COURSE_NUMBER'] + "&nbsp";
+            comp_course += "<button id='menu_for_" + response[0] + "' class='mdl-button mdl-js-button mdl-button--icon'>";
             comp_course += "<i class='material-icons'>arrow_drop_down</i>";
-            comp_course += "</button>" + response['COURSE_CREDITS'];
-            comp_course += "<ul class='mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect' for='menu_for_" + response['SUBJECT_CODE'] + " " + response['COURSE_NUMBER'] + "''>";
-            comp_course += "<li class='mdl-menu__item show-prereqs' id='show_prereqs_" + response['SUBJECT_CODE'] + "_" + response['COURSE_NUMBER'] + "'>Show Pre-Requisites</li>";
-            comp_course += "<li class='mdl-menu__item remove-course' id='remove_" + response['SUBJECT_CODE'] + "_" + response['COURSE_NUMBER'] + "'>Remove</li>";
+            comp_course += "</button>" + " " + response[3]['COURSE_CREDITS'];
+            comp_course += "<ul class='mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect' for='menu_for_" + response[0] + "''>";
+            comp_course += "<li class='mdl-menu__item show-prereqs' id='show_prereqs_" + response[0] + "'>Show Pre-Requisites</li>";
+            comp_course += "<li class='mdl-menu__item remove-course' id='remove_" + response[0] + "'>Remove</li>";
             comp_course += "</ul>";
             comp_course += "</div>";
             comp_course += "</div>";
 
-            $(".complementary_area .sortable").append(comp_course);
 
-            //Dynamically render MDL
+            $(target_sem.find("div.credit_counter")).before(comp_course);
+            $(target_sem.find('div.credit_counter_num' )).text( 'CREDITS: ' + response[1]);
+
+
+            for (var group in response[2])
+            {
+                if (response[2].hasOwnProperty(group))
+                {
+                    var groupProgress = response[2][group];
+                    var target = $( "td[id='" + group + "']" ).text("" + groupProgress[0] + "/" + groupProgress[1]);
+                }
+            }
+            initRemoveCourseListener("#remove_"+ response[0]);
+            refreshComplementaryCourses();
+            refreshDeleteSemester();
             componentHandler.upgradeDom();
-            initRemoveCourseListener("#remove_"+ response['SUBJECT_CODE'] + "_" + response['COURSE_NUMBER']);
           }
         }
       })
@@ -277,82 +334,18 @@ function initAddCompCourseButton()
 
     $('#comp_courses').foundation('reveal', 'close');
 
+
   });
 }
 
-  //add elective course!
-  function initAddElectiveCourseButton()
-  {
-    $(".add_elec_course_button").click(function() {
-      var selected = [];
 
-
-      $(".elective_table_body tr").each(function() {
-
-        if ($(this).hasClass('is-selected')) {
-          var new_class = [];
-
-          selected.push([$(this).find('td.course_number').text(), $(this).find('td.class_name').text()]);
-          $(this).remove();
-        }
-      });
-
-
-      for (var i = 0; i < selected.length; i++)
-      {
-        $.ajax({
-          type: "post",
-          url: "/flowchart/add_complementary_course_to_Flowchart",
-          data: {
-            semester: "Elective_course",
-            id: 'new schedule',
-            courseName: selected[i][0],
-          },
-          success: function(data) {
-            var response = JSON.parse(data);
-
-            if (response === 'Error')
-            {
-              //error handler
-            }
-            else
-            {
-              var comp_course = "<div class='custom_card Elective_course add-to-schedule' id='" + response['SUBJECT_CODE'] + " " + response['COURSE_NUMBER'] + "'>";
-              comp_course += "<div class='card_content'>";
-              comp_course += response['SUBJECT_CODE'] + " " + response['COURSE_NUMBER'];
-              comp_course += "<button id='menu_for_" + response['SUBJECT_CODE'] + " " + response['COURSE_NUMBER']  + "' class='mdl-button mdl-js-button mdl-button--icon'>";
-              comp_course += "<i class='material-icons'>arrow_drop_down</i>";
-              comp_course += "</button>" + response['COURSE_CREDITS'];
-              comp_course += "<ul class='mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect' for='menu_for_" + response['SUBJECT_CODE'] + " " + response['COURSE_NUMBER'] + "''>";
-              comp_course += "<li class='mdl-menu__item show-prereqs' id='show_prereqs_" + response['SUBJECT_CODE'] + "_" + response['COURSE_NUMBER'] + "'>Show Pre-Requisites</li>";
-              comp_course += "<li class='mdl-menu__item remove-course' id='remove_" + response['SUBJECT_CODE'] + "_" + response['COURSE_NUMBER'] + "'>Remove</li>";
-              comp_course += "</ul>";
-              comp_course += "</div>";
-              comp_course += "</div>";
-
-              $(".elective_area .sortable").append(comp_course);
-
-              //Dynamically render MDL
-              componentHandler.upgradeDom();
-              initRemoveCourseListener("#remove_"+ response['SUBJECT_CODE'] + "_" + response['COURSE_NUMBER']);
-            }
-          }
-        })
-      }
-
-
-      $('#electives_courses').foundation('reveal', 'close');
-    });
-  }
 
 
     function initRemoveCourseListener(target)
     {
       $(target).click(function(e){
         e.preventDefault();
-        // var id = target.split("_");
-        // id = id[1] + " " + id[2];
-        // console.log(id + "is the id");
+
 
         if($(this).parent().parent().parent().parent().hasClass("add-to-schedule"))
         {
@@ -363,6 +356,7 @@ function initAddCompCourseButton()
         else
         {
           var courseID = $(this).attr("id").substring(7, $(this).attr("id").length);
+
           //delete from database
           $.ajax({
             type: "delete",
@@ -378,9 +372,18 @@ function initAddCompCourseButton()
               }
               else
               {
-                var semester = get_semester_letter(response[3]);
-                semester = semester.split(" ");
-                semester = semester[0] + semester[1];
+                if(response[3]!='Exemption')
+                {
+                  var semester = get_semester_letter(response[3]);
+                  semester = semester.split(" ");
+                  semester = semester[0] + semester[1];
+                }
+                else
+                {
+                  var semester = 'Exemption';
+                }
+
+
                 $("#" + response[0]).remove();
                 $("."+semester).children( '.credit_counter' ).children( '.credit_counter_num' ).text( 'CREDITS: ' + response[1]);
 
@@ -415,77 +418,78 @@ function initAddCompCourseButton()
 
         success: function(data) {
           var response = JSON.parse(data);
+          var refreshedCourses = response[0];
           if (response === 'Error')
           {
             //error handler
           }
           else
           {
-
+            var firstTab = true;
+            var firstTabName = "";
+            var tabs = '<div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">';
+            tabs += "<div class='mdl-tabs__tab-bar'>";
             var html = "";
-
-            for(var key in response[0])
+            for(var tabtitle in refreshedCourses)
             {
-              html = '<table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp complementary_table" id="complementary_table_'+key+'">';
-              html += '<thead>';
-              html += '<tr>';
-              html += '<th class="mdl-data-table__cell--non-numeric">Course Number</th>';
-              html += '<th class="mdl-data-table__cell--non-numeric">Course Name</th>';
-              html += '<th>Credits</th>';
-              html += '</tr>';
-              html += '</thead>';
-              html += '<tbody class="complementary_table_body tech_comp_table">';
-              for( var i = 0; i < response[0][key].length; i++)
+              html += '<div class="mdl-tabs__panel" id="' + tabtitle + '_tab_panel">';
+              var existCoursesInTab = false;
+              for(var key in refreshedCourses[tabtitle])
               {
-                if(  !$("[id='"+ response[0][key][i][0] + " " + response[0][key][i][1] +"']").length)
-                {
-                  html += '<tr id="' + response[0][key][i][0] + response[0][key][i][1] + '">';
-                  html += '<td class="mdl-data-table__cell--non-numeric course_number">' + response[0][key][i][0] + " " + response[0][key][i][1] + '</td>';
-                  html += '<td class="mdl-data-table__cell--non-numeric class_name">' + response[0][key][i][4] +'</td>';
-                  html += '<td>' + response[0][key][i][2] +'</td>';
+                if(refreshedCourses[tabtitle][key].length != 0){
+                  if(firstTab)
+                  {
+                    firstTab = false;
+                    firstTabName = tabtitle;
+                    html = '<div class="mdl-tabs__panel is-active" id="' + tabtitle + '_tab_panel">';
+                    tabs += '<a href="#' + tabtitle + '_tab_panel" id="' + tabtitle + '_tab" class="mdl-tabs__tab is-active">' + tabtitle + '</a>';
+                  }
+                  if(!existCoursesInTab)
+                  {
+                    html += '<button type="button" class="mdl-button mdl-js-button mdl-button--raised add_comp_course_button">Add</button>';
+                  }
+                  existCoursesInTab = true;
+                  html += '<h4 id="' + tabtitle +'_table_header_' + key + '" style="text-align:center">' + key + ' (' + response[1][key] + ' credits)</h4>';
+                  html += '<table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp ' + tabtitle + '_table" id="' + tabtitle + '_table_'+key+'">';
+                  html += '<thead>';
+                  html += '<tr>';
+                  html += '<th class="mdl-data-table__cell--non-numeric">Course Number</th>';
+                  html += '<th class="mdl-data-table__cell--non-numeric">Course Name</th>';
+                  html += '<th>Credits</th>';
                   html += '</tr>';
+                  html += '</thead>';
+                  html += '<tbody class="' + tabtitle + '_table_body tech_comp_table">';
+                  for( var i = 0; i < refreshedCourses[tabtitle][key].length; i++)
+                  {
+                    if(  !$("[id='"+ refreshedCourses[tabtitle][key][i][0] + " " + refreshedCourses[tabtitle][key][i][1] +"']").length)
+                    {
+                      html += '<tr id="' + refreshedCourses[tabtitle][key][i][0] + refreshedCourses[tabtitle][key][i][1] + '">';
+                      html += '<td class="mdl-data-table__cell--non-numeric course_number">' + refreshedCourses[tabtitle][key][i][0] + " " + refreshedCourses[tabtitle][key][i][1] + '</td>';
+                      html += '<td class="mdl-data-table__cell--non-numeric class_name">' + refreshedCourses[tabtitle][key][i][4] +'</td>';
+                      html += '<td>' + refreshedCourses[tabtitle][key][i][2] +'</td>';
+                      html += '</tr>';
+                    }
+                  }
+                  html += '</tbody>';
+                  html += '</table>';
                 }
               }
-              html += '</tbody>';
-              html += '</table>';
-
-
-              $("[id='complementary_table_"+key+"']").remove();
-              $("[id='complementary_table_header_"+key+"']").after(html);
-            }
-
-
-            //Refresh elective table
-
-            for(var key in response[1])
-            {
-              html = '<table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp elective_table" id="elective_table_'+key+'">';
-              html += '<thead>';
-              html += '<tr>';
-              html += '<th class="mdl-data-table__cell--non-numeric">Course Number</th>';
-              html += '<th class="mdl-data-table__cell--non-numeric">Course Name</th>';
-              html += '<th>Credits</th>';
-              html += '</tr>';
-              html += '</thead>';
-              html += '<tbody class="elective_table_body tech_comp_table">';
-              for( var i = 0; i < response[1][key].length; i++)
+              html += '</div>';
+              if(existCoursesInTab && !firstTab && tabtitle != firstTabName)
               {
-                if(  !$("[id='"+ response[1][key][i][0] + " " + response[1][key][i][1] +"']").length)
-                {
-                  html += '<tr id="' + response[1][key][i][0] + response[1][key][i][1] + '">';
-                  html += '<td class="mdl-data-table__cell--non-numeric course_number">' + response[1][key][i][0] + " " + response[1][key][i][1] + '</td>';
-                  html += '<td class="mdl-data-table__cell--non-numeric class_name">' + response[1][key][i][4] +'</td>';
-                  html += '<td>' + response[1][key][i][2] +'</td>';
-                  html += '</tr>';
-                }
+                tabs += '<a href="#' + tabtitle + '_tab_panel" id="' + tabtitle + '_tab" class="mdl-tabs__tab">' + tabtitle + '</a>';
               }
-              html += '</tbody>';
-              html += '</table>';
-
-
-              $("[id='elective_table_"+key+"']").remove();
-              $("[id='elective_table_header_"+key+"']").after(html);
             }
+            tabs += '<a href="#Custom_tab" class="mdl-tabs__tab">Custom</a>';
+            tabs += '</div>';
+            html += '<div class="mdl-tabs__panel" id="Custom_tab"></div>'
+
+            tabs += html + '</div>';
+            $(".mdl-tabs").remove();
+            $("#comp_courses").append(tabs);
+            initAddCompCourseButton();
+
+
 
             //Dynamically render MDL
             componentHandler.upgradeDom();
