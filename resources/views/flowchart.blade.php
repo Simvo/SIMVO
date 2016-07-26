@@ -93,9 +93,7 @@
 
                       <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="menu_for_{{ $class[0] }}">
                         <li class="mdl-menu__item show-prereqs" id="show_prereqs_{{ $class[0] }}">Show Pre-Requisites</li>
-                        @if($class[4]!='Required')
-                          <li class="mdl-menu__item remove-course" id="remove_{{ $class[0] }}">Remove</li>
-                        @endif
+                        <li class="mdl-menu__item remove-course" id="remove_{{ $class[0] }}">Remove</li>
                       </ul>
                     </div>
                   </div>

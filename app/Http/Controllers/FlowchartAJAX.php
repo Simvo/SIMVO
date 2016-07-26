@@ -84,17 +84,11 @@ class FlowchartAJAX extends Controller
     $degree = Session::get('degree');
 
 
-    $groups = $this->getComplementaryGroups($degree); //complementaries index 0 is complementary, 1 is electives
+    $groups = $this->getGroupsWithCourses($degree, true);
 
-    for($i = 0; $i < 2; $i++)
-    {
-      foreach($groups[$i] as $key=>$value)
-      {
-        $groups[$i][$key] = $this->getCoursesInGroup($degree, $key, true);
-      }
-    }
-    $returnGroups['Complementary'] = $groups[0];
-    $returnGroups['Elective'] = $groups[1];
+    $returnGroups['Required'] = $groups[0];
+    $returnGroups['Complementary'] = $groups[1];
+    $returnGroups['Elective'] = $groups[2];
     $groupCredits = $this->getGroupsWithCredits($degree);
 
     return json_encode([$returnGroups, $groupCredits]);

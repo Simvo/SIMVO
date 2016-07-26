@@ -270,7 +270,6 @@ function initAddCompCourseButton()
         {
           var parent = target.parent().attr("id");
           var id = parent.substring(courseType[i].length + 7, parent.length);
-          console.log(id);
           $("[id='" + courseType[i] +"_table_header_"+id+"']").remove();
           $("[id='" + courseType[i] +"_table_"+id+"']").remove();
         }
@@ -306,10 +305,7 @@ function initAddCompCourseButton()
             comp_course += "</button>" + " " + response[3]['COURSE_CREDITS'];
             comp_course += "<ul class='mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect' for='menu_for_" + response[0] + "''>";
             comp_course += "<li class='mdl-menu__item show-prereqs' id='show_prereqs_" + response[0] + "'>Show Pre-Requisites</li>";
-            if(response[4] != 'Required')
-            {
-              comp_course += "<li class='mdl-menu__item remove-course' id='remove_" + response[0] + "'>Remove</li>";
-            }
+            comp_course += "<li class='mdl-menu__item remove-course' id='remove_" + response[0] + "'>Remove</li>";
             comp_course += "</ul>";
             comp_course += "</div>";
             comp_course += "</div>";
