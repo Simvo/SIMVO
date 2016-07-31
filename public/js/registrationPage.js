@@ -13,9 +13,12 @@ $(document).ready(function(){
   });
 
   $('#major-select').change(function(){
-    LoadStreams();
     LoadVersions();
   });
+
+  $('#version-select').change(function(){
+    LoadStreams();
+  })
 });
 
 
@@ -46,11 +49,23 @@ function LoadMajors(){
 }
 
 function LoadStreams(){
-  var selectedMajor = $('#major-select option:selected').text();
+  var selectedMajor = $('#major-select option:selected').val();
+  var selectedVersion = $('#version-select option:selected').text();
   $('#stream-select').empty();
 
-  if(selectedMajor !== "None")
+  if(selectedMajor !== "None" && selectedVersion !== "None")
   {
+    $.ajax({
+      type: 'post',
+      url: '/auth/registration/get-streams',
+      data: {
+        program_id : selectedMajor,
+        version : selectedVersion
+      },
+      success : function(data) {
+        console.log(data);
+      }
+    })
     var option = '<option value="-1">Custom</option>';
     $('#stream-select').append(option);
   }
@@ -70,6 +85,8 @@ function LoadVersions(){
       success: function(data) {
 
         var response = JSON.parse(data);
+
+        $('#version-select').append('<option>-Select-</option>');
 
         for(var i =0; i<response.length; i++)
         {

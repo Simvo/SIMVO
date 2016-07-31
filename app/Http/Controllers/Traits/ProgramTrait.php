@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\User;
+use App\Stream;
 use App\Schedule;
 use DB;
 use Auth;
@@ -125,8 +126,6 @@ trait ProgramTrait
   public function getRequiredGroups($degree)
   {
     $user = Auth::User();
-
-    //$version = $this->getProgramVersion($user);
 
     $groups_PDO = DB::table('Programs')
                   ->where('VERSION', 1)
@@ -259,8 +258,6 @@ trait ProgramTrait
   {
     $user = Auth::User();
 
-    //$version = $this->getProgramVersion($user);
-
     $courses_PDO = DB::table('Programs')
                   ->where('VERSION', $degree->version_id)
                   ->where('PROGRAM_ID', $degree->program_id)
@@ -297,7 +294,7 @@ trait ProgramTrait
   /**
   * Function that returns most recent verion number of program.
   * (Some mojors have multiple programs with the same program ID in the database)
-  * @param User: user
+  * @param program_id
   * @return int: version number
   **/
   public function getProgramVersions($program_id)
@@ -314,6 +311,28 @@ trait ProgramTrait
     }
 
     return $versions;
+  }
+
+  /**
+  * Function that returns all streams of a major and version
+  * @param program ID, version
+  * @return list of stream names
+  **/
+  public function getStreams($program_id, $version)
+  {
+    $streams_PDO = Stream::where('program_id', $program_id)
+                   ->where('version', $version)
+                   ->groupBy('stream_name')
+                   ->get(['stream_name']);
+    //var_dump($streams_PDO);
+
+    $streams = [];
+    foreach($streams_PDO as $stream)
+    {
+      $streams[] = $stream->stream_name;
+    }
+
+    return $streams;
   }
 
   /**

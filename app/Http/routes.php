@@ -41,6 +41,8 @@ Route::post('/auth/registration/get-majors', 'RegistrationController@getMajorsIn
 
 Route::post('/auth/registration/get-versions', 'RegistrationController@getProgramVersionsInMajor');
 
+Route::post('/auth/registration/get-streams', 'RegistrationController@getProgramStreams');
+
 Route::post('/flowchart/move-course', 'FlowchartAJAX@move_course');
 
 Route::post('/flowchart/add-course-to-Schedule', 'FlowchartAJAX@add_course_to_Schedule');

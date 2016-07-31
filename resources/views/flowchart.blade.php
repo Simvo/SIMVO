@@ -309,8 +309,6 @@
             </div>
           </td>
         </tr>
-
-
       </table>
       {!! Form::submit('Submit', ['class'=> 'mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent new_user_submit']) !!}
       {!! Form::close() !!}

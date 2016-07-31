@@ -77,6 +77,7 @@ public function login(Request $request)
     $new_user->email = htmlentities($request->Email);
     $new_user->password = bcrypt($request->Password);
     $new_user->save();
+
     if(Auth::attempt(['email' => $request->Email, 'password' => $request->Password]))
     {
       return redirect()->intended('flowchart');
@@ -91,5 +92,10 @@ public function login(Request $request)
   public function getProgramVersionsInMajor(Request $request)
   {
     return json_encode($this->getProgramVersions($request->program_id));
+  }
+
+  public function getProgramStreams(Request $request)
+  {
+    return json_encode($this->getStreams($request->program_id, $request->version));
   }
 }
