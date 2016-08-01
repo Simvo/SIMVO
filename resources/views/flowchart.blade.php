@@ -305,7 +305,7 @@
           </td>
           <td>
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label program_input">
-              {!! Form::select('Semester', $semesters, null, ['class'=> 'reg_dropdown form-control']) !!}
+              <select name="Semester" id="semester-select" class="reg_dropdown form-control"></select>
             </div>
           </td>
         </tr>

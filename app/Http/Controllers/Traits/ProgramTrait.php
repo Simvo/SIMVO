@@ -13,8 +13,8 @@ use Auth;
 
 trait ProgramTrait
 {
-  use ParsingTrait;
 
+  use ParsingTrait;
   /**
   * Function that returns groups and the number of credits in them along
   * with the number of credits the user has completed in each group
@@ -324,7 +324,6 @@ trait ProgramTrait
                    ->where('version', $version)
                    ->groupBy('stream_name')
                    ->get(['stream_name']);
-    //var_dump($streams_PDO);
 
     $streams = [];
     foreach($streams_PDO as $stream)
@@ -333,6 +332,25 @@ trait ProgramTrait
     }
 
     return $streams;
+  }
+
+  /**
+  * Function that returns lists of semesters by term (either only winter only fall etc)
+  * @param string either (all, fall, winter etc)
+  * @return list semesters
+  **/
+  public function getProperSemesters($semesters)
+  {
+    switch($semesters)
+    {
+      case "fall":
+      return $this->generateListOfFallSemesters(6);
+      break;
+
+      default:
+      return $this->generateListOfSemesters(10);
+      break;
+    }
   }
 
   /**

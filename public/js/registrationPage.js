@@ -19,6 +19,10 @@ $(document).ready(function(){
   $('#version-select').change(function(){
     LoadStreams();
   })
+
+  $('#stream-select').change(function(){
+    LoadSemesters();
+  })
 });
 
 
@@ -48,29 +52,6 @@ function LoadMajors(){
   }
 }
 
-function LoadStreams(){
-  var selectedMajor = $('#major-select option:selected').val();
-  var selectedVersion = $('#version-select option:selected').text();
-  $('#stream-select').empty();
-
-  if(selectedMajor !== "None" && selectedVersion !== "None")
-  {
-    $.ajax({
-      type: 'post',
-      url: '/auth/registration/get-streams',
-      data: {
-        program_id : selectedMajor,
-        version : selectedVersion
-      },
-      success : function(data) {
-        console.log(data);
-      }
-    })
-    var option = '<option value="-1">Custom</option>';
-    $('#stream-select').append(option);
-  }
-}
-
 //Loads all version of program
 function LoadVersions(){
   var selectedMajor = $('#major-select option:selected').val();
@@ -97,4 +78,58 @@ function LoadVersions(){
       }
     })
   }
+}
+
+function LoadStreams(){
+  var selectedMajor = $('#major-select option:selected').val();
+  var selectedVersion = $('#version-select option:selected').text();
+  $('#stream-select').empty();
+
+  if(selectedMajor !== "None" && selectedVersion !== "None")
+  {
+
+    $.ajax({
+      type: 'post',
+      url: '/auth/registration/get-streams',
+      data: {
+        program_id : selectedMajor,
+        version : selectedVersion
+      },
+      success : function(data) {
+        var response = JSON.parse(data);
+
+        for(var i =0; i<response.length; i++)
+        {
+          var option = '<option value="' + i + '">'+ response[i] +'</option>';
+          $('#stream-select').append(option);
+        }
+
+        var option = '<option value="-1">Custom</option>';
+        $('#stream-select').append(option);
+      }
+    })
+  }
+}
+
+function LoadSemesters(){
+  var selectedStream = $('#stream-select option:selected').val();
+  var type = (selectedStream == -1)? "all": "fall";
+  $('#semester-select').empty();
+
+  $.ajax({
+    type: 'post',
+    url: '/auth/registration/get-semesters',
+    data: {
+      semesters: type
+    },
+    success: function(data) {
+      var response = JSON.parse(data);
+
+      for(var i = 0; i<response.length; i++)
+      {
+        var option = '<option>'+ response[i] +'</option>';
+        $('#semester-select').append(option);
+      }
+    }
+  })
 }

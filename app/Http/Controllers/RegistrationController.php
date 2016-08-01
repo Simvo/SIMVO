@@ -83,19 +83,4 @@ public function login(Request $request)
       return redirect()->intended('flowchart');
     }
   }
-
-  public function getMajorsInFaculty(Request $request)
-  {
-    return json_encode($this->getMajors($request->faculty));
-  }
-
-  public function getProgramVersionsInMajor(Request $request)
-  {
-    return json_encode($this->getProgramVersions($request->program_id));
-  }
-
-  public function getProgramStreams(Request $request)
-  {
-    return json_encode($this->getStreams($request->program_id, $request->version));
-  }
 }

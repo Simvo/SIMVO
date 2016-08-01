@@ -137,4 +137,20 @@ trait Tools
 
     return $semesters;
   }
+
+  private function generateListOfFallSemesters($num)
+  {
+    $current_semester = $this->get_current_semester();
+
+    $fallSemesters = [];
+
+    $currYear = date('Y');
+
+    for($i = 0; $i < $num; $i++)
+    {
+      $fallSemesters[] = "Fall ". ($currYear-$i);
+    }
+
+    return $fallSemesters;
+  }
 }
