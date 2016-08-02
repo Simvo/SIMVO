@@ -55,6 +55,7 @@ class FlowchartController extends Controller
         'semesters' => $semesters
       ]);
     }
+
     else
     {
       $degree = $degrees[0];
@@ -142,6 +143,11 @@ class FlowchartController extends Controller
     $degrees = Degree::where('user_id', $user->id)->get();
 
     return $degrees;
+  }
+
+  public function applyStream()
+  {
+
   }
 
   public function newUserCreateDegree(Request $request)

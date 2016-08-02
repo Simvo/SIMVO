@@ -14,9 +14,7 @@ class CreateStreamsTable extends Migration
     {
       Schema::create('streams', function (Blueprint $table) {
           $table->increments('id');
-          $table->integer('program_id');
-          $table->integer('version');
-          $table->string('stream_name');
+          $table->integer('structure_id');
           $table->string('semester_index');
           $table->string('term');
           $table->string('course');

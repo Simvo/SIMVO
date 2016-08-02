@@ -18,6 +18,7 @@ $(document).ready(function(){
 
   $('#version-select').change(function(){
     LoadStreams();
+    LoadSemesters();
   })
 
   $('#stream-select').change(function(){
@@ -113,6 +114,7 @@ function LoadStreams(){
 
 function LoadSemesters(){
   var selectedStream = $('#stream-select option:selected').val();
+
   var type = (selectedStream == -1)? "all": "fall";
   $('#semester-select').empty();
 

@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use App\Stream;
+use App\StreamStructure;
 
 class StreamSeeder extends Seeder
 {
@@ -39,6 +40,12 @@ class StreamSeeder extends Seeder
       {
         foreach($stream as $stream_name=>$semesters)
         {
+          $structure = new StreamStructure;
+          $structure->stream_name = $stream_name;
+          $structure->program_id = $program_id;
+          $structure->version = $version;
+          $structure->save();
+
           $i = 0;
           foreach($semesters as $term=>$courses)
           {
@@ -46,9 +53,7 @@ class StreamSeeder extends Seeder
             foreach($courses as $course)
             {
               $stream = new Stream;
-              $stream->program_id = $program_id;
-              $stream->version = $version;
-              $stream->stream_name = $stream_name;
+              $stream->structure_id = $structure->id;
               $stream->semester_index = $i;
               $stream->term = $term;
               $stream->course = $course;
