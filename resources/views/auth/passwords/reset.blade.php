@@ -16,33 +16,33 @@
           </ul>
           <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
             <div class="mdl-tabs__panel is-active" id="login-panel">
-              <form style="width:100%;" role="form" method="POST" action="{{ url('/password/reset') }}">
+              {!! Form::open(['route' => 'passwordResetPost']) !!}
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                <input type="hidden" name="token" value="<?php echo $token; ?>" />
+                <input type="hidden" name="token" value="{{ $token }}" />
                 <ul class="list-style-none">
                   <li>
                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-                      <label class='mdl-textfield__label'>Email</label>
-                      <input type="mdl-textfield__input" name="email" value="{{ $email or old('email') }}" />
+                        {!! Form::label('email', 'E-mail', ['class'=> 'mdl-textfield__label']) !!}
+                        {!! Form::email('email', old('email'), ['class'=> 'mdl-textfield__input','name'=>"email"]) !!}
                     </div>
                   </li>
                   <li>
                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-                      <label class='mdl-textfield__label'>Password</label>
-                      <input type="password" class="mdl-textfield__input" name="password">
+                      {!! Form::label('Password', 'Password', ['class'=> 'mdl-textfield__label']) !!}
+                      {!! Form::password('password', ['class'=> 'mdl-textfield__input']) !!}
                     </div>
                   </li>
                   <li>
                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-                      <label class='mdl-textfield__label'>Password</label>
-                      <input type="password" class="mdl-textfield__input" name="password_confirmation" />
+                      {!! Form::label('Confirm_Password', 'Confirm Password', ['class'=> 'mdl-textfield__label']) !!}
+                      {!! Form::password('password_confirmation', ['class'=> 'mdl-textfield__input']) !!}
                     </div>
                   </li>
                   <li>
                     {!! Form::submit('Submit', ['class'=> 'mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent']) !!}
                   </li>
               </ul>
-            </form>
+            {!! Form::close() !!}
           </div>
         </div>
       </div>

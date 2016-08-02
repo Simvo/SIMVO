@@ -35,8 +35,9 @@
 
               </li>
             </ul>
+            {!! Form::close() !!}
               <div class="center"><a href="{{ route('registration') }}">Not Signed up? Click here to Get Started!</a></div>
-              <div class="center"><a href="/password/email">Forgot Password?</a></div>
+              <div class="center"><a href="{{ route('passwordEmailGet') }}">Forgot Password?</a></div>
           </div>
 
         </div>

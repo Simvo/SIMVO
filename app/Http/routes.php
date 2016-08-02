@@ -27,9 +27,9 @@ Route::get('/auth/registration', ['as'=>'registration', 'uses'=>'RegistrationCon
 
 Route::get('/flowchart', ['as'=>'flowchart', 'middleware' => 'auth', 'uses'=>'FlowchartController@generateFlowChart']);
 
-Route::get('password/email', 'Auth\PasswordController@getEmail');
+Route::get('password/email', ['as'=>'passwordEmailGet','uses'=>'Auth\PasswordController@getEmail']);
 
-Route::get('password/reset/{token}', 'Auth\PasswordController@getReset');
+Route::get('password/reset/{token}', ['as'=>'passwordResetPost','uses'=>'Auth\PasswordController@getReset']);
 
 
 /* POST */
@@ -38,9 +38,9 @@ Route::post('auth/registration', ['as'=>'registrationForm', 'uses'=>'Registratio
 
 Route::post('/auth/login', ['as'=>'login', 'uses'=>'RegistrationController@login']);
 
-Route::post('password/email', 'Auth\PasswordController@postEmail');
+Route::post('password/email', ['as'=>'passwordEmailPost', 'uses'=>'Auth\PasswordController@postEmail']);
 
-Route::post('password/reset', 'Auth\PasswordController@postReset');
+Route::post('password/reset', ['as'=>'passwordResetPost','uses'=>'Auth\PasswordController@postReset']);
 
 Route::post('/flowchart/new-user-create-degree', ['as'=>'newUserCreateDegree', 'uses'=>'FlowchartController@newUserCreateDegree']);
 
