@@ -73,6 +73,22 @@ class FlowchartAJAX extends Controller
     return json_encode([$new_id,$new_semeterCredits, $progress, $course, $courseType]);
   }
 
+  public function userCreateInternship(Request $request)
+  {
+    if(!Auth::Check())
+      return;
+
+    $courseType = $request->courseType;
+    $company = $request->company;
+    $position = $request->position;
+    $semester = $request->semester;
+    $degree = Session::get('degree');
+
+    //$new_id = $this->create_schedule($degree, $semester, $company, $position, $courseType);
+
+    return json_encode([ 1 , $courseType, $company, $position, $semester]);
+  }
+
   public function refresh_complementary_courses()
   {
 

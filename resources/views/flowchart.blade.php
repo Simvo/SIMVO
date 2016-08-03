@@ -224,11 +224,8 @@
                   </div>
                   <div class="mdl-cell mdl-cell--8-col">
                     <h4 id="make-degree_title">Enter your internship information here</h4>
-                    {!! Form::open(['route' => 'userCreateInternship','style'=>'width:100%']) !!}
+                    <div>
                     <ul class="list-style-none">
-                      @foreach ($errors->all() as $error)
-                          <li class="submit_error">{{ $error }}</li>
-                      @endforeach
                     </ul>
                     <table>
 
@@ -258,11 +255,11 @@
 
                       <tr>
                         <td>
-                          Semesters (including summer) 
+                          Semesters (including summer)
                         </td>
                         <td>
                           <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label program_input">
-                            <select class="reg_dropdown form-control" name="Semesters" id="semester-select">
+                            <select class="reg_dropdown form-control" name="Semesters" id="internship_length_select">
                               <option value="1">1</option>
                               <option value="2">2</option>
                               <option value="3">3</option>
@@ -278,8 +275,8 @@
 
 
                     </table>
-                    {!! Form::submit('Submit', ['class'=> 'mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent new_user_submit']) !!}
-                    {!! Form::close() !!}
+                    <button type="button" class="mdl-button mdl-js-button mdl-button--raised add_internship_button">Add Internship</button>
+                  </div>
                   </div>
                   <div class="mdl-cell mdl-cell--2-col">
                   </div>
