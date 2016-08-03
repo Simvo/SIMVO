@@ -167,6 +167,12 @@ class FlowchartController extends Controller
     return redirect('flowchart');
   }
 
+  public function userCreateIntership(Request $request)
+  {
+    $degree = Session::get('degree');
+    return json_encode($degree);
+  }
+
   public function getExemptions($degree)
   {
     $exemptions_PDO = Schedule::where('degree_id',$degree->id)

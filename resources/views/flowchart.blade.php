@@ -171,6 +171,7 @@
                 @endif
               @endforeach
                 <a href="#Custom_tab" class="mdl-tabs__tab">Custom</a>
+                <a href="#Internship_tab" class="mdl-tabs__tab">Internship</a>
 
             </div>
 
@@ -216,6 +217,73 @@
             @endforeach
 
               <div class="mdl-tabs__panel" id="Custom_tab">
+              </div>
+              <div class="mdl-tabs__panel" id="Internship_tab">
+                <div class="mdl-grid">
+                  <div class="mdl-cell mdl-cell--2-col">
+                  </div>
+                  <div class="mdl-cell mdl-cell--8-col">
+                    <h4 id="make-degree_title">Enter your internship information here</h4>
+                    {!! Form::open(['route' => 'userCreateInternship','style'=>'width:100%']) !!}
+                    <ul class="list-style-none">
+                      @foreach ($errors->all() as $error)
+                          <li class="submit_error">{{ $error }}</li>
+                      @endforeach
+                    </ul>
+                    <table>
+
+                      <tr>
+                        <td>
+                          Company
+                        </td>
+                        <td>
+                          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <input class="mdl-textfield__input" type="text" id="internship_company_name">
+                            <label class="mdl-textfield__label" for="internship_company_name">Company Name</label>
+                          </div>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td>
+                          Position
+                        </td>
+                        <td>
+                          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <input class="mdl-textfield__input" type="text" id="internship_position_held">
+                            <label class="mdl-textfield__label" for="internship_position_held">Position Held</label>
+                          </div>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td>
+                          Semesters (including summer) 
+                        </td>
+                        <td>
+                          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label program_input">
+                            <select class="reg_dropdown form-control" name="Semesters" id="semester-select">
+                              <option value="1">1</option>
+                              <option value="2">2</option>
+                              <option value="3">3</option>
+                              <option value="4">4</option>
+                              <option value="5">5</option>
+                              <option value="6">6</option>
+                            </select>
+                          </div>
+                        </td>
+                      </tr>
+
+
+
+
+                    </table>
+                    {!! Form::submit('Submit', ['class'=> 'mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent new_user_submit']) !!}
+                    {!! Form::close() !!}
+                  </div>
+                  <div class="mdl-cell mdl-cell--2-col">
+                  </div>
+                </div>
               </div>
           </div>
         </div>

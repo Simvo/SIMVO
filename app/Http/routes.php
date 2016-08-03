@@ -35,6 +35,8 @@ Route::post('/auth/login', ['as'=>'login', 'uses'=>'RegistrationController@login
 
 Route::post('/flowchart/new-user-create-degree', ['as'=>'newUserCreateDegree', 'uses'=>'FlowchartController@newUserCreateDegree']);
 
+Route::post('/flowchart/user-create-internship', ['as'=>'userCreateInternship', 'uses'=>'FlowchartController@userCreateInternship']);
+
 /* AJAX */
 
 Route::post('/auth/registration/get-majors', 'RegistrationController@getMajorsInFaculty');
