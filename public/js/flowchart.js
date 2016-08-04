@@ -509,14 +509,41 @@ function initAddCompCourseButton()
     {
       $(".add_internship_button").click(function(){
         var target_sem = $($($("#course_schedule").find($("a.Complementary_Add_Target"))).parent());
-        var semester = $(target_sem.find("div.sortable")).attr("id");
-        semester = semester.split(" ");
-        semester = semester[0] + " " + semester[1];
-        semester = get_semester(semester);
+        var semester_letter = $(target_sem.find("div.sortable")).attr("id");
+        semester_letter = semester_letter.split(" ");
+        semester_letter = semester_letter[0] + " " + semester_letter[1];
+        var semester = get_semester(semester_letter);
 
         var company = $("#internship_company_name").val();
         var length = parseInt($("#internship_length_select").val());
         var position = $("#internship_position_held").val();
+        var summer = false;
+
+        if($("#Internship_include_summer").parent().hasClass("is-checked"))
+        {
+          summer = true;
+        }
+
+        var k = 0;
+        while (k < length)
+        {
+          if($("[id='" + semester_letter +"-gap']").length)
+          {
+            $("[id='" + semester_letter +"-gap']").trigger("click");
+            k++;
+          }
+
+          var prev_sem = get_semester_letter(get_previous_semester(get_semester(semester_letter)));
+
+          if($("[id='" + prev_sem + "-gap']").length && summer)
+          {
+            $("[id='" + prev_sem +"-gap']").trigger("click");
+            k++;
+
+          }
+          semester_letter = get_semester_letter(get_next_semester(get_semester(semester_letter)));
+
+        }
 
 
 
@@ -535,10 +562,10 @@ function initAddCompCourseButton()
 
             success: function(data) {
               var response = JSON.parse(data);
-              console.log(response);
               var sem = get_semester_letter(response[4]);
-              sem = sem.split(" ");
-              sem = sem[0] + sem[1];
+              var sem2 = sem.split(" ");
+              sem2 = sem2[0] + sem2[1];
+
               var comp_course = "<div class='custom_card " + response[1] + "_course' id='" + response[0] + "'>";
               comp_course += "<div class='card_content'>";
               comp_course += '<div>' + response[2] + '</div>';
@@ -551,12 +578,19 @@ function initAddCompCourseButton()
               comp_course += "</ul>";
               comp_course += "</div>";
               comp_course += "</div>";
-              console.log(sem);
-              $($("." + sem).find("div.credit_counter")).before(comp_course);
+              $($("." + sem2).find("div.credit_counter")).before(comp_course);
+
+              //Dynamically render MDL
+              componentHandler.upgradeDom();
+
 
             }
           });
           semester = get_next_semester(semester);
+          if(get_semester_letter(semester).split(" ")[0] == "SUMMER" && !summer)
+          {
+            semester = get_next_semester(semester);
+          }
         }
       });
     }

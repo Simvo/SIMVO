@@ -255,7 +255,7 @@
 
                       <tr>
                         <td>
-                          Semesters (including summer)
+                          Semesters &nbsp &nbsp
                         </td>
                         <td>
                           <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label program_input">
@@ -269,6 +269,19 @@
                             </select>
                           </div>
                         </td>
+                      </tr>
+
+                      <tr>
+                        <td>
+
+                        </td>
+                        <td>
+                         <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect program_input" for="Internship_include_summer">
+                            <input type="checkbox" id="Internship_include_summer" class="mdl-checkbox__input">
+                            <span class="mdl-checkbox__label">Include Summer</span>
+                         </label>
+                	      </td>
+                       <td>
                       </tr>
 
 
