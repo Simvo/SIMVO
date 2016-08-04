@@ -101,7 +101,7 @@ function LoadStreams(){
 
         for(var i =0; i<response.length; i++)
         {
-          var option = '<option value="' + i + '">'+ response[i] +'</option>';
+          var option = '<option value="' + i+1 + '">'+ response[i] +'</option>';
           $('#stream-select').append(option);
         }
 
@@ -129,7 +129,7 @@ function LoadSemesters(){
 
       for(var i = 0; i<response.length; i++)
       {
-        var option = '<option>'+ response[i] +'</option>';
+        var option = '<option value="'+response[i]+'">'+ response[i] +'</option>';
         $('#semester-select').append(option);
       }
     }

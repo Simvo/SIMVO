@@ -157,12 +157,11 @@ class FlowchartController extends Controller
     $this->validate($request, [
       'Faculty'=>'required|digits:1,2',
       'Major'=>'required',
-      'Semester'=>'required|digits:1,2',
+      'Semester'=>'required',
       'Stream'=>'required',
       'Version'=>'required'
       ]);
 
-    $semesters = $this->generateListOfSemesters(10);
     $faculties = $this->getFaculties();
 
     $program = DB::table('programs')->where('PROGRAM_ID', $request->Major)->first();
@@ -173,9 +172,9 @@ class FlowchartController extends Controller
       $request->Major,
       $program->PROGRAM_MAJOR,
       $program->PROGRAM_TOTAL_CREDITS,
-      1,
-      $this->encode_semester($semesters[$request->Semester]),
-      -1
+      $request->Version,
+      $this->encode_semester($request->Semester),
+      $request->Stream
     );
 
     return redirect('flowchart');

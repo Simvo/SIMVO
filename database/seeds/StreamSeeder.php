@@ -15,6 +15,7 @@ class StreamSeeder extends Seeder
   {
 
     Stream::truncate();
+    StreamStructure::truncate();
 
     $software_cegep = [
       '1_FALL' => ['ECSE 202', 'ECSE 205', 'MATH 262','MATH 263', 'Complementary Studies Group B (HSSML)**'],

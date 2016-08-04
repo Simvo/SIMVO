@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\User;
 use App\Stream;
+use App\StreamStructure;
 use App\Schedule;
 use DB;
 use Auth;
@@ -320,7 +321,7 @@ trait ProgramTrait
   **/
   public function getStreams($program_id, $version)
   {
-    $streams_PDO = Stream::where('program_id', $program_id)
+    $streams_PDO = StreamStructure::where('program_id', $program_id)
                    ->where('version', $version)
                    ->groupBy('stream_name')
                    ->get(['stream_name']);
