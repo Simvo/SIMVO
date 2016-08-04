@@ -54,7 +54,6 @@ function removeErrors(idArray)
 {
   for(var i = 0; i<idArray.length ; i++)
   {
-    console.log("deleting ERROR: " + idArray[i]);
     $("#error_" + idArray[i]).remove();
   }
 }
@@ -140,7 +139,7 @@ function get_next_semester( current )
 
   function get_semester( semester )
   {
-    if(semester=="Exemption")
+    if(semester==="Exemption")
     {
       return "Exemption";
     }
@@ -149,7 +148,7 @@ function get_next_semester( current )
 
     var result = term[ 1 ];
 
-    switch ( term[ 0 ] )
+    switch ( term[ 0 ].toUpperCase() )
     {
       case 'FALL':
         result += "09";

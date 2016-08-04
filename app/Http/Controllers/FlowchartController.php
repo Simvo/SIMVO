@@ -13,6 +13,7 @@ use App\Http\Requests;
 class FlowchartController extends Controller
 {
   use Traits\NewObjectsTrait;
+  use Traits\StreamTrait;
   use Traits\ProgramTrait;
   use Traits\Tools;
   /**
@@ -60,6 +61,8 @@ class FlowchartController extends Controller
     {
       $degree = $degrees[0];
       Session::put('degree', $degree);
+
+      $this->initiateStreamGenerator($degrees[0]);
 
       $flowchart = $this->generateDegree($degree);
 
@@ -113,7 +116,13 @@ class FlowchartController extends Controller
       $complementaryCourses[0] = $courses[1];
       $complementaryCourses[1] = $courses[2];
     }
-    if($schedule_check == 0)
+
+    if($degree->stream_version != 1 && $schedule_check == 0)
+    {
+      //initiate stream,
+      //$this->initiateStreamGenerator($degree);
+    }
+    else if($schedule_check == 0)
     {
       $schedule[$this->get_semester($degree->enteringSemester)] = [0,[],$startingSemester];
     }
@@ -173,7 +182,7 @@ class FlowchartController extends Controller
       $program->PROGRAM_MAJOR,
       $program->PROGRAM_TOTAL_CREDITS,
       $request->Version,
-      $this->encode_semester($request->Semester),
+      $request->Semester,
       $request->Stream
     );
 
