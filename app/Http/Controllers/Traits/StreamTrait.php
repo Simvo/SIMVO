@@ -29,7 +29,11 @@ trait StreamTrait
       return;
     }
 
-    $coursesInStream = getCoursesInStream
+    // Generate exemptions based on difference of program and stream chosen
+    $generateExemptions = $this->generateExemptions($degree, $streamStructure);
+
+    $coursesInStream = $this->getCoursesInStream_array($streamStructure);
+    $coursesInStream = $this->getCoursesInStream_list($streamStructure);
   }
 
   /**
@@ -57,7 +61,18 @@ trait StreamTrait
   **/
   public function getCoursesInStream_list($StreamStructure)
   {
-
+    $coursesInStream = Stream::where('structure_id', $StreamStructure->id)
+                       ->get(['course']);
+    $courses = [];
+    foreach($coursesInStream as $courseInStream)
+    {
+      //Ensuring only course codes are added => required courses
+      if(strlen($courseInStream->course) == 8)
+      {
+          $courses[] = $courseInStream->course;
+      }
+    }
+    return $courses;
   }
 
   /**
@@ -66,6 +81,36 @@ trait StreamTrait
   * @return ['U0_Fall' => [list of courses]]
   **/
   public function getCoursesInStream_array($StreamStructure)
+  {
+    $terms = Stream::where('structure_id', $StreamStructure->id)
+             ->groupBy('term')
+             ->get();
+
+    $courses = [];
+    foreach($terms as $term)
+    {
+      $coursesInTerm = Stream::where('structure_id', $StreamStructure->id)
+                       ->where('term', $term->term)
+                       ->get();
+
+      $courses[$term->term] = [];
+      foreach($coursesInTerm as $courseInTerm)
+      {
+        if($courseInTerm->course != null)
+        {
+          $courses[$term->term][] = $courseInTerm->course;
+        }
+      }
+    }
+    return $courses;
+  }
+
+  /**
+  * Calculates what courses are exemptions based on stream choice
+  * @param StreamStructure, Degree
+  * @return void. Creates instances of schedule (only exemption semester)
+  **/
+  public function generateExemptions($degree, $StreamStructure)
   {
 
   }

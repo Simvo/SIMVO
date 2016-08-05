@@ -156,6 +156,16 @@ trait ProgramTrait
   }
 
   /**
+  * Function that returns All reuqired courses in a major
+  * @param int: ProgramID
+  * @return String array of all Group names
+  **/
+  public function getRequiredGroups($degree)
+  {
+
+  }
+
+  /**
   * Function that returns All Complementary Groups In a certain Major
   * @param int: ProgramID
   * @return String array of all Group names
