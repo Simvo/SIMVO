@@ -1,0 +1,43 @@
+$primary-color: #f44235;
+$secondary-color: #4051b5;
+$background: rgba(236, 240, 241,1.0);
+
+.registration_card.mdl-card {
+  width: 100%;
+  margin-bottom: 20px;
+}
+.registration_card > .mdl-card__actions {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+.registration_card > .mdl-card__title {
+  align-items: flex-start;
+}
+.registration_card > .mdl-card__title {
+  margin-top: 0;
+  color: #fff;
+  background: $secondary-color;
+}
+.registration_card > .mdl-card__actions {
+  display: flex;
+  box-sizing: border-box;
+  align-items: center;
+}
+.registration_card > .mdl-card__actions,
+.registration_card > .mdl-card__actions > .mdl-button,
+.registration_card > .mdl-card__title {}
+.registration_card > .mdl-card--border {}
+
+.bi_info_table {
+  width: 100%;
+  padding: 20px;
+  tr {
+    .desc {
+      width: 50%;
+    }
+  }
+}
+
+.new_user_submit {
+  width: 100%;
+  //margin: 0 auto;
+}

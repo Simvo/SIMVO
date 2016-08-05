@@ -1,0 +1,17 @@
+.group-container {
+  display: table;
+  position: relative;
+  overflow-x: auto;
+  width: 100%;
+}
+
+.group-row {
+  display: table-cell;
+  width: 300px;
+}
+
+.group-title {
+  text-align: center;
+  font-size: 15px;
+  font-weight: bold;
+}
