@@ -47,7 +47,7 @@ class FlowchartController extends Controller
         'degreeLoaded' => false,
         'schedule'=> [],
         'progress' => [],
-        'groupsWithCourses' => null,
+        'groupsWithCourses' => [],
         'exemptions' => [],
         'startingSemester' => "",
         'faculties'=> $faculties,
@@ -97,7 +97,7 @@ class FlowchartController extends Controller
 
     $userSetupComplete = $this->checkUserSetupStatus($degree);
 
-    //all courses in the users program. 
+    //all courses in the users program.
     $courses = $this->getGroupsWithCourses($degree, true);
     $groupsWithCourses['Required'] = $courses[0];
     $groupsWithCourses['Complementary'] = $courses[1];
