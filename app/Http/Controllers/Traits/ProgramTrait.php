@@ -129,7 +129,7 @@ trait ProgramTrait
     $user = Auth::User();
 
     $groups_PDO = DB::table('Programs')
-                  ->where('VERSION', 1)
+                  ->where('VERSION', $degree->version_id)
                   ->where('PROGRAM_ID', $degree->program_id)
                   ->where('SET_TYPE', 'Required')
                   ->whereNotNull('SUBJECT_CODE')
@@ -160,9 +160,17 @@ trait ProgramTrait
   * @param int: ProgramID
   * @return String array of all Group names
   **/
-  public function getRequiredGroups($degree)
+  public function getRequiredCourses($degree)
   {
+    $requiredGroups = $this->getRequiredGroups($degree);
 
+    $requiredCourses = [];
+    foreach($requiredGroups as $group)
+    {
+      $coursesinGroup = $this->getCoursesInGroup($degree, $group, false);
+      var_dump($coursesinGroup);
+      $requiredCourses =  array_merge($requiredCourses, $array2);
+    }
   }
 
   /**
