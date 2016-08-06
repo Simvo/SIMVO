@@ -135,7 +135,19 @@ $background: rgba(236, 240, 241,1.0);
   border-top: 2px solid rgba(243, 156, 18, 0.2);
 }
 
+.tutorial-div{
+  display: inline-block;
+  border-radius: 7px;
+  margin-left: 10px;
+  border-right: 2px solid rgba(255, 0, 0, 0.5);
+  border-bottom: 2px solid rgba(255, 0, 0, 0.5);
+}
 
+#tutorial-header{
+    border-bottom: 2px solid rgba(171, 171, 171, 0.41);
+    text-align: center;
+    padding-bottom: 10px;
+}
 
 .complementary_div legend {
   text-align: center;
@@ -163,6 +175,16 @@ $background: rgba(236, 240, 241,1.0);
   width: 20%;
 }
 
+.reveal_complementary_courses{
+  // left: calc(50% - 20px);
+  width: 80%;
+  margin-bottom: 10px;
+  padding-top: 5px;
+  height: 40px;
+  font-size: 15px;
+  border-radius: 25px;
+}
+
 .schedule_wrap {
   overflow: auto;
   overflow-y: hidden;
@@ -188,12 +210,23 @@ $background: rgba(236, 240, 241,1.0);
   position: relative;
 }
 
-.complementary_table{
+.Complementary_table{
   margin: auto;
 }
 
-.elective_table{
+.add_comp_course_button{
   margin: auto;
+  display: block;
+  margin-top: 20px;
+}
+
+.Elective_table{
+  margin: auto;
+}
+
+.Required_table{
+  margin:auto;
+
 }
 
 
