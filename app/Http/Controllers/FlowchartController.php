@@ -40,7 +40,7 @@ class FlowchartController extends Controller
 
 
       $userSetupComplete = $this->checkUserSetupStatus($user);
-    
+
 	  $degree = null;
       $degrees = $this->getDegrees($user);
 
