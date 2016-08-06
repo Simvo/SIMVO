@@ -165,12 +165,14 @@ trait ProgramTrait
     $requiredGroups = $this->getRequiredGroups($degree);
 
     $requiredCourses = [];
-    foreach($requiredGroups as $group)
+
+    foreach($requiredGroups as $group=>$list)
     {
       $coursesinGroup = $this->getCoursesInGroup($degree, $group, false);
-      var_dump($coursesinGroup);
-      $requiredCourses =  array_merge($requiredCourses, $array2);
+      $requiredCourses =  array_merge($requiredCourses, $coursesinGroup);
     }
+
+    return $requiredCourses;
   }
 
   /**

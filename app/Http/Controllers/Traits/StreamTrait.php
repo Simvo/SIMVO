@@ -112,6 +112,8 @@ trait StreamTrait
   **/
   public function generateExemptions($degree, $StreamStructure)
   {
-      $RequiredCourses = $this->getRequiredCourses($degree);
+    $exemptions = [];
+    $requiredCoursesFromProgram = $this->getRequiredCourses($degree);  
+
   }
 }
