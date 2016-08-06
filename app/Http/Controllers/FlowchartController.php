@@ -62,8 +62,6 @@ class FlowchartController extends Controller
       $degree = $degrees[0];
       Session::put('degree', $degree);
 
-      $this->initiateStreamGenerator($degrees[0]);
-
       $flowchart = $this->generateDegree($degree);
 
       return view('flowchart', [
@@ -117,10 +115,10 @@ class FlowchartController extends Controller
       $complementaryCourses[1] = $courses[2];
     }
 
-    if($degree->stream_version != 1 && $schedule_check == 0)
+    if($degree->stream_version != -1 && $schedule_check == 0)
     {
       //initiate stream,
-      //$this->initiateStreamGenerator($degree);
+      $this->initiateStreamGenerator($degree);
     }
     else if($schedule_check == 0)
     {
@@ -154,11 +152,6 @@ class FlowchartController extends Controller
     return $degrees;
   }
 
-  public function applyStream()
-  {
-
-  }
-
   public function newUserCreateDegree(Request $request)
   {
     $user=Auth::User();
@@ -185,6 +178,18 @@ class FlowchartController extends Controller
       $request->Semester,
       $request->Stream
     );
+
+    $degree = Degree::find($degree_id);
+
+    $schedule_check = Schedule::where('degree_id', $degree->id)
+                      ->where('semester', "<>", 'exemption')
+                      ->count();
+
+    if($degree->stream_version != -1 && $schedule_check == 0)
+    {
+      //initiate stream,
+      $this->initiateStreamGenerator($degree);
+    }
 
     return redirect('flowchart');
   }
@@ -213,28 +218,34 @@ class FlowchartController extends Controller
   public function generateSchedule($user)
   {
     $the_schedule = [];
+
     //Always have their starting semester available -- therefore if they accidentally remove all classes from it and refresh, it will remain.
     $the_schedule[$this->get_semester($user->enteringSemester)] = [0,[],$user->enteringSemester];
+
     $user_schedule=Schedule::where('user_id', $user->id)
-    ->whereNotIn('semester', ['complementary_course', 'elective_course'])
-    ->where('semester' ,"<>", 'Exemption')
-    ->groupBy('semester')
-    ->get();
+                   ->whereNotIn('semester', ['complementary_course', 'elective_course'])
+                   ->where('semester' ,"<>", 'Exemption')
+                   ->groupBy('semester')
+                   ->get();
+
     $sorted=$user_schedule->sortBy('semester');
     foreach($sorted as $semester)
     {
       $new_semester=[];
       $class_array=[];
       $tot_credits=0;
+
       $classes=DB::table('schedules')
-      ->where('user_id', $user->id)
-      ->where('semester', $semester->semester)
-      ->get(['schedules.id', 'schedules.status','schedules.SUBJECT_CODE', 'schedules.COURSE_NUMBER']);
+               ->where('user_id', $user->id)
+               ->where('semester', $semester->semester)
+               ->get(['schedules.id', 'schedules.status','schedules.SUBJECT_CODE', 'schedules.COURSE_NUMBER']);
+
       foreach($classes as $class)
       {
         $credits = DB::table('programs')->where('SUBJECT_CODE', $class->SUBJECT_CODE)
                    ->where('COURSE_NUMBER', $class->COURSE_NUMBER)
                    ->first(['COURSE_CREDITS'])->COURSE_CREDITS;
+
         $class_array[] = [$class->id, $class->SUBJECT_CODE, $class->COURSE_NUMBER, $credits, $class->status];
         $tot_credits+=$credits;
       }
@@ -242,9 +253,11 @@ class FlowchartController extends Controller
     }
     return $the_schedule;
   }
+
   public function checkUserSetupStatus($degree)
   {
     $requiredGroups = $this->getRequiredGroups($degree);
+
     foreach($requiredGroups as $key=>$group)
     {
       $coursesInGroup = $this->getCoursesInGroup($degree, $key, true);
@@ -259,6 +272,7 @@ class FlowchartController extends Controller
               ->join('schedules', 'schedules.id', '=', 'errors.schedule_id')
               ->groupBy('schedules.semester')
               ->get(['schedules.semester']);
+
     $errors = [];
     foreach($all_errors as $e)
     {
@@ -266,7 +280,9 @@ class FlowchartController extends Controller
                ->join('schedules', 'schedules.id', '=', 'errors.schedule_id')
                ->where('schedules.semester', $e->semester)
                ->get(['errors.id', 'errors.type', 'errors.message']);
+
       $errors[$this->get_semester($e->semester)] = [];
+
       foreach($errors_in_semester as $error)
       {
         $errors[$this->get_semester($e->semester)][] = [$error->id, $error->type, $error->message];

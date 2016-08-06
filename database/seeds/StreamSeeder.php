@@ -24,10 +24,10 @@ class StreamSeeder extends Seeder
       '2_WINTER' => ['CCOM 206', 'COMP 251', 'ECSE 310', 'ECSE 316', 'MATH 363'],
       '3_FALL' => ['COMP 302', 'COMP 360', 'ECSE 326', 'ECSE 427', 'ECSE 429', 'FACC 300'],
       '3_WINTER' => ['COMP 421', 'COMP 529', 'ECSE 428', 'ECSE 456', 'FACC 400', 'Technical Complementary'],
-      '4_FALL' => ['ECSE 420', 'Technical Complementary', 'Technical Complementary', 'Technical Complementary', 'Natural Science Complementary 2']
+      '4_FALL' => ['ECSE 420', 'ECSE 457', 'Technical Complementary', 'Technical Complementary', 'Technical Complementary', 'Natural Science Complementary 2']
     ];
 
-    $Engineering['100533'] = ['1'=>['Software Engineering Curriculum'=>$software_cegep]];
+    $Engineering['100533'] = ['2'=>['Software Engineering Curriculum Gegep Entry'=>$software_cegep]];
 
     $software_cegep = [];
 

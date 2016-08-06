@@ -10,6 +10,26 @@ use DB;
 
 trait Tools
 {
+
+  private function convert_term_to_code($term)
+  {
+    $term = strtolower($term);
+
+    switch($term)
+    {
+      case 'winter':
+      return '01';
+      break;
+
+      case 'summer':
+      return '05';
+      break;
+
+      case 'fall':
+      return '09';
+      break;
+    }
+  }
   /**
   * Function that returns Semester that user is currently in
   * @param N/A
@@ -68,6 +88,36 @@ trait Tools
     return $result;
   }
 
+  private function get_next_semester($current)
+  {
+    $semester="";
+
+    $term=substr($current, 4, 2);
+    $curr_year = intval(substr($current, 0, 4));
+
+    switch($term)
+    {
+      case '01':
+      $semester='05';
+      $year = $curr_year;
+      break;
+
+      case '09':
+      $semester.='01';
+      $year = $curr_year+1;
+      break;
+
+      default:
+      $semester.='09';
+      $year = $curr_year;
+      break;
+
+    }
+
+    $semester=strval($year) . $semester;
+
+    return $semester;
+  }
 
   private function get_previous_semester($current)
   {
