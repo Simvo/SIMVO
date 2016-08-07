@@ -101,7 +101,7 @@ function LoadStreams(){
 
         for(var i =0; i<response.length; i++)
         {
-          var option = '<option value="' + i+1 + '">'+ response[i] +'</option>';
+          var option = '<option value="' + (i+1) + '">'+ response[i] +'</option>';
           $('#stream-select').append(option);
         }
 
