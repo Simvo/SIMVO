@@ -516,40 +516,69 @@ function initAddCompCourseButton()
 
         var company = $("#internship_company_name").val();
         var length = parseInt($("#internship_length_select").val());
+        var width = 160;
         var position = $("#internship_position_held").val();
         var summer = false;
 
-        if($("#Internship_include_summer").parent().hasClass("is-checked"))
+        //Check if there is valid input -- all the fields have something in them
+        if(company.length == 0 || position.length == 0 ){
+          if(!$("#Internship_error").length)
+          {
+            //STILL NEED TO MAKE THIS FANCY ---------------
+            
+            var invalid = '<div id="Internship_error"> Please fill out all of the internship information </div>'
+            $(".add_internship_button").after(invalid);
+          }
+          return;
+        }
+        else
         {
-          summer = true;
+          $("#Internship_error").remove();
         }
 
+
+
+        //allocate semesters for internship occupation
         var k = 0;
+        if(semester_letter.split(" ")[0] == "SUMMER")
+        {
+          width += 220;
+          k++;
+        }
         while (k < length)
         {
+          if(!$("[id='" + semester_letter +"-delete']").length)
+          {
+            $('#comp_courses').foundation('reveal', 'close');
+            //RETURN AN ERROR MESSAGE HERE -----------
+
+
+            //------------------------
+            return;
+          }
+
           if($("[id='" + semester_letter +"-gap']").length)
           {
             $("[id='" + semester_letter +"-gap']").trigger("click");
+            width +=220;
             k++;
           }
+
 
           var prev_sem = get_semester_letter(get_previous_semester(get_semester(semester_letter)));
 
-          if($("[id='" + prev_sem + "-gap']").length && summer)
+          if($("[id='" + prev_sem + "-gap']").length)
           {
             $("[id='" + prev_sem +"-gap']").trigger("click");
-            k++;
-
+            width += 220;
           }
           semester_letter = get_semester_letter(get_next_semester(get_semester(semester_letter)));
-
         }
 
+        width -= 220;
 
 
-        for(var i = 0; i < length; i++)
-        {
-          console.log("semester: " + semester + "      company:" + company + "     position: " + position);
+
           $.ajax({
             type: "post",
             url: "/flowchart/user-create-internship",
@@ -566,31 +595,29 @@ function initAddCompCourseButton()
               var sem2 = sem.split(" ");
               sem2 = sem2[0] + sem2[1];
 
-              var comp_course = "<div class='custom_card " + response[1] + "_course' id='" + response[0] + "'>";
+              var comp_course = "<div class='custom_card " + response[1] + "_course' id='" + response[0] + "' style='width:"+width+"px;'>";
               comp_course += "<div class='card_content'>";
               comp_course += '<div>' + response[2] + '</div>';
               comp_course += '<div>' + response[3] + '</div>';
               comp_course += "<button id='menu_for_" + response[0] + "' class='mdl-button mdl-js-button mdl-button--icon'>";
               comp_course += "<i class='material-icons'>arrow_drop_down</i>";
-              comp_course += "<ul class='mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect' for='menu_for_" + response[0] + "''>";
+              comp_course += "<ul class='mdl-menu mdl-js-menu mdl-js-ripple-effect' for='menu_for_" + response[0] + "''>";
               comp_course += "<li class='mdl-menu__item edit_internship' id='edit_internship_" + response[0] + "'>edit</li>";
               comp_course += "<li class='mdl-menu__item remove-course' id='remove_" + response[0] + "'>Remove</li>";
               comp_course += "</ul>";
               comp_course += "</div>";
               comp_course += "</div>";
-              $($("." + sem2).find("div.credit_counter")).before(comp_course);
+              $("." + sem2).parent().before(comp_course);
 
               //Dynamically render MDL
               componentHandler.upgradeDom();
+              refreshDeleteSemester();
 
 
             }
+
           });
-          semester = get_next_semester(semester);
-          if(get_semester_letter(semester).split(" ")[0] == "SUMMER" && !summer)
-          {
-            semester = get_next_semester(semester);
-          }
-        }
+
+        $('#comp_courses').foundation('reveal', 'close');
       });
     }

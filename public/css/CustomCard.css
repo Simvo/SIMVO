@@ -24,7 +24,10 @@
 }
 
 .Internship_course{
-  height: 250px;
+  height: 300px;
+  position:absolute;
+  top:60px;
+  z-index: 5;
   background-color: #ccccff;
   font-size: 20px;
   line-height: 1.5;

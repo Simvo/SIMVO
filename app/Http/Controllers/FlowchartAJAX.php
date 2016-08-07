@@ -86,7 +86,7 @@ class FlowchartAJAX extends Controller
 
     //$new_id = $this->create_schedule($degree, $semester, $company, $position, $courseType);
 
-    return json_encode([ 1 , $courseType, $company, $position, $semester]);
+    return json_encode([ 300 , $courseType, $company, $position, $semester]);
   }
 
   public function refresh_complementary_courses()
