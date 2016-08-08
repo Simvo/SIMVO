@@ -368,6 +368,10 @@ function initAddCompCourseButton()
         else
         {
           var courseID = $(this).attr("id").substring(7, $(this).attr("id").length);
+          if($("#"+courseID).hasClass("Internship_course"))
+          {
+            console.log("OH MY JESUS");
+          }
           if($(".Internship_holder_" + courseID).length)
           {
             var internshipDelete = $(".Internship_holder_" + courseID);
@@ -582,6 +586,8 @@ function initAddCompCourseButton()
 
           if((!$("[id='" + semester_letter +"-delete']").length && $("[id='" + formatSemesterID(semester_letter) + "']").length && firstSemesterCheck != semester_letter ) || (firstSemesterCheck == semester_letter && $("." + firstSemesterCheck.split(" ")[0] + firstSemesterCheck.split(" ")[1]).find("div.custom_card").length > 1  )   )
           {
+          // if($("[id='" + formatSemesterID(semester_letter) + "']").find("div.custom_card").length > 1)
+          // {
             console.log("There are courses in one of the semesters!");
             $('#comp_courses').foundation('reveal', 'close');
             //RETURN AN ERROR MESSAGE HERE -----------
@@ -664,10 +670,11 @@ function initAddCompCourseButton()
                   comp_course += "</div>";
                   $("." + sem2).parent().before(comp_course);
                 }
+                initRemoveCourseListener("#remove_" + response[0][i]);
               }
 
               refreshDeleteSemester();
-              initRemoveCourseListener();
+
 
               //Dynamically render MDL
               componentHandler.upgradeDom();
