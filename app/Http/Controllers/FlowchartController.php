@@ -212,7 +212,7 @@ class FlowchartController extends Controller
       ->get(['schedules.id', 'schedules.status','schedules.SUBJECT_CODE', 'schedules.COURSE_NUMBER']);
       foreach($classes as $class)
       {
-        if(explode(" " , $class->status)[0] != "Internship" )
+        if(explode(" " , $class->status)[0] != "Internship" && explode(" " , $class->status)[0] != "Internship_holder"  )
         {
           $credits = DB::table('programs')->where('SUBJECT_CODE', $class->SUBJECT_CODE)
                      ->where('COURSE_NUMBER', $class->COURSE_NUMBER)

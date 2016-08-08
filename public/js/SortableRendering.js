@@ -2,6 +2,7 @@ function renderSortable()
 {
   $( '.sortable' ).sortable( {
     connectWith: ".validPosition",
+    items: "div.custom_card:not(.pinned)",
     start: function( event, ui ) {
       is_dragging = true;
     },
@@ -13,6 +14,7 @@ function renderSortable()
 
   $( ".sortable" ).sortable( {
       connectWith: ".validPosition",
+      items: "div.custom_card:not(.pinned)",
       placeholder: 'object_ouline hvr-pulse',
       cancel: '.credit_counter, .error_course_message',
       receive: function( event, ui ) {

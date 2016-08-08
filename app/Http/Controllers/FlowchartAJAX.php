@@ -78,16 +78,27 @@ class FlowchartAJAX extends Controller
     if(!Auth::Check())
       return;
 
-    $courseTypeAndLength = $request->courseTypeAndLength;
+    $courseTypeWidthAndLength = $request->courseTypeWidthAndLength;
     $company = $request->company;
     $position = $request->position;
-    $semester = $request->semester;
+    $semester = array($request->semester);
     $degree = Session::get('degree');
-    $courseType = explode(" ", $courseTypeAndLength)[0];
+    $internshipData = explode(" ", $courseTypeWidthAndLength);
+    $courseType = $internshipData[0];
+    $length = $internshipData[2];
+    $new_id = array($this->create_schedule($degree, $request->semester, $company, $position, $courseTypeWidthAndLength));
+    $semesterShift = $request->semester;
 
-    $new_id = $this->create_schedule($degree, $semester, $company, $position, $courseTypeAndLength);
+    for($i = 1; $i < $length; $i++)
+    {
+        $semesterShift = $this->get_next_semester($semesterShift);
+        array_push($semester, $semesterShift);
+        array_push($new_id, $this->create_schedule($degree, $semesterShift, $company, $position, 'Internship_holder '.$new_id[0]));
+    }
 
-    return json_encode([ 300 , $courseType, $company, $position, $semester]);
+
+
+    return json_encode([ $new_id , $courseType, $company, $position, $semester]);
   }
 
   public function refresh_complementary_courses()
@@ -146,8 +157,6 @@ public function delete_course_from_schedule(Request $request)
   $semester = $course->first()->semester;
 
   $degree = Session::get('degree');
-
-  $semester = $course->semester;
 
   $course->delete();
 
