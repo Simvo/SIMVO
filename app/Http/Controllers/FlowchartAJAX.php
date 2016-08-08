@@ -78,13 +78,14 @@ class FlowchartAJAX extends Controller
     if(!Auth::Check())
       return;
 
-    $courseType = $request->courseType;
+    $courseTypeAndLength = $request->courseTypeAndLength;
     $company = $request->company;
     $position = $request->position;
     $semester = $request->semester;
     $degree = Session::get('degree');
+    $courseType = explode(" ", $courseTypeAndLength)[0];
 
-    //$new_id = $this->create_schedule($degree, $semester, $company, $position, $courseType);
+    $new_id = $this->create_schedule($degree, $semester, $company, $position, $courseTypeAndLength);
 
     return json_encode([ 300 , $courseType, $company, $position, $semester]);
   }

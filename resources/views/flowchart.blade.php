@@ -84,19 +84,36 @@
               <div class="validPosition sortable {{ str_replace(" ", "", $key) }}" id="{{ $key . " " . str_replace(" ", "", $key) }}" >
 
                 @foreach($classes[1] as $class)
-                  <div class="custom_card {{ $class[4] }}_course" id="{{ $class[0] }}">
-                    <div class="card_content">
-                      {{ $class[1] }} &nbsp {{ $class[2] }}
-                      <button id="menu_for_{{ $class[0] }}" class="mdl-button mdl-js-button mdl-button--icon">
-                        <i class="material-icons">arrow_drop_down</i>
-                      </button> {{ $class[3] }}
+                  @if(explode(" ", $class[4])[0] == "Internship")
+                    <div class="custom_card {{ explode(" ", $class[4])[0] }}_course" id="{{ $class[0] }}" style="width:{{explode(" ", $class[4])[1]}}px">
+                      <div class="card_content">
+                        <div> {{ $class[1] }} </div>
+                        <div> {{ $class[2] }} </div>
+                        <button id="menu_for_{{ $class[0] }}" class="mdl-button mdl-js-button mdl-button--icon">
+                          <i class="material-icons">arrow_drop_down</i>
+                        </button>
 
-                      <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="menu_for_{{ $class[0] }}">
-                        <li class="mdl-menu__item show-prereqs" id="show_prereqs_{{ $class[0] }}">Show Pre-Requisites</li>
-                        <li class="mdl-menu__item remove-course" id="remove_{{ $class[0] }}">Remove</li>
-                      </ul>
+                        <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="menu_for_{{ $class[0] }}">
+                          <li class="mdl-menu__item edit-internship" id="edit_internship_{{ $class[0] }}">Edit</li>
+                          <li class="mdl-menu__item remove-course" id="remove_{{ $class[0] }}">Remove</li>
+                        </ul>
+                      </div>
                     </div>
-                  </div>
+                  @else
+                    <div class="custom_card {{ $class[4] }}_course" id="{{ $class[0] }}">
+                      <div class="card_content">
+                        {{ $class[1] }} &nbsp {{ $class[2] }}
+                        <button id="menu_for_{{ $class[0] }}" class="mdl-button mdl-js-button mdl-button--icon">
+                          <i class="material-icons">arrow_drop_down</i>
+                        </button> {{ $class[3] }}
+
+                        <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="menu_for_{{ $class[0] }}">
+                          <li class="mdl-menu__item show-prereqs" id="show_prereqs_{{ $class[0] }}">Show Pre-Requisites</li>
+                          <li class="mdl-menu__item remove-course" id="remove_{{ $class[0] }}">Remove</li>
+                        </ul>
+                      </div>
+                    </div>
+                  @endif
                 @endforeach
 
                 <div class="custom_card credit_counter" style="text-align:center;">
@@ -271,7 +288,7 @@
                         </td>
                       </tr>
 
-                    
+
 
 
 

@@ -518,14 +518,14 @@ function initAddCompCourseButton()
         var length = parseInt($("#internship_length_select").val());
         var width = 160;
         var position = $("#internship_position_held").val();
-        var summer = false;
+
 
         //Check if there is valid input -- all the fields have something in them
         if(company.length == 0 || position.length == 0 ){
           if(!$("#Internship_error").length)
           {
             //STILL NEED TO MAKE THIS FANCY ---------------
-            
+
             var invalid = '<div id="Internship_error"> Please fill out all of the internship information </div>'
             $(".add_internship_button").after(invalid);
           }
@@ -547,8 +547,12 @@ function initAddCompCourseButton()
         }
         while (k < length)
         {
-          if(!$("[id='" + semester_letter +"-delete']").length)
+          var firstSemesterCheck =  $($($(".semester")[1]).find("div.sortable")).attr("id").split(" ");
+          firstSemesterCheck = firstSemesterCheck[0] + " " + firstSemesterCheck[1];
+          console.log("semester check: " + firstSemesterCheck + "   sem_letter: " + semester_letter );
+          if(!$("[id='" + semester_letter +"-delete']").length && $("[id='" + formatSemesterID(semester_letter) + "']").length && firstSemesterCheck != semester_letter   )
           {
+            console.log("There are courses in one of the semesters!");
             $('#comp_courses').foundation('reveal', 'close');
             //RETURN AN ERROR MESSAGE HERE -----------
 
@@ -584,13 +588,14 @@ function initAddCompCourseButton()
             url: "/flowchart/user-create-internship",
             data: {
               semester: semester,
-              courseType: 'Internship',
+              courseTypeAndLength: 'Internship ' + width + " " + length,
               company: company,
               position: position,
             },
 
             success: function(data) {
               var response = JSON.parse(data);
+              console.log(response);
               var sem = get_semester_letter(response[4]);
               var sem2 = sem.split(" ");
               sem2 = sem2[0] + sem2[1];
@@ -601,8 +606,9 @@ function initAddCompCourseButton()
               comp_course += '<div>' + response[3] + '</div>';
               comp_course += "<button id='menu_for_" + response[0] + "' class='mdl-button mdl-js-button mdl-button--icon'>";
               comp_course += "<i class='material-icons'>arrow_drop_down</i>";
-              comp_course += "<ul class='mdl-menu mdl-js-menu mdl-js-ripple-effect' for='menu_for_" + response[0] + "''>";
-              comp_course += "<li class='mdl-menu__item edit_internship' id='edit_internship_" + response[0] + "'>edit</li>";
+              comp_course += "</button>"
+              comp_course += "<ul class='mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect' for='menu_for_" + response[0] + "''>";
+              comp_course += "<li class='mdl-menu__item edit-internship' id='edit_internship_" + response[0] + "'>edit</li>";
               comp_course += "<li class='mdl-menu__item remove-course' id='remove_" + response[0] + "'>Remove</li>";
               comp_course += "</ul>";
               comp_course += "</div>";
