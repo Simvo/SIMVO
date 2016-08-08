@@ -246,10 +246,17 @@ function initAddCompCourseButton()
   $(".add_comp_course_button").click(function()
   {
     var target_sem = $($($("#course_schedule").find($("a.Complementary_Add_Target"))).parent());
-    var semester = $(target_sem.find("div.sortable")).attr("id");
-    semester = semester.split(" ");
-    semester = semester[0] + " " + semester[1];
-    semester = get_semester(semester);
+    var semester2 = $(target_sem.find("div.sortable")).attr("id");
+    if(semester2 != "Exemption")
+    {
+      var semester = semester2.split(" ");
+      semester = semester[0] + " " + semester[1];
+      semester = get_semester(semester);
+    }
+    else
+    {
+      var semester = semester2;
+    }
     var courseType = ['Required', 'Complementary', 'Elective'];
     var selected = [];
 
@@ -313,7 +320,7 @@ function initAddCompCourseButton()
 
             $(target_sem.find("div.credit_counter")).before(comp_course);
             $(target_sem.find('div.credit_counter_num' )).text( 'CREDITS: ' + response[1]);
-
+            checkVSB(semester, response[0] , $( "[id='" + semester2 + "']" ));
 
             for (var group in response[2])
             {
