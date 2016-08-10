@@ -230,6 +230,15 @@
 
 }
 
+#Internship_error{
+    margin-top: 30px;
+    text-align: center;
+    color: red;
+    font-weight: bold;
+}
+
+
+
 .reveal-modal {
   height: 80%;
   overflow: scroll;

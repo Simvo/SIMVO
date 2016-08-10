@@ -122,6 +122,16 @@ class FlowchartAJAX extends Controller
     return json_encode([$returnGroups, $groupCredits]);
   }
 
+  public function edit_internship(Request $request)
+  {
+    if(!Auth::Check())
+      return;
+
+    $course = DB::table('schedules')->where('id', $request->id);
+    $course->update(['SUBJECT_CODE' => $request->companyName, 'COURSE_NUMBER' => $request->positionHeld]);
+    return json_encode($course);
+  }
+
 public function add_complementary_course_to_Flowchart(Request $request)
 {
   if(!Auth::Check())

@@ -54,3 +54,5 @@ Route::get('/flowchart/refresh-complementary-courses', 'FlowchartAJAX@refresh_co
 Route::post('/flowchart/check-course-availability','FlowchartAJAX@vsb_checkCourseAvailablity');
 
 Route::post('/flowchart/add_complementary_course_to_Flowchart', 'FlowchartAJAX@add_complementary_course_to_Flowchart');
+
+Route::post('/flowchart/edit-internship', 'FlowchartAJAX@edit_internship');

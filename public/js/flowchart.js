@@ -7,7 +7,9 @@ $(document).ready(function()
   initAddSemesterListener(".add-semester");
   initRemoveCourseListener(".remove-course");
   initComplementaryModalRevealListener(".semester-add-comp-course-button");
+  initEditInternship(".edit-internship");
   refreshDeleteSemester();
+  refreshComplementaryCourses();
 });
 
 function startAddCourseTutorial()
@@ -236,7 +238,6 @@ function refreshDeleteSemester()
       {
         if(!$($(".semester")[i]).find("div.sortable").hasClass("validPosition"))
         {
-          console.log("sortable again! HAHAH");
           $($(".semester")[i]).find("div.sortable").addClass("validPosition");
         }
         var target_sem = $($(".semester")[i]).find("h5").html();
@@ -368,17 +369,13 @@ function initAddCompCourseButton()
         else
         {
           var courseID = $(this).attr("id").substring(7, $(this).attr("id").length);
-          if($("#"+courseID).hasClass("Internship_course"))
-          {
-            console.log("OH MY JESUS");
-          }
+
           if($(".Internship_holder_" + courseID).length)
           {
             var internshipDelete = $(".Internship_holder_" + courseID);
             //Case where internship has holder semesters
             for(var i = 0; i < internshipDelete.length; i++ )
             {
-              console.log($(internshipDelete[i]).attr("id") + " is the holder ID to delete");
               $("#remove_" + $(internshipDelete[i]).attr("id")).trigger("click");
             }
           }
@@ -543,9 +540,14 @@ function initAddCompCourseButton()
       $(".add_internship_button").click(function(){
         var target_sem = $($($("#course_schedule").find($("a.Complementary_Add_Target"))).parent());
         var semester_letter = $(target_sem.find("div.sortable")).attr("id");
-        semester_letter = semester_letter.split(" ");
-        semester_letter = semester_letter[0] + " " + semester_letter[1];
-        var semester = get_semester(semester_letter);
+        if(semester_letter != "Exemption")
+        {
+
+          semester_letter = semester_letter.split(" ");
+          semester_letter = semester_letter[0] + " " + semester_letter[1];
+          var semester = get_semester(semester_letter);
+        }
+
 
         var company = $("#internship_company_name").val();
         var length = parseInt($("#internship_length_select").val());
@@ -554,14 +556,18 @@ function initAddCompCourseButton()
 
 
         //Check if there is valid input -- all the fields have something in them
-        if(company.length == 0 || position.length == 0 ){
-          if(!$("#Internship_error").length)
-          {
-            //STILL NEED TO MAKE THIS FANCY ---------------
-
-            var invalid = '<div id="Internship_error"> Please fill out all of the internship information </div>'
-            $(".add_internship_button").after(invalid);
-          }
+        if(company.length == 0 || position.length == 0 )
+        {
+          $("#Internship_error").remove();
+          var invalid = '<div id="Internship_error"> Please fill out all of the internship information </div>'
+          $(".add_internship_button").after(invalid);
+          return;
+        }
+        else if(semester_letter == "Exemption")
+        {
+          $("#Internship_error").remove();
+          var invalid = '<div id="Internship_error">Internships cannot be added to the Exemption list!';
+          $(".add_internship_button").after(invalid);
           return;
         }
         else
@@ -573,27 +579,17 @@ function initAddCompCourseButton()
 
         //allocate semesters for internship occupation
         var k = 0;
-        if(semester_letter.split(" ")[0] == "SUMMER")
-        {
-          width += 220;
-          k++;
-        }
+
         while (k < length)
         {
           var firstSemesterCheck =  $($($(".semester")[1]).find("div.sortable")).attr("id").split(" ");
           firstSemesterCheck = firstSemesterCheck[0] + " " + firstSemesterCheck[1];
-          console.log("semester check: " + firstSemesterCheck + "   sem_letter: " + semester_letter );
 
-          if((!$("[id='" + semester_letter +"-delete']").length && $("[id='" + formatSemesterID(semester_letter) + "']").length && firstSemesterCheck != semester_letter ) || (firstSemesterCheck == semester_letter && $("." + firstSemesterCheck.split(" ")[0] + firstSemesterCheck.split(" ")[1]).find("div.custom_card").length > 1  )   )
+          if($("[id='" + formatSemesterID(semester_letter) + "']").find("div.custom_card").length > 1 )
           {
-          // if($("[id='" + formatSemesterID(semester_letter) + "']").find("div.custom_card").length > 1)
-          // {
-            console.log("There are courses in one of the semesters!");
-            $('#comp_courses').foundation('reveal', 'close');
-            //RETURN AN ERROR MESSAGE HERE -----------
-
-
-            //------------------------
+            $("#Internship_error").remove();
+            var invalid = '<div id="Internship_error"> There were courses found in semesters you wish to place your internship! Make sure you clear these out before adding your internship</div>'
+            $(".add_internship_button").after(invalid);
             return;
           }
 
@@ -630,7 +626,6 @@ function initAddCompCourseButton()
 
             success: function(data) {
               var response = JSON.parse(data);
-              console.log(response);
               for( var i = 0; i < response[4].length; i++)
               {
                 var sem = get_semester_letter(response[4][i]);
@@ -640,8 +635,8 @@ function initAddCompCourseButton()
                 {
                   var comp_course = "<div class='custom_card pinned " + response[1] + "_course' id='" + response[0][i] + "' style='width:"+width+"px;'>";
                   comp_course += "<div class='card_content'>";
-                  comp_course += '<div>' + response[2] + '</div>';
-                  comp_course += '<div>' + response[3] + '</div>';
+                  comp_course += '<div class="internship_company_name" id="internship_company_name_' + response[0][i] + '">' + response[2] + '</div>';
+                  comp_course += '<div class="internship_position_held" id="internship_position_held_' + response[0][i] + '">' + response[3] + '</div>';
                   comp_course += "<button id='menu_for_" + response[0][i] + "' class='mdl-button mdl-js-button mdl-button--icon'>";
                   comp_course += "<i class='material-icons'>arrow_drop_down</i>";
                   comp_course += "</button>"
@@ -651,7 +646,7 @@ function initAddCompCourseButton()
                   comp_course += "</ul>";
                   comp_course += "</div>";
                   comp_course += "</div>";
-                  $("." + sem2).parent().before(comp_course);
+                  $("." + sem2).append(comp_course);
                 }
                 else
                 {
@@ -668,13 +663,14 @@ function initAddCompCourseButton()
                   comp_course += "</ul>";
                   comp_course += "</div>";
                   comp_course += "</div>";
-                  $("." + sem2).parent().before(comp_course);
+                  $("." + sem2).append(comp_course);
                 }
                 initRemoveCourseListener("#remove_" + response[0][i]);
+                initEditInternship("#edit_internship_" + response[0][i]);
               }
 
               refreshDeleteSemester();
-
+              refreshComplementaryCourses();
 
               //Dynamically render MDL
               componentHandler.upgradeDom();
@@ -687,4 +683,134 @@ function initAddCompCourseButton()
 
         $('#comp_courses').foundation('reveal', 'close');
       });
+    }
+
+    function initEditInternship(target)
+    {
+      $(target).click(function(e){
+        var id = $(this).attr("id").substring(16, $(this).attr("id").length);
+        var companyName = $("#internship_company_name_" + id).html();
+        var positionHeld = $("#internship_position_held_" + id).html();
+
+        var textfield1 = '<div class="mdl-textfield mdl-js-textfield">';
+        textfield1 += '<textarea class="mdl-textfield__input edit_internship_textfield" type="text" rows= "3" id="edit_company_name_textfield_' + id + '" >' + companyName + '</textarea>';
+        textfield1 += '<label class="mdl-textfield__label" for="edit_position_held_textfield_' + id + '">Company name</label>';
+        textfield1 += '</div>';
+
+        var textfield2 = '<div class="mdl-textfield mdl-js-textfield">';
+        textfield2 += '<textarea class="mdl-textfield__input edit_internship_textfield" type="text" rows= "2" id="edit_position_held_textfield_' + id + '" >' + positionHeld + '</textarea>';
+        textfield2 += '<label class="mdl-textfield__label" for="edit_position_held_textfield_' + id + '">Position held</label>';
+        textfield2 += '</div>';
+
+        $("#menu_for_" + id).remove();
+        $("#internship_company_name_" + id).html(textfield1);
+        $("#internship_position_held_" + id).html(textfield2);
+
+        var options = '<div> ';
+        options += '<button id="internship_edit_cancel_' + id + '" class="mdl-button mdl-js-button mdl-js-ripple-effect">';
+        options += '<i class="material-icons">cancel</i>';
+        options += '</button>';
+        options += '<button id="internship_edit_confirm_' + id + '" class="mdl-button mdl-js-button mdl-js-ripple-effect">';
+        options += '<i class="material-icons">check</i>';
+        options += '</button>';
+        options += "</div>";
+        $("#internship_position_held_" + id).after(options);
+
+        initConfirmEditInternshipButton(id,companyName, positionHeld);
+
+
+        //Dynamically render MDL
+        componentHandler.upgradeDom();
+
+      });
+    }
+
+    function initConfirmEditInternshipButton(id, originalCN, originalPH)
+    {
+
+      //on confirmTarget click
+      $("#internship_edit_confirm_" + id).click(function(){
+        var newCN = $("#edit_company_name_textfield_" + id).val();
+        var newPH = $("#edit_position_held_textfield_" + id).val();
+        var html = '<div class="card_content">';
+
+        if(originalCN == newCN && originalPH == newPH)
+        {
+          html += '<div class="internship_company_name" id="internship_company_name_' + id + '"> ' + originalCN + ' </div>';
+          html += '<div class="internship_position_held" id="internship_position_held_' + id + '"> ' + originalPH + ' </div>';
+          html += '<button id="menu_for_' + id + '" class="mdl-button mdl-js-button mdl-button--icon">';
+          html += '<i class="material-icons">arrow_drop_down</i>';
+          html += '</button>';
+          html += '<ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="menu_for_' + id + '">';
+          html += '<li class="mdl-menu__item edit-internship" id="edit_internship_' + id + '">Edit</li>';
+          html += '<li class="mdl-menu__item remove-course" id="remove_' + id+ '">Remove</li>';
+          html += '</ul>';
+        }
+        else
+        {
+          html += '<div class="internship_company_name" id="internship_company_name_' + id + '"> ' + newCN + ' </div>';
+          html += '<div class="internship_position_held" id="internship_position_held_' + id + '"> ' + newPH + ' </div>';
+          html += '<button id="menu_for_' + id + '" class="mdl-button mdl-js-button mdl-button--icon">';
+          html += '<i class="material-icons">arrow_drop_down</i>';
+          html += '</button>';
+          html += '<ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="menu_for_' + id + '">';
+          html += '<li class="mdl-menu__item edit-internship" id="edit_internship_' + id + '">Edit</li>';
+          html += '<li class="mdl-menu__item remove-course" id="remove_' + id+ '">Remove</li>';
+          html += '</ul>';
+          //DB CALL!
+          $.ajax({
+            type: "post",
+            url: "/flowchart/edit-internship",
+            data: {
+              id: id,
+              companyName: newCN,
+              positionHeld: newPH,
+            }
+          });
+
+          //--------------
+        }
+        html += '</div>';
+
+        $("#" + id).html( html );
+
+        initEditInternship("#edit_internship_" + id);
+        initRemoveCourseListener("#remove_" + id);
+
+        //Dynamically render MDL
+        componentHandler.upgradeDom();
+
+      });
+
+
+      //on cancelTarget click
+      $("#internship_edit_cancel_" + id).click(function(){
+
+        var newCN = $("#edit_company_name_textfield_" + id).val();
+        var newPH = $("#edit_position_held_textfield_" + id).val();
+
+        var html = '<div class="card_content">';
+        html += '<div class="internship_company_name" id="internship_company_name_' + id + '"> ' + originalCN + ' </div>';
+        html += '<div class="internship_position_held" id="internship_position_held_' + id + '"> ' + originalPH + ' </div>';
+        html += '<button id="menu_for_' + id + '" class="mdl-button mdl-js-button mdl-button--icon">';
+        html += '<i class="material-icons">arrow_drop_down</i>';
+        html += '</button>';
+        html += '<ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="menu_for_' + id + '">';
+        html += '<li class="mdl-menu__item edit-internship" id="edit_internship_' + id + '">Edit</li>';
+        html += '<li class="mdl-menu__item remove-course" id="remove_' + id+ '">Remove</li>';
+        html += '</ul>';
+        html += '</div>';
+        $("#" + id).html( html );
+
+        initEditInternship("#edit_internship_" + id);
+        initRemoveCourseListener("#remove_" + id);
+
+        //Dynamically render MDL
+        componentHandler.upgradeDom();
+
+      });
+
+
+
+
     }

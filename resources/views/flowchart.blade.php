@@ -87,8 +87,8 @@
                   @if(explode(" ", $class[4])[0] == "Internship" )
                     <div class="custom_card pinned {{ explode(" ", $class[4])[0] }}_course" id="{{ $class[0] }}" style="width:{{explode(" ", $class[4])[1]}}px">
                       <div class="card_content">
-                        <div> {{ $class[1] }} </div>
-                        <div> {{ $class[2] }} </div>
+                        <div class="internship_company_name" id="internship_company_name_{{ $class[0] }}"> {{ $class[1] }} </div>
+                        <div class="internship_position_held" id="internship_position_held_{{ $class[0] }}"> {{ $class[2] }} </div>
                         <button id="menu_for_{{ $class[0] }}" class="mdl-button mdl-js-button mdl-button--icon">
                           <i class="material-icons">arrow_drop_down</i>
                         </button>
@@ -155,6 +155,9 @@
           @endif
 
           @endforeach
+        </div>
+
+        <div id="edit-internship-modal" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
         </div>
 
         <div id="add_course_tutorial" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
