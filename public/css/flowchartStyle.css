@@ -215,6 +215,12 @@
   margin-top: 20px;
 }
 
+.add_internship_button{
+  margin: auto;
+  display: block;
+  margin-top: 20px;
+}
+
 .Elective_table{
   margin: auto;
 }
@@ -223,6 +229,15 @@
   margin:auto;
 
 }
+
+#Internship_error{
+    margin-top: 30px;
+    text-align: center;
+    color: red;
+    font-weight: bold;
+}
+
+
 
 .reveal-modal {
   height: 80%;

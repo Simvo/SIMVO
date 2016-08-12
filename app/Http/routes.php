@@ -44,6 +44,8 @@ Route::post('password/reset', ['as'=>'passwordResetPost','uses'=>'Auth\PasswordC
 
 Route::post('/flowchart/new-user-create-degree', ['as'=>'newUserCreateDegree', 'uses'=>'FlowchartController@newUserCreateDegree']);
 
+Route::post('/flowchart/user-create-internship', ['as'=>'userCreateInternship', 'uses'=>'FlowchartAJAX@userCreateInternship']);
+
 /* AJAX */
 
 Route::post('/auth/registration/get-majors', 'RegistrationController@getMajorsInFaculty');
@@ -56,8 +58,10 @@ Route::post('/flowchart/add-course-to-Schedule', 'FlowchartAJAX@add_course_to_Sc
 
 Route::delete('/flowchart/delete_course_from_schedule', 'FlowchartAJAX@delete_course_from_schedule');
 
-Route::get('/flowchart/refresh_complementary_courses', 'FlowchartAJAX@refresh_complementary_courses');
+Route::get('/flowchart/refresh-complementary-courses', 'FlowchartAJAX@refresh_complementary_courses');
 
 Route::post('/flowchart/check-course-availability','FlowchartAJAX@vsb_checkCourseAvailablity');
 
 Route::post('/flowchart/add_complementary_course_to_Flowchart', 'FlowchartAJAX@add_complementary_course_to_Flowchart');
+
+Route::post('/flowchart/edit-internship', 'FlowchartAJAX@edit_internship');

@@ -174,6 +174,8 @@ class FlowchartController extends Controller
     return redirect('flowchart');
   }
 
+
+
   public function getExemptions($degree)
   {
     $exemptions_PDO = Schedule::where('degree_id',$degree->id)
@@ -217,11 +219,19 @@ class FlowchartController extends Controller
       ->get(['schedules.id', 'schedules.status','schedules.SUBJECT_CODE', 'schedules.COURSE_NUMBER']);
       foreach($classes as $class)
       {
-        $credits = DB::table('programs')->where('SUBJECT_CODE', $class->SUBJECT_CODE)
-                   ->where('COURSE_NUMBER', $class->COURSE_NUMBER)
-                   ->first(['COURSE_CREDITS'])->COURSE_CREDITS;
-        $class_array[] = [$class->id, $class->SUBJECT_CODE, $class->COURSE_NUMBER, $credits, $class->status];
-        $tot_credits+=$credits;
+        if(explode(" " , $class->status)[0] != "Internship" && explode(" " , $class->status)[0] != "Internship_holder"  )
+        {
+          $credits = DB::table('programs')->where('SUBJECT_CODE', $class->SUBJECT_CODE)
+                     ->where('COURSE_NUMBER', $class->COURSE_NUMBER)
+                     ->first(['COURSE_CREDITS'])->COURSE_CREDITS;
+        }
+        else
+        {
+          $credits = 0;
+        }
+          $class_array[] = [$class->id, $class->SUBJECT_CODE, $class->COURSE_NUMBER, $credits, $class->status];
+          $tot_credits+=$credits;
+
       }
       $the_schedule[$this->get_semester($semester->semester)]=[$tot_credits,$class_array, $semester->semester];
     }

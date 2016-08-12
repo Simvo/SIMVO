@@ -5,5 +5,5 @@ Homestead.yaml
 Homestead.json
 .env
 prepros.cfg
-.gitignore
+config/database.php
 composer

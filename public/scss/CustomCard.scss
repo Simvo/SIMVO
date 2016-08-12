@@ -28,6 +28,32 @@ $background: rgba(236, 240, 241,1.0);
   background: #fbb3ae !important;
 }
 
+.Internship_course{
+  min-height: 300px;
+  position:absolute;
+  top:60px;
+  z-index: 5;
+  background-color: #ccccff;
+  font-size: 20px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.internship_company_name{
+  margin-top: 10px;
+  margin-bottom: 20px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.edit_internship_textfield{
+  max-height: 60px;
+}
+
+.internship_position_held{
+  font-size: 16px;
+}
+
 .Complementary_course {
   background: rgba(243, 156, 18, 0.4) !important;
 }
