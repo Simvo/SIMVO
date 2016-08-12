@@ -505,7 +505,9 @@ function initAddCompCourseButton()
             tabs += '<a href="#Custom_tab" class="mdl-tabs__tab">Custom</a>';
             tabs += '<a href="#Internship_tab" class="mdl-tabs__tab">Internship</a>';
             tabs += '</div>';
-            html += '<div class="mdl-tabs__panel" id="Custom_tab"></div>';
+            html += '<div class="mdl-tabs__panel" id="Custom_tab">';
+            html += $("#Custom_tab").html();
+            html += '</div>';
             html += '<div class="mdl-tabs__panel" id="Internship_tab">';
             html += $("#Internship_tab").html();
             html += '</div>'

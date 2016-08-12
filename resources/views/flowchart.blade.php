@@ -250,6 +250,72 @@
             @endforeach
 
               <div class="mdl-tabs__panel" id="Custom_tab">
+                <div class="mdl-grid">
+                  <div class="mdl-cell mdl-cell--2-col">
+                  </div>
+                  <div class="mdl-cell mdl-cell--8-col">
+                    <h4 id="make-degree_title">Enter your Custom Course information here</h4>
+                    <div>
+                    <ul class="list-style-none">
+                    </ul>
+                    <table>
+
+                      <tr>
+                        <td>
+                          Focus &nbsp &nbsp
+                        </td>
+                        <td>
+                          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label program_input">
+                            <select class="reg_dropdown form-control" name="Focus" id="custom_focus">
+                              @foreach($groupsWithCourses['Elective'] as $group => $course)
+                                <option value="{{$group}}">{{$group}}</option>
+                              @endforeach
+                              <option value="Miscellaneous"> Miscellaneous </option>
+                            </select>
+                          </div>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td>
+                          Description &nbsp &nbsp
+                        </td>
+                        <td>
+                          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <input class="mdl-textfield__input" type="text" id="custom_description">
+                            <label class="mdl-textfield__label" for="custom_description">(Optional description)</label>
+                          </div>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td>
+                          Credits
+                        </td>
+                        <td>
+                          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label program_input">
+                            <select class="reg_dropdown form-control" name="Semesters" id="internship_length_select">
+                              <option value="1">1</option>
+                              <option value="3">3</option>
+                              <option value="6">6</option>
+                              <option value="9">9</option>
+                            </select>
+                          </div>
+                        </td>
+                      </tr>
+
+
+
+
+
+
+                    </table>
+                    <button type="button" class="mdl-button mdl-js-button mdl-button--raised add_internship_button">Add Internship</button>
+                  </div>
+                  </div>
+                  <div class="mdl-cell mdl-cell--2-col">
+                  </div>
+                </div>
               </div>
               <div class="mdl-tabs__panel" id="Internship_tab">
                 <div class="mdl-grid">
