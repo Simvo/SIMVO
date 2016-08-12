@@ -16,7 +16,7 @@ class FlowchartAJAX extends Controller
 {
   use Traits\NewObjectsTrait;
   use Traits\ProgramTrait;
-  use Traits\tools;
+  use Traits\Tools;
   use Traits\CurlTrait;
 
   public function move_course(Request $request)
