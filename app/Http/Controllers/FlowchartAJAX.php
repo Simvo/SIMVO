@@ -96,8 +96,6 @@ class FlowchartAJAX extends Controller
         array_push($new_id, $this->create_schedule($degree, $semesterShift, $company, $position, 'Internship_holder '.$new_id[0]));
     }
 
-
-
     return json_encode([ $new_id , $courseType, $company, $position, $semester]);
   }
 
