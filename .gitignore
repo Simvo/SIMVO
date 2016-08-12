@@ -6,3 +6,4 @@ Homestead.json
 .env
 prepros.cfg
 config/database.php
+composer

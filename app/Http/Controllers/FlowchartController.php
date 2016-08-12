@@ -15,65 +15,72 @@ class FlowchartController extends Controller
   use Traits\NewObjectsTrait;
   use Traits\ProgramTrait;
   use Traits\Tools;
-  /**
-  * Function called upon GET request. Will determine if schedule needs to be generated or simply displayed
-  * Consists of generating four main parts.
-  * 1) Progress Bar 2)Course Schedule 3) Complementary Courses 4) Elecitive Courses
-  **/
-  public function generateFlowChart()
-  {
-    $user=Auth::User();
-
-    $groupsWithCourses = null;
-    $complementaryCourses = null;
-
-    $degree = null;
-    $degrees = $this->getDegrees($user);
-
-    $new_user = false;
-
-    if(count($degrees) == 0)
+    /**
+    * Function called upon GET request. Will determine if schedule needs to be generated or simply displayed
+    * Consists of generating four main parts.
+    * 1) Progress Bar 2)Course Schedule 3) Complementary Courses 4) Elecitive Courses
+    **/
+    public function generateFlowChart()
     {
-      $faculties = $this->getFaculties();
-      array_unshift($faculties, "Select");
+      $user=Auth::User();
+      $groupsWithCourses = null;
+      $complementaryCourses = null;
 
-      $semesters = $this->generateListOfSemesters(10);
+      $schedule = [];
 
-      $new_user = true;
+      $schedule_check = Schedule::where('user_id', $user->id)
+                        ->where('semester', "<>", 'exemption')
+                        ->count();
 
-      return view('flowchart', [
-        'user'=>$user,
-        'newUser' => $new_user,
-        'degreeLoaded' => false,
-        'schedule'=> [],
-        'progress' => [],
-        'groupsWithCourses' => [],
-        'exemptions' => [],
-        'startingSemester' => "",
-        'faculties'=> $faculties,
-        'semesters' => $semesters,
-      ]);
-    }
-    else
-    {
-      $degree = $degrees[0];
-      Session::put('degree', $degree);
+      $userSetupComplete = $this->checkUserSetupStatus($user);
 
-      $flowchart = $this->generateDegree($degree);
+	    $degree = null;
+      $degrees = $this->getDegrees($user);
 
-      return view('flowchart', [
-        'user'=>$user,
-        'degree'=>$degree,
-        'newUser' => $new_user,
-        'degreeLoaded' => true,
-        'schedule'=> $flowchart['Schedule'],
-        'progress' => $flowchart['Progress'],
-        'groupsWithCourses' => $flowchart['Groups With Courses'],
-        'course_errors' => $flowchart['Errors'],
-        'exemptions' => $flowchart['Exemptions'],
-        'startingSemester' => $flowchart['Starting Semester']
-      ]);
-    }
+      $new_user = false;
+
+      if(count($degrees) == 0)
+      {
+        $faculties = $this->getFaculties();
+        array_unshift($faculties, "Select");
+
+        $semesters = $this->generateListOfSemesters(10);
+
+        $new_user = true;
+
+        return view('flowchart', [
+          'user'=>$user,
+          'newUser' => $new_user,
+          'degreeLoaded' => false,
+          'schedule'=> [],
+          'progress' => [],
+          'groupsWithCourses' => [],
+          'exemptions' => [],
+          'startingSemester' => "",
+          'faculties'=> $faculties,
+          'semesters' => $semesters,
+        ]);
+      }
+      else
+      {
+        $degree = $degrees[0];
+        Session::put('degree', $degree);
+
+        $flowchart = $this->generateDegree($degree);
+
+        return view('flowchart', [
+          'user'=>$user,
+          'degree'=>$degree,
+          'newUser' => $new_user,
+          'degreeLoaded' => true,
+          'schedule'=> $flowchart['Schedule'],
+          'progress' => $flowchart['Progress'],
+          'groupsWithCourses' => $flowchart['Groups With Courses'],
+          'course_errors' => $flowchart['Errors'],
+          'exemptions' => $flowchart['Exemptions'],
+          'startingSemester' => $flowchart['Starting Semester']
+        ]);
+      }
   }
 
   public function generateDegree($degree)

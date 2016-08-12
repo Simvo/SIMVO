@@ -51,7 +51,7 @@ function renderSortable()
 
 
             $( event.target ).children( '.credit_counter' ).children( '.credit_counter_num' ).text( 'CREDITS: ' + response[1]);
-            checkVSB(new_semester, ui, event)
+            checkVSB(new_semester, ui.item.context.id, event.target)
 
             for (var group in response[2])
             {
@@ -107,7 +107,7 @@ function renderSortable()
             var response = JSON.parse( data );
             $( event.target ).children( '.credit_counter' ).children( '.credit_counter_num' ).text( 'CREDITS: ' + response[0]);
             $( ui.sender[ 0 ] ).children( '.credit_counter' ).children( '.credit_counter_num' ).text( 'CREDITS: ' + response[1]);
-            checkVSB(new_semester, ui, event);
+            checkVSB(new_semester, ui.item.context.id, event.target);
             removeErrors(response[2]);
             refreshDeleteSemester();
           }

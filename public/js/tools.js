@@ -10,7 +10,7 @@ function get_VSB_active_semesters()
   return [fall, winter];
 }
 
-function checkVSB(new_semester, ui, event)
+function checkVSB(new_semester, id, semesterID)
 {
   var vsbActiveSemesters = get_VSB_active_semesters();
   // Check for VSB warnings
@@ -21,9 +21,10 @@ function checkVSB(new_semester, ui, event)
       url: '/flowchart/check-course-availability',
       data: {
         semester: new_semester,
-        scheduleID: ui.item.context.id
+        scheduleID: id
       },
       success: function(data){
+
         var response = JSON.parse(data);
 
         if(response[0].length)
@@ -35,14 +36,14 @@ function checkVSB(new_semester, ui, event)
 
         else
         {
-          var error = "<div class='course_available' id='avail_"+ui.item.context.id+"'>";
+          var error = "<div class='course_available' id='avail_"+id+"'>";
           error += "Course is available this semester!";
           error += "</div>";
         }
 
-        $( event.target ).append( error );
+        $( semesterID ).append( error );
 
-        $("#avail_"+ui.item.context.id).fadeOut(5000, function() {
+        $("#avail_"+id).fadeOut(5000, function() {
           $(this).remove();
         });
       }
