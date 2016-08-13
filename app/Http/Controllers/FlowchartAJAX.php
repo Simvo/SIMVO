@@ -10,6 +10,7 @@ use DB;
 use Session;
 use App\Schedule;
 use App\Error;
+use App\course;
 
 
 class FlowchartAJAX extends Controller
@@ -40,7 +41,45 @@ class FlowchartAJAX extends Controller
     $old_semeterCredits = $this->getSemesterCredits($old_semester, $degree);
     $new_semeterCredits = $this->getSemesterCredits($semester, $degree);
 
+    $this->manageFlowchartErrors($sched_id);
+
     return json_encode([$new_semeterCredits, $old_semeterCredits, $errors_to_delete]);
+  }
+
+  public function manageFlowchartErrors($sched_id)
+  {
+    $prerequisiteErrors = $this->checkPrerequisites($sched_id);
+
+    $solvedErrorsForward = $this->lookForwards($sched_id);
+
+    $solvedErrorsBackwards = $this->lookBackwards($sched_id);
+
+    $solvedErrors = array_merge($solvedErrorsForward, $solvedErrorsBackwards);
+
+    return [$prerequisiteErrors, $solvedErrors]
+  }
+
+  // Find if any prerequisites are violated when course is moved
+  public function checkPrerequisites($sched_id)
+  {
+    $target = Schedule::find($sched_id);
+
+    $prerequisites = course::where('SUBJECT_CODE', $target->SUBJECT_CODE)
+                     ->where('COURSE_NUMBER', $target->COURSE_NUMBER)
+                     ->first()->prerequisites;
+
+  }
+
+  // Search for errors solved by a move or add of a course in front of the semester
+  public function lookForwards($sched_id)
+  {
+
+  }
+
+  // Search for errors solved by a move or an add of course behind the semester
+  public function lookBackwards($sched_id)
+  {
+
   }
 
   public function add_course_to_Schedule(Request $request)
