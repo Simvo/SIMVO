@@ -59,41 +59,26 @@ function getErrors()
     data : {},
     success : function(data) {
       var response = JSON.parse(data);
-      console.log(response);
 
       for(var i = 0; i<response.length; i++)
       {
-        switch(response[i][3])
-        {
-          case "Prerequisite":
-          addPrerequisiteError(response[i]);
-          break;
+        var errorInstance = response[i];
 
-          default:
-          addVSBError(response[i]);
-          break;
+        if($("#error_" + errorInstance[0]).length > 0)
+        {
+          continue;
         }
+
+        var errorType = (response[i][3] === "Prerequisite")?  'prereq_error' : 'vsb_error';
+
+        var error = "<div class='" + errorType  + "error' id='error_"+errorInstance[0]+"'>";
+        error += errorInstance[2];
+        error += "</div>";
+
+        $("#" + errorInstance[1]).parent().append(error);
       }
     }
   });
-}
-
-function addPrerequisiteError(error)
-{
-  var error = "<div class='prereq_error error' id='error_"+response[0]+"'>";
-  error += error[2];
-  error += "</div>";
-
-  $( semesterID ).append( error );
-}
-
-function addVSBError(error)
-{
-  var error = "<div class='vsb_error error' id='error_"+error[0]+"'>";
-  error += error[2];
-  error += "</div>";
-
-  $( semesterID ).append( error );
 }
 
 
@@ -101,7 +86,6 @@ function removeErrors(idArray)
 {
   for(var i = 0; i<idArray.length ; i++)
   {
-    console.log("deleting ERROR: " + idArray[i]);
     $("#error_" + idArray[i]).remove();
   }
 }

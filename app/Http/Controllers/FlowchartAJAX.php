@@ -192,7 +192,7 @@ class FlowchartAJAX extends Controller
 
     foreach($errors as $error)
     {
-      $errorsJSON[] = [$error->id, $error->message, $error->type];
+      $errorsJSON[] = [$error->id, $error->schedule_id, $error->message, $error->type];
     }
 
     return json_encode($errorsJSON);
