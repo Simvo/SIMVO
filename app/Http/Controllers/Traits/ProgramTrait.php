@@ -48,6 +48,21 @@ trait ProgramTrait
     return $progress;
   }
 
+
+  public function getAllSchedId($degree)
+  {
+    $idArray = [];
+
+    $schedules = Schedule::where('degree_id', $degree->id)->get(['id']);
+
+    foreach($schedules as $sched)
+    {
+      $idArray[] = $sched->id;
+    }
+
+    return $idArray;
+  }
+
   /**
   * Function that returns All Faculties in University
   * @param void
@@ -280,7 +295,7 @@ trait ProgramTrait
 
     foreach($courses_PDO as $course)
     {
-      
+
       if($filter)
       {
         $checkIfInSchedule = Schedule::where('degree_id', $degree->id)

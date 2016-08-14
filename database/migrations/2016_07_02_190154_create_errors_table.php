@@ -17,6 +17,7 @@ class CreateErrorsTable extends Migration
             $table->integer('user_id');
             $table->integer('schedule_id');
             $table->string('message');
+            $table->string('dependencies');
             $table->string('type');
             $table->timestamps();
         });

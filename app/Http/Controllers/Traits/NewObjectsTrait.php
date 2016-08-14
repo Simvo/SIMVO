@@ -43,11 +43,12 @@ trait NewObjectsTrait
     return $degree->id;
   }
 
-  public function create_error($user_id, $sched_id, $message, $type)
+  public function create_error($user_id, $sched_id, $dependencies, $message, $type)
   {
     $error = new Error();
     $error->user_id = $user_id;
     $error->schedule_id = $sched_id;
+    $error->dependencies = json_encode($dependencies);
     $error->message = $message;
     $error->type = $type;
     $error->save();

@@ -16,7 +16,7 @@ class CreateCoursesTable extends Migration
             $table->increments('id');
             $table->string('SUBJECT_CODE');
             $table->string('COURSE_NUMBER');
-            $table->string('overview');
+            $table->string('overview', 1000);
             $table->string('prerequisites');
             $table->timestamps();
         });

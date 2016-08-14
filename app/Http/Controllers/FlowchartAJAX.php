@@ -41,45 +41,161 @@ class FlowchartAJAX extends Controller
     $old_semeterCredits = $this->getSemesterCredits($old_semester, $degree);
     $new_semeterCredits = $this->getSemesterCredits($semester, $degree);
 
-    $this->manageFlowchartErrors($sched_id);
+    $errors = $this->manageFlowchartErrors($target);
 
     return json_encode([$new_semeterCredits, $old_semeterCredits, $errors_to_delete]);
   }
 
-  public function manageFlowchartErrors($sched_id)
+  public function manageFlowchartErrors($target)
   {
-    $prerequisiteErrors = $this->checkPrerequisites($sched_id);
+    $error_messages = [];
 
-    $solvedErrorsForward = $this->lookForwards($sched_id);
+    $prerequisiteErrors = $this->checkPrerequisites($target);
 
-    $solvedErrorsBackwards = $this->lookBackwards($sched_id);
+    $solvedErrorsForward = $this->lookForwards($target);
+
+    $solvedErrorsBackwards = $this->lookBackwards($target);
 
     $solvedErrors = array_merge($solvedErrorsForward, $solvedErrorsBackwards);
 
-    return [$prerequisiteErrors, $solvedErrors]
+    if(is_array($prerequisiteErrors))
+    {
+
+      foreach($prerequisiteErrors as $error)
+      {
+        $message = "";
+        $dependencies = [];
+
+        $i = 0;
+        foreach($error as $course)
+        {
+          if($i == count($error) - 1)
+          {
+            $message .= $course[0] . " " . $course[1];
+          }
+          else
+          {
+            $message .= $course[0] . " " . $course[1] . " or ";
+          }
+
+          $dependencies[] = $course[0] . " " . $course[1];
+          $i++;
+        }
+
+        $error_messages[] = $message;
+        $this->create_error($target->user_id, $target->id, $dependencies, $message, "Prerequisite");
+      }
+    }
+
+    return [$error_messages, $solvedErrors];
   }
 
-  // Find if any prerequisites are violated when course is moved
-  public function checkPrerequisites($sched_id)
+  // Find if target course prerequisites are violated when course is moved
+  public function checkPrerequisites($target)
   {
-    $target = Schedule::find($sched_id);
 
-    $prerequisites = course::where('SUBJECT_CODE', $target->SUBJECT_CODE)
+    $prereqs = course::where('SUBJECT_CODE', $target->SUBJECT_CODE)
                      ->where('COURSE_NUMBER', $target->COURSE_NUMBER)
-                     ->first()->prerequisites;
+                     ->first();
+    if($prereqs == null)
+    {
+      return true;
+    }
 
+    $prereqs = $prereqs->prerequisites;
+
+    if($prereqs == "")
+    {
+      return true;
+    }
+
+    $parts = explode("&&", $prereqs);
+
+    $errors = [];
+    $missingCourses = [];
+
+    foreach($parts as $part)
+    {
+      $courses_in_part = explode("||", $part);
+      $type = "OR";
+      $prereq_satisfied = 0;
+
+      foreach($courses_in_part as $prereq)
+      {
+        $course = explode(" ", $prereq);
+        $sub_code = str_replace("(", "", $course[0]);
+        $course_num =str_replace(")", "", $course[1]);
+
+        $check_exemption = Schedule::where('degree_id', $target->degree_id)
+                 ->where('SUBJECT_CODE', $sub_code)
+                 ->where('Course_Number', $course_num)
+                 ->where('semester', 'Exemption');
+
+        $check = Schedule::where('degree_id', $target->degree_id)
+                 ->where('SUBJECT_CODE', $sub_code)
+                 ->where('Course_Number', $course_num)
+                 ->where('semester', '<', $target->semester)
+                 ->union($check_exemption)
+                 ->first();
+
+        if(count($check))
+        {
+          $prereq_satisfied++;
+          break;
+        }
+
+        $missing_courses[] = [$sub_code, $course_num];
+      }
+
+      if($prereq_satisfied == 0 )
+      {
+        $errors[] = $missing_courses;
+      }
+    }
+
+    if(count($errors) == 0)
+    {
+      return true;
+    }
+
+    else
+    {
+      return $errors;
+    }
   }
 
   // Search for errors solved by a move or add of a course in front of the semester
   public function lookForwards($sched_id)
   {
-
+    return [];
   }
 
   // Search for errors solved by a move or an add of course behind the semester
   public function lookBackwards($sched_id)
   {
+    return [];
+  }
 
+  public function get_errors(Request $request)
+  {
+    $degree = Session::get('degree');
+    if($degree == null)
+    {
+      return;
+    }
+
+    $errorsJSON = [];
+
+    $allScheduleID = $this->getAllSchedId($degree);
+
+    $errors = Error::whereIn('schedule_id' , $allScheduleID)->get();
+
+    foreach($errors as $error)
+    {
+      $errorsJSON[] = [$error->id, $error->message, $error->type];
+    }
+
+    return json_encode($errorsJSON);
   }
 
   public function add_course_to_Schedule(Request $request)
@@ -252,7 +368,7 @@ public function delete_course_from_schedule(Request $request)
     if(count($available))
     {
       $message = $available[0];
-      $error_id = $this->create_error($user->id, $target->id, $message, 'vsb_error');
+      $error_id = $this->create_error($user->id, $target->id, [], $message, 'vsb_error');
     }
     return json_encode([$available, $error_id]);
   }

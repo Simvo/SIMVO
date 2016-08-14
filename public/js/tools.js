@@ -51,6 +51,52 @@ function checkVSB(new_semester, id, semesterID)
   }
 }
 
+function getErrors()
+{
+  $.ajax({
+    type : 'post',
+    url : '/flowchart/getErrors',
+    data : {},
+    success : function(data) {
+      var response = JSON.parse(data);
+      console.log(response);
+
+      for(var i = 0; i<response.length; i++)
+      {
+        switch(response[i][3])
+        {
+          case "Prerequisite":
+          addPrerequisiteError(response[i]);
+          break;
+
+          default:
+          addVSBError(response[i]);
+          break;
+        }
+      }
+    }
+  });
+}
+
+function addPrerequisiteError(error)
+{
+  var error = "<div class='prereq_error error' id='error_"+response[0]+"'>";
+  error += error[2];
+  error += "</div>";
+
+  $( semesterID ).append( error );
+}
+
+function addVSBError(error)
+{
+  var error = "<div class='vsb_error error' id='error_"+error[0]+"'>";
+  error += error[2];
+  error += "</div>";
+
+  $( semesterID ).append( error );
+}
+
+
 function removeErrors(idArray)
 {
   for(var i = 0; i<idArray.length ; i++)
