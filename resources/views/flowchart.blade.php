@@ -112,6 +112,20 @@
                       </ul>
                     </div>
                   </div>
+                  @elseif (explode(" ", $class[4])[0] == "Custom")
+                  <div class="custom_card {{ explode(" ", $class[4])[0] }}_course" id="{{ $class[0] }}" >
+                    <div class="card_content">
+                      {{ explode("|", $class[1])[0] }}  &nbsp  &nbsp
+                      <button id="menu_for_{{ $class[0] }}" class="mdl-button mdl-js-button mdl-button--icon">
+                        <i class="material-icons">arrow_drop_down</i>
+                      </button> {{ explode(" ", $class[4])[1] }}
+
+                      <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="menu_for_{{ $class[0] }}">
+                        <li class="mdl-menu__item show-prereqs" id="edit_custom_{{ $class[0] }}">Edit</li>
+                        <li class="mdl-menu__item remove-course" id="remove_{{ $class[0] }}">Remove</li>
+                      </ul>
+                    </div>
+                  </div>
                   @else
                     <div class="custom_card {{ $class[4] }}_course" id="{{ $class[0] }}">
                       <div class="card_content">
@@ -216,7 +230,7 @@
             @endif
 
               @if(!is_null($Courses))
-                <button type="button" class="mdl-button mdl-js-button mdl-button--raised add_comp_course_button">Add</button>
+                <button type="button" class="mdl-button mdl-js-button mdl-button--raised add_button add_comp_course_button">Add</button>
                 @foreach ($Courses as $key=>$value)
                   @if( count($value) != 0)
                     <h4 id="{{$tabtitle}}_table_header_{{$key}}" style="text-align:center">{{$key}}  ({{$progress[$key][1]}} credits)</h4>
@@ -262,16 +276,12 @@
 
                       <tr>
                         <td>
-                          Focus &nbsp &nbsp
+                          Title
                         </td>
                         <td>
-                          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label program_input">
-                            <select class="reg_dropdown form-control" name="Focus" id="custom_focus">
-                              @foreach($groupsWithCourses['Elective'] as $group => $course)
-                                <option value="{{$group}}">{{$group}}</option>
-                              @endforeach
-                              <option value="Miscellaneous"> Miscellaneous </option>
-                            </select>
+                          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <input class="mdl-textfield__input" type="text" id="custom_title">
+                            <label class="mdl-textfield__label" for="custom_title">Title</label>
                           </div>
                         </td>
                       </tr>
@@ -290,15 +300,35 @@
 
                       <tr>
                         <td>
+                          Focus &nbsp &nbsp
+                        </td>
+                        <td>
+                          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label program_input">
+                            <select class="reg_dropdown form-control" name="Focus" id="custom_focus">
+                              @foreach($groupsWithCourses['Elective'] as $group => $course)
+                                <option value="{{$group}}">{{$group}}</option>
+                              @endforeach
+                              <option value="Miscellaneous"> Miscellaneous </option>
+                            </select>
+                          </div>
+                        </td>
+                      </tr>
+
+
+
+                      <tr>
+                        <td>
                           Credits
                         </td>
                         <td>
                           <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label program_input">
-                            <select class="reg_dropdown form-control" name="Semesters" id="internship_length_select">
+                            <select class="reg_dropdown form-control" name="Semesters" id="custom_credit_select">
                               <option value="1">1</option>
+                              <option value="2">2</option>
                               <option value="3">3</option>
+                              <option value="4">4</option>
+                              <option value="5">5</option>
                               <option value="6">6</option>
-                              <option value="9">9</option>
                             </select>
                           </div>
                         </td>
@@ -310,7 +340,7 @@
 
 
                     </table>
-                    <button type="button" class="mdl-button mdl-js-button mdl-button--raised add_internship_button">Add Internship</button>
+                    <button type="button" class="mdl-button mdl-js-button mdl-button--raised add_button add_custom_course_button">Add Custom Course</button>
                   </div>
                   </div>
                   <div class="mdl-cell mdl-cell--2-col">
@@ -376,7 +406,7 @@
 
 
                     </table>
-                    <button type="button" class="mdl-button mdl-js-button mdl-button--raised add_internship_button">Add Internship</button>
+                    <button type="button" class="mdl-button mdl-js-button mdl-button--raised add_button add_internship_button">Add Internship</button>
                   </div>
                   </div>
                   <div class="mdl-cell mdl-cell--2-col">

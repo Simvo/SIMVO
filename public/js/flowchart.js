@@ -3,6 +3,7 @@ $(document).ready(function()
   renderSortable();
   initAddCompCourseButton();
   initAddInternshipButton();
+  initAddCustomCourseButton();
   initDeleteSemesterListener(".delete-semester");
   initAddSemesterListener(".add-semester");
   initRemoveCourseListener(".remove-course");
@@ -468,7 +469,7 @@ function initAddCompCourseButton()
                   }
                   if(!existCoursesInTab)
                   {
-                    html += '<button type="button" class="mdl-button mdl-js-button mdl-button--raised add_comp_course_button">Add</button>';
+                    html += '<button type="button" class="mdl-button mdl-js-button mdl-button--raised add_button add_comp_course_button">Add</button>';
                   }
                   existCoursesInTab = true;
                   html += '<h4 id="' + tabtitle +'_table_header_' + key + '" style="text-align:center">' + key + ' (' + response[1][key] + ' credits)</h4>';
@@ -517,8 +518,16 @@ function initAddCompCourseButton()
             $("#comp_courses").append(tabs);
             initAddCompCourseButton();
             initAddInternshipButton();
+            initAddCustomCourseButton();
 
             var upgrade = $("#Internship_tab").find("div.is-upgraded");
+            for(var l = 0; l < upgrade.length; l++)
+            {
+              $(upgrade[l]).removeClass("is-upgraded");
+              $(upgrade[l]).removeAttr("data-upgraded");
+            }
+
+            upgrade = $("#Custom_tab").find("div.is-upgraded");
             for(var l = 0; l < upgrade.length; l++)
             {
               $(upgrade[l]).removeClass("is-upgraded");
@@ -618,10 +627,10 @@ function initAddCompCourseButton()
 
           $.ajax({
             type: "post",
-            url: "/flowchart/user-create-internship",
+            url: "/flowchart/user-create-course",
             data: {
               semester: semester,
-              courseTypeWidthAndLength: 'Internship ' + width + ' ' + length,
+              details: 'Internship ' + width + ' ' + length,
               company: company,
               position: position,
             },
@@ -643,7 +652,7 @@ function initAddCompCourseButton()
                   comp_course += "<i class='material-icons'>arrow_drop_down</i>";
                   comp_course += "</button>"
                   comp_course += "<ul class='mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect' for='menu_for_" + response[0][i] + "''>";
-                  comp_course += "<li class='mdl-menu__item edit-internship' id='edit_internship_" + response[0][i] + "'>edit</li>";
+                  comp_course += "<li class='mdl-menu__item edit-internship' id='edit_internship_" + response[0][i] + "'>Edit</li>";
                   comp_course += "<li class='mdl-menu__item remove-course' id='remove_" + response[0][i] + "'>Remove</li>";
                   comp_course += "</ul>";
                   comp_course += "</div>";
@@ -811,8 +820,92 @@ function initAddCompCourseButton()
         componentHandler.upgradeDom();
 
       });
-
-
-
-
     }
+
+
+function initAddCustomCourseButton()
+{
+  $(".add_custom_course_button").click( function(){
+    var target_sem = $($($("#course_schedule").find($("a.Complementary_Add_Target"))).parent());
+    var semester_letter = $(target_sem.find("div.sortable")).attr("id");
+    if(semester_letter != "Exemption")
+    {
+
+      semester_letter = semester_letter.split(" ");
+      semester_letter = semester_letter[0] + " " + semester_letter[1];
+      var semester = get_semester(semester_letter);
+    }
+    else
+    {
+      //throw error message!
+      console.log("You may not add custom courses to the exemption semester!");
+      return;
+    }
+
+
+
+    var title = $("#custom_title").val();
+    var credits = parseInt($("#custom_credit_select").val());
+    var focus = $("#custom_focus").val();
+    var description = $("#custom_description").val();
+
+    console.log(title);
+    console.log(credits);
+    console.log(focus);
+    console.log(description);
+
+    if(title == "")
+    {
+      //throw error message!
+      console.log("Please enter in a title for your custom course");
+      return;
+    }
+
+    $.ajax({
+      type: "post",
+      url: "/flowchart/user-create-course",
+      data: {
+        details: "Custom " + credits,
+        title: title,
+        focus: focus,
+        semester: semester,
+
+      },
+      success: function(data){
+        var response = JSON.parse(data);
+        console.log(response);
+        var html = '';
+        var sem = get_semester_letter(response[4]);
+        var sem2 = sem.split(" ");
+        sem2 = sem2[0] + sem2[1];
+
+        html += '<div class="custom_card ' + response[1] + '_course" id="' + response[0] + '" >';
+        html += '<div class="card_content">';
+        html += '<div class="custom_course_title">' + response[2].split("|")[0] +  '&nbsp  &nbsp </div>';
+        html += '<button id="menu_for_' + response[0] + '" class="mdl-button mdl-js-button mdl-button--icon">';
+        html += '<i class="material-icons">arrow_drop_down</i>';
+        html += '</button>' + response[3];
+
+        html += '<ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="menu_for_' + response[0] + '">';
+        html += '<div> ' + response[2].split("|")[1] + ' </div>';
+        html += '<li class="mdl-menu__item show-prereqs" id="edit_custom_' + response[0] + '">Edit</li>';
+        html += '<li class="mdl-menu__item remove-course" id="remove_' + response[0] + '">Remove</li>';
+        html += '</ul>';
+        html += '</div>';
+        html += '</div>';
+
+        $(target_sem.find("div.credit_counter")).before(html);
+
+      }
+    });
+
+    //db structure -- SUBJECT_CODE: title|description -- COURSE_NUMBER: group name -- status: Custom (# of credits)
+
+    $('#comp_courses').foundation('reveal', 'close');
+
+
+
+
+  });
+
+}

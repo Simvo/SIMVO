@@ -73,32 +73,51 @@ class FlowchartAJAX extends Controller
     return json_encode([$new_id,$new_semeterCredits, $progress, $course, $courseType]);
   }
 
-  public function userCreateInternship(Request $request)
+  public function userCreateCourse(Request $request)
   {
     if(!Auth::Check())
       return;
 
-    $courseTypeWidthAndLength = $request->courseTypeWidthAndLength;
-    $company = $request->company;
-    $position = $request->position;
-    $semester = array($request->semester);
     $degree = Session::get('degree');
-    $internshipData = explode(" ", $courseTypeWidthAndLength);
-    $courseType = $internshipData[0];
-    $length = $internshipData[2];
-    $new_id = array($this->create_schedule($degree, $request->semester, $company, $position, $courseTypeWidthAndLength));
-    $semesterShift = $request->semester;
-
-    for($i = 1; $i < $length; $i++)
+    $details = $request->details;
+    $detailSplit = explode(" ", $details);
+    $courseType = $detailSplit[0];
+    if($courseType == "Internship")
     {
-        $semesterShift = $this->get_next_semester($semesterShift);
-        array_push($semester, $semesterShift);
-        array_push($new_id, $this->create_schedule($degree, $semesterShift, $company, $position, 'Internship_holder '.$new_id[0]));
+      $length = $detailSplit[2];
+
+
+      $company = $request->company;
+      $position = $request->position;
+      $semester = array($request->semester);
+
+
+
+      $new_id = array($this->create_schedule($degree, $request->semester, $company, $position, $details));
+      $semesterShift = $request->semester;
+
+      for($i = 1; $i < $length; $i++)
+      {
+          $semesterShift = $this->get_next_semester($semesterShift);
+          array_push($semester, $semesterShift);
+          array_push($new_id, $this->create_schedule($degree, $semesterShift, $company, $position, 'Internship_holder '.$new_id[0]));
+      }
+
+
+
+      return json_encode([ $new_id , $courseType, $company, $position, $semester]);
+    }
+    else if($courseType == "Custom")
+    {
+      $title = $request->title;
+      $focus = $request->focus;
+      $semester = $request->semester;
+      $credits = $detailSplit[1];
+      //$new_id = $this->create_schedule($degree, $semester, $title, $focus, $details);
+
+      return json_encode([500, $courseType, $title, $credits, $semester ]);
     }
 
-
-
-    return json_encode([ $new_id , $courseType, $company, $position, $semester]);
   }
 
   public function refresh_complementary_courses()

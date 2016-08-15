@@ -41,6 +41,16 @@ trait ProgramTrait
 
         if(count($check)>0)
           $creditsTaken += $this->getCourseCredits($course[0], $course[1]);
+
+      }
+
+      $checkCustom = Schedule::where('degree_id', $degree->id)
+                ->where('COURSE_NUMBER', $key)
+                ->get();
+
+      foreach($checkCustom as $course)
+      {
+        $creditsTaken += (int) explode(" ", $course->status)[1];
       }
 
       $progress[$key] = [$creditsTaken,$value];
@@ -280,7 +290,7 @@ trait ProgramTrait
 
     foreach($courses_PDO as $course)
     {
-      
+
       if($filter)
       {
         $checkIfInSchedule = Schedule::where('degree_id', $degree->id)
