@@ -24,28 +24,6 @@ function checkVSB(new_semester, id, semesterID)
         scheduleID: id
       },
       success: function(data){
-
-        var response = JSON.parse(data);
-
-        if(response[0].length)
-        {
-          var error = "<div class='vsb_error error' id='error_"+response[1]+"'>";
-          error += response[0][0];
-          error += "</div>";
-        }
-
-        else
-        {
-          var error = "<div class='course_available' id='avail_"+id+"'>";
-          error += "Course is available this semester!";
-          error += "</div>";
-        }
-
-        $( semesterID ).append( error );
-
-        $("#avail_"+id).fadeOut(5000, function() {
-          $(this).remove();
-        });
       }
     });
   }

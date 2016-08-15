@@ -36,12 +36,10 @@ class FlowchartAJAX extends Controller
     $target->semester=$semester;
     $target->save();
 
-    $errors_to_delete = $this->empty_errors($target);
-
     $old_semeterCredits = $this->getSemesterCredits($old_semester, $degree);
     $new_semeterCredits = $this->getSemesterCredits($semester, $degree);
 
-    $errors = $this->manageFlowchartErrors($target);
+    $errors_to_delete = $this->manageFlowchartErrors($target);
 
     return json_encode([$new_semeterCredits, $old_semeterCredits, $errors_to_delete]);
   }
@@ -56,7 +54,7 @@ class FlowchartAJAX extends Controller
 
     $solvedErrorsBackwards = $this->lookBackwards($target);
 
-    $solvedErrors = array_merge($solvedErrorsForward, $solvedErrorsBackwards);
+    $solvedErrors = array_merge($solvedErrorsForward, $this->empty_errors($target));
 
     if(is_array($prerequisiteErrors))
     {
@@ -87,7 +85,7 @@ class FlowchartAJAX extends Controller
       }
     }
 
-    return [$error_messages, $solvedErrors];
+    return $solvedErrors;
   }
 
   // Find if target course prerequisites are violated when course is moved
@@ -164,10 +162,42 @@ class FlowchartAJAX extends Controller
     }
   }
 
-  // Search for errors solved by a move or add of a course in front of the semester
-  public function lookForwards($sched_id)
+  /**
+  * Function that checks which Errors have been solved by the new schedule
+  * @param Instance of Schedule: id
+  * @return Courses present in future semesters that have the course as a pre requisite
+  **/
+  public function lookForwards($target)
   {
-    return [];
+    $degree = Session::get('degree');
+    if($degree == null)
+    {
+      return;
+    }
+
+    $errors_deleted = [];
+
+    $allScheduleID = $this->getAllSchedId($degree);
+
+    $errors = Error::whereIn('schedule_id' , $allScheduleID)
+              ->join('schedules', 'schedules.id', '=', 'errors.schedule_id')
+              ->where('schedules.semester', '>', $target->semester)
+              ->get(['errors.id', 'errors.dependencies', 'schedules.SUBJECT_CODE', 'schedules.COURSE_NUMBER']);
+
+    foreach($errors as $check)
+    {
+      $dependencies = json_decode($check->dependencies);
+      $course = $check->SUBJECT_CODE . " " . $check->COURSE_NUMBER;
+      $course = strtolower($course);
+
+      if(in_array($course, $dependencies))
+      {
+        $errors_deleted[] = $check->id;
+        $delete = Error::find($check->id)->delete();
+      }
+    }
+
+    return $errors_deleted;
   }
 
   // Search for errors solved by a move or an add of course behind the semester

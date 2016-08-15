@@ -110,6 +110,7 @@ function renderSortable()
             checkVSB(new_semester, ui.item.context.id, event.target);
             getErrors();
             removeErrors(response[2]);
+            console.log(response[2]);
             refreshDeleteSemester();
           }
         })
