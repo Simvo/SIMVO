@@ -186,8 +186,9 @@ class FlowchartAJAX extends Controller
 
     foreach($errors as $check)
     {
+
       $dependencies = json_decode($check->dependencies);
-      $course = $check->SUBJECT_CODE . " " . $check->COURSE_NUMBER;
+      $course = $target->SUBJECT_CODE . " " . $target->COURSE_NUMBER;
       $course = strtolower($course);
 
       if(in_array($course, $dependencies))
