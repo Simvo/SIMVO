@@ -115,12 +115,19 @@
                   @elseif (explode(" ", $class[4])[0] == "Custom")
                   <div class="custom_card {{ explode(" ", $class[4])[0] }}_course" id="{{ $class[0] }}" >
                     <div class="card_content">
-                      {{ explode("|", $class[1])[0] }}  &nbsp  &nbsp
+                      @if(strlen(explode("|", $class[1])[0]) < 11)
+                        {{ explode("|", $class[1])[0] }}  &nbsp  &nbsp
+                      @else
+                        {{ substr(explode("|", $class[1])[0], 0, 8)."..." }}
+                      @endif
                       <button id="menu_for_{{ $class[0] }}" class="mdl-button mdl-js-button mdl-button--icon">
                         <i class="material-icons">arrow_drop_down</i>
                       </button> {{ explode(" ", $class[4])[1] }}
 
                       <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="menu_for_{{ $class[0] }}">
+                        <div class="custom_course_description">
+                          {{ explode("|", $class[1])[1]}}
+                        </div>
                         <li class="mdl-menu__item show-prereqs" id="edit_custom_{{ $class[0] }}">Edit</li>
                         <li class="mdl-menu__item remove-course" id="remove_{{ $class[0] }}">Remove</li>
                       </ul>

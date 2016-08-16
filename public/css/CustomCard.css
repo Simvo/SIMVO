@@ -35,7 +35,17 @@
 }
 
 .Custom_course{
-  
+  background-color: #e5ecad;
+}
+
+.custom_course_description{
+  padding: 12px;
+  background-color: #dddddd;
+  line-height: 1.25;
+}
+
+.custom_course_title{
+  display:inline-block;
 }
 
 .internship_company_name{

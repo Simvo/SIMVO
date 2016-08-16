@@ -389,6 +389,7 @@ function initAddCompCourseButton()
             },
             success: function(data) {
               var response = JSON.parse(data);
+              
               if (response === 'Error')
               {
                 //error handler
@@ -408,7 +409,8 @@ function initAddCompCourseButton()
 
 
                 $("#" + response[0]).remove();
-                $("."+semester).children( '.credit_counter' ).children( '.credit_counter_num' ).text( 'CREDITS: ' + response[1]);
+
+                $("."+semester).find( '.credit_counter_num' ).text( 'CREDITS: ' + response[1]);
 
 
                 for (var group in response[2])
@@ -849,10 +851,7 @@ function initAddCustomCourseButton()
     var focus = $("#custom_focus").val();
     var description = $("#custom_description").val();
 
-    console.log(title);
-    console.log(credits);
-    console.log(focus);
-    console.log(description);
+
 
     if(title == "")
     {
@@ -866,28 +865,33 @@ function initAddCustomCourseButton()
       url: "/flowchart/user-create-course",
       data: {
         details: "Custom " + credits,
-        title: title,
+        title: title + "|" + description,
         focus: focus,
         semester: semester,
 
       },
       success: function(data){
         var response = JSON.parse(data);
-        console.log(response);
+
         var html = '';
         var sem = get_semester_letter(response[4]);
         var sem2 = sem.split(" ");
+        var cutTitle = response[2].split("|")[0];
+        if(cutTitle.length > 11)
+        {
+          cutTitle = cutTitle.substring(0,8) + "...";
+        }
         sem2 = sem2[0] + sem2[1];
 
         html += '<div class="custom_card ' + response[1] + '_course" id="' + response[0] + '" >';
         html += '<div class="card_content">';
-        html += '<div class="custom_course_title">' + response[2].split("|")[0] +  '&nbsp  &nbsp </div>';
+        html += '<div class="custom_course_title">' + cutTitle +  '&nbsp  &nbsp </div>';
         html += '<button id="menu_for_' + response[0] + '" class="mdl-button mdl-js-button mdl-button--icon">';
         html += '<i class="material-icons">arrow_drop_down</i>';
-        html += '</button>' + response[3];
+        html += '</button> &nbsp' + response[3];
 
         html += '<ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="menu_for_' + response[0] + '">';
-        html += '<div> ' + response[2].split("|")[1] + ' </div>';
+        html += '<div class="custom_course_description"> ' + response[2].split("|")[1] + ' </div>';
         html += '<li class="mdl-menu__item show-prereqs" id="edit_custom_' + response[0] + '">Edit</li>';
         html += '<li class="mdl-menu__item remove-course" id="remove_' + response[0] + '">Remove</li>';
         html += '</ul>';
@@ -895,11 +899,31 @@ function initAddCustomCourseButton()
         html += '</div>';
 
         $(target_sem.find("div.credit_counter")).before(html);
+        $(target_sem.find('div.credit_counter_num' )).text( 'CREDITS: ' + response[5]);
+
+
+        for (var group in response[6])
+        {
+            if (response[6].hasOwnProperty(group))
+            {
+                var groupProgress = response[6][group];
+                var target = $( "td[id='" + group + "']" ).text("" + groupProgress[0] + "/" + groupProgress[1]);
+            }
+        }
+
+
+        initRemoveCourseListener("#remove_" + response[0]);
+        refreshDeleteSemester();
+        refreshComplementaryCourses();
+
+
+
+        //Dynamically render MDL
+        componentHandler.upgradeDom();
 
       }
     });
 
-    //db structure -- SUBJECT_CODE: title|description -- COURSE_NUMBER: group name -- status: Custom (# of credits)
 
     $('#comp_courses').foundation('reveal', 'close');
 

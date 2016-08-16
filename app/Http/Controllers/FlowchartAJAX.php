@@ -113,9 +113,12 @@ class FlowchartAJAX extends Controller
       $focus = $request->focus;
       $semester = $request->semester;
       $credits = $detailSplit[1];
-      //$new_id = $this->create_schedule($degree, $semester, $title, $focus, $details);
+      $new_id = $this->create_schedule($degree, $semester, $title, $focus, $details);
 
-      return json_encode([500, $courseType, $title, $credits, $semester ]);
+      $new_semeterCredits = $this->getSemesterCredits($semester, $degree);
+       $progress = $this->generateProgressBar($degree);
+
+      return json_encode([$new_id, $courseType, $title, $credits, $semester, $new_semeterCredits, $progress ]);
     }
 
   }
@@ -183,7 +186,7 @@ public function delete_course_from_schedule(Request $request)
 
   $course = Schedule::find($courseID);
 
-  $semester = $course->first()->semester;
+  $semester = $course->semester;
 
   $degree = Session::get('degree');
 
@@ -201,17 +204,24 @@ public function delete_course_from_schedule(Request $request)
 
     $courses = Schedule::where('degree_id', $degree->id)
                ->where('semester', $semester)
-               ->get(['SUBJECT_CODE', 'COURSE_NUMBER']);
+               ->get(['SUBJECT_CODE', 'COURSE_NUMBER', 'status']);
 
     $sum = 0;
     foreach($courses as $course)
     {
-      $courseCredits = DB::table('programs')
-                       ->where('SUBJECT_CODE', $course->SUBJECT_CODE)
-                       ->where('COURSE_NUMBER', $course->COURSE_NUMBER)
-                       ->first(['COURSE_CREDITS'])
-                       ->COURSE_CREDITS;
-      $sum += $courseCredits;
+      if(explode(" ", $course->status)[0] != 'Custom')
+      {
+        $courseCredits = DB::table('programs')
+                         ->where('SUBJECT_CODE', $course->SUBJECT_CODE)
+                         ->where('COURSE_NUMBER', $course->COURSE_NUMBER)
+                         ->first(['COURSE_CREDITS'])
+                         ->COURSE_CREDITS;
+        $sum += $courseCredits;
+      }
+      else
+      {
+        $sum += (int) explode(" ", $course->status)[1];
+      }
     }
 
     return $sum;
