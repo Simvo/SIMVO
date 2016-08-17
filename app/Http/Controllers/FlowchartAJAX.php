@@ -16,7 +16,7 @@ class FlowchartAJAX extends Controller
 {
   use Traits\NewObjectsTrait;
   use Traits\ProgramTrait;
-  use Traits\tools;
+  use Traits\Tools;
   use Traits\CurlTrait;
 
   public function move_course(Request $request)
@@ -70,7 +70,35 @@ class FlowchartAJAX extends Controller
     $new_semeterCredits = $this->getSemesterCredits($semester, $degree);
     $progress = $this->generateProgressBar($degree);
 
-    return json_encode([$new_id,$new_semeterCredits, $progress]);
+    return json_encode([$new_id,$new_semeterCredits, $progress, $course, $courseType]);
+  }
+
+  public function userCreateInternship(Request $request)
+  {
+    if(!Auth::Check())
+      return;
+
+    $courseTypeWidthAndLength = $request->courseTypeWidthAndLength;
+    $company = $request->company;
+    $position = $request->position;
+    $semester = array($request->semester);
+    $degree = Session::get('degree');
+    $internshipData = explode(" ", $courseTypeWidthAndLength);
+    $courseType = $internshipData[0];
+    $length = $internshipData[2];
+    $new_id = array($this->create_schedule($degree, $request->semester, $company, $position, $courseTypeWidthAndLength));
+    $semesterShift = $request->semester;
+
+    for($i = 1; $i < $length; $i++)
+    {
+        $semesterShift = $this->get_next_semester($semesterShift);
+        array_push($semester, $semesterShift);
+        array_push($new_id, $this->create_schedule($degree, $semesterShift, $company, $position, 'Internship_holder '.$new_id[0]));
+    }
+
+
+
+    return json_encode([ $new_id , $courseType, $company, $position, $semester]);
   }
 
   public function refresh_complementary_courses()
@@ -83,17 +111,25 @@ class FlowchartAJAX extends Controller
 
     $degree = Session::get('degree');
 
-    $groups = $this->getComplementaryGroups($degree); //complementaries index 0 is complementary, 1 is electives
 
-    for($i = 0; $i < 2; $i++)
-    {
-      foreach($groups[$i] as $key=>$value)
-      {
-        $groups[$i][$key] = $this->getCoursesInGroup($degree, $key, true);
-      }
-    }
+    $groups = $this->getGroupsWithCourses($degree, true);
 
-    return json_encode($groups);
+    $returnGroups['Required'] = $groups[0];
+    $returnGroups['Complementary'] = $groups[1];
+    $returnGroups['Elective'] = $groups[2];
+    $groupCredits = $this->getGroupsWithCredits($degree);
+
+    return json_encode([$returnGroups, $groupCredits]);
+  }
+
+  public function edit_internship(Request $request)
+  {
+    if(!Auth::Check())
+      return;
+
+    $course = DB::table('schedules')->where('id', $request->id);
+    $course->update(['SUBJECT_CODE' => $request->companyName, 'COURSE_NUMBER' => $request->positionHeld]);
+    return json_encode($course);
   }
 
 public function add_complementary_course_to_Flowchart(Request $request)
@@ -126,13 +162,11 @@ public function delete_course_from_schedule(Request $request)
 
   $courseID = $request->id;
 
-  $course = Schedule::where('id', $courseID);
+  $course = Schedule::find($courseID);
 
   $semester = $course->first()->semester;
 
   $degree = Session::get('degree');
-
-  $semester = $course->semester;
 
   $course->delete();
 

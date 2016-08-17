@@ -256,14 +256,22 @@ trait ProgramTrait
   {
     $groups = [];
     $i;
+    $courseCount;
     $groups[0] = $this->getRequiredGroups($degree);
     $groups[1] = $this->getComplementaryGroups($degree)[0]; //complementaries
     $groups[2] = $this->getComplementaryGroups($degree)[1]; //electives
+
     for($i = 0; $i < 3; $i++)
     {
+      $courseCount = 0;
       foreach($groups[$i] as $key=>$value)
       {
         $groups[$i][$key] = $this->getCoursesInGroup($degree, $key, $filter);
+        $courseCount += count($groups[$i][$key]);
+      }
+      if($courseCount == 0)
+      {
+        $groups[$i] = null;
       }
     }
 
@@ -290,6 +298,7 @@ trait ProgramTrait
 
     foreach($courses_PDO as $course)
     {
+      
       if($filter)
       {
         $checkIfInSchedule = Schedule::where('degree_id', $degree->id)

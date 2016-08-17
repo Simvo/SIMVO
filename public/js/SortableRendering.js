@@ -2,6 +2,7 @@ function renderSortable()
 {
   $( '.sortable' ).sortable( {
     connectWith: ".validPosition",
+    items: "div.custom_card:not(.pinned)",
     start: function( event, ui ) {
       is_dragging = true;
     },
@@ -13,6 +14,7 @@ function renderSortable()
 
   $( ".sortable" ).sortable( {
       connectWith: ".validPosition",
+      items: "div.custom_card:not(.pinned)",
       placeholder: 'object_ouline hvr-pulse',
       cancel: '.credit_counter, .error_course_message',
       receive: function( event, ui ) {
@@ -49,7 +51,7 @@ function renderSortable()
 
 
             $( event.target ).children( '.credit_counter' ).children( '.credit_counter_num' ).text( 'CREDITS: ' + response[1]);
-            checkVSB(new_semester, ui, event)
+            checkVSB(new_semester, ui.item.context.id, event.target)
 
             for (var group in response[2])
             {
@@ -60,6 +62,34 @@ function renderSortable()
                 }
             }
             refreshDeleteSemester();
+
+            //Check if add complementary tutorial should start
+            if($('#'+ui.item.context.id).hasClass('Required_course'))
+            {
+              var startTutorial = false;
+              var reqgroups = $("#required-group-div").find("div.sortable");
+              for(var i = 0; i < reqgroups.length; i++)
+              {
+                if($(reqgroups[i]).children().length != 0)
+                {
+                  startTutorial = false;
+                  break;
+                }
+                else
+                {
+                    startTutorial = true;
+                }
+              }
+              if(startTutorial)
+              {
+                console.log("start dat tutorial!");
+                $("#required-group-div").animate({'height': '0px'},{duration: 500, queue: false } );
+                $("#required-group-div").animate({'padding-bottom': '0px'}, {duration: 500, queue: false });
+                $("#required-group-div").animate({'opacity': 0}, {duration: 500, queue: false, complete: function (){$("#required-group-div").remove();}});
+                startAddCourseTutorial();
+              }
+
+            }
           }
         })
       }
@@ -77,7 +107,7 @@ function renderSortable()
             var response = JSON.parse( data );
             $( event.target ).children( '.credit_counter' ).children( '.credit_counter_num' ).text( 'CREDITS: ' + response[0]);
             $( ui.sender[ 0 ] ).children( '.credit_counter' ).children( '.credit_counter_num' ).text( 'CREDITS: ' + response[1]);
-            checkVSB(new_semester, ui, event);
+            checkVSB(new_semester, ui.item.context.id, event.target);
             removeErrors(response[2]);
             refreshDeleteSemester();
           }

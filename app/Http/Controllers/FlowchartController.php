@@ -16,68 +16,72 @@ class FlowchartController extends Controller
   use Traits\StreamTrait;
   use Traits\ProgramTrait;
   use Traits\Tools;
-  /**
-  * Function called upon GET request. Will determine if schedule needs to be generated or simply displayed
-  * Consists of generating four main parts.
-  * 1) Progress Bar 2)Course Schedule 3) Complementary Courses 4) Elecitive Courses
-  **/
-  public function generateFlowChart()
-  {
-    $user=Auth::User();
-
-    $groupsWithCourses = null;
-    $complementaryCourses = null;
-
-    $degree = null;
-    $degrees = $this->getDegrees($user);
-
-    $new_user = false;
-
-    if(count($degrees) == 0)
+    /**
+    * Function called upon GET request. Will determine if schedule needs to be generated or simply displayed
+    * Consists of generating four main parts.
+    * 1) Progress Bar 2)Course Schedule 3) Complementary Courses 4) Elecitive Courses
+    **/
+    public function generateFlowChart()
     {
-      $faculties = $this->getFaculties();
-      array_unshift($faculties, "Select");
+      $user=Auth::User();
+      $groupsWithCourses = null;
+      $complementaryCourses = null;
 
-      $semesters = $this->generateListOfSemesters(10);
+      $schedule = [];
 
-      $new_user = true;
+      $schedule_check = Schedule::where('user_id', $user->id)
+                        ->where('semester', "<>", 'exemption')
+                        ->count();
 
-      return view('flowchart', [
-        'user'=>$user,
-        'newUser' => $new_user,
-        'degreeLoaded' => false,
-        'schedule'=> [],
-        'progress' => [],
-        'groupsWithCourses' => null,
-        'complementaryCourses' => null,
-        'exemptions' => [],
-        'startingSemester' => "",
-        'faculties'=> $faculties,
-        'semesters' => $semesters
-      ]);
-    }
+      $userSetupComplete = $this->checkUserSetupStatus($user);
 
-    else
-    {
-      $degree = $degrees[0];
-      Session::put('degree', $degree);
+	    $degree = null;
+      $degrees = $this->getDegrees($user);
 
-      $flowchart = $this->generateDegree($degree);
+      $new_user = false;
 
-      return view('flowchart', [
-        'user'=>$user,
-        'degree'=>$degree,
-        'newUser' => $new_user,
-        'degreeLoaded' => true,
-        'schedule'=> $flowchart['Schedule'],
-        'progress' => $flowchart['Progress'],
-        'groupsWithCourses' => $flowchart['Groups With Courses'],
-        'complementaryCourses' => $flowchart['Complementary Courses'],
-        'course_errors' => $flowchart['Errors'],
-        'exemptions' => $flowchart['Exemptions'],
-        'startingSemester' => $flowchart['Starting Semester']
-      ]);
-    }
+      if(count($degrees) == 0)
+      {
+        $faculties = $this->getFaculties();
+        array_unshift($faculties, "Select");
+
+        $semesters = $this->generateListOfSemesters(10);
+
+        $new_user = true;
+
+        return view('flowchart', [
+          'user'=>$user,
+          'newUser' => $new_user,
+          'degreeLoaded' => false,
+          'schedule'=> [],
+          'progress' => [],
+          'groupsWithCourses' => [],
+          'exemptions' => [],
+          'startingSemester' => "",
+          'faculties'=> $faculties,
+          'semesters' => $semesters,
+        ]);
+      }
+      else
+      {
+        $degree = $degrees[0];
+        Session::put('degree', $degree);
+
+        $flowchart = $this->generateDegree($degree);
+
+        return view('flowchart', [
+          'user'=>$user,
+          'degree'=>$degree,
+          'newUser' => $new_user,
+          'degreeLoaded' => true,
+          'schedule'=> $flowchart['Schedule'],
+          'progress' => $flowchart['Progress'],
+          'groupsWithCourses' => $flowchart['Groups With Courses'],
+          'course_errors' => $flowchart['Errors'],
+          'exemptions' => $flowchart['Exemptions'],
+          'startingSemester' => $flowchart['Starting Semester']
+        ]);
+      }
   }
 
   public function generateDegree($degree)
@@ -101,8 +105,12 @@ class FlowchartController extends Controller
 
     $userSetupComplete = $this->checkUserSetupStatus($degree);
 
-    //all courses in the users program. Index 0 is required, 1 is complementaries, 2 is electives.
+    //all courses in the users program.
     $courses = $this->getGroupsWithCourses($degree, true);
+    $groupsWithCourses['Required'] = $courses[0];
+    $groupsWithCourses['Complementary'] = $courses[1];
+    $groupsWithCourses['Elective'] = $courses[2];
+
 
     //If (user has not yet setup courses or recommended Stream is not provided)
     if(!$userSetupComplete)
@@ -134,12 +142,12 @@ class FlowchartController extends Controller
     $startingSemester = $this->get_semester($startingSemester);
     $errors = $this->getErrors($user);
 
+
     return [
       'Schedule'=> $schedule,
       'Progress' => $progress,
       'Exemptions' => $exemptions,
       'Groups With Courses' => $groupsWithCourses,
-      'Complementary Courses'=> $complementaryCourses,
       'Starting Semester' => $startingSemester,
       'Errors' => $errors
     ];
@@ -194,6 +202,8 @@ class FlowchartController extends Controller
     return redirect('flowchart');
   }
 
+
+
   public function getExemptions($degree)
   {
     $exemptions_PDO = Schedule::where('degree_id',$degree->id)
@@ -242,9 +252,16 @@ class FlowchartController extends Controller
 
       foreach($classes as $class)
       {
-        $credits = DB::table('programs')->where('SUBJECT_CODE', $class->SUBJECT_CODE)
-                   ->where('COURSE_NUMBER', $class->COURSE_NUMBER)
-                   ->first(['COURSE_CREDITS'])->COURSE_CREDITS;
+        if(explode(" " , $class->status)[0] != "Internship" && explode(" " , $class->status)[0] != "Internship_holder"  )
+        {
+          $credits = DB::table('programs')->where('SUBJECT_CODE', $class->SUBJECT_CODE)
+                     ->where('COURSE_NUMBER', $class->COURSE_NUMBER)
+                     ->first(['COURSE_CREDITS'])->COURSE_CREDITS;
+        }
+        else
+        {
+          $credits = 0;
+        }
 
         $class_array[] = [$class->id, $class->SUBJECT_CODE, $class->COURSE_NUMBER, $credits, $class->status];
         $tot_credits+=$credits;

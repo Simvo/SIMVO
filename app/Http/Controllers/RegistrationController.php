@@ -16,6 +16,10 @@ class RegistrationController extends Controller
   {
     return view('auth.login');
   }
+
+  /**
+  * Function to Logout User
+  **/
   public function logout()
   {
     if(Auth::Check())
@@ -57,6 +61,7 @@ public function login(Request $request)
       'semesters'=> $semesters
     ]);
   }
+
   /**
   * Function to Validate and execute New User Registration Form
   **/
