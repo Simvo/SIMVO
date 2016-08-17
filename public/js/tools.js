@@ -37,6 +37,7 @@ function getErrors()
     data : {},
     success : function(data) {
       var response = JSON.parse(data);
+      console.log(response);
 
       for(var i = 0; i<response.length; i++)
       {

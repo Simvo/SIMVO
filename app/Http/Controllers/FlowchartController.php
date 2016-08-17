@@ -6,7 +6,7 @@ use Session;
 use App\Schedule;
 use App\UICourse;
 use App\Degree;
-use App\Error;
+use App\FlowchartError;
 use DB;
 use App\Http\Requests;
 
@@ -250,18 +250,21 @@ class FlowchartController extends Controller
 
   public function getErrors($user)
   {
-    $all_errors = Error::where('errors.user_id', $user->id)
-              ->join('schedules', 'schedules.id', '=', 'errors.schedule_id')
+    $all_errors = FlowchartError::where('flowchart_errors.user_id', $user->id)
+              ->join('schedules', 'schedules.id', '=', 'flowchart_errors.schedule_id')
               ->groupBy('schedules.semester')
               ->get(['schedules.semester']);
+
     $errors = [];
     foreach($all_errors as $e)
     {
-      $errors_in_semester = Error::where('errors.user_id', $user->id)
+      $errors_in_semester = FlowchartError::where('flowchart_errors.user_id', $user->id)
                ->join('schedules', 'schedules.id', '=', 'errors.schedule_id')
                ->where('schedules.semester', $e->semester)
-               ->get(['errors.id', 'errors.type', 'errors.message']);
+               ->get(['flowchart_errors.id', 'flowchart_errors.type', 'flowchart_errors.message']);
+
       $errors[$this->get_semester($e->semester)] = [];
+
       foreach($errors_in_semester as $error)
       {
         $errors[$this->get_semester($e->semester)][] = [$error->id, $error->type, $error->message];

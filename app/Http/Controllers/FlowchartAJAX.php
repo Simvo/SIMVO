@@ -9,7 +9,7 @@ use Auth;
 use DB;
 use Session;
 use App\Schedule;
-use App\Error;
+use App\FlowchartError;
 use App\course;
 
 
@@ -44,48 +44,82 @@ class FlowchartAJAX extends Controller
     return json_encode([$new_semeterCredits, $old_semeterCredits, $errors_to_delete]);
   }
 
+  public function add_course_to_Schedule(Request $request)
+  {
+    $degree = Session::get('degree');
+
+    $courseType = $request->courseType;
+    $courseName = $request->courseName;
+    $semester = $request->semester;
+    $parts = explode(" ", $courseName);
+
+    $course = DB::table('programs')->where('PROGRAM_ID',$degree->program_id)
+              ->where('SUBJECT_CODE', $parts[0])
+              ->where('COURSE_NUMBER', $parts[1])
+              ->first(['SUBJECT_CODE', 'COURSE_NUMBER', 'SET_TYPE', 'COURSE_CREDITS', 'SET_TITLE_ENGLISH']);
+
+    if($course->SET_TITLE_ENGLISH == 'Required Year 0 (Freshman) Courses')
+    {
+      $new_id = $this->create_schedule($degree, $semester, $course->SUBJECT_CODE, $course->COURSE_NUMBER, 'Required');
+    }
+
+    else
+    {
+      $new_id = $this->create_schedule($degree, $semester, $course->SUBJECT_CODE, $course->COURSE_NUMBER, $courseType);
+    }
+
+    $target = Schedule::find($new_id);
+
+    $errors_to_delete = $this->manageFlowchartErrors($target);
+
+    $new_semeterCredits = $this->getSemesterCredits($semester, $degree);
+    $progress = $this->generateProgressBar($degree);
+
+    return json_encode([$new_id,$new_semeterCredits, $progress, $course, $courseType, $errors_to_delete]);
+  }
+
   public function manageFlowchartErrors($target)
   {
     $error_messages = [];
 
     $prerequisiteErrors = $this->checkPrerequisites($target);
 
-    $solvedErrorsForward = $this->lookForwards($target);
+    $errorsBackwards = $this->lookBackwards($target);
 
-    $solvedErrorsBackwards = $this->lookBackwards($target);
+    $solvedErrorsForward = $this->lookForwards($target);
 
     $solvedErrors = array_merge($solvedErrorsForward, $this->empty_errors($target));
 
-    if(is_array($prerequisiteErrors))
-    {
-
-      foreach($prerequisiteErrors as $error)
-      {
-        $message = "";
-        $dependencies = [];
-
-        $i = 0;
-        foreach($error as $course)
-        {
-          if($i == count($error) - 1)
-          {
-            $message .= $course[0] . " " . $course[1];
-          }
-          else
-          {
-            $message .= $course[0] . " " . $course[1] . " or ";
-          }
-
-          $dependencies[] = $course[0] . " " . $course[1];
-          $i++;
-        }
-
-        $error_messages[] = $message;
-        $this->create_error($target->user_id, $target->id, $dependencies, $message, "Prerequisite");
-      }
-    }
-
     return $solvedErrors;
+  }
+
+  /**
+  * Creates List of errors with dependencies
+  * @param List of courses: [['SUB_CODE', 'COURSE_NUMBER']]; Instance of Schedule:
+  * @return void
+  **/
+  public function createErrorWithMessage($courseList, $target)
+  {
+    $message = $target->SUBJECT_CODE . " " . $target->COURSE_NUMBER . " is missing prerequisite: ";
+    $dependencies = [];
+
+    $i = 0;
+    foreach($courseList as $course)
+    {
+      if($i == count($courseList) - 1)
+      {
+        $message .= $course[0] . " " . $course[1];
+      }
+      else
+      {
+        $message .= $course[0] . " " . $course[1] . " or ";
+      }
+
+      $dependencies[] = $course[0] . " " . $course[1];
+      $i++;
+    }
+    $error_messages[] = $message;
+    $id = $this->create_error($target->user_id, $target->id, $dependencies, $message, "Prerequisite");
   }
 
   // Find if target course prerequisites are violated when course is moved
@@ -97,26 +131,27 @@ class FlowchartAJAX extends Controller
                      ->first();
     if($prereqs == null)
     {
-      return true;
+      return [];
     }
 
     $prereqs = $prereqs->prerequisites;
 
     if($prereqs == "")
     {
-      return true;
+      return [];
     }
 
     $parts = explode("&&", $prereqs);
 
     $errors = [];
-    $missingCourses = [];
 
     foreach($parts as $part)
     {
+
       $courses_in_part = explode("||", $part);
       $type = "OR";
       $prereq_satisfied = 0;
+      $missingCourses = [];
 
       foreach($courses_in_part as $prereq)
       {
@@ -147,19 +182,11 @@ class FlowchartAJAX extends Controller
 
       if($prereq_satisfied == 0 )
       {
-        $errors[] = $missing_courses;
+        $this->createErrorWithMessage($missing_courses, $target);
       }
     }
 
-    if(count($errors) == 0)
-    {
-      return true;
-    }
-
-    else
-    {
-      return $errors;
-    }
+    return $errors;
   }
 
   /**
@@ -179,10 +206,10 @@ class FlowchartAJAX extends Controller
 
     $allScheduleID = $this->getAllSchedId($degree);
 
-    $errors = Error::whereIn('schedule_id' , $allScheduleID)
-              ->join('schedules', 'schedules.id', '=', 'errors.schedule_id')
+    $errors = FlowchartError::whereIn('schedule_id' , $allScheduleID)
+              ->join('schedules', 'schedules.id', '=', 'flowchart_errors.schedule_id')
               ->where('schedules.semester', '>', $target->semester)
-              ->get(['errors.id', 'errors.dependencies', 'schedules.SUBJECT_CODE', 'schedules.COURSE_NUMBER']);
+              ->get(['flowchart_errors.id', 'flowchart_errors.dependencies', 'schedules.SUBJECT_CODE', 'schedules.COURSE_NUMBER']);
 
     foreach($errors as $check)
     {
@@ -194,17 +221,57 @@ class FlowchartAJAX extends Controller
       if(in_array($course, $dependencies))
       {
         $errors_deleted[] = $check->id;
-        $delete = Error::find($check->id)->delete();
+        $delete = FlowchartError::find($check->id)->delete();
       }
     }
 
     return $errors_deleted;
   }
 
-  // Search for errors solved by a move or an add of course behind the semester
-  public function lookBackwards($sched_id)
+  /**
+   * Function that checks pre requisites of courses behind moved course
+   * @param Instance of Schedule: id
+   * @return Courses present in future semesters that have the course as a pre requisite
+   **/
+  public function lookBackwards($target)
   {
-    return [];
+    $degree = Session::get('degree');
+    if($degree == null)
+    {
+      return;
+    }
+
+    $errors = [];
+
+    $sched_behind = Schedule::where('degree_id', $degree->id)
+                    ->where('semester', '<=', $target->semester)
+                    ->get();
+
+    foreach($sched_behind as $sched)
+    {
+
+      $prereqs = course::where('SUBJECT_CODE', $sched->SUBJECT_CODE)
+                ->where('COURSE_NUMBER', $sched->COURSE_NUMBER)
+                ->first(['prerequisites']);
+
+      if($prereqs == null)
+      {
+         continue;
+      }
+
+      $prereqs = $prereqs->prerequisites;
+
+
+      $course = $target->SUBJECT_CODE . " " . $target->COURSE_NUMBER;
+      $course = strtolower($course);
+
+      if($prereqs !== "" && strpos($prereqs, $course))
+      {
+        $check_course = $this->checkPrerequisites($sched);
+        $errors = array_merge($errors, $check_course);
+      }
+    }
+    return $errors;
   }
 
   public function get_errors(Request $request)
@@ -219,7 +286,7 @@ class FlowchartAJAX extends Controller
 
     $allScheduleID = $this->getAllSchedId($degree);
 
-    $errors = Error::whereIn('schedule_id' , $allScheduleID)->get();
+    $errors = FlowchartError::whereIn('schedule_id' , $allScheduleID)->get();
 
     foreach($errors as $error)
     {
@@ -227,36 +294,6 @@ class FlowchartAJAX extends Controller
     }
 
     return json_encode($errorsJSON);
-  }
-
-  public function add_course_to_Schedule(Request $request)
-  {
-    $degree = Session::get('degree');
-
-    $courseType = $request->courseType;
-    $courseName = $request->courseName;
-    $semester = $request->semester;
-    $parts = explode(" ", $courseName);
-
-    $course = DB::table('programs')->where('PROGRAM_ID',$degree->program_id)
-              ->where('SUBJECT_CODE', $parts[0])
-              ->where('COURSE_NUMBER', $parts[1])
-              ->first(['SUBJECT_CODE', 'COURSE_NUMBER', 'SET_TYPE', 'COURSE_CREDITS', 'SET_TITLE_ENGLISH']);
-
-    if($course->SET_TITLE_ENGLISH == 'Required Year 0 (Freshman) Courses')
-    {
-      $new_id = $this->create_schedule($degree, $semester, $course->SUBJECT_CODE, $course->COURSE_NUMBER, 'Required');
-    }
-
-    else
-    {
-      $new_id = $this->create_schedule($degree, $semester, $course->SUBJECT_CODE, $course->COURSE_NUMBER, $courseType);
-    }
-
-    $new_semeterCredits = $this->getSemesterCredits($semester, $degree);
-    $progress = $this->generateProgressBar($degree);
-
-    return json_encode([$new_id,$new_semeterCredits, $progress, $course, $courseType]);
   }
 
   public function userCreateInternship(Request $request)
@@ -406,7 +443,7 @@ public function delete_course_from_schedule(Request $request)
 
   public function empty_errors($target)
   {
-    $errors = Error::where('schedule_id', $target->id)->get();
+    $errors = FlowchartError::where('schedule_id', $target->id)->get();
 
     $id_array = [];
 
