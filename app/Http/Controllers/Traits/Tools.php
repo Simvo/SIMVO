@@ -88,36 +88,6 @@ trait Tools
     return $result;
   }
 
-  // private function get_next_semester($current)
-  // {
-  //   $semester="";
-  //
-  //   $term=substr($current, 4, 2);
-  //   $curr_year = intval(substr($current, 0, 4));
-  //
-  //   switch($term)
-  //   {
-  //     case '01':
-  //     $semester='05';
-  //     $year = $curr_year;
-  //     break;
-  //
-  //     case '09':
-  //     $semester.='01';
-  //     $year = $curr_year+1;
-  //     break;
-  //
-  //     default:
-  //     $semester.='09';
-  //     $year = $curr_year;
-  //     break;
-  //
-  //   }
-  // 
-  //   $semester=strval($year) . $semester;
-  //
-  //   return $semester;
-  // }
 
   private function get_previous_semester($current)
   {
