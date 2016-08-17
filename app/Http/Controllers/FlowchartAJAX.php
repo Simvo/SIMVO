@@ -119,7 +119,23 @@ class FlowchartAJAX extends Controller
       $i++;
     }
     $error_messages[] = $message;
-    $id = $this->create_error($target->user_id, $target->id, $dependencies, $message, "Prerequisite");
+
+    //making sure the error message doesn't already exist in the DB before adding the error!
+    $newError = true;
+    $errorAlreadyExistsCheck = FlowchartError::where('schedule_id', $target->id)->get();
+    foreach($errorAlreadyExistsCheck as $error)
+    {
+      if($error->message == $message)
+      {
+          $newError = false;
+          break;
+      }
+    }
+
+    if($newError)
+    {
+      $id = $this->create_error($target->user_id, $target->id, $dependencies, $message, "Prerequisite");
+    }
   }
 
   // Find if target course prerequisites are violated when course is moved

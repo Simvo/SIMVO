@@ -259,7 +259,7 @@ class FlowchartController extends Controller
     foreach($all_errors as $e)
     {
       $errors_in_semester = FlowchartError::where('flowchart_errors.user_id', $user->id)
-               ->join('schedules', 'schedules.id', '=', 'errors.schedule_id')
+               ->join('schedules', 'schedules.id', '=', 'flowchart_errors.schedule_id')
                ->where('schedules.semester', $e->semester)
                ->get(['flowchart_errors.id', 'flowchart_errors.type', 'flowchart_errors.message']);
 
