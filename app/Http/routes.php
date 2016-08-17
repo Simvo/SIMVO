@@ -48,9 +48,13 @@ Route::post('/flowchart/user-create-internship', ['as'=>'userCreateInternship', 
 
 /* AJAX */
 
-Route::post('/auth/registration/get-majors', 'RegistrationController@getMajorsInFaculty');
+Route::post('/auth/registration/get-majors', 'DegreeController@getMajorsInFaculty');
 
-Route::post('/auth/registration/get-versions', 'RegistrationController@getProgramVersionsInMajor');
+Route::post('/auth/registration/get-versions', 'DegreeController@getProgramVersionsInMajor');
+
+Route::post('/auth/registration/get-streams', 'DegreeController@getProgramStreams');
+
+Route::post('/auth/registration/get-semesters', 'DegreeController@getSemesters');
 
 Route::post('/flowchart/move-course', 'FlowchartAJAX@move_course');
 

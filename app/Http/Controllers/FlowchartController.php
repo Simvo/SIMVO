@@ -13,6 +13,7 @@ use App\Http\Requests;
 class FlowchartController extends Controller
 {
   use Traits\NewObjectsTrait;
+  use Traits\StreamTrait;
   use Traits\ProgramTrait;
   use Traits\Tools;
     /**
@@ -111,7 +112,23 @@ class FlowchartController extends Controller
     $groupsWithCourses['Elective'] = $courses[2];
 
 
-    if($schedule_check == 0)
+    //If (user has not yet setup courses or recommended Stream is not provided)
+    if(!$userSetupComplete)
+    {
+      $groupsWithCourses = $courses[0];
+    }
+    else
+    {
+      $complementaryCourses[0] = $courses[1];
+      $complementaryCourses[1] = $courses[2];
+    }
+
+    if($degree->stream_version != -1 && $schedule_check == 0)
+    {
+      //initiate stream,
+      $this->initiateStreamGenerator($degree);
+    }
+    else if($schedule_check == 0)
     {
       $schedule[$this->get_semester($degree->enteringSemester)] = [0,[],$startingSemester];
     }
@@ -150,12 +167,11 @@ class FlowchartController extends Controller
     $this->validate($request, [
       'Faculty'=>'required|digits:1,2',
       'Major'=>'required',
-      'Semester'=>'required|digits:1,2',
+      'Semester'=>'required',
       'Stream'=>'required',
       'Version'=>'required'
       ]);
 
-    $semesters = $this->generateListOfSemesters(10);
     $faculties = $this->getFaculties();
 
     $program = DB::table('programs')->where('PROGRAM_ID', $request->Major)->first();
@@ -166,10 +182,22 @@ class FlowchartController extends Controller
       $request->Major,
       $program->PROGRAM_MAJOR,
       $program->PROGRAM_TOTAL_CREDITS,
-      1,
-      $this->encode_semester($semesters[$request->Semester]),
-      -1
+      $request->Version,
+      $request->Semester,
+      $request->Stream
     );
+
+    $degree = Degree::find($degree_id);
+
+    $schedule_check = Schedule::where('degree_id', $degree->id)
+                      ->where('semester', "<>", 'exemption')
+                      ->count();
+
+    if($degree->stream_version != -1 && $schedule_check == 0)
+    {
+      //initiate stream,
+      $this->initiateStreamGenerator($degree);
+    }
 
     return redirect('flowchart');
   }
@@ -200,23 +228,28 @@ class FlowchartController extends Controller
   public function generateSchedule($user)
   {
     $the_schedule = [];
+
     //Always have their starting semester available -- therefore if they accidentally remove all classes from it and refresh, it will remain.
     $the_schedule[$this->get_semester($user->enteringSemester)] = [0,[],$user->enteringSemester];
+
     $user_schedule=Schedule::where('user_id', $user->id)
-    ->whereNotIn('semester', ['complementary_course', 'elective_course'])
-    ->where('semester' ,"<>", 'Exemption')
-    ->groupBy('semester')
-    ->get();
+                   ->whereNotIn('semester', ['complementary_course', 'elective_course'])
+                   ->where('semester' ,"<>", 'Exemption')
+                   ->groupBy('semester')
+                   ->get();
+
     $sorted=$user_schedule->sortBy('semester');
     foreach($sorted as $semester)
     {
       $new_semester=[];
       $class_array=[];
       $tot_credits=0;
+
       $classes=DB::table('schedules')
-      ->where('user_id', $user->id)
-      ->where('semester', $semester->semester)
-      ->get(['schedules.id', 'schedules.status','schedules.SUBJECT_CODE', 'schedules.COURSE_NUMBER']);
+               ->where('user_id', $user->id)
+               ->where('semester', $semester->semester)
+               ->get(['schedules.id', 'schedules.status','schedules.SUBJECT_CODE', 'schedules.COURSE_NUMBER']);
+
       foreach($classes as $class)
       {
         if(explode(" " , $class->status)[0] != "Internship" && explode(" " , $class->status)[0] != "Internship_holder"  )
@@ -229,17 +262,19 @@ class FlowchartController extends Controller
         {
           $credits = 0;
         }
-          $class_array[] = [$class->id, $class->SUBJECT_CODE, $class->COURSE_NUMBER, $credits, $class->status];
-          $tot_credits+=$credits;
 
+        $class_array[] = [$class->id, $class->SUBJECT_CODE, $class->COURSE_NUMBER, $credits, $class->status];
+        $tot_credits+=$credits;
       }
       $the_schedule[$this->get_semester($semester->semester)]=[$tot_credits,$class_array, $semester->semester];
     }
     return $the_schedule;
   }
+
   public function checkUserSetupStatus($degree)
   {
     $requiredGroups = $this->getRequiredGroups($degree);
+
     foreach($requiredGroups as $key=>$group)
     {
       $coursesInGroup = $this->getCoursesInGroup($degree, $key, true);
@@ -254,6 +289,7 @@ class FlowchartController extends Controller
               ->join('schedules', 'schedules.id', '=', 'errors.schedule_id')
               ->groupBy('schedules.semester')
               ->get(['schedules.semester']);
+
     $errors = [];
     foreach($all_errors as $e)
     {
@@ -261,7 +297,9 @@ class FlowchartController extends Controller
                ->join('schedules', 'schedules.id', '=', 'errors.schedule_id')
                ->where('schedules.semester', $e->semester)
                ->get(['errors.id', 'errors.type', 'errors.message']);
+
       $errors[$this->get_semester($e->semester)] = [];
+
       foreach($errors_in_semester as $error)
       {
         $errors[$this->get_semester($e->semester)][] = [$error->id, $error->type, $error->message];

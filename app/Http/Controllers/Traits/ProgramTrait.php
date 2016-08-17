@@ -6,14 +6,16 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\User;
+use App\Stream;
+use App\StreamStructure;
 use App\Schedule;
 use DB;
 use Auth;
 
 trait ProgramTrait
 {
-  use ParsingTrait;
 
+  use ParsingTrait;
   /**
   * Function that returns groups and the number of credits in them along
   * with the number of credits the user has completed in each group
@@ -126,10 +128,8 @@ trait ProgramTrait
   {
     $user = Auth::User();
 
-    //$version = $this->getProgramVersion($user);
-
     $groups_PDO = DB::table('Programs')
-                  ->where('VERSION', 1)
+                  ->where('VERSION', $degree->version_id)
                   ->where('PROGRAM_ID', $degree->program_id)
                   ->where('SET_TYPE', 'Required')
                   ->whereNotNull('SUBJECT_CODE')
@@ -153,6 +153,26 @@ trait ProgramTrait
     }
 
     return $groups;
+  }
+
+  /**
+  * Function that returns All reuqired courses in a major
+  * @param int: ProgramID
+  * @return String array of all Group names
+  **/
+  public function getRequiredCourses($degree)
+  {
+    $requiredGroups = $this->getRequiredGroups($degree);
+
+    $requiredCourses = [];
+
+    foreach($requiredGroups as $group=>$list)
+    {
+      $coursesinGroup = $this->getCoursesInGroup($degree, $group, false);
+      $requiredCourses =  array_merge($requiredCourses, $coursesinGroup);
+    }
+
+    return $requiredCourses;
   }
 
   /**
@@ -267,8 +287,6 @@ trait ProgramTrait
   {
     $user = Auth::User();
 
-    //$version = $this->getProgramVersion($user);
-
     $courses_PDO = DB::table('Programs')
                   ->where('VERSION', $degree->version_id)
                   ->where('PROGRAM_ID', $degree->program_id)
@@ -306,7 +324,7 @@ trait ProgramTrait
   /**
   * Function that returns most recent verion number of program.
   * (Some mojors have multiple programs with the same program ID in the database)
-  * @param User: user
+  * @param program_id
   * @return int: version number
   **/
   public function getProgramVersions($program_id)
@@ -323,6 +341,46 @@ trait ProgramTrait
     }
 
     return $versions;
+  }
+
+  /**
+  * Function that returns all streams of a major and version
+  * @param program ID, version
+  * @return list of stream names
+  **/
+  public function getStreams($program_id, $version)
+  {
+    $streams_PDO = StreamStructure::where('program_id', $program_id)
+                   ->where('version', $version)
+                   ->groupBy('stream_name')
+                   ->get(['stream_name']);
+
+    $streams = [];
+    foreach($streams_PDO as $stream)
+    {
+      $streams[] = $stream->stream_name;
+    }
+
+    return $streams;
+  }
+
+  /**
+  * Function that returns lists of semesters by term (either only winter only fall etc)
+  * @param string either (all, fall, winter etc)
+  * @return list semesters
+  **/
+  public function getProperSemesters($semesters)
+  {
+    switch($semesters)
+    {
+      case "fall":
+      return $this->generateListOfFallSemesters(6);
+      break;
+
+      default:
+      return $this->generateListOfSemesters(10);
+      break;
+    }
   }
 
   /**

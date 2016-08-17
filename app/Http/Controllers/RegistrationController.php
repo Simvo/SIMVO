@@ -82,19 +82,10 @@ public function login(Request $request)
     $new_user->email = htmlentities($request->Email);
     $new_user->password = bcrypt($request->Password);
     $new_user->save();
+
     if(Auth::attempt(['email' => $request->Email, 'password' => $request->Password]))
     {
       return redirect()->intended('flowchart');
     }
-  }
-
-  public function getMajorsInFaculty(Request $request)
-  {
-    return json_encode($this->getMajors($request->faculty));
-  }
-
-  public function getProgramVersionsInMajor(Request $request)
-  {
-    return json_encode($this->getProgramVersions($request->program_id));
   }
 }
