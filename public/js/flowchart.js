@@ -9,6 +9,7 @@ $(document).ready(function()
   initRemoveCourseListener(".remove-course");
   initComplementaryModalRevealListener(".semester-add-comp-course-button");
   initEditInternship(".edit-internship");
+  initEditCustomCourse(".edit_custom");
   refreshDeleteSemester();
   refreshComplementaryCourses();
 });
@@ -389,7 +390,7 @@ function initAddCompCourseButton()
             },
             success: function(data) {
               var response = JSON.parse(data);
-              
+
               if (response === 'Error')
               {
                 //error handler
@@ -885,14 +886,16 @@ function initAddCustomCourseButton()
 
         html += '<div class="custom_card ' + response[1] + '_course" id="' + response[0] + '" >';
         html += '<div class="card_content">';
-        html += '<div class="custom_course_title">' + cutTitle +  '&nbsp  &nbsp </div>';
+        html += '<div class="custom_course_title" id="custom_course_title_' + response[0] + '">' + cutTitle +  ' </div> &nbsp  &nbsp';
         html += '<button id="menu_for_' + response[0] + '" class="mdl-button mdl-js-button mdl-button--icon">';
         html += '<i class="material-icons">arrow_drop_down</i>';
-        html += '</button> &nbsp' + response[3];
+        html += '</button> &nbsp &nbsp';
+        html += '<div class="custom_course_credits" id="custom_course_credits_' + response[0] + '">'+ response[3] + '</div>';
+        html += '<div class="custom_course_focus" id="custom_course_focus_' + response[0] + '">' + response[7] + '</div>';
 
         html += '<ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="menu_for_' + response[0] + '">';
-        html += '<div class="custom_course_description"> ' + response[2].split("|")[1] + ' </div>';
-        html += '<li class="mdl-menu__item show-prereqs" id="edit_custom_' + response[0] + '">Edit</li>';
+        html += '<li disabled class=" mdl-menu__item mdl-menu__item--full-bleed-divider custom_course_description" id="custom_course_description_' + response[0] + '">' + response[2].split("|")[1] + '</li>';
+        html += '<li class="mdl-menu__item edit_custom" id="edit_custom_' + response[0] + '">Edit</li>';
         html += '<li class="mdl-menu__item remove-course" id="remove_' + response[0] + '">Remove</li>';
         html += '</ul>';
         html += '</div>';
@@ -911,7 +914,7 @@ function initAddCustomCourseButton()
             }
         }
 
-
+        initEditCustomCourse("#edit_custom_" + response[0]);
         initRemoveCourseListener("#remove_" + response[0]);
         refreshDeleteSemester();
         refreshComplementaryCourses();
@@ -931,5 +934,232 @@ function initAddCustomCourseButton()
 
 
   });
+
+}
+
+function initEditCustomCourse(target){
+  $(target).click(function() {
+    var id = $(this).attr("id").substring(12, $(this).attr("id").length );
+    console.log(id);
+
+
+
+    $("#" + id).animate({"width":"300px"},{queue: false, duration: 100},"linear");
+    $("#" + id).animate({"height":"400px"},{queue: false, duration: 100},"linear");
+
+
+    $.ajax({
+      type: 'get',
+      url: '/flowchart/get-elective-groups',
+      success: function(data) {
+
+        var response = JSON.parse(data);
+
+
+        $.ajax({
+          type: 'get',
+          url: '/flowchart/get-schedule-course-info',
+          data: { id: id},
+          success: function(data2){
+
+            var response2 = JSON.parse(data2);
+
+            var title = response2[0];
+            var description = response2[1];
+            var focus = response2[2];
+            var credits = response2[3];
+
+
+
+            var html = '<div class="card_content">';
+            html += '<div class="mdl-textfield mdl-js-textfield">';
+            html += '<textarea class="mdl-textfield__input edit_internship_textfield" type="text" rows= "3" id="edit_custom_course_title_' + id + '" >' + $.trim(title) + '</textarea>';
+            html += '<label class="mdl-textfield__label" for="edit_custom_course_title_' + id + '">Custom Title</label>';
+            html += '</div>';
+
+            html += '<div class="mdl-textfield mdl-js-textfield">';
+            html += '<textarea class="mdl-textfield__input edit_internship_textfield" type="text" rows= "3" id="edit_custom_course_description_' + id + '" >' + $.trim(description) + '</textarea>';
+            html += '<label class="mdl-textfield__label" for="edit_custom_course_description_' + id + '">Custom Description</label>';
+            html += '</div>';
+
+
+            html += '<div id="custom_course_focus_' + id + '">';
+            html += 'Focus: ';
+            html += '<select name="Focus" id="edit_custom_focus_select_' + id + '" class="reg_dropdown form-control">';
+            for(var group in response )
+            {
+              html += '<option value="'+ group +'">' + group + '</option>';
+            }
+            html += '<option value="Miscellaneous">Miscellaneous</option>';
+            html += '</select>';
+            html += '</div>';
+            html += '<br>';
+
+            html += '<div id="custom_course_credits_' + id + '">';
+            html += 'Credits: ';
+            html += '<select name="Credits" id="edit_custom_credits_select_' + id + '" class="reg_dropdown form-control">';
+            for(var i = 1; i <= 6; i++ )
+            {
+              html += '<option value="'+ i +'">' + i + '</option>';
+            }
+            html += '</select>';
+            html += '</div>';
+
+            html += '</div>';
+
+            html += '<div style="margin:auto;"> ';
+            html += '<button id="custom_edit_cancel_' + id + '" class="mdl-button mdl-js-button mdl-js-ripple-effect">';
+            html += '<i class="material-icons">cancel</i>';
+            html += '</button>';
+            html += '<button id="custom_edit_confirm_' + id + '" class="mdl-button mdl-js-button mdl-js-ripple-effect">';
+            html += '<i class="material-icons">check</i>';
+            html += '</button>';
+            html += "</div>";
+
+
+            console.log(html);
+            console.log(id);
+            $("#" + id).html(html);
+            $("#" + id).addClass("pinned");
+
+            renderSortable();
+            initConfirmEditCustomButton(id, $.trim(title), $.trim(description), $.trim(focus), credits);
+            //Dynamically render MDL
+            componentHandler.upgradeDom();
+          }
+        });
+
+
+
+      }
+    });
+  });
+}
+
+
+function initConfirmEditCustomButton( id, originalTitle, originalDescription, originalGroup, originalCredits){
+  $("#custom_edit_confirm_" + id).click(function(){
+    var newTitle = $("#edit_custom_course_title_" + id).val();
+    var newDescription = $("#edit_custom_course_description_" + id).val();
+    var newGroup = $("#edit_custom_focus_select_" + id).val();
+    var newCredits = parseInt($("#edit_custom_credits_select_" + id).val());
+    var cutTitle = newTitle;
+    if(cutTitle.length > 11)
+    {
+      cutTitle = cutTitle.substring(0,8) + "...";
+    }
+    console.log(newTitle);
+    console.log(newDescription);
+    console.log(newGroup);
+    console.log(newCredits);
+
+    if(newTitle == originalTitle && newDescription == originalDescription && newGroup == originalGroup && newCredits == originalCredits)
+    {
+      var html = '<div class="card_content">';
+      html += '<div class="custom_course_title" id="custom_course_title_' + id + '">' + cutTitle + '</div> &nbsp  &nbsp';
+      html += '<button id="menu_for_' + id + '" class="mdl-button mdl-js-button mdl-button--icon">';
+      html += '<i class="material-icons">arrow_drop_down</i>';
+      html += '</button>';
+      html += '<div class="custom_course_credits" id="custom_course_credits_' + id + '"> ' + originalCredits + ' </div>';
+      html += '<div class="custom_course_focus" id="custom_course_focus_' + id + '"> ' + originalGroup + ' </div>';
+
+      html += '<ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="menu_for_' + id + '">';
+      html += '<li disabled class=" mdl-menu__item mdl-menu__item--full-bleed-divider custom_course_description" id="custom_course_description_' + id + '">' + originalDescription + ' </li>';
+      html += '<li class="mdl-menu__item edit_custom" id="edit_custom_' + id + '">Edit</li>';
+      html += '<li class="mdl-menu__item remove-course" id="remove_' + id + '">Remove</li>';
+      html += '</ul>';
+      html += '</div>';
+
+      $("#" + id).html(html);
+      $("#" + id).animate({"width":"160px"},{queue: false, duration: 100},"linear");
+      $("#" + id).animate({"height":"45px"},{queue: false, duration: 100},"linear");
+
+      initEditCustomCourse("#edit_custom_" + id);
+      initRemoveCourseListener("#remove_" + id);
+
+      //Dynamically render MDL
+      componentHandler.upgradeDom();
+
+    }
+    else
+    {
+
+      var html = '<div class="card_content">';
+      html += '<div class="custom_course_title" id="custom_course_title_' + id + '">' + cutTitle + '</div> &nbsp  &nbsp';
+      html += '<button id="menu_for_' + id + '" class="mdl-button mdl-js-button mdl-button--icon">';
+      html += '<i class="material-icons">arrow_drop_down</i>';
+      html += '</button>';
+      html += '<div class="custom_course_credits" id="custom_course_credits_' + id + '"> ' + newCredits + ' </div>';
+      html += '<div class="custom_course_focus" id="custom_course_focus_' + id + '"> ' + newGroup + ' </div>';
+
+      html += '<ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="menu_for_' + id + '">';
+      html += '<li disabled class=" mdl-menu__item mdl-menu__item--full-bleed-divider custom_course_description" id="custom_course_description_' + id + '">' + newDescription + ' </li>';
+      html += '<li class="mdl-menu__item edit_custom" id="edit_custom_' + id + '">Edit</li>';
+      html += '<li class="mdl-menu__item remove-course" id="remove_' + id + '">Remove</li>';
+      html += '</ul>';
+      html += '</div>';
+
+      $("#" + id).html(html);
+      $("#" + id).animate({"width":"160px"},{queue: false, duration: 100},"linear");
+      $("#" + id).animate({"height":"45px"},{queue: false, duration: 100},"linear");
+
+      $.ajax({
+        type: 'post',
+        url: 'flowchart/edit-custom',
+        data: {
+          id: id,
+          title: newTitle + "|" + newDescription,
+          group: newGroup,
+          credits: newCredits,
+        }
+      });
+
+      initEditCustomCourse("#edit_custom_" + id);
+      initRemoveCourseListener("#remove_" + id);
+
+      //Dynamically render MDL
+      componentHandler.upgradeDom();
+    }
+
+
+  });
+
+  $("#custom_edit_cancel_" + id).click( function() {
+
+    var cutTitle = originalTitle;
+    if(cutTitle.length > 11)
+    {
+      cutTitle = cutTitle.substring(0,8) + "...";
+    }
+
+      var html = '<div class="card_content">';
+      html += '<div class="custom_course_title" id="custom_course_title_' + id + '">' + cutTitle + '</div> &nbsp  &nbsp';
+      html += '<button id="menu_for_' + id + '" class="mdl-button mdl-js-button mdl-button--icon">';
+      html += '<i class="material-icons">arrow_drop_down</i>';
+      html += '</button>';
+      html += '<div class="custom_course_credits" id="custom_course_credits_' + id + '"> ' + originalCredits + ' </div>';
+      html += '<div class="custom_course_focus" id="custom_course_focus_' + id + '"> ' + originalGroup + ' </div>';
+
+      html += '<ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="menu_for_' + id + '">';
+      html += '<li disabled class=" mdl-menu__item mdl-menu__item--full-bleed-divider custom_course_description" id="custom_course_description_' + id + '">' + originalDescription + ' </li>';
+      html += '<li class="mdl-menu__item edit_custom" id="edit_custom_' + id + '">Edit</li>';
+      html += '<li class="mdl-menu__item remove-course" id="remove_' + id + '">Remove</li>';
+      html += '</ul>';
+      html += '</div>';
+
+      $("#" + id).html(html);
+      $("#" + id).animate({"width":"160px"},{queue: false, duration: 100},"linear");
+      $("#" + id).animate({"height":"45px"},{queue: false, duration: 100},"linear");
+
+      initEditCustomCourse("#edit_custom_" + id);
+      initRemoveCourseListener("#remove_" + id);
+
+      //Dynamically render MDL
+      componentHandler.upgradeDom();
+
+  });
+
+
+
 
 }

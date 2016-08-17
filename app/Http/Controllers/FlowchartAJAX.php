@@ -118,8 +118,34 @@ class FlowchartAJAX extends Controller
       $new_semeterCredits = $this->getSemesterCredits($semester, $degree);
        $progress = $this->generateProgressBar($degree);
 
-      return json_encode([$new_id, $courseType, $title, $credits, $semester, $new_semeterCredits, $progress ]);
+      return json_encode([$new_id, $courseType, $title, $credits, $semester, $new_semeterCredits, $progress, $focus ]);
     }
+
+  }
+
+  public function getElectiveGroups()
+  {
+    if(!Auth::Check())
+      return;
+
+    $degree = Session::get("degree");
+
+    $groups = $this->getComplementaryGroups($degree)[1];
+
+    return json_encode($groups);
+  }
+
+  public function getScheduleCourseInfo(Request $request)
+  {
+    if(!Auth::Check())
+      return;
+
+    $data = Schedule::find($request->id);
+    if(explode(" ", $data->status)[0] == "Custom")
+    {
+      return json_encode([explode("|", $data->SUBJECT_CODE)[0], explode("|", $data->SUBJECT_CODE)[1], $data->COURSE_NUMBER, explode(" ", $data->status)[1]  ]);
+    }
+
 
   }
 
@@ -152,6 +178,16 @@ class FlowchartAJAX extends Controller
     $course = DB::table('schedules')->where('id', $request->id);
     $course->update(['SUBJECT_CODE' => $request->companyName, 'COURSE_NUMBER' => $request->positionHeld]);
     return json_encode($course);
+  }
+
+  public function edit_custom( Request $request )
+  {
+    if(!Auth::Check())
+      return;
+
+      $course = DB::table('schedules')->where('id', $request->id);
+      $course->update(['SUBJECT_CODE' => $request->title, 'COURSE_NUMBER' => $request->group, 'status' => 'Custom '.$request->credits]);
+      return json_encode($course);
   }
 
 public function add_complementary_course_to_Flowchart(Request $request)

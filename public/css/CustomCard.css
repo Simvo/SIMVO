@@ -6,6 +6,10 @@
   margin: 0 auto 10px;
 }
 
+.card_content{
+  text-align: left;
+}
+
 .object_ouline {
   border: 3px solid #f44235;
   width: 150px;
@@ -39,13 +43,21 @@
 }
 
 .custom_course_description{
-  padding: 12px;
+  padding-top: 12px;
   background-color: #dddddd;
   line-height: 1.25;
 }
 
 .custom_course_title{
   display:inline-block;
+}
+
+.custom_course_credits{
+  display:inline-block;
+}
+
+.custom_course_focus{
+  display: none;
 }
 
 .internship_company_name{

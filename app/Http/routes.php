@@ -41,6 +41,10 @@ Route::post('/flowchart/user-create-course', ['as'=>'userCreateCourse', 'uses'=>
 
 Route::post('/auth/registration/get-majors', 'RegistrationController@getMajorsInFaculty');
 
+Route::get('/flowchart/get-elective-groups', 'FlowchartAJAX@getElectiveGroups');
+
+Route::get('/flowchart/get-schedule-course-info', 'FlowchartAJAX@getScheduleCourseInfo');
+
 Route::post('/auth/registration/get-versions', 'RegistrationController@getProgramVersionsInMajor');
 
 Route::post('/flowchart/move-course', 'FlowchartAJAX@move_course');
@@ -56,3 +60,5 @@ Route::post('/flowchart/check-course-availability','FlowchartAJAX@vsb_checkCours
 Route::post('/flowchart/add_complementary_course_to_Flowchart', 'FlowchartAJAX@add_complementary_course_to_Flowchart');
 
 Route::post('/flowchart/edit-internship', 'FlowchartAJAX@edit_internship');
+
+Route::post('/flowchart/edit-custom', 'FlowchartAJAX@edit_custom');

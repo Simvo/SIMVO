@@ -10,6 +10,10 @@ $background: rgba(236, 240, 241,1.0);
   margin: 0 auto 10px;
 }
 
+.card_content{
+  text-align: left;
+}
+
 .object_ouline {
   border: 3px solid $primary-color;
   width: 150px;
@@ -44,7 +48,7 @@ $background: rgba(236, 240, 241,1.0);
 }
 
 .custom_course_description{
-  padding: 12px;
+  padding-top: 12px;
   background-color: #dddddd;
   line-height: 1.25;
 }
@@ -52,6 +56,15 @@ $background: rgba(236, 240, 241,1.0);
 .custom_course_title{
   display:inline-block;
 }
+
+.custom_course_credits{
+  display:inline-block;
+}
+
+.custom_course_focus{
+  display: none;
+}
+
 
 .internship_company_name{
   margin-top: 10px;

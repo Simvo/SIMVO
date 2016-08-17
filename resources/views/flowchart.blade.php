@@ -115,20 +115,23 @@
                   @elseif (explode(" ", $class[4])[0] == "Custom")
                   <div class="custom_card {{ explode(" ", $class[4])[0] }}_course" id="{{ $class[0] }}" >
                     <div class="card_content">
-                      @if(strlen(explode("|", $class[1])[0]) < 11)
-                        {{ explode("|", $class[1])[0] }}  &nbsp  &nbsp
-                      @else
-                        {{ substr(explode("|", $class[1])[0], 0, 8)."..." }}
-                      @endif
+                      <div class="custom_course_title" id="custom_course_title_{{$class[0]}}">
+                        @if(strlen(explode("|", $class[1])[0]) < 11)
+                          {{ explode("|", $class[1])[0] }}
+                        @else
+                          {{ substr(explode("|", $class[1])[0], 0, 8)."..." }}
+                        @endif
+                      </div> &nbsp  &nbsp
+
                       <button id="menu_for_{{ $class[0] }}" class="mdl-button mdl-js-button mdl-button--icon">
                         <i class="material-icons">arrow_drop_down</i>
-                      </button> {{ explode(" ", $class[4])[1] }}
+                      </button> 
+                      <div class="custom_course_credits" id="custom_course_credits_{{$class[0]}}"> {{ explode(" ", $class[4])[1] }} </div>
+                      <div class="custom_course_focus" id="custom_course_focus_{{$class[0]}}"> {{$class[2]}} </div>
 
                       <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="menu_for_{{ $class[0] }}">
-                        <div class="custom_course_description">
-                          {{ explode("|", $class[1])[1]}}
-                        </div>
-                        <li class="mdl-menu__item show-prereqs" id="edit_custom_{{ $class[0] }}">Edit</li>
+                        <li disabled class=" mdl-menu__item mdl-menu__item--full-bleed-divider custom_course_description" id="custom_course_description_{{$class[0]}}"> {{ explode("|", $class[1])[1]}} </li>
+                        <li class="mdl-menu__item edit_custom" id="edit_custom_{{ $class[0] }}">Edit</li>
                         <li class="mdl-menu__item remove-course" id="remove_{{ $class[0] }}">Remove</li>
                       </ul>
                     </div>
@@ -178,38 +181,9 @@
           @endforeach
         </div>
 
-        <div id="edit-internship-modal" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
-        </div>
-
-        <div id="add_course_tutorial" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
-          <h3 id="tutorial-header"> Congratulations on placing your required courses!</h3>
-          <h5>
-            Now you can start choosing Complementary Courses and Electives
-          </h5>
-          <div class="tutorial-div">
-            <h5>1) Choose your desired semester </h5>
-            <img src="tutorial1.png" alt="" />
-            <br>
-          </div>
-          <div class="tutorial-div">
-            <h5> 2) Select the courses you wish to add </h5>
-            <img src="tutorial2.png" alt="" />
-            <br>
-          </div>
-          <div class="tutorial-div">
-            <h5> 3) Click Add </h5>
-            <img src="tutorial3.png" alt="" />
-            <br>
-          </div>
-          <div class="tutorial-div">
-            <h5> BAM! You're done!</h5>
-            <img src="tutorial4.png" alt="" />
-          </div>
 
 
 
-
-        </div>
 
         <div id="comp_courses" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
 
