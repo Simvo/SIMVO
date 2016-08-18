@@ -185,9 +185,15 @@ class FlowchartAJAX extends Controller
     if(!Auth::Check())
       return;
 
-      $course = DB::table('schedules')->where('id', $request->id);
-      $course->update(['SUBJECT_CODE' => $request->title, 'COURSE_NUMBER' => $request->group, 'status' => 'Custom '.$request->credits]);
-      return json_encode($course);
+    $degree = Session::get('degree');
+
+    $course = DB::table('schedules')->where('id', $request->id);
+    $course->update(['SUBJECT_CODE' => $request->title, 'COURSE_NUMBER' => $request->group, 'status' => 'Custom '.$request->credits]);
+
+    $semester = $course->first()->semester;
+    $new_semeterCredits = $this->getSemesterCredits($semester, $degree);
+    $progress = $this->generateProgressBar($degree);
+    return json_encode([$new_semeterCredits, $progress, $semester]);
   }
 
 public function add_complementary_course_to_Flowchart(Request $request)

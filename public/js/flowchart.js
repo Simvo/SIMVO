@@ -940,9 +940,6 @@ function initAddCustomCourseButton()
 function initEditCustomCourse(target){
   $(target).click(function() {
     var id = $(this).attr("id").substring(12, $(this).attr("id").length );
-    console.log(id);
-
-
 
     $("#" + id).animate({"width":"300px"},{queue: false, duration: 100},"linear");
     $("#" + id).animate({"height":"400px"},{queue: false, duration: 100},"linear");
@@ -1017,8 +1014,6 @@ function initEditCustomCourse(target){
             html += "</div>";
 
 
-            console.log(html);
-            console.log(id);
             $("#" + id).html(html);
             $("#" + id).addClass("pinned");
 
@@ -1048,10 +1043,6 @@ function initConfirmEditCustomButton( id, originalTitle, originalDescription, or
     {
       cutTitle = cutTitle.substring(0,8) + "...";
     }
-    console.log(newTitle);
-    console.log(newDescription);
-    console.log(newGroup);
-    console.log(newCredits);
 
     if(newTitle == originalTitle && newDescription == originalDescription && newGroup == originalGroup && newCredits == originalCredits)
     {
@@ -1111,6 +1102,27 @@ function initConfirmEditCustomButton( id, originalTitle, originalDescription, or
           title: newTitle + "|" + newDescription,
           group: newGroup,
           credits: newCredits,
+        },
+        success: function(data){
+          var response = JSON.parse(data);
+          var semester_letter = get_semester_letter(response[2]);
+          semester_letter = semester_letter.split(" ");
+          semester_letter = semester_letter[0] + semester_letter[1];
+
+          var target_sem = $("." + semester_letter);
+
+
+          $(target_sem.find('div.credit_counter_num' )).text( 'CREDITS: ' + response[0]);
+
+
+          for (var group in response[1])
+          {
+              if (response[1].hasOwnProperty(group))
+              {
+                  var groupProgress = response[1][group];
+                  var target = $( "td[id='" + group + "']" ).text("" + groupProgress[0] + "/" + groupProgress[1]);
+              }
+          }
         }
       });
 
