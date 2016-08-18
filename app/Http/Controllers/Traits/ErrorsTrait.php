@@ -56,11 +56,10 @@ trait ErrorsTrait
 
     foreach($parts as $part)
     {
-
       $courses_in_part = explode("||", $part);
       $type = "OR";
       $prereq_satisfied = 0;
-      $missingCourses = [];
+      $missing_courses = [];
 
       foreach($courses_in_part as $prereq)
       {
