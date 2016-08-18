@@ -12,6 +12,14 @@
   font-size: 15px;
   margin-bottom: 15px; }
 
+.prereq__error {
+  color: #f44235;
+  width: 150px;
+  text-align: center;
+  padding: 3px;
+  font-size: 15px;
+  margin-bottom: 15px; }
+
 #make_degree {
   height: 90%; }
 
