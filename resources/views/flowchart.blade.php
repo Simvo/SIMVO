@@ -125,7 +125,7 @@
 
                       <button id="menu_for_{{ $class[0] }}" class="mdl-button mdl-js-button mdl-button--icon">
                         <i class="material-icons">arrow_drop_down</i>
-                      </button> 
+                      </button>
                       <div class="custom_course_credits" id="custom_course_credits_{{$class[0]}}"> {{ explode(" ", $class[4])[1] }} </div>
                       <div class="custom_course_focus" id="custom_course_focus_{{$class[0]}}"> {{$class[2]}} </div>
 
@@ -286,9 +286,11 @@
                         <td>
                           <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label program_input">
                             <select class="reg_dropdown form-control" name="Focus" id="custom_focus">
+                              @if(count($groupsWithCourses))
                               @foreach($groupsWithCourses['Elective'] as $group => $course)
                                 <option value="{{$group}}">{{$group}}</option>
                               @endforeach
+                              @endif
                               <option value="Miscellaneous"> Miscellaneous </option>
                             </select>
                           </div>

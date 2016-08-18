@@ -11,7 +11,10 @@ $(document).ready(function()
   initEditInternship(".edit-internship");
   initEditCustomCourse(".edit_custom");
   refreshDeleteSemester();
-  refreshComplementaryCourses();
+  if(!$("#make_degree").length)
+  {
+    refreshComplementaryCourses();
+  }
 });
 
 function startAddCourseTutorial()
