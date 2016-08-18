@@ -6,16 +6,19 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\User;
 use App\Schedule;
+use App\course;
+use App\FlowchartError;
 use DB;
 use Auth;
+use Session;
 
-class ErrorsTrait
+trait ErrorsTrait
 {
 
   // Will handle all 3 cases for prerequisite checking and return list of errors to delete
   public function manageFlowchartErrors($target)
   {
-    $error_messages = [];
+    $errors_to_delete = $this->empty_errors($target);
 
     $prerequisiteErrors = $this->checkPrerequisites($target);
 
@@ -23,7 +26,7 @@ class ErrorsTrait
 
     $solvedErrorsForward = $this->lookForwards($target);
 
-    $solvedErrors = array_merge($solvedErrorsForward, $this->empty_errors($target));
+    $solvedErrors = array_merge($solvedErrorsForward, $errors_to_delete);
 
     return $solvedErrors;
   }
