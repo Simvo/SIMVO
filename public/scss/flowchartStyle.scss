@@ -18,6 +18,16 @@ $background: rgba(236, 240, 241,1.0);
   margin-bottom: 15px;
 }
 
+.prereq__error {
+  color: $primary-color;
+  width: 150px;
+  text-align: center;
+  padding: 3px;
+  font-size: 15px;
+  margin-bottom: 15px;
+}
+
+
 #make_degree{
   height: 90%;
 }

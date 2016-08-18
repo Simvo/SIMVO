@@ -224,7 +224,7 @@ trait ErrorsTrait
 
     if($newError)
     {
-      $id = $this->create_error($target->user_id, $target->id, $dependencies, $message, "Prerequisite");
+      $id = $this->create_error($target->user_id, $target->id, $dependencies, $message, "prereq__error");
     }
   }
 

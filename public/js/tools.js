@@ -48,7 +48,7 @@ function getErrors()
           continue;
         }
 
-        var errorType = (response[i][3] === "Prerequisite")?  'prereq_error' : 'vsb_error';
+        var errorType = (response[i][3] === "prereq__error")?  'prereq_' : 'vsb_';
 
         var error = "<div class='" + errorType  + "error' id='error_"+errorInstance[0]+"'>";
         error += errorInstance[2];

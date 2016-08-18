@@ -90,7 +90,6 @@ function renderSortable()
                 $("#required-group-div").animate({'opacity': 0}, {duration: 500, queue: false, complete: function (){$("#required-group-div").remove();}});
                 startAddCourseTutorial();
               }
-
             }
           }
         })
