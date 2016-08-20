@@ -168,16 +168,29 @@ public function delete_course_from_schedule(Request $request)
 
   $course = Schedule::find($courseID);
 
+  $errors_to_delete = $this->empty_errors($course);
+
   $semester = $course->first()->semester;
 
   $degree = Session::get('degree');
 
+  // check pre requisites of everycourse in front
+  $courseAhead = Schedule::where('degree_id', $degree->id)
+                 //->where('semester' , '>', $semester)
+                 ->get();
   $course->delete();
+
+  foreach($courseAhead as $courseInFront)
+  {
+    //var_dump("checking courses in front: " . $courseInFront->SUBJECT_CODE . " " . $courseInFront->COURSE_NUMBER);
+    $this->checkPrerequisites($courseInFront);
+  }
+
 
   $new_semeterCredits = $this->getSemesterCredits($semester, $degree);
   $progress = $this->generateProgressBar($degree);
 
-  return json_encode([$courseID, $new_semeterCredits, $progress, $semester]);
+  return json_encode([$courseID, $new_semeterCredits, $progress, $semester, $errors_to_delete]);
 }
 
 
@@ -222,20 +235,5 @@ public function delete_course_from_schedule(Request $request)
       $error_id = $this->create_error($user->id, $target->id, [], $message, 'vsb_error');
     }
     return json_encode([$available, $error_id]);
-  }
-
-  public function empty_errors($target)
-  {
-    $errors = FlowchartError::where('schedule_id', $target->id)->get();
-
-    $id_array = [];
-
-    foreach($errors as $error)
-    {
-      $id_array[] = $error->id;
-      $error->delete();
-    }
-
-    return $id_array;
   }
 }

@@ -52,6 +52,8 @@ function renderSortable()
 
             $( event.target ).children( '.credit_counter' ).children( '.credit_counter_num' ).text( 'CREDITS: ' + response[1]);
             checkVSB(new_semester, ui.item.context.id, event.target);
+            removeErrors(response[5]);
+            getErrors();
 
             for (var group in response[2])
             {
@@ -62,8 +64,6 @@ function renderSortable()
                 }
             }
             refreshDeleteSemester();
-            removeErrors(response[5]);
-            getErrors();
 
             //Check if add complementary tutorial should start
             if($('#'+ui.item.context.id).hasClass('Required_course'))

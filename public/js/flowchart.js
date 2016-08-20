@@ -334,6 +334,8 @@ function initAddCompCourseButton()
             $(target_sem.find("div.credit_counter")).before(comp_course);
             $(target_sem.find('div.credit_counter_num' )).text( 'CREDITS: ' + response[1]);
             checkVSB(semester, response[0] , $( "[id='" + semester2 + "']" ));
+            removeErrors(response[5]);
+            getErrors();
 
             for (var group in response[2])
             {
@@ -395,6 +397,11 @@ function initAddCompCourseButton()
             },
             success: function(data) {
               var response = JSON.parse(data);
+
+              // remove any errors associated with deleted course
+              removeErrors(response[4]);
+              getErrors();
+
               if (response === 'Error')
               {
                 //error handler
@@ -411,7 +418,6 @@ function initAddCompCourseButton()
                 {
                   var semester = 'Exemption';
                 }
-
 
                 $("#" + response[0]).remove();
                 $("."+semester).children( '.credit_counter' ).children( '.credit_counter_num' ).text( 'CREDITS: ' + response[1]);

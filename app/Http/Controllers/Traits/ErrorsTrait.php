@@ -248,4 +248,19 @@ trait ErrorsTrait
 
     return json_encode($errorsJSON);
   }
+
+  public function empty_errors($target)
+  {
+    $errors = FlowchartError::where('schedule_id', $target->id)->get();
+
+    $id_array = [];
+
+    foreach($errors as $error)
+    {
+      $id_array[] = $error->id;
+      $error->delete();
+    }
+
+    return $id_array;
+  }
 }
