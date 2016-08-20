@@ -130,7 +130,8 @@ class FlowchartAJAX extends Controller
 
     $degree = Session::get("degree");
 
-    $groups = $this->getGroups($degree);
+    $groups = $this->generateProgressBar($degree);
+
 
     return json_encode($groups);
   }
