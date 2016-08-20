@@ -286,11 +286,9 @@
                         <td>
                           <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label program_input">
                             <select class="reg_dropdown form-control" name="Focus" id="custom_focus">
-                              @if(count($groupsWithCourses))
-                              @foreach($groupsWithCourses as $tab => $groupArray)
-                                @foreach($groupArray as $group => $courses)
-                                <option value="{{$group}}">{{$group}}</option>
-                                @endforeach
+                              @if($degreeLoaded)
+                              @foreach($progress as $key => $value)
+                                <option value="custom_focus_{{$key}}">{{$key}}</option>
                               @endforeach
                               @endif
                               <option value="Miscellaneous"> Miscellaneous </option>
