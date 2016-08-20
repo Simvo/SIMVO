@@ -986,6 +986,7 @@ function initEditCustomCourse(target){
             html += '<div id="custom_course_focus_' + id + '">';
             html += 'Focus: ';
             html += '<select name="Focus" id="edit_custom_focus_select_' + id + '" class="reg_dropdown form-control">';
+            
             for(var group in response )
             {
               html += '<option value="'+ group +'">' + group + '</option>';

@@ -130,7 +130,7 @@ class FlowchartAJAX extends Controller
 
     $degree = Session::get("degree");
 
-    $groups = $this->getComplementaryGroups($degree)[1];
+    $groups = $this->getGroups($degree);
 
     return json_encode($groups);
   }
