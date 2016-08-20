@@ -114,10 +114,21 @@ trait ErrorsTrait
 
     $allScheduleID = $this->getAllSchedId($degree);
 
-    $errors = FlowchartError::whereIn('schedule_id' , $allScheduleID)
-              ->join('schedules', 'schedules.id', '=', 'flowchart_errors.schedule_id')
-              ->where('schedules.semester', '>', $target->semester)
-              ->get(['flowchart_errors.id', 'flowchart_errors.dependencies', 'schedules.SUBJECT_CODE', 'schedules.COURSE_NUMBER']);
+    if($target->semester === "Exemption")
+    {
+      $errors = FlowchartError::whereIn('schedule_id' , $allScheduleID)
+                ->join('schedules', 'schedules.id', '=', 'flowchart_errors.schedule_id')
+                ->where('schedules.semester', '<>', "Exemption")
+                ->get(['flowchart_errors.id', 'flowchart_errors.dependencies', 'schedules.SUBJECT_CODE', 'schedules.COURSE_NUMBER']);
+    }
+
+    else
+    {
+      $errors = FlowchartError::whereIn('schedule_id' , $allScheduleID)
+                ->join('schedules', 'schedules.id', '=', 'flowchart_errors.schedule_id')
+                ->where('schedules.semester', '>', $target->semester)
+                ->get(['flowchart_errors.id', 'flowchart_errors.dependencies', 'schedules.SUBJECT_CODE', 'schedules.COURSE_NUMBER']);
+    }
 
     foreach($errors as $check)
     {
