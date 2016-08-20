@@ -130,8 +130,20 @@ class FlowchartAJAX extends Controller
 
     $degree = Session::get("degree");
 
-    $groups = $this->generateProgressBar($degree);
+    $groups_PDO = DB::table('Programs')
+                  ->where('PROGRAM_ID', $degree->program_id)
+                  ->groupBy('SET_TITLE_ENGLISH')
+                  ->get(['SET_TITLE_ENGLISH', 'SET_BEGIN_TEXT_ENGLISH']);
 
+    $groups = [];
+
+    foreach($groups_PDO as $group)
+    {
+      if(trim($group->SET_TITLE_ENGLISH) != "")
+      {
+        $groups[$group->SET_TITLE_ENGLISH] = [];
+      }
+    }
 
     return json_encode($groups);
   }
