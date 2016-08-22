@@ -51,7 +51,9 @@ function renderSortable()
 
 
             $( event.target ).children( '.credit_counter' ).children( '.credit_counter_num' ).text( 'CREDITS: ' + response[1]);
-            checkVSB(new_semester, ui.item.context.id, event.target)
+            checkVSB(new_semester, ui.item.context.id, event.target);
+            removeErrors(response[5]);
+            getErrors();
 
             for (var group in response[2])
             {
@@ -88,7 +90,6 @@ function renderSortable()
                 $("#required-group-div").animate({'opacity': 0}, {duration: 500, queue: false, complete: function (){$("#required-group-div").remove();}});
                 startAddCourseTutorial();
               }
-
             }
           }
         })
@@ -108,6 +109,7 @@ function renderSortable()
             $( event.target ).children( '.credit_counter' ).children( '.credit_counter_num' ).text( 'CREDITS: ' + response[0]);
             $( ui.sender[ 0 ] ).children( '.credit_counter' ).children( '.credit_counter_num' ).text( 'CREDITS: ' + response[1]);
             checkVSB(new_semester, ui.item.context.id, event.target);
+            getErrors();
             removeErrors(response[2]);
             refreshDeleteSemester();
           }

@@ -24,32 +24,42 @@ function checkVSB(new_semester, id, semesterID)
         scheduleID: id
       },
       success: function(data){
-
-        var response = JSON.parse(data);
-
-        if(response[0].length)
-        {
-          var error = "<div class='vsb_error error' id='error_"+response[1]+"'>";
-          error += response[0][0];
-          error += "</div>";
-        }
-
-        else
-        {
-          var error = "<div class='course_available' id='avail_"+id+"'>";
-          error += "Course is available this semester!";
-          error += "</div>";
-        }
-
-        $( semesterID ).append( error );
-
-        $("#avail_"+id).fadeOut(5000, function() {
-          $(this).remove();
-        });
       }
     });
   }
 }
+
+function getErrors()
+{
+  $.ajax({
+    type : 'post',
+    url : '/flowchart/getErrors',
+    data : {},
+    success : function(data) {
+      var response = JSON.parse(data);
+      console.log(response);
+
+      for(var i = 0; i<response.length; i++)
+      {
+        var errorInstance = response[i];
+
+        if($("#error_" + errorInstance[0]).length > 0)
+        {
+          continue;
+        }
+
+        var errorType = (response[i][3] === "prereq__error")?  'prereq__error' : 'vsb_error';
+
+        var error = "<div class='" + errorType  + " error' id='error_"+errorInstance[0]+"'>";
+        error += errorInstance[2];
+        error += "</div>";
+
+        $("#" + errorInstance[1]).parent().append(error);
+      }
+    }
+  });
+}
+
 
 function removeErrors(idArray)
 {

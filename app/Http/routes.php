@@ -69,3 +69,5 @@ Route::post('/flowchart/check-course-availability','FlowchartAJAX@vsb_checkCours
 Route::post('/flowchart/add_complementary_course_to_Flowchart', 'FlowchartAJAX@add_complementary_course_to_Flowchart');
 
 Route::post('/flowchart/edit-internship', 'FlowchartAJAX@edit_internship');
+
+Route::post('/flowchart/getErrors', 'FlowchartAJAX@get_errors');

@@ -8,7 +8,7 @@ use App\Http\Requests;
 use App\User;
 use DB;
 use App\Schedule;
-use App\Error;
+use App\FlowchartError;
 use App\Degree;
 
 trait NewObjectsTrait
@@ -43,14 +43,22 @@ trait NewObjectsTrait
     return $degree->id;
   }
 
-  public function create_error($user_id, $sched_id, $message, $type)
+  public function create_error($user_id, $sched_id, $dependencies, $message, $type)
   {
-    $error = new Error();
+    $error = new FlowchartError();
     $error->user_id = $user_id;
     $error->schedule_id = $sched_id;
+    $error->dependencies = json_encode($dependencies);
     $error->message = $message;
     $error->type = $type;
     $error->save();
+
+    $sql = "INSERT into `flowchart_errors` (`user_id`, `schedule_id`, `message`, `dependencies`, `type`)
+     VALUES (". $user_id .", ". $sched_id . ", '". $message ."', '". json_encode($dependencies) ."', '". $type ."')";
+
+     DB::raw($sql);
+    //
+    //  var_dump(Error::where('message', $message)->get());
 
     return $error->id;
   }

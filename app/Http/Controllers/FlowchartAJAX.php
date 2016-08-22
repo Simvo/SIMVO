@@ -9,7 +9,8 @@ use Auth;
 use DB;
 use Session;
 use App\Schedule;
-use App\Error;
+use App\FlowchartError;
+use App\course;
 
 
 class FlowchartAJAX extends Controller
@@ -18,6 +19,7 @@ class FlowchartAJAX extends Controller
   use Traits\ProgramTrait;
   use Traits\Tools;
   use Traits\CurlTrait;
+  use Traits\ErrorsTrait;
 
   public function move_course(Request $request)
   {
@@ -35,10 +37,10 @@ class FlowchartAJAX extends Controller
     $target->semester=$semester;
     $target->save();
 
-    $errors_to_delete = $this->empty_errors($target);
-
     $old_semeterCredits = $this->getSemesterCredits($old_semester, $degree);
     $new_semeterCredits = $this->getSemesterCredits($semester, $degree);
+
+    $errors_to_delete = $this->manageFlowchartErrors($target);
 
     return json_encode([$new_semeterCredits, $old_semeterCredits, $errors_to_delete]);
   }
@@ -67,10 +69,14 @@ class FlowchartAJAX extends Controller
       $new_id = $this->create_schedule($degree, $semester, $course->SUBJECT_CODE, $course->COURSE_NUMBER, $courseType);
     }
 
+    $target = Schedule::find($new_id);
+
+    $errors_to_delete = $this->manageFlowchartErrors($target);
+
     $new_semeterCredits = $this->getSemesterCredits($semester, $degree);
     $progress = $this->generateProgressBar($degree);
 
-    return json_encode([$new_id,$new_semeterCredits, $progress, $course, $courseType]);
+    return json_encode([$new_id,$new_semeterCredits, $progress, $course, $courseType, $errors_to_delete]);
   }
 
   public function userCreateInternship(Request $request)
@@ -95,8 +101,6 @@ class FlowchartAJAX extends Controller
         array_push($semester, $semesterShift);
         array_push($new_id, $this->create_schedule($degree, $semesterShift, $company, $position, 'Internship_holder '.$new_id[0]));
     }
-
-
 
     return json_encode([ $new_id , $courseType, $company, $position, $semester]);
   }
@@ -164,16 +168,43 @@ public function delete_course_from_schedule(Request $request)
 
   $course = Schedule::find($courseID);
 
+  $errors_to_delete = $this->empty_errors($course);
+
   $semester = $course->first()->semester;
+
+  //var_dump($semester);
+
+  Schedule::find($courseID)->delete();
 
   $degree = Session::get('degree');
 
-  $course->delete();
+  // check pre requisites of everycourse in front
+  if($semester === "Exemption")
+  {
+    $courseAhead = Schedule::where('degree_id', $degree->id)
+                   ->where('semester' , '<>', "Exemption")
+                   ->get();
+  }
+
+  else
+  {
+    $courseAhead = Schedule::where('degree_id', $degree->id)
+                   ->where('semester' , '>', $semester)
+                   ->get();
+  }
+
+
+  foreach($courseAhead as $courseInFront)
+  {
+    //var_dump("checking courses in front: " . $courseInFront->SUBJECT_CODE . " " . $courseInFront->COURSE_NUMBER);
+    $this->checkPrerequisites($courseInFront);
+  }
+
 
   $new_semeterCredits = $this->getSemesterCredits($semester, $degree);
   $progress = $this->generateProgressBar($degree);
 
-  return json_encode([$courseID, $new_semeterCredits, $progress, $semester]);
+  return json_encode([$courseID, $new_semeterCredits, $progress, $semester, $errors_to_delete]);
 }
 
 
@@ -187,6 +218,7 @@ public function delete_course_from_schedule(Request $request)
     $sum = 0;
     foreach($courses as $course)
     {
+      //var_dump($course->SUBJECT_CODE . " " . $course->COURSE_NUMBER);
       $courseCredits = DB::table('programs')
                        ->where('SUBJECT_CODE', $course->SUBJECT_CODE)
                        ->where('COURSE_NUMBER', $course->COURSE_NUMBER)
@@ -215,23 +247,8 @@ public function delete_course_from_schedule(Request $request)
     if(count($available))
     {
       $message = $available[0];
-      $error_id = $this->create_error($user->id, $target->id, $message, 'vsb_error');
+      $error_id = $this->create_error($user->id, $target->id, [], $message, 'vsb_error');
     }
     return json_encode([$available, $error_id]);
-  }
-
-  public function empty_errors($target)
-  {
-    $errors = Error::where('schedule_id', $target->id)->get();
-
-    $id_array = [];
-
-    foreach($errors as $error)
-    {
-      $id_array[] = $error->id;
-      $error->delete();
-    }
-
-    return $id_array;
   }
 }
