@@ -155,97 +155,13 @@
           @endforeach
         </div>
 
-        <div id="edit-internship-modal" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
-        </div>
-
-        <div id="add_course_tutorial" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
-          <h3 id="tutorial-header"> Congratulations on placing your required courses!</h3>
-          <h5>
-            Now you can start choosing Complementary Courses and Electives
-          </h5>
-          <div class="tutorial-div">
-            <h5>1) Choose your desired semester </h5>
-            <img src="tutorial1.png" alt="" />
-            <br>
-          </div>
-          <div class="tutorial-div">
-            <h5> 2) Select the courses you wish to add </h5>
-            <img src="tutorial2.png" alt="" />
-            <br>
-          </div>
-          <div class="tutorial-div">
-            <h5> 3) Click Add </h5>
-            <img src="tutorial3.png" alt="" />
-            <br>
-          </div>
-          <div class="tutorial-div">
-            <h5> BAM! You're done!</h5>
-            <img src="tutorial4.png" alt="" />
-          </div>
 
 
-
-
-        </div>
 
         <div id="comp_courses" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
 
           <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
-            <div class="mdl-tabs__tab-bar">
-              @foreach($groupsWithCourses as $tabtitle => $Courses)
-                @if(!is_null($Courses))
-                  @if($tabtitle == 'Complementary')
-                    <a href="#{{$tabtitle}}_tab_panel" id="{{$tabtitle}}_tab" class="mdl-tabs__tab is-active">{{$tabtitle}}</a>
-                  @else
-                    <a href="#{{$tabtitle}}_tab_panel" id="{{$tabtitle}}_tab" class="mdl-tabs__tab">{{$tabtitle}}</a>
-                  @endif
-                @endif
-              @endforeach
-                <a href="#Custom_tab" class="mdl-tabs__tab">Custom</a>
-                <a href="#Internship_tab" class="mdl-tabs__tab">Internship</a>
 
-            </div>
-
-            @foreach($groupsWithCourses as $tabtitle => $Courses)
-            @if($tabtitle == 'Complementary')
-              <div class="mdl-tabs__panel is-active" id="{{$tabtitle}}_tab_panel">
-            @else
-              <div class="mdl-tabs__panel" id="{{$tabtitle}}_tab_panel">
-            @endif
-
-              @if(!is_null($Courses))
-                <button type="button" class="mdl-button mdl-js-button mdl-button--raised add_comp_course_button">Add</button>
-                @foreach ($Courses as $key=>$value)
-                  @if( count($value) != 0)
-                    <h4 id="{{$tabtitle}}_table_header_{{$key}}" style="text-align:center">{{$key}}  ({{$progress[$key][1]}} credits)</h4>
-                    <table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp {{$tabtitle}}_table" id="{{$tabtitle}}_table_{{$key}}">
-                      <thead>
-                        <tr>
-                          <th class="mdl-data-table__cell--non-numeric">Course Number</th>
-                          <th class="mdl-data-table__cell--non-numeric">Course Name</th>
-                          <th>Credits</th>
-                        </tr>
-                      </thead>
-
-                      <tbody class="{{$tabtitle}}_table_body tech_comp_table">
-                      @foreach ($value as $course)
-                      <tr id="{{ $course[0] }}{{ $course[1] }}">
-                        <td class="mdl-data-table__cell--non-numeric course_number">{{$course[0]}} {{ $course[1] }}</td>
-                        <td class="mdl-data-table__cell--non-numeric class_name">{{ $course[4] }}</td>
-                        <td>{{ $course[2] }}</td>
-                      </tr>
-                      @endforeach
-                      </tbody>
-                    </table>
-                    @endif
-                  @endforeach
-                @endif
-
-
-                <a class="close-reveal-modal" aria-label="Close">&#215;</a>
-            </div>
-
-            @endforeach
 
               <div class="mdl-tabs__panel" id="Custom_tab">
               </div>
@@ -391,12 +307,10 @@
           </td>
           <td>
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label program_input">
-              {!! Form::select('Semester', $semesters, null, ['class'=> 'reg_dropdown form-control']) !!}
+              <select name="Semester" id="semester-select" class="reg_dropdown form-control"></select>
             </div>
           </td>
         </tr>
-
-
       </table>
       {!! Form::submit('Submit', ['class'=> 'mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent new_user_submit']) !!}
       {!! Form::close() !!}

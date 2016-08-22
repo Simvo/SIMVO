@@ -10,6 +10,26 @@ use DB;
 
 trait Tools
 {
+
+  private function convert_term_to_code($term)
+  {
+    $term = strtolower($term);
+
+    switch($term)
+    {
+      case 'winter':
+      return '01';
+      break;
+
+      case 'summer':
+      return '05';
+      break;
+
+      case 'fall':
+      return '09';
+      break;
+    }
+  }
   /**
   * Function that returns Semester that user is currently in
   * @param N/A
@@ -167,5 +187,21 @@ trait Tools
     }
 
     return $semesters;
+  }
+
+  private function generateListOfFallSemesters($num)
+  {
+    $current_semester = $this->get_current_semester();
+
+    $fallSemesters = [];
+
+    $currYear = date('Y');
+
+    for($i = 0; $i < $num; $i++)
+    {
+      $fallSemesters[] = "Fall ". ($currYear-$i);
+    }
+
+    return $fallSemesters;
   }
 }
