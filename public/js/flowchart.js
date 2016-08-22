@@ -576,14 +576,14 @@ function initAddCompCourseButton()
         if(company.length == 0 || position.length == 0 )
         {
           $("#Internship_error").remove();
-          var invalid = '<div id="Internship_error"> Please fill out all of the internship information </div>'
+          var invalid = '<div id="Internship_error" class="Course_add_error"> Please fill out all of the internship information </div>'
           $(".add_internship_button").after(invalid);
           return;
         }
         else if(semester_letter == "Exemption")
         {
           $("#Internship_error").remove();
-          var invalid = '<div id="Internship_error">Internships cannot be added to the Exemption list!';
+          var invalid = '<div id="Internship_error" class="Course_add_error">Internships cannot be added to the Exemption list!';
           $(".add_internship_button").after(invalid);
           return;
         }
@@ -605,7 +605,7 @@ function initAddCompCourseButton()
           if($("[id='" + formatSemesterID(semester_letter) + "']").find("div.custom_card").length > 1 )
           {
             $("#Internship_error").remove();
-            var invalid = '<div id="Internship_error"> There were courses found in semesters you wish to place your internship! Make sure you clear these out before adding your internship</div>'
+            var invalid = '<div id="Internship_error" class="Course_add_error"> There were courses found in semesters you wish to place your internship! Make sure you clear these out before adding your internship</div>'
             $(".add_internship_button").after(invalid);
             return;
           }
@@ -844,7 +844,9 @@ function initAddCustomCourseButton()
     else
     {
       //throw error message!
-      console.log("You may not add custom courses to the exemption semester!");
+      $("#Custom_error").remove();
+      var invalid = '<div id="Custom_error" class="Course_add_error"> You may not add custom courses to the exemption semester! </div>'
+      $(".add_custom_course_button").after(invalid);
       return;
     }
 
@@ -860,8 +862,14 @@ function initAddCustomCourseButton()
     if(title == "")
     {
       //throw error message!
-      console.log("Please enter in a title for your custom course");
+      $("#Custom_error").remove();
+      var invalid = '<div id="Custom_error" class="Course_add_error"> Please fill out all the Custom Course infromation before adding! </div>'
+      $(".add_custom_course_button").after(invalid);
       return;
+    }
+    else
+    {
+      $("#Custom_error").remove();
     }
 
     $.ajax({
@@ -986,7 +994,7 @@ function initEditCustomCourse(target){
             html += '<div id="custom_course_focus_' + id + '">';
             html += 'Focus: ';
             html += '<select name="Focus" id="edit_custom_focus_select_' + id + '" class="reg_dropdown form-control">';
-            
+
             for(var group in response )
             {
               html += '<option value="'+ group +'">' + group + '</option>';
