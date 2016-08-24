@@ -34,7 +34,7 @@ trait ErrorsTrait
   // Find if target course prerequisites are violated when course is moved
   public function checkPrerequisites($target)
   {
-
+    dd($target);
     $prereqs = course::where('SUBJECT_CODE', $target->SUBJECT_CODE)
                      ->where('COURSE_NUMBER', $target->COURSE_NUMBER)
                      ->first();
@@ -64,6 +64,12 @@ trait ErrorsTrait
       foreach($courses_in_part as $prereq)
       {
         $course = explode(" ", $prereq);
+
+        if(count($course) != 2)
+        {
+          continue;
+        }
+
         $sub_code = str_replace("(", "", $course[0]);
         $course_num =str_replace(")", "", $course[1]);
 
@@ -241,6 +247,7 @@ trait ErrorsTrait
   public function get_errors(Request $request)
   {
     $degree = Session::get('degree');
+
     if($degree == null)
     {
       return;

@@ -164,6 +164,12 @@ public function delete_course_from_schedule(Request $request)
   else
     $user = Auth::User();
 
+  $degree = Session::get('degree');
+  if($degree == null)
+  {
+    return;
+  }
+
   $courseID = $request->id;
 
   $course = Schedule::find($courseID);
@@ -172,32 +178,40 @@ public function delete_course_from_schedule(Request $request)
 
   $semester = $course->first()->semester;
 
-  //var_dump($semester);
+  $likeString = $course->SUBJECT_CODE . ' ' . $course->COURSE_NUMBER;
+  $likeString = '%'.strtolower($likeString) .'%';
 
   Schedule::find($courseID)->delete();
 
   $degree = Session::get('degree');
 
-  // check pre requisites of everycourse in front
-  if($semester === "Exemption")
-  {
-    $courseAhead = Schedule::where('degree_id', $degree->id)
-                   ->where('semester' , '<>', "Exemption")
-                   ->get();
-  }
+  // check pre requisites of every course in front that depends on the deleted course
 
-  else
-  {
-    $courseAhead = Schedule::where('degree_id', $degree->id)
-                   ->where('semester' , '>', $semester)
-                   ->get();
-  }
+  $prereqs = course::where('prerequisites', 'like', $likeString)->get();
 
-
-  foreach($courseAhead as $courseInFront)
+  foreach($prereqs as $prereq)
   {
-    //var_dump("checking courses in front: " . $courseInFront->SUBJECT_CODE . " " . $courseInFront->COURSE_NUMBER);
-    $this->checkPrerequisites($courseInFront);
+    if($semester === "Exemption")
+    {
+      $course = Schedule::where('degree_id', $degree->id)
+                       ->where('SUBJECT_CODE', $prereq->SUBJECT_CODE)
+                       ->where('COURSE_NUMBER', $prereq->COURSE_NUMBER)
+                       ->where('semester', '<>', 'Exemption')
+                       ->get();
+    }
+    else
+    {
+      $course = Schedule::where('degree_id', $degree->id)
+                       ->where('SUBJECT_CODE', $prereq->SUBJECT_CODE)
+                       ->where('COURSE_NUMBER', $prereq->COURSE_NUMBER)
+                       ->where('semester', '>', $semester)
+                       ->get();
+    }
+
+    if(count($course) > 0)
+    {
+      $this->checkPrerequisites($course);
+    }
   }
 
 
