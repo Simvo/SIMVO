@@ -210,7 +210,7 @@ public function delete_course_from_schedule(Request $request)
 
     if(count($course) > 0)
     {
-      $this->checkPrerequisites($course);
+      $this->checkPrerequisites($course[0]);
     }
   }
 

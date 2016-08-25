@@ -34,7 +34,12 @@ trait ErrorsTrait
   // Find if target course prerequisites are violated when course is moved
   public function checkPrerequisites($target)
   {
-    dd($target);
+    if($target == null)
+    {
+      dd($target);
+      return;
+    }
+
     $prereqs = course::where('SUBJECT_CODE', $target->SUBJECT_CODE)
                      ->where('COURSE_NUMBER', $target->COURSE_NUMBER)
                      ->first();
