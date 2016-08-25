@@ -368,12 +368,12 @@ trait ProgramTrait
     $streams_PDO = StreamStructure::where('program_id', $program_id)
                    ->where('version', $version)
                    ->groupBy('stream_name')
-                   ->get(['stream_name']);
+                   ->get(['id', 'stream_name']);
 
     $streams = [];
     foreach($streams_PDO as $stream)
     {
-      $streams[] = $stream->stream_name;
+      $streams[] = [$stream->id, $stream->stream_name];
     }
 
     return $streams;
