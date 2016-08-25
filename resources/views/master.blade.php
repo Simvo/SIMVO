@@ -66,6 +66,7 @@
     <script defer src="https://code.getmdl.io/1.1.2/material.min.js"></script>
     <script type="text/javascript" src="{{ asset('js/SortableRendering.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/tools.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/flowchartStyle.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/DegreeAjax.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/flowchart.js') }}"></script>
     <script type="text/javascript" src="{{ asset('/js/foundation.js') }}"></script>
