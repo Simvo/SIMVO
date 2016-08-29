@@ -5,7 +5,6 @@ Homestead.yaml
 Homestead.json
 .env
 prepros.cfg
-config/database.php
 composer
 *.map
 /public/scss/.sass-cache
