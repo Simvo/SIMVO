@@ -1,0 +1,115 @@
+$primary-color: #f44235;
+$secondary-color: #4051b5;
+$background: rgba(236, 240, 241,1.0);
+$cardWidth: 160px;
+
+.custom_card {
+  border-radius: 4px;
+  background: #ecf0f1;
+  width: $cardWidth;
+  height: 45px;
+  margin: 0 auto 10px;
+
+  &:hover{
+    cursor: grabbing;
+  }
+}
+
+.grabbing-icon{
+    cursor: -webkit-grabbing !important;
+}
+
+.object_ouline {
+  border: 3px solid $primary-color;
+  width: $cardWidth;
+  height: 45px;
+  margin: 0 auto 10px;
+  border-radius: 5px;
+}
+
+.credit_counter {
+  display: table;
+  //height: 400px;
+  overflow: hidden;
+}
+
+.Required_course {
+  background: #fbb3ae !important;
+}
+
+.Internship_course{
+  min-height: 300px;
+  position:absolute;
+  top:60px;
+  z-index: 5;
+  background-color: #ccccff;
+  font-size: 20px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.internship_company_name{
+  margin-top: 10px;
+  margin-bottom: 20px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.edit_internship_textfield{
+  max-height: 60px;
+}
+
+.internship_position_held{
+  font-size: 16px;
+}
+
+.Complementary_course {
+  background: rgba(243, 156, 18, 0.4) !important;
+}
+
+.Elective_course {
+  background: rgba(39, 174, 96, 0.4) !important;
+}
+
+.custom_card .card_content {
+  padding: 8px;
+  &:hover{
+    cursor: -webkit-grab;
+  }
+}
+
+.custom_card .card_content .title_list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.custom_card .card_content .title_list li {
+  margin-left: 10px;
+  display: inline-block;
+}
+
+.custom_card .card_content .desc_list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.custom_card .card_content .desc_list .cred {
+  margin-left: 40px;
+  font-size: 12px;
+}
+
+.custom_card .card_content .desc_list li {
+  margin-left: 8px;
+  font-size: 10px;
+  display: inline-block;
+}
+
+.custom_card .card_content .card_title {
+  font-size: 15px;
+}
+
+.custom_card .card_footer {
+  border-top: 1px solid #b1c2c6;
+}

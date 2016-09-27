@@ -106,7 +106,19 @@ return [
     | been provided here, which will work well on most of your systems.
     |
     */
-
     'sendmail' => '/usr/sbin/sendmail -bs',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Pretending to Send Mail
+    |--------------------------------------------------------------------------
+    |
+    | set this setting to true when you wish to
+    | instead of sending the email, output the
+    | email to a log file.
+    |
+    */
+    'pretend' => true,
+
 
 ];
