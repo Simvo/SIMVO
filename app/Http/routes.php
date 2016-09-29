@@ -15,8 +15,7 @@
 
 
 Route::get('/', function () {
-    header("Location: http://www.wearesimvo.com/");
-    exit;
+    return redirect('/login');
 });
 
 Route::get('/login', ['as'=>'loginView', 'uses'=>'RegistrationController@loginView']);
