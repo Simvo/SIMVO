@@ -302,7 +302,7 @@ trait ProgramTrait
   {
     $user = Auth::User();
 
-    $courses_PDO = DB::table('Programs')
+    $courses_PDO = DB::table('programs')
                   ->where('VERSION', $degree->version_id)
                   ->where('PROGRAM_ID', $degree->program_id)
                   ->where('SET_TITLE_ENGLISH', $group)
