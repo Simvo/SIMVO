@@ -92,7 +92,7 @@ trait ProgramTrait
   **/
   public function getMajors($faculty)
   {
-    $majors_PDO = DB::table('Programs')
+    $majors_PDO = DB::table('programs')
                   ->where('PROGRAM_TEACHING_FACULTY', $faculty)
                   ->where('FIELD_OF_STUDY', 'MAJOR')
                   ->groupBy('PROGRAM_MAJOR')
@@ -115,7 +115,7 @@ trait ProgramTrait
   **/
   public function getGroups($degree)
   {
-    $groups_PDO = DB::table('Programs')
+    $groups_PDO = DB::table('programs')
                   ->where('PROGRAM_ID', $degree->program_id)
                   ->whereNotNull('SUBJECT_CODE')
                   ->whereNotNull('COURSE_NUMBER')
@@ -143,7 +143,7 @@ trait ProgramTrait
   {
     $user = Auth::User();
 
-    $groups_PDO = DB::table('Programs')
+    $groups_PDO = DB::table('programs')
                   ->where('VERSION', $degree->version_id)
                   ->where('PROGRAM_ID', $degree->program_id)
                   ->where('SET_TYPE', 'Required')
@@ -199,7 +199,7 @@ trait ProgramTrait
   {
     $user = Auth::User();
 
-    $groups_PDO = DB::table('Programs')
+    $groups_PDO = DB::table('programs')
                   ->where('VERSION', $degree->version_id)
                   ->where('PROGRAM_ID', $degree->program_id)
                   ->where('SET_TYPE', 'Complementary')
@@ -236,7 +236,7 @@ trait ProgramTrait
   {
     $user = Auth::User();
 
-    $groups_PDO = DB::table('Programs')
+    $groups_PDO = DB::table('programs')
                   ->where('VERSION', $degree->version_id)
                   ->where('PROGRAM_ID', $degree->program_id)
                   ->whereNotNull('SUBJECT_CODE')
