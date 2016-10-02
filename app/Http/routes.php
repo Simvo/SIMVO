@@ -15,7 +15,7 @@
 
 
 Route::get('/', function () {
-    return redirect('/login');
+    return redirect('/flowchart');
 });
 
 Route::get('/login', ['as'=>'loginView', 'uses'=>'RegistrationController@loginView']);
