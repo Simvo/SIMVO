@@ -2,8 +2,8 @@
 @section('flowchart')
 
 <script type="text/javascript">
-  var user_id = {{ $user->id }};
-  var user_email = {{ $user->email }};
+  var user_id = "{{ $user->id }}";
+  var user_email = "{{ $user->email }}";
 
   mixpael.identify(user_id);
 
