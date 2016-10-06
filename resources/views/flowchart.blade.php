@@ -1,6 +1,17 @@
 @extends('master')
 @section('flowchart')
 
+<script type="text/javascript">
+  var user_id = {{ $user->id }};
+  var user_email = {{ $user->email }};
+
+  mixpael.identify(user_id);
+
+  mixpanel.people.set({
+    "$user": user_email
+  });
+</script>
+
 <div class="mdl-grid" style="padding-bottom: 0px">
   <div class="mdl-cell mdl-cell--12-col" style="overflow-x: scroll">
     <div class="mdl-card mdl-shadow--2dp progress_div">
