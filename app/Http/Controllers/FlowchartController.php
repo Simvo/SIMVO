@@ -35,7 +35,7 @@ class FlowchartController extends Controller
 
       $userSetupComplete = $this->checkUserSetupStatus($user);
 
-        $degree = null;
+      $degree = null;
       $degrees = $this->getDegrees($user);
 
       $new_user = false;
@@ -64,6 +64,7 @@ class FlowchartController extends Controller
       }
       else
       {
+        // temporary hack until multi degree is supported
         $degree = $degrees[0];
         Session::put('degree', $degree);
 
@@ -96,7 +97,7 @@ class FlowchartController extends Controller
     //Get User's entering semester
     $startingSemester = $degree->enteringSemester;
 
-    //load excpemtions
+    //load exemptions
     $exemptions = $this->getExemptions($degree);
 
     $schedule_check = Schedule::where('degree_id', $degree->id)

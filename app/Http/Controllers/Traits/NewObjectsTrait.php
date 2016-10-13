@@ -57,8 +57,6 @@ trait NewObjectsTrait
      VALUES (". $user_id .", ". $sched_id . ", '". $message ."', '". json_encode($dependencies) ."', '". $type ."')";
 
      DB::raw($sql);
-    //
-    //  var_dump(Error::where('message', $message)->get());
 
     return $error->id;
   }
