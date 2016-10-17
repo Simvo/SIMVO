@@ -6,6 +6,19 @@ $(document).ready(function(){
     }
   } );
 
+  // Controls reset degree Modal
+  var dialog = document.querySelector('dialog');
+  var showDialogButton = $('#show-dialog');
+  if (! dialog.showModal) {
+    dialogPolyfill.registerDialog(dialog);
+  }
+  $(showDialogButton).bind('click', function() {
+    dialog.showModal();
+  });
+  dialog.querySelector('.close').addEventListener('click', function() {
+    dialog.close();
+  });
+
   LoadMajors();
 
   $('#faculty-select').change(function(){
@@ -24,6 +37,10 @@ $(document).ready(function(){
   $('#stream-select').change(function(){
     LoadSemesters();
   })
+
+  $("#reset-degree-button").click(function(){
+     dialog.showModal();
+  });
 });
 
 

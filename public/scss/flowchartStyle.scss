@@ -6,7 +6,6 @@ $background: rgba(236, 240, 241,1.0);
   padding: 5px;
   min-height: 50px !important;
   width: 100% !important;
-  overflow-x: scroll;
 }
 
 .vsb_error {
@@ -80,10 +79,6 @@ $background: rgba(236, 240, 241,1.0);
     -webkit-transform: scale(0.9);
     transform: scale(0.9);
   }
-}
-
-#progress_table {
-  overflow-x: scroll;
 }
 
 .progress_cell {

@@ -31,4 +31,19 @@ class DegreeController extends Controller
   {
     return json_encode($this->getProperSemesters($request->semesters));
   }
+
+  public function deleteDegree(Request $request)
+  {
+    $degree = Session::get('degree');
+
+    if($degree == null)
+    {
+      return;
+    }
+
+    $degree = Degree::where('id', $degree->id)->first();
+    $degree->delete();
+
+    return redirect('/flowchart');
+  }
 }
