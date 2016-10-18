@@ -19,6 +19,7 @@ $(document).ready(function(){
     dialog.close();
   });
 
+  // Controls create Degree Behavior
   LoadMajors();
 
   $('#faculty-select').change(function(){

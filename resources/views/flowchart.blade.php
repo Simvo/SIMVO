@@ -23,7 +23,7 @@
           </p>
         </div>
         <div class="mdl-dialog__actions">
-          <a type="button" class="mdl-button" href="{{ route('registration') }}">Agree</a>
+          <a type="button" class="mdl-button" href="{{ route('resetDegree') }}">Agree</a>
           <button type="button" class="mdl-button close">Cancel</button>
         </div>
       </dialog>

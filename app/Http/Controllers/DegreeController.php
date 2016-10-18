@@ -5,12 +5,16 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use Session;
+
+use App\Degree;
 
 class DegreeController extends Controller
 {
   // traits the controller will use
   use Traits\ProgramTrait;
   use Traits\Tools;
+  use Traits\ScheduleTrait;
 
   public function getMajorsInFaculty(Request $request)
   {
@@ -34,12 +38,17 @@ class DegreeController extends Controller
 
   public function deleteDegree(Request $request)
   {
-    $degree = Session::get('degree');
+    $degree = Session::get('degree');\
+
+    Session::forget('degree');
 
     if($degree == null)
     {
       return;
     }
+
+    // Remove all instances of schedule belongin to the degree
+    $this->emptySchedule($degree);
 
     $degree = Degree::where('id', $degree->id)->first();
     $degree->delete();

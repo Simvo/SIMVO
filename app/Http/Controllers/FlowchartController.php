@@ -225,14 +225,14 @@ class FlowchartController extends Controller
     return [$exemptions,$sum];
   }
 
-  public function generateSchedule($user)
+  public function generateSchedule($degree)
   {
     $the_schedule = [];
 
     //Always have their starting semester available -- therefore if they accidentally remove all classes from it and refresh, it will remain.
-    $the_schedule[$this->get_semester($user->enteringSemester)] = [0,[],$user->enteringSemester];
+    $the_schedule[$this->get_semester($degree->enteringSemester)] = [0,[],$degree->enteringSemester];
 
-    $user_schedule=Schedule::where('user_id', $user->id)
+    $user_schedule=Schedule::where('degree_id', $degree->id)
                    ->whereNotIn('semester', ['complementary_course', 'elective_course'])
                    ->where('semester' ,"<>", 'Exemption')
                    ->groupBy('semester')
@@ -246,7 +246,7 @@ class FlowchartController extends Controller
       $tot_credits=0;
 
       $classes=DB::table('schedules')
-               ->where('user_id', $user->id)
+               ->where('degree_id', $degree->id)
                ->where('semester', $semester->semester)
                ->get(['schedules.id', 'schedules.status','schedules.SUBJECT_CODE', 'schedules.COURSE_NUMBER']);
 
