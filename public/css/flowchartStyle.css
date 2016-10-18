@@ -23,6 +23,11 @@
   margin-bottom: 15px;
 }
 
+.degree-info-text {
+  padding: 0px;
+  margin-left: 5px;
+}
+
 #make_degree {
   height: 90%;
 }

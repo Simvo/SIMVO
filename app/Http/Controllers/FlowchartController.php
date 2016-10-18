@@ -70,7 +70,11 @@ class FlowchartController extends Controller
 
         $flowchart = $this->generateDegree($degree);
 
+        $total_credits = DB::table('programs')->where('PROGRAM_ID',$degree->program_id)
+        ->first(['PROGRAM_TOTAL_CREDITS']);
+
         return view('flowchart', [
+          'total_credits'=>$total_credits->PROGRAM_TOTAL_CREDITS,
           'user'=>$user,
           'degree'=>$degree,
           'newUser' => $new_user,
