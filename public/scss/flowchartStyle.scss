@@ -8,6 +8,26 @@ $background: rgba(236, 240, 241,1.0);
   width: 100% !important;
 }
 
+.my-modal{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 500px;
+  height: 400px;
+  margin-left: -250px;
+  margin-top: -200px;
+
+  .modal-title{
+    line-height: 1.5em;
+  }
+
+  .modal-text{
+    font-size: 15px;
+    font-weight: normal;
+    line-height: 1.5em;
+  }
+}
+
 .vsb_error {
   color: orange;
   width: 150px;

@@ -15,11 +15,12 @@
 <div class="mdl-grid">
   <div class="mdl-cell mdl-cell--12-col">
     <button class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent' id="show-dialog" type="button">Reset Degree</button>
-      <dialog class="mdl-dialog">
-        <h4 class="mdl-dialog__title">Reseting Your Degree Will Delete All of Your Courses!</h4>
+      <dialog class="mdl-dialog my-modal">
+        <h4 class="mdl-dialog__title modal-title">Reseting Your Degree Will Delete All of Your Courses!</h4>
         <div class="mdl-dialog__content">
-          <p>
-            Are you sure you want to continue? (This is not in any way connected to minerva, any changes herer will not be relfected by minerva)
+          <p class="modal-text">
+            Are you sure you want to continue? (This is not in any way connected to minerva, any changes here will not be relfected by minerva)
+            By doing this, you can change your program and entering semester.
           </p>
         </div>
         <div class="mdl-dialog__actions">
