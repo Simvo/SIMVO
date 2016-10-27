@@ -76,7 +76,16 @@ class FlowchartAJAX extends Controller
     $new_semeterCredits = $this->getSemesterCredits($semester, $degree);
     $progress = $this->generateProgressBar($degree);
 
-    return json_encode([$new_id,$new_semeterCredits, $progress, $course, $courseType, $errors_to_delete]);
+    return json_encode(
+    [
+      $new_id,
+      $new_semeterCredits,
+      $progress,
+      $course,
+      $courseType,
+      $errors_to_delete
+    ]
+    );
   }
 
   public function userCreateInternship(Request $request)

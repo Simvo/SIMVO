@@ -311,6 +311,7 @@ function initAddCompCourseButton()
         },
         success: function(data) {
           var response = JSON.parse(data);
+          console.log(response);
           if (response === 'Error')
           {
             //error handler

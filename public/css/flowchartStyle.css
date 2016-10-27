@@ -2,7 +2,16 @@
   padding: 5px;
   min-height: 50px !important;
   width: 100% !important;
-  overflow-x: scroll;
+}
+
+.mdl-card__supporting-text {
+  width: 96.6% !important;
+}
+
+.adjustable-border {
+  position: absolute;
+  top: 10%;
+  bottom: 10%;
 }
 
 .vsb_error {

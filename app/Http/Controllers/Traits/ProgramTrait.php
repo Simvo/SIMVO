@@ -20,7 +20,7 @@ trait ProgramTrait
   * Function that returns groups and the number of credits in them along
   * with the number of credits the user has completed in each group
   * @param current logged in user
-  * @return array with key = groupName => [credits taken,total dredits in group]
+  * @return array with key = groupName => [credits taken,total credits in group]
   **/
   public function generateProgressBar($degree)
   {
@@ -408,5 +408,23 @@ trait ProgramTrait
     return DB::table('programs')->where('SUBJECT_CODE', $sub_code)
                ->where('COURSE_NUMBER', $course_num)
                ->First(['COURSE_CREDITS'])->COURSE_CREDITS;
+  }
+  /**
+  *Returns total remaining credits
+  *@param None
+  *@Return int: number of credits remaing to take
+  **/
+  public function getRemainingCredits($degree)
+  {
+    // $todayY = date("Y");
+    // $todayM = date("m");
+    $progress = $this->generateProgressBar($degree);
+
+    $creditsTakenSum = 0;
+    foreach($progress as $key => $creditsTaken)
+    {
+      $creditsTakenSum = $creditsTakenSum + $creditsTaken[0];
+    }
+    return $creditsTakenSum;
   }
 }

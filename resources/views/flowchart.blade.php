@@ -14,26 +14,27 @@ mixpanel.people.set({
 
 <div class="mdl-grid" style="padding-bottom: 0px">
   <div class="mdl-cell mdl-cell--12-col">
-    <div class="mdl-card progress_div">
-      <div class="mdl-card__title">
-        <h4 class="mdl_card__title-text">{{$degree->program_name}}</h4>
-      </div>
-
+    <div class="mdl-card mdl-shadow--2dp progress_div">
         <div class="mdl-card__supporting-text">
-          <div id="p1" class="mdl-progress mdl-js-progress"></div>
+          <b>{{$degree->program_name}}</b>
+          @if($degreeLoaded)
+          <b>0/{{$degree->program_credits}}</b>
+          @endif
+        </div>
+        <div class="adjustable-border">
+          <div id="progressBar" style="width:967px" class="mdl-progress mdl-js-progress"></div>
           <script>
-          document.querySelector('#p1').addEventListener('mdl-componentupgraded', function() {
+          document.querySelector('#progressBar').addEventListener('mdl-componentupgraded', function() {
             this.MaterialProgress.setProgress(44);
           });
           </script>
         </div>
-
     </div>
   </div>
 </div>
 
 <div class="mdl-grid" style="padding-bottom: 0px">
-  <div class="mdl-cell mdl-cell--12-col" style="overflow-x: scroll">
+  <div class="mdl-cell mdl-cell--12-col">
     <div class="mdl-card mdl-shadow--2dp progress_div">
       <table id="progress_table" style="margin: 0 auto; width:100% !important;">
         <thead>
