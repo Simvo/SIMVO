@@ -1,6 +1,17 @@
 @extends('master')
 @section('flowchart')
 
+<script type="text/javascript">
+  var user_id = "{{ $user->id }}";
+  var user_email = "{{ $user->email }}";
+
+  mixpael.identify(user_id);
+
+  mixpanel.people.set({
+    "$user": user_email
+  });
+</script>
+
 <div class="mdl-grid" style="padding-bottom: 0px">
   <div class="mdl-cell mdl-cell--12-col" style="overflow-x: scroll">
     <div class="mdl-card mdl-shadow--2dp progress_div">
@@ -54,7 +65,7 @@
                       </button> {{ $exemption[3] }}
 
                       <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="menu_for_{{ $exemption[0] }}">
-                        <li class="mdl-menu__item show-prereqs" id="show_prereqs_{{ $exemption[0] }}">Show Pre-Requisites</li>
+                        <!--<li class="mdl-menu__item show-prereqs" id="show_prereqs_{{ $exemption[0] }}">Show Pre-Requisites</li>-->
                         <li class="mdl-menu__item remove-course" id="remove_{{ $exemption[0] }}">Remove</li>
                       </ul>
                     </div>
@@ -119,7 +130,7 @@
                         </button> {{ $class[3] }}
 
                         <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="menu_for_{{ $class[0] }}">
-                          <li class="mdl-menu__item show-prereqs" id="show_prereqs_{{ $class[0] }}">Show Pre-Requisites</li>
+                          <!--<li class="mdl-menu__item show-prereqs" id="show_prereqs_{{ $class[0] }}">Show Pre-Requisites</li>-->
                           <li class="mdl-menu__item remove-course" id="remove_{{ $class[0] }}">Remove</li>
                         </ul>
                       </div>
@@ -154,9 +165,6 @@
 
           @endforeach
         </div>
-
-
-
 
         <div id="comp_courses" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
 
