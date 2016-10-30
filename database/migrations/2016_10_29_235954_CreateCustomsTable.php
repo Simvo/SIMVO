@@ -13,8 +13,15 @@ class CreateCustomsTable extends Migration
     public function up()
     {
         Schema::create('customs', function (Blueprint $table) {
-            $table->increments('id');
-            $table->timestamps();
+          $table->increments('id');
+          $table->integer('user_id');
+          $table->integer('degree_id');
+          $table->string('title');
+          $table->string('description');
+          $table->string('focus');
+          $table->string('semester');
+          $table->integer('credits');
+          $table->timestamps();
         });
     }
 
