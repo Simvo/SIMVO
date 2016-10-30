@@ -255,8 +255,12 @@ class FlowchartController extends Controller
         $sem = $this->get_next_semester($sem);
       }
 
-    $sorted=$user_schedule->sortBy('semester');
-    foreach($sorted as $semester)
+    }
+    foreach($user_schedule3 as $semester)
+    {
+      $user_schedule_final[] = $semester->semester;
+    }
+
     $user_schedule_final = array_unique($user_schedule_final);
     sort($user_schedule_final);
 
@@ -305,6 +309,7 @@ class FlowchartController extends Controller
     return $the_schedule;
   }
 
+  
   public function checkUserSetupStatus($degree)
   {
     $requiredGroups = $this->getRequiredGroups($degree);
