@@ -649,48 +649,30 @@ function initAddCompCourseButton()
 
             success: function(data) {
               var response = JSON.parse(data);
-              for( var i = 0; i < response[4].length; i++)
-              {
-                var sem = get_semester_letter(response[4][i]);
+
+                var sem = get_semester_letter(response[4]);
                 var sem2 = sem.split(" ");
                 sem2 = sem2[0] + sem2[1];
-                if(i == 0)
-                {
-                  var comp_course = "<div class='custom_card pinned " + response[1] + "_course' id='int" + response[0][i] + "' style='width:"+width+"px;'>";
-                  comp_course += "<div class='card_content'>";
-                  comp_course += '<div class="internship_company_name" id="internship_company_name_int' + response[0][i] + '">' + response[2] + '</div>';
-                  comp_course += '<div class="internship_position_held" id="internship_position_held_int' + response[0][i] + '">' + response[3] + '</div>';
-                  comp_course += "<button id='menu_for_int" + response[0][i] + "' class='mdl-button mdl-js-button mdl-button--icon'>";
-                  comp_course += "<i class='material-icons'>arrow_drop_down</i>";
-                  comp_course += "</button>"
-                  comp_course += "<ul class='mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect' for='menu_for_int" + response[0][i] + "''>";
-                  comp_course += "<li class='mdl-menu__item edit-internship' id='edit_internship_int" + response[0][i] + "'>Edit</li>";
-                  comp_course += "<li class='mdl-menu__item remove-course' id='remove_int" + response[0][i] + "'>Remove</li>";
-                  comp_course += "</ul>";
-                  comp_course += "</div>";
-                  comp_course += "</div>";
-                  $("." + sem2).append(comp_course);
-                }
-                else
-                {
-                  var comp_course = "<div class='custom_card pinned Internship_holder_int" + response[0][0] + "' id='int" + response[0][i] + "' >";
-                  comp_course += "<div class='card_content'>";
-                  comp_course += '<div>' + response[2] + '</div>';
-                  comp_course += '<div>' + response[3] + '</div>';
-                  comp_course += "<button id='menu_for_int" + response[0][i] + "' class='mdl-button mdl-js-button mdl-button--icon'>";
-                  comp_course += "<i class='material-icons'>arrow_drop_down</i>";
-                  comp_course += "</button>"
-                  comp_course += "<ul class='mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect' for='menu_for_int" + response[0][i] + "''>";
-                  comp_course += "<li class='mdl-menu__item edit-internship' id='edit_internship_int" + response[0][i] + "'>edit</li>";
-                  comp_course += "<li class='mdl-menu__item remove-course' id='remove_int" + response[0][i] + "'>Remove</li>";
-                  comp_course += "</ul>";
-                  comp_course += "</div>";
-                  comp_course += "</div>";
-                  $("." + sem2).append(comp_course);
-                }
-                initRemoveCourseListener("#remove_int" + response[0][i]);
-                initEditInternship("#edit_internship_int" + response[0][i]);
-              }
+
+                var comp_course = "<div class='custom_card pinned " + response[1] + "_course' id='int" + response[0] + "' style='width:"+width+"px;'>";
+                comp_course += "<div class='card_content'>";
+                comp_course += '<div class="internship_company_name" id="internship_company_name_int' + response[0] + '">' + response[2] + '</div>';
+                comp_course += '<div class="internship_position_held" id="internship_position_held_int' + response[0] + '">' + response[3] + '</div>';
+                comp_course += "<button id='menu_for_int" + response[0] + "' class='mdl-button mdl-js-button mdl-button--icon'>";
+                comp_course += "<i class='material-icons'>arrow_drop_down</i>";
+                comp_course += "</button>"
+                comp_course += "<ul class='mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect' for='menu_for_int" + response[0] + "''>";
+                comp_course += "<li class='mdl-menu__item edit-internship' id='edit_internship_int" + response[0] + "'>Edit</li>";
+                comp_course += "<li class='mdl-menu__item remove-course' id='remove_int" + response[0] + "'>Remove</li>";
+                comp_course += "</ul>";
+                comp_course += "</div>";
+                comp_course += "</div>";
+                $("." + sem2).append(comp_course);
+
+
+                initRemoveCourseListener("#remove_int" + response[0]);
+                initEditInternship("#edit_internship_int" + response[0]);
+
 
               refreshDeleteSemester();
               refreshComplementaryCourses();
