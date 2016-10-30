@@ -9,6 +9,8 @@ use App\Degree;
 use App\FlowchartError;
 use DB;
 use App\Http\Requests;
+use App\Internship;
+use App\Custom;
 
 class FlowchartController extends Controller
 {
@@ -309,7 +311,7 @@ class FlowchartController extends Controller
     return $the_schedule;
   }
 
-  
+
   public function checkUserSetupStatus($degree)
   {
     $requiredGroups = $this->getRequiredGroups($degree);

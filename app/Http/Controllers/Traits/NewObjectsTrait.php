@@ -10,9 +10,43 @@ use DB;
 use App\Schedule;
 use App\FlowchartError;
 use App\Degree;
+use App\Internship;
+use App\Custom;
 
 trait NewObjectsTrait
 {
+
+  public function create_internship($degree, $semester, $company, $position, $duration, $width)
+  {
+    $internship = new Internship();
+    $internship->user_id = $degree->user_id;
+    $internship->degree_id = $degree->id;
+    $internship->semester = $semester;
+    $internship->company = $company;
+    $internship->position = $position;
+    $internship->duration = $duration;
+    $internship->width = $width;
+    $internship->save();
+
+    return $internship->id;
+  }
+
+  public function create_custom_course($degree, $semester, $title, $description, $focus, $credits)
+  {
+    $custom = new Custom();
+
+    $custom->user_id = $degree->user_id;
+    $custom->degree_id = $degree->id;
+    $custom->semester = $semester;
+    $custom->title = $title;
+    $custom->description = $description;
+    $custom->focus = $focus;
+    $custom->credits = $credits;
+    $custom->save();
+
+    return $custom->id;
+  }
+
   public function create_schedule($degree, $semester, $SUBJECT_CODE, $COURSE_NUMBER, $SET_TYPE)
   {
     $sched = new Schedule();

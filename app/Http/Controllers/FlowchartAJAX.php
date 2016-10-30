@@ -11,6 +11,8 @@ use Session;
 use App\Schedule;
 use App\FlowchartError;
 use App\course;
+use App\Internship;
+use App\Custom;
 
 
 class FlowchartAJAX extends Controller
