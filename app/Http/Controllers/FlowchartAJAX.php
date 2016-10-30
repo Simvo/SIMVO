@@ -261,6 +261,13 @@ public function delete_course_from_schedule(Request $request)
       }
     }
   }
+  else{
+    $semester = $course->semester;
+
+    $degree = Session::get('degree');
+
+    $course->delete();
+  }
 
 
   $new_semeterCredits = $this->getSemesterCredits($semester, $degree);
