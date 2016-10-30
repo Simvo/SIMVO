@@ -81,30 +81,42 @@ class FlowchartAJAX extends Controller
     return json_encode([$new_id,$new_semeterCredits, $progress, $course, $courseType, $errors_to_delete]);
   }
 
-  public function userCreateInternship(Request $request)
+  public function userCreateCourse(Request $request)
   {
     if(!Auth::Check())
       return;
 
-    $courseTypeWidthAndLength = $request->courseTypeWidthAndLength;
-    $company = $request->company;
-    $position = $request->position;
-    $semester = array($request->semester);
     $degree = Session::get('degree');
-    $internshipData = explode(" ", $courseTypeWidthAndLength);
-    $courseType = $internshipData[0];
-    $length = $internshipData[2];
-    $new_id = array($this->create_schedule($degree, $request->semester, $company, $position, $courseTypeWidthAndLength));
-    $semesterShift = $request->semester;
+    $courseType = $request->details;
 
-    for($i = 1; $i < $length; $i++)
+    if($courseType == "Internship")
     {
-        $semesterShift = $this->get_next_semester($semesterShift);
-        array_push($semester, $semesterShift);
-        array_push($new_id, $this->create_schedule($degree, $semesterShift, $company, $position, 'Internship_holder '.$new_id[0]));
+
+      $width = $request->width;
+      $duration = $request->duration;
+      $company = $request->company;
+      $position = $request->position;
+      $semester = $request->semester;
+      $new_id = $this->create_internship($degree, $request->semester, $company, $position, $duration, $width);
+
+      return json_encode([$new_id , 'Internship', $request->company, $request->position, $semester]);
+
+    }
+    else if($courseType == "Custom")
+    {
+      $title = $request->title;
+      $description = $request->description;
+      $focus = $request->focus;
+      $semester = $request->semester;
+      $credits = $request->credits;
+      $new_id = $this->create_custom_course($degree, $semester, $title, $description, $focus, $credits);
+
+      $new_semeterCredits = $this->getSemesterCredits($semester, $degree);
+      $progress = $this->generateProgressBar($degree);
+
+      return json_encode([$new_id, $courseType, $title, $credits, $semester, $new_semeterCredits, $progress, $focus, $description ]);
     }
 
-    return json_encode([ $new_id , $courseType, $company, $position, $semester]);
   }
 
   public function refresh_complementary_courses()
