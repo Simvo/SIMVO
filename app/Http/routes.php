@@ -69,4 +69,6 @@ Route::post('/flowchart/add_complementary_course_to_Flowchart', 'FlowchartAJAX@a
 
 Route::post('/flowchart/edit-internship', 'FlowchartAJAX@edit_internship');
 
+Route::post('/flowchart/edit-custom', 'FlowchartAJAX@edit_custom');
+
 Route::post('/flowchart/getErrors', 'FlowchartAJAX@get_errors');
