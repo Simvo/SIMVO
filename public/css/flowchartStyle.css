@@ -2,7 +2,26 @@
   padding: 5px;
   min-height: 50px !important;
   width: 100% !important;
-  overflow-x: scroll;
+}
+
+.my-modal {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 500px;
+  height: 400px;
+  margin-left: -250px;
+  margin-top: -200px;
+}
+
+.my-modal .modal-title {
+  line-height: 1.5em;
+}
+
+.my-modal .modal-text {
+  font-size: 15px;
+  font-weight: normal;
+  line-height: 1.5em;
 }
 
 .vsb_error {
@@ -75,10 +94,6 @@
     -webkit-transform: scale(0.9);
     transform: scale(0.9);
   }
-}
-
-#progress_table {
-  overflow-x: scroll;
 }
 
 .progress_cell {
