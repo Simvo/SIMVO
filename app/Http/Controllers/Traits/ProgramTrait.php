@@ -11,6 +11,8 @@ use App\StreamStructure;
 use App\Schedule;
 use DB;
 use Auth;
+use App\Custom;
+use App\Internship;
 
 trait ProgramTrait
 {
