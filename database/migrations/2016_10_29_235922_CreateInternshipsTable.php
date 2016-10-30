@@ -13,8 +13,15 @@ class CreateInternshipsTable extends Migration
     public function up()
     {
         Schema::create('internships', function (Blueprint $table) {
-            $table->increments('id');
-            $table->timestamps();
+          $table->increments('id');
+          $table->integer('user_id');
+          $table->integer('degree_id');
+          $table->string('position');
+          $table->string('company');
+          $table->string('semester');
+          $table->integer('duration');
+          $table->integer('width');
+          $table->timestamps();
         });
     }
 
