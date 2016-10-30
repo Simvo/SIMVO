@@ -180,9 +180,147 @@
         <div id="comp_courses" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
 
           <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
+            <div class="mdl-tabs__tab-bar">
+              @foreach($groupsWithCourses as $tabtitle => $Courses)
+                @if(!is_null($Courses))
+                  @if($tabtitle == 'Complementary')
+                    <a href="#{{$tabtitle}}_tab_panel" id="{{$tabtitle}}_tab" class="mdl-tabs__tab is-active">{{$tabtitle}}</a>
+                  @else
+                    <a href="#{{$tabtitle}}_tab_panel" id="{{$tabtitle}}_tab" class="mdl-tabs__tab">{{$tabtitle}}</a>
+                  @endif
+                @endif
+              @endforeach
+                <a href="#Custom_tab" class="mdl-tabs__tab">Custom</a>
+                <a href="#Internship_tab" class="mdl-tabs__tab">Internship</a>
 
+            </div>
+
+            @foreach($groupsWithCourses as $tabtitle => $Courses)
+            @if($tabtitle == 'Complementary')
+              <div class="mdl-tabs__panel is-active" id="{{$tabtitle}}_tab_panel">
+            @else
+              <div class="mdl-tabs__panel" id="{{$tabtitle}}_tab_panel">
+            @endif
+
+              @if(!is_null($Courses))
+                <button type="button" class="mdl-button mdl-js-button mdl-button--raised add_button add_comp_course_button">Add</button>
+                @foreach ($Courses as $key=>$value)
+                  @if( count($value) != 0)
+                    <h4 id="{{$tabtitle}}_table_header_{{$key}}" style="text-align:center">{{$key}}  ({{$progress[$key][1]}} credits)</h4>
+                    <table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp {{$tabtitle}}_table" id="{{$tabtitle}}_table_{{$key}}">
+                      <thead>
+                        <tr>
+                          <th class="mdl-data-table__cell--non-numeric">Course Number</th>
+                          <th class="mdl-data-table__cell--non-numeric">Course Name</th>
+                          <th>Credits</th>
+                        </tr>
+                      </thead>
+
+                      <tbody class="{{$tabtitle}}_table_body tech_comp_table">
+                      @foreach ($value as $course)
+                      <tr id="{{ $course[0] }}{{ $course[1] }}">
+                        <td class="mdl-data-table__cell--non-numeric course_number">{{$course[0]}} {{ $course[1] }}</td>
+                        <td class="mdl-data-table__cell--non-numeric class_name">{{ $course[4] }}</td>
+                        <td>{{ $course[2] }}</td>
+                      </tr>
+                      @endforeach
+                      </tbody>
+                    </table>
+                    @endif
+                  @endforeach
+                @endif
+
+
+                <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+            </div>
+
+            @endforeach
 
               <div class="mdl-tabs__panel" id="Custom_tab">
+                <div class="mdl-grid">
+                  <div class="mdl-cell mdl-cell--2-col">
+                  </div>
+                  <div class="mdl-cell mdl-cell--8-col">
+                    <h4 id="make-degree_title">Enter your Custom Course information here</h4>
+                    <div>
+                    <ul class="list-style-none">
+                    </ul>
+                    <table>
+
+                      <tr>
+                        <td>
+                          Title
+                        </td>
+                        <td>
+                          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <input class="mdl-textfield__input" type="text" id="custom_title">
+                            <label class="mdl-textfield__label" for="custom_title">Title</label>
+                          </div>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td>
+                          Description &nbsp &nbsp
+                        </td>
+                        <td>
+                          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <input class="mdl-textfield__input" type="text" id="custom_description">
+                            <label class="mdl-textfield__label" for="custom_description">(Optional description)</label>
+                          </div>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td>
+                          Focus &nbsp &nbsp
+                        </td>
+                        <td>
+                          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label program_input">
+                            <select class="reg_dropdown form-control" name="Focus" id="custom_focus">
+                              @if($degreeLoaded)
+                              @foreach($progress as $key => $value)
+                                <option value="custom_focus_{{$key}}">{{$key}}</option>
+                              @endforeach
+                              @endif
+                              <option value="Miscellaneous"> Miscellaneous </option>
+                            </select>
+                          </div>
+                        </td>
+                      </tr>
+
+
+
+                      <tr>
+                        <td>
+                          Credits
+                        </td>
+                        <td>
+                          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label program_input">
+                            <select class="reg_dropdown form-control" name="Semesters" id="custom_credit_select">
+                              <option value="1">1</option>
+                              <option value="2">2</option>
+                              <option value="3">3</option>
+                              <option value="4">4</option>
+                              <option value="5">5</option>
+                              <option value="6">6</option>
+                            </select>
+                          </div>
+                        </td>
+                      </tr>
+
+
+
+
+
+
+                    </table>
+                    <button type="button" class="mdl-button mdl-js-button mdl-button--raised add_button add_custom_course_button">Add Custom Course</button>
+                  </div>
+                  </div>
+                  <div class="mdl-cell mdl-cell--2-col">
+                  </div>
+                </div>
               </div>
               <div class="mdl-tabs__panel" id="Internship_tab">
                 <div class="mdl-grid">
@@ -243,7 +381,7 @@
 
 
                     </table>
-                    <button type="button" class="mdl-button mdl-js-button mdl-button--raised add_internship_button">Add Internship</button>
+                    <button type="button" class="mdl-button mdl-js-button mdl-button--raised add_button add_internship_button">Add Internship</button>
                   </div>
                   </div>
                   <div class="mdl-cell mdl-cell--2-col">
@@ -251,6 +389,7 @@
                 </div>
               </div>
           </div>
+        </div>
         </div>
 
 
