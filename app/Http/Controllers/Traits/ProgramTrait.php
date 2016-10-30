@@ -45,6 +45,15 @@ trait ProgramTrait
           $creditsTaken += $this->getCourseCredits($course[0], $course[1]);
       }
 
+      $checkCustom = Custom::where('degree_id', $degree->id)
+                ->where('focus', $key)
+                ->get();
+
+      foreach($checkCustom as $course)
+      {
+        $creditsTaken += (int) $course->credits;
+      }
+
       $progress[$key] = [$creditsTaken,$value];
     }
     return $progress;
