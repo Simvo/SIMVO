@@ -12,6 +12,25 @@
   });
 </script>
 
+<div class="mdl-grid">
+  <div class="mdl-cell mdl-cell--12-col">
+    <button class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent' id="show-dialog" type="button">Reset Degree</button>
+      <dialog class="mdl-dialog my-modal">
+        <h4 class="mdl-dialog__title modal-title">Reseting Your Degree Will Delete All of Your Courses!</h4>
+        <div class="mdl-dialog__content">
+          <p class="modal-text">
+            Are you sure you want to continue? (This is not in any way connected to minerva, any changes here will not be relfected by minerva)
+            By doing this, you can change your program and entering semester.
+          </p>
+        </div>
+        <div class="mdl-dialog__actions">
+          <a type="button" class="mdl-button" href="{{ route('resetDegree') }}">Agree</a>
+          <button type="button" class="mdl-button close">Cancel</button>
+        </div>
+      </dialog>
+    </div>
+  </div>
+
 <div class="mdl-grid" style="padding-bottom: 0px">
   <div class="mdl-cell mdl-cell--12-col" style="overflow-x: scroll">
     <div class="mdl-card mdl-shadow--2dp progress_div">
@@ -327,6 +346,7 @@
     </div>
   </div>
 </div>
+
 <script>
   $(document).ready(function(){$('#make_degree').foundation('reveal', 'open')});
 </script>
