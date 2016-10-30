@@ -273,7 +273,7 @@ public function delete_course_from_schedule(Request $request)
   $new_semeterCredits = $this->getSemesterCredits($semester, $degree);
   $progress = $this->generateProgressBar($degree);
 
-  return json_encode([$courseID, $new_semeterCredits, $progress, $semester, $errors_to_delete]);
+  return json_encode([$courseID, $new_semeterCredits, $progress, $semester, $errors_to_delete, $type]);
 }
 
 
@@ -294,6 +294,13 @@ public function delete_course_from_schedule(Request $request)
                        ->first(['COURSE_CREDITS'])
                        ->COURSE_CREDITS;
       $sum += $courseCredits;
+    }
+    $customs = Custom::where('degree_id', $degree->id)
+               ->where('semester', $semester)
+               ->get(['credits']);
+    foreach($customs as $course)
+    {
+      $sum += $course->credits;
     }
 
     return $sum;

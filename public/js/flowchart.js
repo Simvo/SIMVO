@@ -416,7 +416,7 @@ function initAddCompCourseButton()
                 }
 
 
-                $("#" + response[4] + response[0]).remove();
+                $("#" + response[5] + response[0]).remove();
 
                 $("."+semester).find( '.credit_counter_num' ).text( 'CREDITS: ' + response[1]);
 
