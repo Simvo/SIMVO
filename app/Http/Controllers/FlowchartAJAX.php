@@ -200,47 +200,65 @@ public function delete_course_from_schedule(Request $request)
     return;
   }
 
-  $courseID = $request->id;
-
-  $course = Schedule::find($courseID);
-
-  $errors_to_delete = $this->empty_errors($course);
-
-  $semester = $course->first()->semester;
-
-  $likeString = $course->SUBJECT_CODE . ' ' . $course->COURSE_NUMBER;
-  $likeString = '%'.strtolower($likeString) .'%';
-
-  Schedule::find($courseID)->delete();
-
-  $degree = Session::get('degree');
-
-  // check pre requisites of every course in front that depends on the deleted course
-
-  $prereqs = course::where('prerequisites', 'like', $likeString)->get();
-
-  foreach($prereqs as $prereq)
+  if(substr($request->id,0,1) == "i")
   {
-    if($semester === "Exemption")
-    {
-      $course = Schedule::where('degree_id', $degree->id)
-                       ->where('SUBJECT_CODE', $prereq->SUBJECT_CODE)
-                       ->where('COURSE_NUMBER', $prereq->COURSE_NUMBER)
-                       ->where('semester', '<>', 'Exemption')
-                       ->get();
-    }
-    else
-    {
-      $course = Schedule::where('degree_id', $degree->id)
-                       ->where('SUBJECT_CODE', $prereq->SUBJECT_CODE)
-                       ->where('COURSE_NUMBER', $prereq->COURSE_NUMBER)
-                       ->where('semester', '>', $semester)
-                       ->get();
-    }
+    $courseID = substr($request->id,3);
+    $course = Internship::find($courseID);
+    $type = 'int';
+  }
+  else if(substr($request->id,0,1) == "c")
+  {
+    $courseID = substr($request->id, 4);
+    $course = Custom::find($courseID);
+    $type = 'cust';
+  }
+  else
+  {
+    $courseID = $request->id;
+    $course = Schedule::find($courseID);
+    $type = '';
+  }
 
-    if(count($course) > 0)
+  if($type = '')
+  {
+    $errors_to_delete = $this->empty_errors($course);
+
+    $semester = $course->first()->semester;
+
+    $likeString = $course->SUBJECT_CODE . ' ' . $course->COURSE_NUMBER;
+    $likeString = '%'.strtolower($likeString) .'%';
+
+    $coures->delete();
+
+    $degree = Session::get('degree');
+
+    // check pre requisites of every course in front that depends on the deleted course
+
+    $prereqs = course::where('prerequisites', 'like', $likeString)->get();
+
+    foreach($prereqs as $prereq)
     {
-      $this->checkPrerequisites($course[0]);
+      if($semester === "Exemption")
+      {
+        $course = Schedule::where('degree_id', $degree->id)
+                         ->where('SUBJECT_CODE', $prereq->SUBJECT_CODE)
+                         ->where('COURSE_NUMBER', $prereq->COURSE_NUMBER)
+                         ->where('semester', '<>', 'Exemption')
+                         ->get();
+      }
+      else
+      {
+        $course = Schedule::where('degree_id', $degree->id)
+                         ->where('SUBJECT_CODE', $prereq->SUBJECT_CODE)
+                         ->where('COURSE_NUMBER', $prereq->COURSE_NUMBER)
+                         ->where('semester', '>', $semester)
+                         ->get();
+      }
+
+      if(count($course) > 0)
+      {
+        $this->checkPrerequisites($course[0]);
+      }
     }
   }
 
