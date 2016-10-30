@@ -43,7 +43,7 @@ Route::post('password/reset', ['as'=>'passwordResetPost','uses'=>'Auth\PasswordC
 
 Route::post('/flowchart/new-user-create-degree', ['as'=>'newUserCreateDegree', 'uses'=>'FlowchartController@newUserCreateDegree']);
 
-Route::post('/flowchart/user-create-internship', ['as'=>'userCreateInternship', 'uses'=>'FlowchartAJAX@userCreateInternship']);
+Route::post('/flowchart/user-create-course', ['as'=>'userCreateCourse', 'uses'=>'FlowchartAJAX@userCreateCourse']);
 
 /* AJAX */
 
