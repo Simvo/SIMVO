@@ -10,6 +10,7 @@ use DB;
 use App\Schedule;
 use App\FlowchartError;
 use App\Degree;
+use App\Minor;
 
 trait NewObjectsTrait
 {
@@ -61,5 +62,10 @@ trait NewObjectsTrait
     //  var_dump(Error::where('message', $message)->get());
 
     return $error->id;
+  }
+
+  public function create_minor($degree_id, $program_id, $minor_name, $minor_credits, $version_id)
+  {
+
   }
 }
