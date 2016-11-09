@@ -109,6 +109,28 @@ trait ProgramTrait
   }
 
   /**
+  * Function that returns All Minors  In a certain Faculty
+  * @param String: Faculty name
+  * @return String array of all minors with name and program_id
+  **/
+  public function getMinors()
+  {
+    $minors_PDO = DB::table('programs')
+                  ->where('FIELD_OF_STUDY', 'MINOR')
+                  ->groupBy('PROGRAM_MAJOR')
+                  ->get(['PROGRAM_MAJOR', 'PROGRAM_ID', 'PROGRAM_TEACHING_FACULTY', 'PROGRAM_TOTAL_CREDITS']);
+
+    $minors = [];
+
+    foreach($minors_PDO as $minor)
+    {
+      $minors[] = [$minor->PROGRAM_MAJOR,$minor->PROGRAM_ID, $minor->PROGRAM_TEACHING_FACULTY, $minor->PROGRAM_TOTAL_CREDITS];
+    }
+
+    return $minors;
+  }
+
+  /**
   * Function that returns All Groups In a certain Major
   * @param int: ProgramID
   * @return String array of all Group names

@@ -4,6 +4,19 @@
   width: 100% !important;
 }
 
+.label-wrapper {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+#minor-title {
+  text-align: center;
+}
+
+.minors-table {
+  margin: auto;
+}
+
 .my-modal {
   position: absolute;
   left: 50%;

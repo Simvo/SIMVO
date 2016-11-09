@@ -13,7 +13,7 @@
 </script>
 
 <div class="mdl-grid">
-  <div class="mdl-cell mdl-cell--12-col">
+  <div class="mdl-cell mdl-cell--2-col">
     <button class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent' id="show-dialog" type="button">Reset Degree</button>
       <dialog class="mdl-dialog my-modal">
         <h4 class="mdl-dialog__title modal-title">Reseting Your Degree Will Delete All of Your Courses!</h4>
@@ -28,6 +28,47 @@
           <button type="button" class="mdl-button close">Cancel</button>
         </div>
       </dialog>
+    </div>
+    <div class="mdl-cell mdl-cell--2-col">
+      <a href="#" data-reveal-id="show-add-minors" class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent'>
+        Add Minor
+      </a>
+      <div id="show-add-minors" class="reveal-modal" data-reveal aria-labelledby="show-add-minors" aria-hidden="true" role="dialog">
+        <h3 id="minor-title">Available Minors</h3>
+        {!! Form::open(['route' => 'addMinor','style'=>'width:100%']) !!}
+        {!! Form::submit('Add Minor', ['class'=> 'mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent add-minor-submit']) !!}
+        <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp minors-table">
+          <thead>
+            <tr>
+              <th>Select</th>
+              <th>Minor</th>
+              <th>Faculty</th>
+              <th>Credits</th>
+            </tr>
+          </thead>
+          @foreach($minors as $minor)
+            <tr class="mdl-cell mdl-cell--2-col">
+              <td>
+                <div class = "label-wrapper">
+                  <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="{{$minor[1]}}" style="padding-bottom: 1pc">
+                    <input type="radio" id="{{$minor[1]}}" class="mdl-radio__button" name="minor_chosen" value="{{$minor[1]}}">
+                  </label>
+                </div>
+              </td>
+              <td>
+                {{$minor[0]}}
+              </td>
+              <td>
+                {{$minor[2]}}
+              </td>
+              <td>
+                {{$minor[3]}}
+              </td>
+            </tr>
+          @endforeach
+        </table>
+        {!! Form::close() !!}
+      </div>
     </div>
   </div>
 
@@ -245,11 +286,6 @@
                         </td>
                       </tr>
 
-
-
-
-
-
                     </table>
                     <button type="button" class="mdl-button mdl-js-button mdl-button--raised add_internship_button">Add Internship</button>
                   </div>
@@ -260,10 +296,6 @@
               </div>
           </div>
         </div>
-
-
-
-
 
       </div>
     </div>

@@ -47,6 +47,9 @@ Route::post('/flowchart/new-user-create-degree', ['as'=>'newUserCreateDegree', '
 
 Route::post('/flowchart/user-create-internship', ['as'=>'userCreateInternship', 'uses'=>'FlowchartAJAX@userCreateInternship']);
 
+Route::post('/flowchart/add-minor', ['as'=>'addMinor', 'uses'=>'FlowchartController@addMinor']);
+
+
 /* AJAX */
 
 Route::post('/auth/registration/get-majors', 'DegreeController@getMajorsInFaculty');

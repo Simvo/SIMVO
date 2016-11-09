@@ -69,12 +69,15 @@ class FlowchartController extends Controller
 
         $flowchart = $this->generateDegree($degree);
 
+        $minors = $this->getMinors();
+
         return view('flowchart', [
           'user'=>$user,
           'degree'=>$degree,
           'newUser' => $new_user,
           'degreeLoaded' => true,
           'schedule'=> $flowchart['Schedule'],
+          'minors' => $minors,
           'progress' => $flowchart['Progress'],
           'groupsWithCourses' => $flowchart['Groups With Courses'],
           'course_errors' => $flowchart['Errors'],
@@ -306,5 +309,10 @@ class FlowchartController extends Controller
       }
     }
     return $errors;
+  }
+
+  public function addMinor()
+  {
+    return redirect('/flowchart');
   }
 }
