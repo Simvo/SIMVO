@@ -71,9 +71,9 @@
       </div>
     </div>
   </div>
-
+<!-- Progress Bar for Major -->
 <div class="mdl-grid" style="padding-bottom: 0px">
-  <div class="mdl-cell mdl-cell--12-col" style="overflow-x: scroll">
+  <div class="mdl-cell mdl-cell--12-col">
     <div class="mdl-card mdl-shadow--2dp progress_div">
       <table id="progress_table" style="margin: 0 auto; width:100% !important;">
         <thead>
@@ -98,6 +98,35 @@
     </div>
   </div>
 </div>
+
+<!-- Progress Bar for Minor -->
+<div class="mdl-grid" style="padding-bottom: 0px">
+  <div class="mdl-cell mdl-cell--12-col">
+    <div class="mdl-card mdl-shadow--2dp progress_div">
+      <table id="progress_table" style="margin: 0 auto; width:100% !important;">
+        <thead>
+          <tr>
+            @if($degreeLoaded)
+              @foreach ($progress_minor as $key=>$value)
+              <td class="progress_cell">{{$key}}</td>
+              @endforeach
+            @endif
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            @if($degreeLoaded)
+              @foreach ($progress_minor as $key=>$value)
+              <td class="progress_cell group_cell {{str_replace(" ", "", $key)}}" id="{{ $key }}">{{ $value[0] }}/{{$value[1]}}</td>
+              @endforeach
+            @endif
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
 
 <div class="mdl-grid">
   <div  class="mdl-cell mdl-cell--12-col">
