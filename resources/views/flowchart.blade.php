@@ -12,7 +12,37 @@
   });
 </script>
 
-<div class="mdl-grid">
+
+<!-- Progress Bar for Major -->
+<div class="mdl-grid" style="padding-bottom: 0px">
+  <div class="mdl-cell mdl-cell--12-col">
+    <div class="mdl-card mdl-shadow--2dp progress_div">
+      <table id="progress_table" style="margin: 0 auto; width:100% !important;">
+        <thead>
+          <tr>
+            @if($degreeLoaded)
+              @foreach ($progress as $key=>$value)
+              <td class="progress_cell">{{$key}}</td>
+              @endforeach
+            @endif
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            @if($degreeLoaded)
+              @foreach ($progress as $key=>$value)
+              <td class="progress_cell group_cell {{str_replace(" ", "", $key)}}" id="{{ $key }}">{{ $value[0] }}/{{$value[1]}}</td>
+              @endforeach
+            @endif
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Progress Bar for Minor Aloing with settings buttons-->
+<div class="mdl-grid" style="padding-bottom: 0px">
   <div class="mdl-cell mdl-cell--2-col">
     <button class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent' id="show-dialog" type="button">Reset Degree</button>
       <dialog class="mdl-dialog my-modal">
@@ -29,14 +59,24 @@
         </div>
       </dialog>
     </div>
+
     <div class="mdl-cell mdl-cell--2-col">
       <a href="#" data-reveal-id="show-add-minors" class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent'>
-        Add Minor
+        @if (count($progress_minor))
+          Change Minor
+        @else
+          Add Minor
+        @endif
       </a>
+
       <div id="show-add-minors" class="reveal-modal" data-reveal aria-labelledby="show-add-minors" aria-hidden="true" role="dialog">
         <h3 id="minor-title">Available Minors</h3>
         {!! Form::open(['route' => 'addMinor','style'=>'width:100%']) !!}
-        {!! Form::submit('Add Minor', ['class'=> 'mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent add-minor-submit']) !!}
+        @if (count($progress_minor))
+          {!! Form::submit('Change Minor', ['class'=> 'mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent add-minor-submit']) !!}
+        @else
+          {!! Form::submit('Add Minor', ['class'=> 'mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent add-minor-submit']) !!}
+        @endif
         <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp minors-table">
           <thead>
             <tr>
@@ -70,38 +110,15 @@
         {!! Form::close() !!}
       </div>
     </div>
-  </div>
-<!-- Progress Bar for Major -->
-<div class="mdl-grid" style="padding-bottom: 0px">
-  <div class="mdl-cell mdl-cell--12-col">
-    <div class="mdl-card mdl-shadow--2dp progress_div">
-      <table id="progress_table" style="margin: 0 auto; width:100% !important;">
-        <thead>
-          <tr>
-            @if($degreeLoaded)
-              @foreach ($progress as $key=>$value)
-              <td class="progress_cell">{{$key}}</td>
-              @endforeach
-            @endif
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            @if($degreeLoaded)
-              @foreach ($progress as $key=>$value)
-              <td class="progress_cell group_cell {{str_replace(" ", "", $key)}}" id="{{ $key }}">{{ $value[0] }}/{{$value[1]}}</td>
-              @endforeach
-            @endif
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
 
-<!-- Progress Bar for Minor -->
-<div class="mdl-grid" style="padding-bottom: 0px">
-  <div class="mdl-cell mdl-cell--12-col">
+  <div class="mdl-cell mdl-cell--2-col">
+    @if(count($progress_minor))
+      <a href="{{ route('removeMinor') }}" data-reveal-id="show-add-minors" class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent'>
+        Remove Minor
+      </a>
+    @endif
+  </div>
+  <div class="mdl-cell mdl-cell--6-col">
     <div class="mdl-card mdl-shadow--2dp progress_div">
       <table id="progress_table" style="margin: 0 auto; width:100% !important;">
         <thead>

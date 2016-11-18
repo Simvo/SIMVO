@@ -17,6 +17,7 @@ class FlowchartController extends Controller
   use Traits\StreamTrait;
   use Traits\ProgramTrait;
   use Traits\Tools;
+  use Traits\MinorTrait;
     /**
     * Function called upon GET request. Will determine if schedule needs to be generated or simply displayed
     * Consists of generating four main parts.
@@ -108,6 +109,9 @@ class FlowchartController extends Controller
                       ->where('semester', "<>", 'exemption')
                       ->count();
 
+    // Check and get Minor
+    $minor = Minor::where('degree_id', $degree->id)->get();
+
     $userSetupComplete = $this->checkUserSetupStatus($degree);
 
     //all courses in the users program.
@@ -144,7 +148,14 @@ class FlowchartController extends Controller
     }
 
     $progress = $this->generateProgressBar($degree);
-    $progress_minor = $this->generateProgressBar($degree);
+    if(count($minor)>0)
+    {
+      $progress_minor = $this->generateProgressBarMinor($minor[0]);
+    }
+    else
+    {
+      $progress_minor = [];
+    }
     $startingSemester = $this->get_semester($startingSemester);
     $errors = $this->getErrors($user);
 
@@ -320,12 +331,24 @@ class FlowchartController extends Controller
     $degree = Session::get('degree');
     $program_id = $request->minor_chosen;
 
+    $check = Minor::where('degree_id', $degree->id)->get();
     $minor = DB::table('programs')->where('PROGRAM_ID', $program_id)->first();
     $minor_name = $minor->PROGRAM_MAJOR;
     $minor_credits = $minor->PROGRAM_TOTAL_CREDITS;
     $version_id = $minor->VERSION;
 
-    $this->create_minor($degree->id, $program_id, $minor_name, $minor_credits, $version_id);
+    if(count($check) > 0) // Change minor
+    {
+      $check[0]->program_id = $program_id;
+      $check[0]->minor_name = $minor_name;
+      $check[0]->minor_credits = $minor_credits;
+      $check[0]->save();
+    }
+    else // create new minor
+    {
+      $version_id = $minor->VERSION;$this->create_minor($degree->id, $program_id, $minor_name, $minor_credits, $version_id);
+    }
+
     return redirect('/flowchart');
   }
 }
