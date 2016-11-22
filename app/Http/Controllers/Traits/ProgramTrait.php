@@ -11,6 +11,7 @@ use App\StreamStructure;
 use App\Schedule;
 use DB;
 use Auth;
+use Session;
 
 trait ProgramTrait
 {
@@ -409,6 +410,7 @@ trait ProgramTrait
                ->where('COURSE_NUMBER', $course_num)
                ->First(['COURSE_CREDITS'])->COURSE_CREDITS;
   }
+
   /**
   *Returns total remaining credits
   *@param None
@@ -416,8 +418,7 @@ trait ProgramTrait
   **/
   public function getRemainingCredits($degree)
   {
-    // $todayY = date("Y");
-    // $todayM = date("m");
+    $progress = [];
     $progress = $this->generateProgressBar($degree);
 
     $creditsTakenSum = 0;
@@ -425,6 +426,21 @@ trait ProgramTrait
     {
       $creditsTakenSum = $creditsTakenSum + $creditsTaken[0];
     }
+    return $creditsTakenSum;
+  }
+  public function getMajorStatus()
+  {
+    if(!Auth::Check())
+      return;
+    else
+      $user = Auth::User();
+
+    $degree = Session::get('degree');
+    if($degree == null)
+    {
+      return;
+    }
+    $creditsTakenSum = $this->getRemainingCredits($degree);
     return $creditsTakenSum;
   }
 }

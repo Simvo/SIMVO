@@ -1,17 +1,16 @@
 .progress_div {
-  padding: 5px;
+  padding: 4px;
   min-height: 50px !important;
   width: 100% !important;
 }
 
 .mdl-card__supporting-text {
-  width: 96.6% !important;
+  width: 100% !important;
 }
 
 .adjustable-border {
   position: absolute;
-  top: 10%;
-  bottom: 10%;
+  top: 5%;
 }
 
 .vsb_error {

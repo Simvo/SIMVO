@@ -3,18 +3,18 @@ $secondary-color: #4051b5;
 $background: rgba(236, 240, 241,1.0);
 
 .progress_div {
-  padding: 5px;
+  padding: 4px;
   min-height: 50px !important;
   width: 100% !important;
 }
 .mdl-card__supporting-text{
-  width:96.6% !important;
+  width:100% !important;
 }
 
 .adjustable-border{
-  position: absolute;;
-  top: 10%;
-  bottom: 10%;
+  position: absolute;
+  top: 5%;
+  //bottom: 0.41582%;
 }
 .vsb_error {
   color: orange;

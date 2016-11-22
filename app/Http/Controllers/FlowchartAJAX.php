@@ -274,4 +274,16 @@ public function delete_course_from_schedule(Request $request)
     }
     return json_encode([$available, $error_id]);
   }
+
+  public function getMajorStatus_ajax()
+  {
+    $degree = Session::get('degree');
+    if($degree == null)
+    {
+      return;
+    }
+
+
+    return json_encode([$this->getMajorStatus(), $degree->program_credits]);
+  }
 }

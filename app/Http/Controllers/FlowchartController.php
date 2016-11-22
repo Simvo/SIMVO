@@ -73,12 +73,13 @@ class FlowchartController extends Controller
         $total_credits = DB::table('programs')->where('PROGRAM_ID',$degree->program_id)
         ->first(['PROGRAM_TOTAL_CREDITS']);
 
-        $this->getRemainingCredits($degree);
+        $credits_taken = $this->getMajorStatus();
 
         return view('flowchart', [
           'total_credits'=>$total_credits->PROGRAM_TOTAL_CREDITS,
           'user'=>$user,
           'degree'=>$degree,
+          'remainingCredits' => $credits_taken,
           'newUser' => $new_user,
           'degreeLoaded' => true,
           'schedule'=> $flowchart['Schedule'],

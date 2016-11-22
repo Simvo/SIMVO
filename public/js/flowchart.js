@@ -1,5 +1,6 @@
 $(document).ready(function()
 {
+  editStatusBar();
   renderSortable();
   initAddCompCourseButton();
   initAddInternshipButton();
@@ -312,6 +313,10 @@ function initAddCompCourseButton()
         success: function(data) {
           var response = JSON.parse(data);
           console.log(response);
+
+          // update status bars
+          editStatusBar();
+
           if (response === 'Error')
           {
             //error handler
@@ -402,6 +407,9 @@ function initAddCompCourseButton()
               // remove any errors associated with deleted course
               removeErrors(response[4]);
               getErrors();
+
+              // update status bars
+              editStatusBar();
 
               if (response === 'Error')
               {
@@ -823,8 +831,5 @@ function initAddCompCourseButton()
         componentHandler.upgradeDom();
 
       });
-
-
-
 
     }

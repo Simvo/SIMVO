@@ -11,31 +11,18 @@ mixpanel.people.set({
   "$user": user_email
 });
 </script>
-
 <div class="mdl-grid" style="padding-bottom: 0px">
   <div class="mdl-cell mdl-cell--12-col">
     <div class="mdl-card mdl-shadow--2dp progress_div">
-        <div class="mdl-card__supporting-text">
-          <b>{{$degree->program_name}}</b>
-          @if($degreeLoaded)
-          <b>0/{{$degree->program_credits}}</b>
-          @endif
-        </div>
-        <div class="adjustable-border">
-          <div id="progressBar" style="width:967px" class="mdl-progress mdl-js-progress"></div>
-          <script>
-          document.querySelector('#progressBar').addEventListener('mdl-componentupgraded', function() {
-            this.MaterialProgress.setProgress(44);
-          });
-          </script>
-        </div>
-    </div>
-  </div>
-</div>
-
-<div class="mdl-grid" style="padding-bottom: 0px">
-  <div class="mdl-cell mdl-cell--12-col">
-    <div class="mdl-card mdl-shadow--2dp progress_div">
+      <div class="mdl-card__supporting-text">
+        <b>{{$degree->program_name}}</b>
+        @if($degreeLoaded)
+        <b><span id="major-status">{{$remainingCredits}}</span>/{{$degree->program_credits}}</b>
+        @endif
+      </div>
+      <div class="adjustable-border">
+        <div id="progressBar" style="width:1238px" class="mdl-progress mdl-js-progress"></div>
+      </div>
       <table id="progress_table" style="margin: 0 auto; width:100% !important;">
         <thead>
           <tr>
