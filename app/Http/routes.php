@@ -15,7 +15,7 @@
 
 
 Route::get('/', function () {
-    return redirect('/login');
+    return redirect('/flowchart');
 });
 
 Route::get('/login', ['as'=>'loginView', 'uses'=>'RegistrationController@loginView']);
@@ -29,6 +29,8 @@ Route::get('/flowchart', ['as'=>'flowchart', 'middleware' => 'auth', 'uses'=>'Fl
 Route::get('password/email', ['as'=>'passwordEmailGet','uses'=>'Auth\PasswordController@getEmail']);
 
 Route::get('password/reset/{token}', ['as'=>'passwordResetPost','uses'=>'Auth\PasswordController@getReset']);
+
+Route::get('flowchart/reset-degree', ['as' => 'resetDegree', 'uses' => 'DegreeController@deleteDegree']);
 
 
 /* POST */
