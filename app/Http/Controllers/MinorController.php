@@ -61,6 +61,15 @@ class MinorController extends Controller
   **/
   public function removeMinor()
   {
-    
+    $degree = Session::get('degree');
+    if($degree == null)
+    {
+      return;
+    }
+
+    $minor = Minor::where("degree_id", $degree->id)->first();
+    $minor->delete();
+
+    return redirect('/flowchart');
   }
 }

@@ -39,6 +39,7 @@ class FlowchartController extends Controller
 
       $degree = null;
       $degrees = $this->getDegrees($user);
+      $minors = $this->getMinors();
 
       $new_user = false;
 
@@ -54,9 +55,11 @@ class FlowchartController extends Controller
         return view('flowchart', [
           'user'=>$user,
           'newUser' => $new_user,
+          'minors' => $minors,
           'degreeLoaded' => false,
           'schedule'=> [],
           'progress' => [],
+          'progress_minor' => null,
           'groupsWithCourses' => [],
           'exemptions' => [],
           'startingSemester' => "",
@@ -70,8 +73,6 @@ class FlowchartController extends Controller
         Session::put('degree', $degree);
 
         $flowchart = $this->generateDegree($degree);
-
-        $minors = $this->getMinors();
 
         return view('flowchart', [
           'user'=>$user,
@@ -154,7 +155,7 @@ class FlowchartController extends Controller
     }
     else
     {
-      $progress_minor = [];
+      $progress_minor = null;
     }
     $startingSemester = $this->get_semester($startingSemester);
     $errors = $this->getErrors($user);

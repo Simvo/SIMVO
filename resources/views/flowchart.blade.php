@@ -72,7 +72,7 @@
       <div id="show-add-minors" class="reveal-modal" data-reveal aria-labelledby="show-add-minors" aria-hidden="true" role="dialog">
         <h3 id="minor-title">Available Minors</h3>
         {!! Form::open(['route' => 'addMinor','style'=>'width:100%']) !!}
-        @if (count($progress_minor))
+        @if ($progress_minor != null)
           {!! Form::submit('Change Minor', ['class'=> 'mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent add-minor-submit']) !!}
         @else
           {!! Form::submit('Add Minor', ['class'=> 'mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent add-minor-submit']) !!}
@@ -112,12 +112,13 @@
     </div>
 
   <div class="mdl-cell mdl-cell--2-col">
-    @if(count($progress_minor))
-      <a href="{{ route('removeMinor') }}" data-reveal-id="show-add-minors" class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent'>
+    @if($progress_minor)
+      <a href="{{ route('removeMinor') }}" class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent'>
         Remove Minor
       </a>
     @endif
   </div>
+  @if($progress_minor)
   <div class="mdl-cell mdl-cell--6-col">
     <div class="mdl-card mdl-shadow--2dp progress_div">
       <table id="progress_table" style="margin: 0 auto; width:100% !important;">
@@ -142,7 +143,9 @@
       </table>
     </div>
   </div>
+  @endif
 </div>
+
 
 
 <div class="mdl-grid">

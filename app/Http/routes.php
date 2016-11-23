@@ -32,7 +32,7 @@ Route::get('password/reset/{token}', ['as'=>'passwordResetPost','uses'=>'Auth\Pa
 
 Route::get('flowchart/reset-degree', ['as' => 'resetDegree', 'uses' => 'DegreeController@deleteDegree']);
 
-Route::get('/flowchart/remove-minor', ['as'=> 'removeMinor', 'uses'=> 'FlowchartController@removeMinor']);
+Route::get('/flowchart/remove-minor', ['as'=> 'removeMinor', 'uses'=> 'MinorController@removeMinor']);
 
 
 /* POST */
