@@ -206,7 +206,6 @@
                 <button type="button" class="mdl-button mdl-js-button mdl-button--raised add_button add_comp_course_button">Add</button>
                 @foreach ($Courses as $key=>$value)
                   @if( count($value) != 0)
-                    <h4 id="{{$tabtitle}}_table_header_{{$key}}" style="text-align:center">{{$key}}  ({{$progress[$key][1]}} credits)</h4>
                     <table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp {{$tabtitle}}_table" id="{{$tabtitle}}_table_{{$key}}">
                       <thead>
                         <tr>
@@ -217,13 +216,7 @@
                       </thead>
 
                       <tbody class="{{$tabtitle}}_table_body tech_comp_table">
-                      @foreach ($value as $course)
-                      <tr id="{{ $course[0] }}{{ $course[1] }}">
-                        <td class="mdl-data-table__cell--non-numeric course_number">{{$course[0]}} {{ $course[1] }}</td>
-                        <td class="mdl-data-table__cell--non-numeric class_name">{{ $course[4] }}</td>
-                        <td>{{ $course[2] }}</td>
-                      </tr>
-                      @endforeach
+                      
                       </tbody>
                     </table>
                     @endif
