@@ -11,6 +11,7 @@ use Session;
 use App\Schedule;
 use App\FlowchartError;
 use App\course;
+use App\Minor;
 
 
 class FlowchartAJAX extends Controller
@@ -20,6 +21,7 @@ class FlowchartAJAX extends Controller
   use Traits\Tools;
   use Traits\CurlTrait;
   use Traits\ErrorsTrait;
+  use Traits\MinorTrait;
 
   public function move_course(Request $request)
   {
@@ -54,10 +56,24 @@ class FlowchartAJAX extends Controller
     $semester = $request->semester;
     $parts = explode(" ", $courseName);
 
+    $minor = Minor::where('degree_id', $degree->id)->first();
+    if($minor)
+    {
+      $minor_id = $minor->program_id;
+    }
+
     $course = DB::table('programs')->where('PROGRAM_ID',$degree->program_id)
               ->where('SUBJECT_CODE', $parts[0])
               ->where('COURSE_NUMBER', $parts[1])
               ->first(['SUBJECT_CODE', 'COURSE_NUMBER', 'SET_TYPE', 'COURSE_CREDITS', 'SET_TITLE_ENGLISH']);
+    // check if course belongs in minor if above is null
+    if(is_null($course) && $minor)
+    {
+      $course = DB::table('programs')->where('PROGRAM_ID', $minor_id)
+                ->where('SUBJECT_CODE', $parts[0])
+                ->where('COURSE_NUMBER', $parts[1])
+                ->first(['SUBJECT_CODE', 'COURSE_NUMBER', 'SET_TYPE', 'COURSE_CREDITS', 'SET_TITLE_ENGLISH']);
+    }
 
     if($course->SET_TITLE_ENGLISH == 'Required Year 0 (Freshman) Courses')
     {
@@ -113,17 +129,35 @@ class FlowchartAJAX extends Controller
     else
       $user = Auth::User();
 
+    $minor_present = false;
     $degree = Session::get('degree');
+    $minor = Minor::where("degree_id", $degree->id)->first();
 
 
     $groups = $this->getGroupsWithCourses($degree, true);
+    $minor_groups = [[], [], []];
+    if($minor)
+    {
+      $minor_groups = $this->getMinorGroupsWithCourses($minor, true);
+      $minor_present = true;
+    }
 
-    $returnGroups['Required'] = $groups[0];
-    $returnGroups['Complementary'] = $groups[1];
-    $returnGroups['Elective'] = $groups[2];
+    $returnGroups = [];
+
+    $returnGroups['Required'] = array_merge($groups[0],  $minor_groups[0]);
+    $returnGroups['Complementary'] = array_merge($groups[1],  $minor_groups[1]);
+    $returnGroups['Elective'] = array_merge($groups[2],  $minor_groups[2]);
+    // Next groups are for minors
+    if($minor)
+    {
+      $minorGroups['Required'] = $minor_groups[0];
+      $minorGroups['Complementary'] = $minor_groups[1];
+      $minorGroups['Elective'] = $minor_groups[2];
+    }
+
     $groupCredits = $this->getGroupsWithCredits($degree);
 
-    return json_encode([$returnGroups, $groupCredits]);
+    return json_encode([$returnGroups, $groupCredits, $minorGroups]);
   }
 
   public function edit_internship(Request $request)

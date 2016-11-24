@@ -20,6 +20,33 @@ class MinorController extends Controller
   use Traits\Tools;
   use Traits\MinorTrait;
 
+  public function getMinorGroupsWithCourses($minor, $filter)
+  {
+    $groups = [];
+    $i;
+    $courseCount;
+    $complementaries = $this->getMinorComplementaryGroups($minor);
+    $groups[0] = $this->getMinorRequiredGroups($minor);
+    $groups[1] = $complementaries[0]; //complementaries
+    $groups[2] = $complementaries[1]; //electives
+
+    for($i = 0; $i < 3; $i++)
+    {
+      $courseCount = 0;
+      foreach($groups[$i] as $key=>$value)
+      {
+        $groups[$i][$key] = $this->getMinorCoursesInGroup($minor, $key, $filter);
+        $courseCount += count($groups[$i][$key]);
+      }
+      if($courseCount == 0)
+      {
+        $groups[$i] = null;
+      }
+    }
+
+    return $groups;
+  }
+
   /**
   * Function thats adds a minor to a degree or changes one if one is already present
   * @param: program id of minor

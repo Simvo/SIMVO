@@ -453,6 +453,7 @@ function initAddCompCourseButton()
 
         success: function(data) {
           var response = JSON.parse(data);
+          console.log(response);
           var refreshedCourses = response[0];
           if (response === 'Error')
           {

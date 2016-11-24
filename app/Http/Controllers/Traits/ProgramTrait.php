@@ -308,7 +308,7 @@ trait ProgramTrait
       }
       if($courseCount == 0)
       {
-        $groups[$i] = null;
+        $groups[$i] = [];
       }
     }
 
