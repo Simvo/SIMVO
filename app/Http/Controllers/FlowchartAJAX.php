@@ -32,17 +32,36 @@ class FlowchartAJAX extends Controller
 
     $degree = Session::get('degree');
 
-    $semester=$request->semester;
-    $sched_id=$request->id;
-    $target=Schedule::find($sched_id);
+    $semester = $request->semester;
+    $full_course_id = $request->id;
+
+
+    if(substr($request->id,0,1) == "c")
+    {
+      $courseID = substr($request->id, 4);
+      $target = Custom::find($courseID);
+    }
+    else
+    {
+      $courseID = $request->id;
+      $target = Schedule::find($courseID);
+    }
+
     $old_semester = $target->semester;
     $target->semester=$semester;
     $target->save();
 
     $old_semeterCredits = $this->getSemesterCredits($old_semester, $degree);
-    $new_semeterCredits = $this->getSemesterCredits($semester, $degree);
+     $new_semeterCredits = $this->getSemesterCredits($semester, $degree);
 
-    $errors_to_delete = $this->manageFlowchartErrors($target);
+     if(!substr($request->id,0,1) == "c")
+     {
+      $errors_to_delete = $this->manageFlowchartErrors($target);
+     }
+     else{
+       $errors_to_delete = [];
+     }
+
 
     return json_encode([$new_semeterCredits, $old_semeterCredits, $errors_to_delete]);
   }

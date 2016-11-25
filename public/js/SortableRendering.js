@@ -22,6 +22,7 @@ function renderSortable()
       var new_semester = get_semester( event.target.attributes.id.nodeValue );
       var vsbActiveSemesters = get_VSB_active_semesters();
       var id = ui.item.context.id;
+      console.log(id);
       var classes = ui.item.context.className;
       var courseType = classes.split(" ")[1].split("_")[0];
 
@@ -102,7 +103,7 @@ function renderSortable()
           url: '/flowchart/move-course',
           data: {
             semester: new_semester,
-            id: id
+            id: id,
           },
           success: function( data ) {
             var response = JSON.parse( data );
