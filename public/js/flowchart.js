@@ -379,15 +379,6 @@ function initAddCompCourseButton()
         {
           var courseID = $(this).attr("id").substring(7, $(this).attr("id").length);
 
-          if($(".Internship_holder_" + courseID).length)
-          {
-            var internshipDelete = $(".Internship_holder_" + courseID);
-            //Case where internship has holder semesters
-            for(var i = 0; i < internshipDelete.length; i++ )
-            {
-              $("#remove_" + $(internshipDelete[i]).attr("id")).trigger("click");
-            }
-          }
           //delete from database
           $.ajax({
             type: "delete",
@@ -949,9 +940,6 @@ function initEditCustomCourse(target){
     var description = $.trim($("#custom_course_description_cust" + id).text());
     var credits = parseInt($("#custom_course_credits_cust" + id).html());
     var focus = $.trim($("#custom_course_focus_cust" + id).html());
-
-    console.log("your title is " + title + "   and desc is " + description);
-    console.log("credits: " + credits + "  focus: " + focus);
 
 
     $.ajax({

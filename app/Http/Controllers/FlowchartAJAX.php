@@ -226,6 +226,7 @@ public function delete_course_from_schedule(Request $request)
     return;
   }
 
+
   if(substr($request->id,0,1) == "i")
   {
     $courseID = substr($request->id,3);
@@ -245,7 +246,7 @@ public function delete_course_from_schedule(Request $request)
     $type = '';
   }
 
-  if($type = '')
+  if($type == '')
   {
     $errors_to_delete = $this->empty_errors($course);
 
@@ -288,12 +289,15 @@ public function delete_course_from_schedule(Request $request)
     }
   }
   else{
+    $errors_to_delete = [];
+
     $semester = $course->semester;
 
     $degree = Session::get('degree');
 
     $course->delete();
   }
+
 
 
   $new_semeterCredits = $this->getSemesterCredits($semester, $degree);
