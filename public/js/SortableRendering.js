@@ -16,7 +16,7 @@ function renderSortable()
       connectWith: ".validPosition",
       items: "div.custom_card:not(.pinned)",
       placeholder: 'object_ouline hvr-pulse',
-      cancel: '.credit_counter, .error_course_message',
+      cancel: '.credit_counter, .error_course_message, .pinned',
       receive: function( event, ui ) {
 
       var new_semester = get_semester( event.target.attributes.id.nodeValue );
