@@ -231,16 +231,18 @@
   margin: auto;
 }
 
-.add_comp_course_button {
+.add_button{
   margin: auto;
   display: block;
   margin-top: 20px;
 }
 
-.add_internship_button {
-  margin: auto;
-  display: block;
-  margin-top: 20px;
+
+.Course_add_error{
+    margin-top: 30px;
+    text-align: center;
+    color: red;
+    font-weight: bold;
 }
 
 .Elective_table {
