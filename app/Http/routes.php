@@ -30,6 +30,8 @@ Route::get('password/email', ['as'=>'passwordEmailGet','uses'=>'Auth\PasswordCon
 
 Route::get('password/reset/{token}', ['as'=>'passwordResetPost','uses'=>'Auth\PasswordController@getReset']);
 
+Route::get('flowchart/reset-degree', ['as' => 'resetDegree', 'uses' => 'DegreeController@deleteDegree']);
+
 
 /* POST */
 
