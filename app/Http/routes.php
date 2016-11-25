@@ -59,6 +59,8 @@ Route::post('/flowchart/move-course', 'FlowchartAJAX@move_course');
 
 Route::post('/flowchart/add-course-to-Schedule', 'FlowchartAJAX@add_course_to_Schedule');
 
+Route::get('/flowchart/get-elective-groups', 'FlowchartAJAX@getElectiveGroups');
+
 Route::delete('/flowchart/delete_course_from_schedule', 'FlowchartAJAX@delete_course_from_schedule');
 
 Route::get('/flowchart/refresh-complementary-courses', 'FlowchartAJAX@refresh_complementary_courses');
