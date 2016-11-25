@@ -119,6 +119,31 @@ class FlowchartAJAX extends Controller
 
   }
 
+  public function getElectiveGroups()
+  {
+    if(!Auth::Check())
+      return;
+
+    $degree = Session::get("degree");
+
+    $groups_PDO = DB::table('Programs')
+                  ->where('PROGRAM_ID', $degree->program_id)
+                  ->groupBy('SET_TITLE_ENGLISH')
+                  ->get(['SET_TITLE_ENGLISH', 'SET_BEGIN_TEXT_ENGLISH']);
+
+    $groups = [];
+
+    foreach($groups_PDO as $group)
+    {
+      if(trim($group->SET_TITLE_ENGLISH) != "")
+      {
+        $groups[$group->SET_TITLE_ENGLISH] = [];
+      }
+    }
+
+    return json_encode($groups);
+  }
+
   public function refresh_complementary_courses()
   {
 
@@ -152,6 +177,7 @@ class FlowchartAJAX extends Controller
 
   public function edit_custom( Request $request )
   {
+
     if(!Auth::Check())
       return;
 
