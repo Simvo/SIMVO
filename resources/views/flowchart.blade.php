@@ -5,7 +5,7 @@
   var user_id = "{{ $user->id }}";
   var user_email = "{{ $user->email }}";
 
-  mixpael.identify(user_id);
+  mixpanel.identify(user_id);
 
   mixpanel.people.set({
     "$user": user_email

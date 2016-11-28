@@ -91,8 +91,12 @@ class FlowchartAJAX extends Controller
 
     $new_semeterCredits = $this->getSemesterCredits($semester, $degree);
     $progress = $this->generateProgressBar($degree);
+    if($minor)
+      $minor_progress = $this->generateProgressBarMinor($minor);
+    else
+      $minor_progress = [];
 
-    return json_encode([$new_id,$new_semeterCredits, $progress, $course, $courseType, $errors_to_delete]);
+    return json_encode([$new_id,$new_semeterCredits, $progress, $course, $courseType, $errors_to_delete, $minor_progress]);
   }
 
   public function userCreateInternship(Request $request)
@@ -143,6 +147,7 @@ class FlowchartAJAX extends Controller
     }
 
     $returnGroups = [];
+    $minorGroups = [];
 
     $returnGroups['Required'] = array_merge($groups[0],  $minor_groups[0]);
     $returnGroups['Complementary'] = array_merge($groups[1],  $minor_groups[1]);
@@ -204,6 +209,12 @@ public function delete_course_from_schedule(Request $request)
     return;
   }
 
+  $minor = Minor::where('degree_id', $degree->id)->first();
+  if($minor)
+  {
+    $minor_id = $minor->program_id;
+  }
+
   $courseID = $request->id;
 
   $course = Schedule::find($courseID);
@@ -251,8 +262,12 @@ public function delete_course_from_schedule(Request $request)
 
   $new_semeterCredits = $this->getSemesterCredits($semester, $degree);
   $progress = $this->generateProgressBar($degree);
+  if($minor)
+    $minor_progress = $this->generateProgressBarMinor($minor);
+  else
+    $minor_progress = [];
 
-  return json_encode([$courseID, $new_semeterCredits, $progress, $semester, $errors_to_delete]);
+  return json_encode([$courseID, $new_semeterCredits, $progress, $semester, $errors_to_delete, $minor_progress]);
 }
 
 

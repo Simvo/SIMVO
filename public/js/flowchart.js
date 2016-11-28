@@ -345,6 +345,16 @@ function initAddCompCourseButton()
                     var target = $( "td[id='" + group + "']" ).text("" + groupProgress[0] + "/" + groupProgress[1]);
                 }
             }
+
+            for (var group in response[6])
+            {
+                if (response[6].hasOwnProperty(group))
+                {
+                    var groupProgress = response[6][group];
+                    var target = $( "td[id='" + group + "']" ).text("" + groupProgress[0] + "/" + groupProgress[1]);
+                }
+            }
+
             initRemoveCourseListener("#remove_"+ response[0]);
             refreshComplementaryCourses();
             refreshDeleteSemester();
@@ -431,17 +441,22 @@ function initAddCompCourseButton()
                         var target = $( "td[id='" + group + "']" ).text("" + groupProgress[0] + "/" + groupProgress[1]);
                     }
                 }
+
+                for (var group in response[5])
+                {
+                    if (response[5].hasOwnProperty(group))
+                    {
+                        var groupProgress = response[5][group];
+                        var target = $( "td[id='" + group + "']" ).text("" + groupProgress[0] + "/" + groupProgress[1]);
+                    }
+                }
+
                 refreshDeleteSemester();
                 refreshComplementaryCourses();
               }
             }
           });
-
-
-
-
         }
-
       });
     }
 
