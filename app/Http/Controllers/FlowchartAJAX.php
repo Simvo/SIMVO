@@ -218,6 +218,12 @@ class FlowchartAJAX extends Controller
     }
 
     $groupCredits = $this->getGroupsWithCredits($degree);
+    if($minor)
+    {
+      $minor_credits = $this->getGroupsWithCreditsMinor($minor);
+      $groupCredits = array_merge($groupCredits, $minor_credits);
+    }
+
 
     return json_encode([$returnGroups, $groupCredits, $minorGroups]);
   }
@@ -319,7 +325,7 @@ public function delete_course_from_schedule(Request $request)
     $likeString = $course->SUBJECT_CODE . ' ' . $course->COURSE_NUMBER;
     $likeString = '%'.strtolower($likeString) .'%';
 
-    $coures->delete();
+    $course->delete();
 
     $degree = Session::get('degree');
 
