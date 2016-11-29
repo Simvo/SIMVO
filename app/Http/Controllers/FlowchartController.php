@@ -7,6 +7,7 @@ use App\Schedule;
 use App\UICourse;
 use App\Degree;
 use App\FlowchartError;
+use App\Minor;
 use DB;
 use App\Http\Requests;
 use App\Internship;
@@ -18,6 +19,7 @@ class FlowchartController extends Controller
   use Traits\StreamTrait;
   use Traits\ProgramTrait;
   use Traits\Tools;
+  use Traits\MinorTrait;
     /**
     * Function called upon GET request. Will determine if schedule needs to be generated or simply displayed
     * Consists of generating four main parts.
@@ -39,6 +41,7 @@ class FlowchartController extends Controller
 
       $degree = null;
       $degrees = $this->getDegrees($user);
+      $minors = $this->getMinors();
 
       $new_user = false;
 
@@ -54,9 +57,11 @@ class FlowchartController extends Controller
         return view('flowchart', [
           'user'=>$user,
           'newUser' => $new_user,
+          'minors' => $minors,
           'degreeLoaded' => false,
           'schedule'=> [],
           'progress' => [],
+          'progress_minor' => null,
           'groupsWithCourses' => [],
           'exemptions' => [],
           'startingSemester' => "",
@@ -77,7 +82,9 @@ class FlowchartController extends Controller
           'newUser' => $new_user,
           'degreeLoaded' => true,
           'schedule'=> $flowchart['Schedule'],
+          'minors' => $minors,
           'progress' => $flowchart['Progress'],
+          'progress_minor' => $flowchart['Progress Minor'],
           'groupsWithCourses' => $flowchart['Groups With Courses'],
           'course_errors' => $flowchart['Errors'],
           'exemptions' => $flowchart['Exemptions'],
@@ -104,6 +111,9 @@ class FlowchartController extends Controller
     $schedule_check = Schedule::where('degree_id', $degree->id)
                       ->where('semester', "<>", 'exemption')
                       ->count();
+
+    // Check and get Minor
+    $minor = Minor::where('degree_id', $degree->id)->get();
 
     $userSetupComplete = $this->checkUserSetupStatus($degree);
 
@@ -141,6 +151,14 @@ class FlowchartController extends Controller
     }
 
     $progress = $this->generateProgressBar($degree);
+    if(count($minor)>0)
+    {
+      $progress_minor = $this->generateProgressBarMinor($minor[0]);
+    }
+    else
+    {
+      $progress_minor = null;
+    }
     $startingSemester = $this->get_semester($startingSemester);
     $errors = $this->getErrors($user);
 
@@ -148,6 +166,7 @@ class FlowchartController extends Controller
     return [
       'Schedule'=> $schedule,
       'Progress' => $progress,
+      'Progress Minor' => $progress_minor,
       'Exemptions' => $exemptions,
       'Groups With Courses' => $groupsWithCourses,
       'Starting Semester' => $startingSemester,
@@ -348,4 +367,30 @@ class FlowchartController extends Controller
     }
     return $errors;
   }
+
+  // public function addMinor(Request $request)
+  // {
+  //   $degree = Session::get('degree');
+  //   $program_id = $request->minor_chosen;
+  //
+  //   $check = Minor::where('degree_id', $degree->id)->get();
+  //   $minor = DB::table('programs')->where('PROGRAM_ID', $program_id)->first();
+  //   $minor_name = $minor->PROGRAM_MAJOR;
+  //   $minor_credits = $minor->PROGRAM_TOTAL_CREDITS;
+  //   $version_id = $minor->VERSION;
+  //
+  //   if(count($check) > 0) // Change minor
+  //   {
+  //     $check[0]->program_id = $program_id;
+  //     $check[0]->minor_name = $minor_name;
+  //     $check[0]->minor_credits = $minor_credits;
+  //     $check[0]->save();
+  //   }
+  //   else // create new minor
+  //   {
+  //     $version_id = $minor->VERSION;$this->create_minor($degree->id, $program_id, $minor_name, $minor_credits, $version_id);
+  //   }
+  //
+  //   return redirect('/flowchart');
+  // }
 }

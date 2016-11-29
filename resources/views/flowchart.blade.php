@@ -5,34 +5,17 @@
   var user_id = "{{ $user->id }}";
   var user_email = "{{ $user->email }}";
 
-  mixpael.identify(user_id);
+  mixpanel.identify(user_id);
 
   mixpanel.people.set({
     "$user": user_email
   });
 </script>
 
-<div class="mdl-grid">
-  <div class="mdl-cell mdl-cell--12-col">
-    <button class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent' id="show-dialog" type="button">Reset Degree</button>
-      <dialog class="mdl-dialog my-modal">
-        <h4 class="mdl-dialog__title modal-title">Reseting Your Degree Will Delete All of Your Courses!</h4>
-        <div class="mdl-dialog__content">
-          <p class="modal-text">
-            Are you sure you want to continue? (This is not in any way connected to minerva, any changes here will not be relfected by minerva)
-            By doing this, you can change your program and entering semester.
-          </p>
-        </div>
-        <div class="mdl-dialog__actions">
-          <a type="button" class="mdl-button" href="{{ route('resetDegree') }}">Agree</a>
-          <button type="button" class="mdl-button close">Cancel</button>
-        </div>
-      </dialog>
-    </div>
-  </div>
 
+<!-- Progress Bar for Major -->
 <div class="mdl-grid" style="padding-bottom: 0px">
-  <div class="mdl-cell mdl-cell--12-col" style="overflow-x: scroll">
+  <div class="mdl-cell mdl-cell--12-col">
     <div class="mdl-card mdl-shadow--2dp progress_div">
       <table id="progress_table" style="margin: 0 auto; width:100% !important;">
         <thead>
@@ -57,6 +40,113 @@
     </div>
   </div>
 </div>
+
+<!-- Progress Bar for Minor Aloing with settings buttons-->
+<div class="mdl-grid" style="padding-bottom: 0px">
+  <div class="mdl-cell mdl-cell--2-col">
+    <button class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent' id="show-dialog" type="button">Reset Degree</button>
+      <dialog class="mdl-dialog my-modal">
+        <h4 class="mdl-dialog__title modal-title">Reseting Your Degree Will Delete All of Your Courses!</h4>
+        <div class="mdl-dialog__content">
+          <p class="modal-text">
+            Are you sure you want to continue? (This is not in any way connected to minerva, any changes here will not be relfected by minerva)
+            By doing this, you can change your program and entering semester.
+          </p>
+        </div>
+        <div class="mdl-dialog__actions">
+          <a type="button" class="mdl-button" href="{{ route('resetDegree') }}">Agree</a>
+          <button type="button" class="mdl-button close">Cancel</button>
+        </div>
+      </dialog>
+    </div>
+
+    <div class="mdl-cell mdl-cell--2-col">
+      <a href="#" data-reveal-id="show-add-minors" class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent'>
+        @if (count($progress_minor))
+          Change Minor
+        @else
+          Add Minor
+        @endif
+      </a>
+
+      <div id="show-add-minors" class="reveal-modal" data-reveal aria-labelledby="show-add-minors" aria-hidden="true" role="dialog">
+        <h3 id="minor-title">Available Minors</h3>
+        {!! Form::open(['route' => 'addMinor','style'=>'width:100%']) !!}
+        @if ($progress_minor != null)
+          {!! Form::submit('Change Minor', ['class'=> 'mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent add-minor-submit']) !!}
+        @else
+          {!! Form::submit('Add Minor', ['class'=> 'mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent add-minor-submit']) !!}
+        @endif
+        <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp minors-table">
+          <thead>
+            <tr>
+              <th>Select</th>
+              <th>Minor</th>
+              <th>Faculty</th>
+              <th>Credits</th>
+            </tr>
+          </thead>
+          @foreach($minors as $minor)
+            <tr class="mdl-cell mdl-cell--2-col">
+              <td>
+                <div class = "label-wrapper">
+                  <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="{{$minor[1]}}" style="padding-bottom: 1pc">
+                    <input type="radio" id="{{$minor[1]}}" class="mdl-radio__button" name="minor_chosen" value="{{$minor[1]}}">
+                  </label>
+                </div>
+              </td>
+              <td>
+                {{$minor[0]}}
+              </td>
+              <td>
+                {{$minor[2]}}
+              </td>
+              <td>
+                {{$minor[3]}}
+              </td>
+            </tr>
+          @endforeach
+        </table>
+        {!! Form::close() !!}
+      </div>
+    </div>
+
+  <div class="mdl-cell mdl-cell--2-col">
+    @if($progress_minor)
+      <a href="{{ route('removeMinor') }}" class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent'>
+        Remove Minor
+      </a>
+    @endif
+  </div>
+  @if($progress_minor)
+  <div class="mdl-cell mdl-cell--6-col">
+    <div class="mdl-card mdl-shadow--2dp progress_div">
+      <table id="progress_table" style="margin: 0 auto; width:100% !important;">
+        <thead>
+          <tr>
+            @if($degreeLoaded)
+              @foreach ($progress_minor as $key=>$value)
+              <td class="progress_cell">{{$key}}</td>
+              @endforeach
+            @endif
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            @if($degreeLoaded)
+              @foreach ($progress_minor as $key=>$value)
+              <td class="progress_cell group_cell {{str_replace(" ", "", $key)}}" id="{{ $key }}">{{ $value[0] }}/{{$value[1]}}</td>
+              @endforeach
+            @endif
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  @endif
+</div>
+
+
 
 <div class="mdl-grid">
   <div  class="mdl-cell mdl-cell--12-col">
@@ -387,11 +477,6 @@
                         </td>
                       </tr>
 
-
-
-
-
-
                     </table>
                     <button type="button" class="mdl-button mdl-js-button mdl-button--raised add_button add_internship_button">Add Internship</button>
                   </div>
@@ -403,10 +488,6 @@
           </div>
         </div>
         </div>
-
-
-
-
 
       </div>
     </div>

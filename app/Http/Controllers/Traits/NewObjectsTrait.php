@@ -12,6 +12,7 @@ use App\FlowchartError;
 use App\Degree;
 use App\Internship;
 use App\Custom;
+use App\Minor;
 
 trait NewObjectsTrait
 {
@@ -88,12 +89,22 @@ trait NewObjectsTrait
     $error->save();
 
     $sql = "INSERT into `flowchart_errors` (`user_id`, `schedule_id`, `message`, `dependencies`, `type`)
-     VALUES (". $user_id .", ". $sched_id . ", '". $message ."', '". json_encode($dependencies) ."', '". $type ."')";
+    VALUES (". $user_id .", ". $sched_id . ", '". $message ."', '". json_encode($dependencies) ."', '". $type ."')";
 
      DB::raw($sql);
-    //
-    //  var_dump(Error::where('message', $message)->get());
+     return $error->id;
+  }
 
-    return $error->id;
+  public function create_minor($degree_id, $program_id, $minor_name, $minor_credits, $version_id)
+  {
+    $minor = new Minor();
+    $minor->degree_id = $degree_id;
+    $minor->program_id = $program_id;
+    $minor->minor_name = $minor_name;
+    $minor->minor_credits = $minor_credits;
+    $minor->version_id = $version_id;
+    $minor->save();
+
+    return $minor;
   }
 }

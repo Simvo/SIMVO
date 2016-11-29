@@ -32,6 +32,8 @@ Route::get('password/reset/{token}', ['as'=>'passwordResetPost','uses'=>'Auth\Pa
 
 Route::get('flowchart/reset-degree', ['as' => 'resetDegree', 'uses' => 'DegreeController@deleteDegree']);
 
+Route::get('/flowchart/remove-minor', ['as'=> 'removeMinor', 'uses'=> 'MinorController@removeMinor']);
+
 
 /* POST */
 
@@ -46,6 +48,9 @@ Route::post('password/reset', ['as'=>'passwordResetPost','uses'=>'Auth\PasswordC
 Route::post('/flowchart/new-user-create-degree', ['as'=>'newUserCreateDegree', 'uses'=>'FlowchartController@newUserCreateDegree']);
 
 Route::post('/flowchart/user-create-course', ['as'=>'userCreateCourse', 'uses'=>'FlowchartAJAX@userCreateCourse']);
+
+Route::post('/flowchart/add-minor', ['as'=>'addMinor', 'uses'=>'MinorController@addMinor']);
+
 
 /* AJAX */
 
