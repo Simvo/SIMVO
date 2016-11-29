@@ -9,6 +9,8 @@ use App\Degree;
 use App\FlowchartError;
 use DB;
 use App\Http\Requests;
+use App\Internship;
+use App\Custom;
 
 class FlowchartController extends Controller
 {
@@ -225,51 +227,90 @@ class FlowchartController extends Controller
     return [$exemptions,$sum];
   }
 
-  public function generateSchedule($degree)
+  public function generateSchedule($user)
   {
     $the_schedule = [];
-
     //Always have their starting semester available -- therefore if they accidentally remove all classes from it and refresh, it will remain.
-    $the_schedule[$this->get_semester($degree->enteringSemester)] = [0,[],$degree->enteringSemester];
+    $the_schedule[$this->get_semester($user->enteringSemester)] = [0,[],$user->enteringSemester];
+    $user_schedule=Schedule::where('user_id', $user->id)
+    ->where('semester' ,"<>", 'Exemption')
+    ->groupBy('semester')
+    ->get();
+    $user_schedule2 = Internship::where('user_id', $user->id)
+    ->groupBy('semester')
+    ->get();
+    $user_schedule3 = Custom::where('user_id', $user->id)
+    ->where('semester' ,"<>", 'Exemption')
+    ->groupBy('semester')
+    ->get();
 
-    $user_schedule=Schedule::where('degree_id', $degree->id)
-                   ->whereNotIn('semester', ['complementary_course', 'elective_course'])
-                   ->where('semester' ,"<>", 'Exemption')
-                   ->groupBy('semester')
-                   ->get();
+    $user_schedule_final = [];
+    foreach($user_schedule as $semester)
+    {
+      $user_schedule_final[] = $semester->semester;
+    }
+    foreach($user_schedule2 as $semester)
+    {
+      $sem = $semester->semester;
+      for($i = 0; $i < $semester->duration; $i++){
+        $user_schedule_final[] = $sem;
+        $sem = $this->get_next_semester($sem);
+      }
 
-    $sorted=$user_schedule->sortBy('semester');
-    foreach($sorted as $semester)
+    }
+    foreach($user_schedule3 as $semester)
+    {
+      $user_schedule_final[] = $semester->semester;
+    }
+
+    $user_schedule_final = array_unique($user_schedule_final);
+    sort($user_schedule_final);
+
+
+
+    foreach($user_schedule_final as $semester)
     {
       $new_semester=[];
       $class_array=[];
       $tot_credits=0;
-
       $classes=DB::table('schedules')
-               ->where('degree_id', $degree->id)
-               ->where('semester', $semester->semester)
-               ->get(['schedules.id', 'schedules.status','schedules.SUBJECT_CODE', 'schedules.COURSE_NUMBER']);
+      ->where('user_id', $user->id)
+      ->where('semester', $semester)
+      ->get(['schedules.id', 'schedules.status','schedules.SUBJECT_CODE', 'schedules.COURSE_NUMBER']);
+      $customs=DB::table('customs')
+      ->where('user_id', $user->id)
+      ->where('semester', $semester)
+      ->get(['customs.id', 'customs.title', 'customs.description', 'customs.focus', 'customs.credits']);
+      $internships=DB::table('internships')
+      ->where('user_id', $user->id)
+      ->where('semester', $semester)
+      ->get(['internships.id', 'internships.company', 'internships.position', 'internships.duration', 'internships.width']);
 
       foreach($classes as $class)
       {
-        if(explode(" " , $class->status)[0] != "Internship" && explode(" " , $class->status)[0] != "Internship_holder"  )
-        {
           $credits = DB::table('programs')->where('SUBJECT_CODE', $class->SUBJECT_CODE)
                      ->where('COURSE_NUMBER', $class->COURSE_NUMBER)
                      ->first(['COURSE_CREDITS'])->COURSE_CREDITS;
-        }
-        else
-        {
-          $credits = 0;
-        }
+          $class_array[] = [$class->id, $class->SUBJECT_CODE, $class->COURSE_NUMBER, $credits, $class->status];
+          $tot_credits+=$credits;
 
-        $class_array[] = [$class->id, $class->SUBJECT_CODE, $class->COURSE_NUMBER, $credits, $class->status];
+      }
+      foreach($customs as $custom)
+      {
+        $credits = (int) $custom->credits;
+        $class_array[] = [$custom->id, $custom->title, $custom->description, $credits, 'Custom', $custom->focus];
         $tot_credits+=$credits;
       }
-      $the_schedule[$this->get_semester($semester->semester)]=[$tot_credits,$class_array, $semester->semester];
+      foreach($internships as $internship)
+      {
+        $class_array[] = [$internship->id, $internship->company, $internship->position, $internship->duration,'Internship', $internship->width];
+      }
+
+      $the_schedule[$this->get_semester($semester)]=[$tot_credits,$class_array, $semester];
     }
     return $the_schedule;
   }
+
 
   public function checkUserSetupStatus($degree)
   {

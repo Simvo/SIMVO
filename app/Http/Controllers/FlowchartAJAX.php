@@ -11,6 +11,8 @@ use Session;
 use App\Schedule;
 use App\FlowchartError;
 use App\course;
+use App\Internship;
+use App\Custom;
 
 
 class FlowchartAJAX extends Controller
@@ -30,17 +32,36 @@ class FlowchartAJAX extends Controller
 
     $degree = Session::get('degree');
 
-    $semester=$request->semester;
-    $sched_id=$request->id;
-    $target=Schedule::find($sched_id);
+    $semester = $request->semester;
+    $full_course_id = $request->id;
+
+
+    if(substr($request->id,0,1) == "c")
+    {
+      $courseID = substr($request->id, 4);
+      $target = Custom::find($courseID);
+    }
+    else
+    {
+      $courseID = $request->id;
+      $target = Schedule::find($courseID);
+    }
+
     $old_semester = $target->semester;
     $target->semester=$semester;
     $target->save();
 
     $old_semeterCredits = $this->getSemesterCredits($old_semester, $degree);
-    $new_semeterCredits = $this->getSemesterCredits($semester, $degree);
+     $new_semeterCredits = $this->getSemesterCredits($semester, $degree);
 
-    $errors_to_delete = $this->manageFlowchartErrors($target);
+     if(!substr($request->id,0,1) == "c")
+     {
+      $errors_to_delete = $this->manageFlowchartErrors($target);
+     }
+     else{
+       $errors_to_delete = [];
+     }
+
 
     return json_encode([$new_semeterCredits, $old_semeterCredits, $errors_to_delete]);
   }
@@ -79,30 +100,67 @@ class FlowchartAJAX extends Controller
     return json_encode([$new_id,$new_semeterCredits, $progress, $course, $courseType, $errors_to_delete]);
   }
 
-  public function userCreateInternship(Request $request)
+  public function userCreateCourse(Request $request)
   {
     if(!Auth::Check())
       return;
 
-    $courseTypeWidthAndLength = $request->courseTypeWidthAndLength;
-    $company = $request->company;
-    $position = $request->position;
-    $semester = array($request->semester);
     $degree = Session::get('degree');
-    $internshipData = explode(" ", $courseTypeWidthAndLength);
-    $courseType = $internshipData[0];
-    $length = $internshipData[2];
-    $new_id = array($this->create_schedule($degree, $request->semester, $company, $position, $courseTypeWidthAndLength));
-    $semesterShift = $request->semester;
+    $courseType = $request->details;
 
-    for($i = 1; $i < $length; $i++)
+    if($courseType == "Internship")
     {
-        $semesterShift = $this->get_next_semester($semesterShift);
-        array_push($semester, $semesterShift);
-        array_push($new_id, $this->create_schedule($degree, $semesterShift, $company, $position, 'Internship_holder '.$new_id[0]));
+
+      $width = $request->width;
+      $duration = $request->duration;
+      $company = $request->company;
+      $position = $request->position;
+      $semester = $request->semester;
+      $new_id = $this->create_internship($degree, $request->semester, $company, $position, $duration, $width);
+
+      return json_encode([$new_id , 'Internship', $request->company, $request->position, $semester]);
+
+    }
+    else if($courseType == "Custom")
+    {
+      $title = $request->title;
+      $description = $request->description;
+      $focus = $request->focus;
+      $semester = $request->semester;
+      $credits = $request->credits;
+      $new_id = $this->create_custom_course($degree, $semester, $title, $description, $focus, $credits);
+
+      $new_semeterCredits = $this->getSemesterCredits($semester, $degree);
+      $progress = $this->generateProgressBar($degree);
+
+      return json_encode([$new_id, $courseType, $title, $credits, $semester, $new_semeterCredits, $progress, $focus, $description ]);
     }
 
-    return json_encode([ $new_id , $courseType, $company, $position, $semester]);
+  }
+
+  public function getElectiveGroups()
+  {
+    if(!Auth::Check())
+      return;
+
+    $degree = Session::get("degree");
+
+    $groups_PDO = DB::table('Programs')
+                  ->where('PROGRAM_ID', $degree->program_id)
+                  ->groupBy('SET_TITLE_ENGLISH')
+                  ->get(['SET_TITLE_ENGLISH', 'SET_BEGIN_TEXT_ENGLISH']);
+
+    $groups = [];
+
+    foreach($groups_PDO as $group)
+    {
+      if(trim($group->SET_TITLE_ENGLISH) != "")
+      {
+        $groups[$group->SET_TITLE_ENGLISH] = [];
+      }
+    }
+
+    return json_encode($groups);
   }
 
   public function refresh_complementary_courses()
@@ -131,9 +189,26 @@ class FlowchartAJAX extends Controller
     if(!Auth::Check())
       return;
 
-    $course = DB::table('schedules')->where('id', $request->id);
-    $course->update(['SUBJECT_CODE' => $request->companyName, 'COURSE_NUMBER' => $request->positionHeld]);
+    $course = DB::table('Internships')->where('id', $request->id);
+    $course->update(['company' => $request->companyName, 'position' => $request->positionHeld]);
     return json_encode($course);
+  }
+
+  public function edit_custom( Request $request )
+  {
+
+    if(!Auth::Check())
+      return;
+
+    $degree = Session::get('degree');
+
+    $course = DB::table('customs')->where('id', $request->id);
+    $course->update(['title' => $request->title, 'focus' => $request->group, 'credits' => $request->credits, 'description' => $request->description]);
+
+    $semester = $course->first()->semester;
+    $new_semeterCredits = $this->getSemesterCredits($semester, $degree);
+    $progress = $this->generateProgressBar($degree);
+    return json_encode([$new_semeterCredits, $progress, $semester]);
   }
 
 public function add_complementary_course_to_Flowchart(Request $request)
@@ -170,55 +245,84 @@ public function delete_course_from_schedule(Request $request)
     return;
   }
 
-  $courseID = $request->id;
 
-  $course = Schedule::find($courseID);
-
-  $errors_to_delete = $this->empty_errors($course);
-
-  $semester = $course->first()->semester;
-
-  $likeString = $course->SUBJECT_CODE . ' ' . $course->COURSE_NUMBER;
-  $likeString = '%'.strtolower($likeString) .'%';
-
-  Schedule::find($courseID)->delete();
-
-  $degree = Session::get('degree');
-
-  // check pre requisites of every course in front that depends on the deleted course
-
-  $prereqs = course::where('prerequisites', 'like', $likeString)->get();
-
-  foreach($prereqs as $prereq)
+  if(substr($request->id,0,1) == "i")
   {
-    if($semester === "Exemption")
-    {
-      $course = Schedule::where('degree_id', $degree->id)
-                       ->where('SUBJECT_CODE', $prereq->SUBJECT_CODE)
-                       ->where('COURSE_NUMBER', $prereq->COURSE_NUMBER)
-                       ->where('semester', '<>', 'Exemption')
-                       ->get();
-    }
-    else
-    {
-      $course = Schedule::where('degree_id', $degree->id)
-                       ->where('SUBJECT_CODE', $prereq->SUBJECT_CODE)
-                       ->where('COURSE_NUMBER', $prereq->COURSE_NUMBER)
-                       ->where('semester', '>', $semester)
-                       ->get();
-    }
+    $courseID = substr($request->id,3);
+    $course = Internship::find($courseID);
+    $type = 'int';
+  }
+  else if(substr($request->id,0,1) == "c")
+  {
+    $courseID = substr($request->id, 4);
+    $course = Custom::find($courseID);
+    $type = 'cust';
+  }
+  else
+  {
+    $courseID = $request->id;
+    $course = Schedule::find($courseID);
+    $type = '';
+  }
 
-    if(count($course) > 0)
+  if($type == '')
+  {
+    $errors_to_delete = $this->empty_errors($course);
+
+    $semester = $course->first()->semester;
+
+    $likeString = $course->SUBJECT_CODE . ' ' . $course->COURSE_NUMBER;
+    $likeString = '%'.strtolower($likeString) .'%';
+
+    $coures->delete();
+
+    $degree = Session::get('degree');
+
+    // check pre requisites of every course in front that depends on the deleted course
+
+    $prereqs = course::where('prerequisites', 'like', $likeString)->get();
+
+    foreach($prereqs as $prereq)
     {
-      $this->checkPrerequisites($course[0]);
+      if($semester === "Exemption")
+      {
+        $course = Schedule::where('degree_id', $degree->id)
+                         ->where('SUBJECT_CODE', $prereq->SUBJECT_CODE)
+                         ->where('COURSE_NUMBER', $prereq->COURSE_NUMBER)
+                         ->where('semester', '<>', 'Exemption')
+                         ->get();
+      }
+      else
+      {
+        $course = Schedule::where('degree_id', $degree->id)
+                         ->where('SUBJECT_CODE', $prereq->SUBJECT_CODE)
+                         ->where('COURSE_NUMBER', $prereq->COURSE_NUMBER)
+                         ->where('semester', '>', $semester)
+                         ->get();
+      }
+
+      if(count($course) > 0)
+      {
+        $this->checkPrerequisites($course[0]);
+      }
     }
   }
+  else{
+    $errors_to_delete = [];
+
+    $semester = $course->semester;
+
+    $degree = Session::get('degree');
+
+    $course->delete();
+  }
+
 
 
   $new_semeterCredits = $this->getSemesterCredits($semester, $degree);
   $progress = $this->generateProgressBar($degree);
 
-  return json_encode([$courseID, $new_semeterCredits, $progress, $semester, $errors_to_delete]);
+  return json_encode([$courseID, $new_semeterCredits, $progress, $semester, $errors_to_delete, $type]);
 }
 
 
@@ -239,6 +343,13 @@ public function delete_course_from_schedule(Request $request)
                        ->first(['COURSE_CREDITS'])
                        ->COURSE_CREDITS;
       $sum += $courseCredits;
+    }
+    $customs = Custom::where('degree_id', $degree->id)
+               ->where('semester', $semester)
+               ->get(['credits']);
+    foreach($customs as $course)
+    {
+      $sum += $course->credits;
     }
 
     return $sum;

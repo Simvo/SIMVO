@@ -112,31 +112,42 @@
               <div class="validPosition sortable {{ str_replace(" ", "", $key) }}" id="{{ $key . " " . str_replace(" ", "", $key) }}" >
 
                 @foreach($classes[1] as $class)
-                  @if(explode(" ", $class[4])[0] == "Internship" )
-                    <div class="custom_card pinned {{ explode(" ", $class[4])[0] }}_course" id="{{ $class[0] }}" style="width:{{explode(" ", $class[4])[1]}}px">
+                  @if($class[4] == "Internship" )
+                    <div class="custom_card pinned {{ $class[4]}}_course" id="int{{ $class[0] }}" style="width:{{$class[5]}}px">
                       <div class="card_content">
-                        <div class="internship_company_name" id="internship_company_name_{{ $class[0] }}"> {{ $class[1] }} </div>
-                        <div class="internship_position_held" id="internship_position_held_{{ $class[0] }}"> {{ $class[2] }} </div>
-                        <button id="menu_for_{{ $class[0] }}" class="mdl-button mdl-js-button mdl-button--icon">
+                        <div class="internship_company_name" id="internship_company_name_int{{ $class[0] }}"> {{ $class[1] }} </div>
+                        <div class="internship_position_held" id="internship_position_held_int{{ $class[0] }}"> {{ $class[2] }} </div>
+                        <button id="menu_for_int{{ $class[0] }}" class="mdl-button mdl-js-button mdl-button--icon">
                           <i class="material-icons">arrow_drop_down</i>
                         </button>
 
-                        <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="menu_for_{{ $class[0] }}">
-                          <li class="mdl-menu__item edit-internship" id="edit_internship_{{ $class[0] }}">Edit</li>
-                          <li class="mdl-menu__item remove-course" id="remove_{{ $class[0] }}">Remove</li>
+                        <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="menu_for_int{{ $class[0] }}">
+                          <li class="mdl-menu__item edit-internship" id="edit_internship_int{{ $class[0] }}">Edit</li>
+                          <li class="mdl-menu__item remove-course" id="remove_int{{ $class[0] }}">Remove</li>
                         </ul>
                       </div>
                     </div>
-                  @elseif (explode(" ", $class[4])[0] == "Internship_holder")
-                  <div class="custom_card pinned {{ explode(" ", $class[4])[0] }}_{{ explode(" ", $class[4])[1] }}" id="{{ $class[0] }}" >
+                  @elseif ($class[4]== "Custom")
+                  <div class="custom_card {{ $class[4]}}_course" id="cust{{ $class[0] }}" >
                     <div class="card_content">
-                      <button id="menu_for_{{ $class[0] }}" class="mdl-button mdl-js-button mdl-button--icon">
+                      <div class="custom_course_title" id="custom_course_title_cust{{$class[0]}}">
+                        @if(strlen($class[1]) < 11)
+                          {{ $class[1] }}
+                        @else
+                          {{ substr($class[1], 0, 8)."..." }}
+                        @endif
+                      </div> &nbsp  &nbsp
+
+                      <button id="menu_for_cust{{ $class[0] }}" class="mdl-button mdl-js-button mdl-button--icon">
                         <i class="material-icons">arrow_drop_down</i>
                       </button>
+                      <div class="custom_course_credits" id="custom_course_credits_cust{{$class[0]}}"> {{ $class[3]}} </div>
+                      <div class="custom_course_focus" id="custom_course_focus_cust{{$class[0]}}"> {{$class[5]}} </div>
 
-                      <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="menu_for_{{ $class[0] }}">
-                        <li class="mdl-menu__item edit-internship" id="edit_internship_{{ $class[0] }}">Edit</li>
-                        <li class="mdl-menu__item remove-course" id="remove_{{ $class[0] }}">Remove</li>
+                      <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="menu_for_cust{{ $class[0] }}">
+                        <li disabled class=" mdl-menu__item mdl-menu__item--full-bleed-divider custom_course_description" id="custom_course_description_cust{{$class[0]}}"> {{$class[2]}} </li>
+                        <li class="mdl-menu__item edit_custom" id="edit_custom_cust{{ $class[0] }}">Edit</li>
+                        <li class="mdl-menu__item remove-course" id="remove_cust{{ $class[0] }}">Remove</li>
                       </ul>
                     </div>
                   </div>
@@ -149,7 +160,7 @@
                         </button> {{ $class[3] }}
 
                         <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="menu_for_{{ $class[0] }}">
-                          <!--<li class="mdl-menu__item show-prereqs" id="show_prereqs_{{ $class[0] }}">Show Pre-Requisites</li>-->
+                          <li class="mdl-menu__item show-prereqs" id="show_prereqs_{{ $class[0] }}">Show Pre-Requisites</li>
                           <li class="mdl-menu__item remove-course" id="remove_{{ $class[0] }}">Remove</li>
                         </ul>
                       </div>
@@ -188,9 +199,140 @@
         <div id="comp_courses" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
 
           <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
+            <div class="mdl-tabs__tab-bar">
+              @foreach($groupsWithCourses as $tabtitle => $Courses)
+                @if(!is_null($Courses))
+                  @if($tabtitle == 'Complementary')
+                    <a href="#{{$tabtitle}}_tab_panel" id="{{$tabtitle}}_tab" class="mdl-tabs__tab is-active">{{$tabtitle}}</a>
+                  @else
+                    <a href="#{{$tabtitle}}_tab_panel" id="{{$tabtitle}}_tab" class="mdl-tabs__tab">{{$tabtitle}}</a>
+                  @endif
+                @endif
+              @endforeach
+                <a href="#Custom_tab" class="mdl-tabs__tab">Custom</a>
+                <a href="#Internship_tab" class="mdl-tabs__tab">Internship</a>
 
+            </div>
+
+            @foreach($groupsWithCourses as $tabtitle => $Courses)
+            @if($tabtitle == 'Complementary')
+              <div class="mdl-tabs__panel is-active" id="{{$tabtitle}}_tab_panel">
+            @else
+              <div class="mdl-tabs__panel" id="{{$tabtitle}}_tab_panel">
+            @endif
+
+              @if(!is_null($Courses))
+                <button type="button" class="mdl-button mdl-js-button mdl-button--raised add_button add_comp_course_button">Add</button>
+                @foreach ($Courses as $key=>$value)
+                  @if( count($value) != 0)
+                    <table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp {{$tabtitle}}_table" id="{{$tabtitle}}_table_{{$key}}">
+                      <thead>
+                        <tr>
+                          <th class="mdl-data-table__cell--non-numeric">Course Number</th>
+                          <th class="mdl-data-table__cell--non-numeric">Course Name</th>
+                          <th>Credits</th>
+                        </tr>
+                      </thead>
+
+                      <tbody class="{{$tabtitle}}_table_body tech_comp_table">
+                      
+                      </tbody>
+                    </table>
+                    @endif
+                  @endforeach
+                @endif
+
+
+                <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+            </div>
+
+            @endforeach
 
               <div class="mdl-tabs__panel" id="Custom_tab">
+                <div class="mdl-grid">
+                  <div class="mdl-cell mdl-cell--2-col">
+                  </div>
+                  <div class="mdl-cell mdl-cell--8-col">
+                    <h4 id="make-degree_title">Enter your Custom Course information here</h4>
+                    <div>
+                    <ul class="list-style-none">
+                    </ul>
+                    <table>
+
+                      <tr>
+                        <td>
+                          Title
+                        </td>
+                        <td>
+                          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <input class="mdl-textfield__input" type="text" id="custom_title">
+                            <label class="mdl-textfield__label" for="custom_title">Title</label>
+                          </div>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td>
+                          Description &nbsp &nbsp
+                        </td>
+                        <td>
+                          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <input class="mdl-textfield__input" type="text" id="custom_description">
+                            <label class="mdl-textfield__label" for="custom_description">(Optional description)</label>
+                          </div>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td>
+                          Focus &nbsp &nbsp
+                        </td>
+                        <td>
+                          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label program_input">
+                            <select class="reg_dropdown form-control" name="Focus" id="custom_focus">
+                              @if($degreeLoaded)
+                              @foreach($progress as $key => $value)
+                                <option value="custom_focus_{{$key}}">{{$key}}</option>
+                              @endforeach
+                              @endif
+                              <option value="Miscellaneous"> Miscellaneous </option>
+                            </select>
+                          </div>
+                        </td>
+                      </tr>
+
+
+
+                      <tr>
+                        <td>
+                          Credits
+                        </td>
+                        <td>
+                          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label program_input">
+                            <select class="reg_dropdown form-control" name="Semesters" id="custom_credit_select">
+                              <option value="1">1</option>
+                              <option value="2">2</option>
+                              <option value="3">3</option>
+                              <option value="4">4</option>
+                              <option value="5">5</option>
+                              <option value="6">6</option>
+                            </select>
+                          </div>
+                        </td>
+                      </tr>
+
+
+
+
+
+
+                    </table>
+                    <button type="button" class="mdl-button mdl-js-button mdl-button--raised add_button add_custom_course_button">Add Custom Course</button>
+                  </div>
+                  </div>
+                  <div class="mdl-cell mdl-cell--2-col">
+                  </div>
+                </div>
               </div>
               <div class="mdl-tabs__panel" id="Internship_tab">
                 <div class="mdl-grid">
@@ -251,7 +393,7 @@
 
 
                     </table>
-                    <button type="button" class="mdl-button mdl-js-button mdl-button--raised add_internship_button">Add Internship</button>
+                    <button type="button" class="mdl-button mdl-js-button mdl-button--raised add_button add_internship_button">Add Internship</button>
                   </div>
                   </div>
                   <div class="mdl-cell mdl-cell--2-col">
@@ -259,6 +401,7 @@
                 </div>
               </div>
           </div>
+        </div>
         </div>
 
 

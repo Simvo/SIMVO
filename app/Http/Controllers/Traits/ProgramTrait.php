@@ -11,6 +11,8 @@ use App\StreamStructure;
 use App\Schedule;
 use DB;
 use Auth;
+use App\Custom;
+use App\Internship;
 
 trait ProgramTrait
 {
@@ -43,6 +45,15 @@ trait ProgramTrait
 
         if(count($check)>0)
           $creditsTaken += $this->getCourseCredits($course[0], $course[1]);
+      }
+
+      $checkCustom = Custom::where('degree_id', $degree->id)
+                ->where('focus', $key)
+                ->get();
+
+      foreach($checkCustom as $course)
+      {
+        $creditsTaken += (int) $course->credits;
       }
 
       $progress[$key] = [$creditsTaken,$value];
