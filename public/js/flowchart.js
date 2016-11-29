@@ -15,6 +15,13 @@ $(document).ready(function()
   {
     refreshComplementaryCourses();
   }
+
+  // $(document).keypress(function(e) {
+  //     if(e.which == 13 || )
+  //     {
+  //       initAddCompCourseButton();
+  //     }
+  // });
 });
 
 function startAddCourseTutorial()
@@ -435,7 +442,7 @@ function initAddCompCourseButton()
                 {
                     if (response[6].hasOwnProperty(group))
                     {
-                        var groupProgress = response[6][group];
+                        var groupProgress = response[5][group];
                         var target = $( "td[id='" + group + "']" ).text("" + groupProgress[0] + "/" + groupProgress[1]);
                     }
                 }
@@ -850,8 +857,6 @@ function initAddCustomCourseButton()
     var credits = parseInt($("#custom_credit_select").val());
     var focus = $("#custom_focus").val().substring(13, $("#custom_focus").val().length);
     var description = $("#custom_description").val();
-
-
 
     if(title == "")
     {
