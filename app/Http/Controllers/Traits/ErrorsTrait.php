@@ -8,6 +8,7 @@ use App\User;
 use App\Schedule;
 use App\course;
 use App\FlowchartError;
+use App\Custom;
 use DB;
 use Auth;
 use Session;
@@ -88,6 +89,21 @@ trait ErrorsTrait
                  ->where('semester', '<', $target->semester)
                  ->union($check_exemption)
                  ->first();
+
+        if(!$check) //check custom courses
+        {
+          $title = strtolower($sub_code . " " . $course_num);
+
+          $check_exemption = Custom::where('degree_id', $target->degree_id)
+                   ->where('title', $title)
+                   ->where('semester', 'Exemption');
+
+          $check = Custom::where('degree_id', $target->degree_id)
+                   ->where('title', $title)
+                   ->where('semester', '<', $target->semester)
+                   ->union($check_exemption)
+                   ->first();
+        }
 
         if(count($check))
         {

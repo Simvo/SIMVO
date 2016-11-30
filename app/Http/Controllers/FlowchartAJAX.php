@@ -419,9 +419,28 @@ public function delete_course_from_schedule(Request $request)
 
     $semester = $request->semester;
     $targetID = $request->scheduleID;
-    $target = Schedule::find($targetID);
 
-    $available = $this->checkCourseAvailablity($target->SUBJECT_CODE, $target->COURSE_NUMBER, $semester);
+    if(substr($targetID, 0, 4) == "cust")
+    {
+      $id = substr($targetID, 4, 1);
+
+      $target = Custom::find($id);
+
+      $parts = explode(" ", $target->title);
+
+      if(count($parts) != 2)
+        return;
+
+      $subcode = $parts[0];
+      $coursenum = $parts[1];
+      $available = $this->checkCourseAvailablity($parts[0], $parts[1], $semester);
+    }
+    else
+    {
+      $target = Schedule::find($targetID);
+
+      $available = $this->checkCourseAvailablity($target->SUBJECT_CODE, $target->COURSE_NUMBER, $semester);
+    }
 
     $error_id = -1;
     if(count($available))

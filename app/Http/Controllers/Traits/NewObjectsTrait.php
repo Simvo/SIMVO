@@ -39,7 +39,7 @@ trait NewObjectsTrait
     $custom->user_id = $degree->user_id;
     $custom->degree_id = $degree->id;
     $custom->semester = $semester;
-    $custom->title = $title;
+    $custom->title = strtolower($title);
     $custom->description = $description;
     $custom->focus = $focus;
     $custom->credits = $credits;

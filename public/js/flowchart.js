@@ -326,6 +326,10 @@ function initAddCompCourseButton()
           }
           else
           {
+            console.log(response[5]);
+            removeErrors(response[5]);
+            getErrors();
+
             var comp_course = "<div class='custom_card " + response[4] + "_course' id='" + response[0] + "'>";
             comp_course += "<div class='card_content'>";
             comp_course += response[3]['SUBJECT_CODE'] + " &nbsp " + response[3]['COURSE_NUMBER'] + "&nbsp";
