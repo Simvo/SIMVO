@@ -113,12 +113,12 @@ class FlowchartController extends Controller
                       ->count();
 
     // Check and get Minor
-    $minor = Minor::where('degree_id', $degree->id)->get();
+    $minor = Minor::where('degree_id', $degree->id)->first();
 
     $userSetupComplete = $this->checkUserSetupStatus($degree);
 
     //all courses in the users program.
-    $courses = $this->getGroupsWithCourses($degree, true);
+      $courses = $this->getGroupsWithCourses($degree, true);
     $groupsWithCourses['Required'] = $courses[0];
     $groupsWithCourses['Complementary'] = $courses[1];
     $groupsWithCourses['Elective'] = $courses[2];
@@ -151,7 +151,7 @@ class FlowchartController extends Controller
     }
 
     $progress = $this->generateProgressBar($degree);
-    if(count($minor)>0)
+    if($minor)
     {
       $progress_minor = $this->generateProgressBarMinor($minor[0]);
     }
@@ -246,19 +246,19 @@ class FlowchartController extends Controller
     return [$exemptions,$sum];
   }
 
-  public function generateSchedule($user)
+  public function generateSchedule($degree)
   {
     $the_schedule = [];
     //Always have their starting semester available -- therefore if they accidentally remove all classes from it and refresh, it will remain.
-    $the_schedule[$this->get_semester($user->enteringSemester)] = [0,[],$user->enteringSemester];
-    $user_schedule=Schedule::where('user_id', $user->id)
+    $the_schedule[$this->get_semester($degree->enteringSemester)] = [0,[],$degree->enteringSemester];
+    $user_schedule=Schedule::where('degree_id', $degree->id)
     ->where('semester' ,"<>", 'Exemption')
     ->groupBy('semester')
     ->get();
-    $user_schedule2 = Internship::where('user_id', $user->id)
+    $user_schedule2 = Internship::where('degree_id', $degree->id)
     ->groupBy('semester')
     ->get();
-    $user_schedule3 = Custom::where('user_id', $user->id)
+    $user_schedule3 = Custom::where('degree_id', $degree->id)
     ->where('semester' ,"<>", 'Exemption')
     ->groupBy('semester')
     ->get();
@@ -293,15 +293,15 @@ class FlowchartController extends Controller
       $class_array=[];
       $tot_credits=0;
       $classes=DB::table('schedules')
-      ->where('user_id', $user->id)
+      ->where('degree_id', $degree->id)
       ->where('semester', $semester)
       ->get(['schedules.id', 'schedules.status','schedules.SUBJECT_CODE', 'schedules.COURSE_NUMBER']);
       $customs=DB::table('customs')
-      ->where('user_id', $user->id)
+      ->where('degree_id', $degree->id)
       ->where('semester', $semester)
       ->get(['customs.id', 'customs.title', 'customs.description', 'customs.focus', 'customs.credits']);
       $internships=DB::table('internships')
-      ->where('user_id', $user->id)
+      ->where('degree_id', $degree->id)
       ->where('semester', $semester)
       ->get(['internships.id', 'internships.company', 'internships.position', 'internships.duration', 'internships.width']);
 
