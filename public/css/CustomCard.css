@@ -31,10 +31,10 @@
   background: #fbb3ae !important;
 }
 
-.Internship_course{
+.Internship_course {
   min-height: 300px;
-  position:absolute;
-  top:60px;
+  position: absolute;
+  top: 60px;
   z-index: 5;
   background-color: #ccccff;
   font-size: 20px;
@@ -42,40 +42,40 @@
   text-align: center;
 }
 
-.Custom_course{
+.Custom_course {
   background-color: #e5ecad;
 }
 
-.custom_course_description{
+.custom_course_description {
   padding-top: 12px;
   background-color: #dddddd;
   line-height: 1.25;
 }
 
-.custom_course_title{
-  display:inline-block;
+.custom_course_title {
+  display: inline-block;
 }
 
-.custom_course_credits{
-  display:inline-block;
+.custom_course_credits {
+  display: inline-block;
 }
 
-.custom_course_focus{
+.custom_course_focus {
   display: none;
 }
 
-.internship_company_name{
+.internship_company_name {
   margin-top: 10px;
   margin-bottom: 20px;
   font-size: 20px;
   font-weight: bold;
 }
 
-.edit_internship_textfield{
+.edit_internship_textfield {
   max-height: 60px;
 }
 
-.internship_position_held{
+.internship_position_held {
   font-size: 16px;
 }
 
@@ -93,6 +93,10 @@
 
 .custom_card .card_content:hover {
   cursor: -webkit-grab;
+}
+
+.custom_card {
+  width: 180px;
 }
 
 .custom_card .card_content .title_list {

@@ -100,6 +100,9 @@ $cardWidth: 180px;
     cursor: -webkit-grab;
   }
 }
+.custom_card{
+  width: $cardWidth;
+}
 
 .custom_card .card_content .title_list {
   list-style-type: none;
