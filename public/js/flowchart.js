@@ -463,6 +463,7 @@ function initAddCompCourseButton()
         success: function(data) {
           var response = JSON.parse(data);
           var refreshedCourses = response[0];
+          console.log(response);
           if (response === 'Error')
           {
             //error handler
@@ -494,6 +495,7 @@ function initAddCompCourseButton()
                   }
                   existCoursesInTab = true;
                   html += '<h4 id="' + tabtitle +'_table_header_' + key + '" style="text-align:center">' + key + ' (' + response[1][key] + ' credits)</h4>';
+                  //html += '<h5 id="' + '"></h5>';
                   html += '<table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp ' + tabtitle + '_table" id="' + tabtitle + '_table_'+key+'">';
                   html += '<thead>';
                   html += '<tr>';
