@@ -153,7 +153,7 @@ class FlowchartController extends Controller
     $progress = $this->generateProgressBar($degree);
     if($minor)
     {
-      $progress_minor = $this->generateProgressBarMinor($minor[0]);
+      $progress_minor = $this->generateProgressBarMinor($minor);
     }
     else
     {
