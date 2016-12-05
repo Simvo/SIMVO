@@ -590,7 +590,7 @@ function initAddCompCourseButton()
 
         var company = $("#internship_company_name").val();
         var length = parseInt($("#internship_length_select").val());
-        var width = 160;
+        var width = $(".custom_card").width();
         var position = $("#internship_position_held").val();
 
 
@@ -644,12 +644,12 @@ function initAddCompCourseButton()
           {
             $("[id='" + prev_sem +"-gap']").trigger("click");
           }
-          width += 220;
+          width += $(".custom_card").width() + 60;
           k++;
           semester_letter = get_semester_letter(get_next_semester(get_semester(semester_letter)));
         }
 
-        width -= 220;
+        width -= ($(".custom_card").width() + 60);
 
 
 
