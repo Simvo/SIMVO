@@ -21,6 +21,9 @@ $(document).ready(function(){
 
   // Controls create Degree Behavior
   LoadMajors();
+  LoadVersions();
+  LoadStreams();
+  LoadSemesters();
 
   $('#faculty-select').change(function(){
     LoadMajors();

@@ -1,0 +1,27 @@
+diff --git a/prepros.cfg b/prepros.cfg
+index d110ea4..9b9902f 100644
+--- a/prepros.cfg
++++ b/prepros.cfg
+@@ -49523,6 +49523,22 @@
+           "optimized": false,
+           "height": 0,
+           "width": 0
++        },
++        "825e5e5e": {
++          "id": "825e5e5e",
++          "path": "public/js/DegreeAjax.js",
++          "output": "public/js/DegreeAjax-dist.js",
++          "name": "DegreeAjax.js",
++          "category": "JS",
++          "autoCompile": false,
++          "uglify": true,
++          "mangle": true,
++          "babel": false,
++          "sourceMaps": false,
++          "customOutput": false,
++          "imported": false,
++          "parents": [],
++          "type": "javascript"
+         }
+       },
+       "deploymentHistory": {},
