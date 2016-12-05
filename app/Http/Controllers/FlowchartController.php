@@ -47,8 +47,9 @@ class FlowchartController extends Controller
 
       if(count($degrees) == 0)
       {
-        $faculties = $this->getFaculties();
-        array_unshift($faculties, "Select");
+        $faculties = [
+          "Faculty of Engineering"
+        ];
 
         $semesters = $this->generateListOfSemesters(10);
 
@@ -118,7 +119,7 @@ class FlowchartController extends Controller
     $userSetupComplete = $this->checkUserSetupStatus($degree);
 
     //all courses in the users program.
-      $courses = $this->getGroupsWithCourses($degree, true);
+    $courses = $this->getGroupsWithCourses($degree, true);
     $groupsWithCourses['Required'] = $courses[0];
     $groupsWithCourses['Complementary'] = $courses[1];
     $groupsWithCourses['Elective'] = $courses[2];
