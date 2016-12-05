@@ -200,7 +200,7 @@ class FlowchartController extends Controller
 
     $degree_id = $this->create_degree(
       $user->id,
-      $faculties[$request->Faculty - 1],
+      $faculties[$request->Faculty],
       $request->Major,
       $program->PROGRAM_MAJOR,
       $program->PROGRAM_TOTAL_CREDITS,
