@@ -132,6 +132,7 @@ $background: rgba(236, 240, 241,1.0);
 .area_1_card.mdl-card .mdl-card--border {
   padding: 20px;
   width: 99%;
+  min-height: 305px;
 }
 
 .area_1_card > .mdl-card__title {
@@ -198,6 +199,7 @@ $background: rgba(236, 240, 241,1.0);
   overflow: auto;
   overflow-y: hidden;
   width: 100%;
+  min-height: 310px;
 }
 
 .semester {
