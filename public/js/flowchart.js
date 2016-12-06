@@ -15,13 +15,6 @@ $(document).ready(function()
   {
     refreshComplementaryCourses();
   }
-
-  // $(document).keypress(function(e) {
-  //     if(e.which == 13 || )
-  //     {
-  //       initAddCompCourseButton();
-  //     }
-  // });
 });
 
 function startAddCourseTutorial()
@@ -500,7 +493,8 @@ function initAddCompCourseButton()
                     html += '<button type="button" class="mdl-button mdl-js-button mdl-button--raised add_button add_comp_course_button">Add</button>';
                   }
                   existCoursesInTab = true;
-                  html += '<h4 id="' + tabtitle +'_table_header_' + key + '" style="text-align:center">' + key + ' (' + response[1][key] + ' credits)</h4>';
+                  if(typeof response[1][key] !== "undefined") html += '<h4 id="' + tabtitle +'_table_header_' + key + '" style="text-align:center">' + key + ' (' + response[1][key] + ' credits)</h4>';
+                  else html += '<h4 id="' + tabtitle +'_table_header_' + key + '" style="text-align:center">' + key + '</h4>';
                   html += '<table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp ' + tabtitle + '_table" id="' + tabtitle + '_table_'+key+'">';
                   html += '<thead>';
                   html += '<tr>';
