@@ -12,7 +12,6 @@
   });
 </script>
 
-
 <!-- Progress Bar for Major -->
 <div class="mdl-grid" style="padding-bottom: 0px">
   <div class="mdl-cell mdl-cell--12-col">
