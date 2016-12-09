@@ -76,10 +76,12 @@ class FlowchartController extends Controller
         Session::put('degree', $degree);
 
         $flowchart = $this->generateDegree($degree);
+        $credits_taken = $this->getMajorStatus();
 
         return view('flowchart', [
           'user'=>$user,
           'degree'=>$degree,
+          'remainingCredits' => $credits_taken,
           'newUser' => $new_user,
           'degreeLoaded' => true,
           'schedule'=> $flowchart['Schedule'],

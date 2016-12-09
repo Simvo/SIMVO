@@ -81,3 +81,5 @@ Route::post('/flowchart/edit-internship', 'FlowchartAJAX@edit_internship');
 Route::post('/flowchart/edit-custom', 'FlowchartAJAX@edit_custom');
 
 Route::post('/flowchart/getErrors', 'FlowchartAJAX@get_errors');
+
+Route::post('/flowchart/remainingCourses','FlowchartAJAX@getMajorStatus_ajax');

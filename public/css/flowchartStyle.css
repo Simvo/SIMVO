@@ -1,6 +1,20 @@
 .progress_div {
-  padding: 5px;
+  padding: 4px;
   min-height: 50px !important;
+  width: 100% !important;
+}
+
+.adjustable-border {
+  position: absolute;
+  top: 5%;
+  width: 100%;
+}
+
+.adjustable-border #progressBar {
+  width: 100%;
+}
+
+.mdl-card__supporting-text {
   width: 100% !important;
 }
 

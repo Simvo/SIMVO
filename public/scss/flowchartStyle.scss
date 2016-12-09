@@ -3,8 +3,21 @@ $secondary-color: #4051b5;
 $background: rgba(236, 240, 241,1.0);
 
 .progress_div {
-  padding: 5px;
+  padding: 4px;
   min-height: 50px !important;
+  width: 100% !important;
+}
+
+.adjustable-border{
+  #progressBar{
+    width: 100%;
+  }
+  position: absolute;
+  top: 5%;
+  width: 100%;
+}
+
+.mdl-card__supporting-text {
   width: 100% !important;
 }
 
@@ -300,3 +313,4 @@ $background: rgba(236, 240, 241,1.0);
 #make-degree_title{
   text-align:center;
 }
+

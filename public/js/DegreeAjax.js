@@ -156,3 +156,17 @@ function LoadSemesters(){
     }
   })
 }
+
+function editStatusBar(){
+   $.ajax({
+     type: 'post',
+     url: '/flowchart/remainingCourses',
+     success: function(data) {
+       var response = JSON.parse(data);
+       $("#major-status").text(response[0]);
+ 
+       var val = ( ( response[0] / response[1] ) ) * 100;
+       document.querySelector('#progressBar').MaterialProgress.setProgress(val);
+     }
+   })
+ }

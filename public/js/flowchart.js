@@ -1,5 +1,6 @@
 $(document).ready(function()
 {
+  editStatusBar();
   renderSortable();
   initAddCompCourseButton();
   initAddInternshipButton();
@@ -313,6 +314,8 @@ function initAddCompCourseButton()
         },
         success: function(data) {
           var response = JSON.parse(data);
+          // edit status bar
+          editStatusBar();
           if (response === 'Error')
           {
             //error handler
@@ -403,6 +406,8 @@ function initAddCompCourseButton()
             success: function(data) {
               var response = JSON.parse(data);
 
+              // update status bar
+              editStatusBar();
               if (response === 'Error')
               {
                 //error handler
