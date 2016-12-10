@@ -455,7 +455,10 @@ public function delete_course_from_schedule(Request $request)
       return;
     }
 
+    $minor = Minor::where('degree_id', $degree->id)->first(["minor_credits"]);
 
-    return json_encode([$this->getMajorStatus(), $degree->program_credits]);
+    $minor_credits = ($minor)? $minor->minor_credits : 0;
+
+    return json_encode([$this->getMajorStatus(), $degree->program_credits, $this->getMinorStatus(), $minor_credits]);
   }
 }

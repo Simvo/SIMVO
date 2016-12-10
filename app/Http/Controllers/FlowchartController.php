@@ -78,15 +78,21 @@ class FlowchartController extends Controller
 
         $flowchart = $this->generateDegree($degree);
         $credits_taken = $this->getMajorStatus();
+        $credits_taken_minor = $this->getMinorStatus();
+        $minor = Minor::where("degree_id", $degree->id)->get()[0];
+
+        Debugbar::info($minor->minor_name);
 
         return view('flowchart', [
           'user'=>$user,
           'degree'=>$degree,
           'remainingCredits' => $credits_taken,
+          'remainingCreditsMinor' => $credits_taken_minor,
           'newUser' => $new_user,
           'degreeLoaded' => true,
           'schedule'=> $flowchart['Schedule'],
-          'minors' => $minors,
+          'minors' => $minors,          
+          'minor_object' => $minor,
           'progress' => $flowchart['Progress'],
           'progress_minor' => $flowchart['Progress Minor'],
           'groupsWithCourses' => $flowchart['Groups With Courses'],

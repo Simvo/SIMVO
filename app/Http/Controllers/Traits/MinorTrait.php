@@ -8,6 +8,7 @@ use App\User;
 use App\Stream;
 use App\StreamStructure;
 use App\Schedule;
+use App\Minor;
 use DB;
 use Auth;
 use Session;
@@ -238,4 +239,41 @@ trait MinorTrait
     return $coursesInGroup;
   }
 
+  /**
+   *Returns total remaining credits
+   *@param None
+   *@Return int: number of credits remaing to take
+   **/
+   public function getRemainingCreditsMinor($minor)
+   {
+     $progress = [];
+     $progress = $this->generateProgressBarMinor($minor);
+ 
+     $creditsTakenSum = 0;
+     foreach($progress as $key => $creditsTaken)
+     {
+       $creditsTakenSum = $creditsTakenSum + $creditsTaken[0];
+     }
+     return $creditsTakenSum;
+   }
+
+   public function getMinorStatus()
+   {
+     if(!Auth::Check())
+      return;
+     else
+       $user = Auth::User();
+ 
+     $degree = Session::get('degree');
+     if($degree == null)
+     {
+       return;
+     }
+
+     $minor = Minor::where("degree_id", $degree->id)->first();
+     if(!$minor) return;
+     
+     $creditsTakenSum = $this->getRemainingCreditsMinor($minor);
+     return $creditsTakenSum;
+  }
 }

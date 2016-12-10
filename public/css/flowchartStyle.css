@@ -14,6 +14,10 @@
   width: 100%;
 }
 
+.adjustable-border #progressBarMinor {
+  width: 100%;
+}
+
 .mdl-card__supporting-text {
   width: 100% !important;
 }
