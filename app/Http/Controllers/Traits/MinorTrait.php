@@ -276,4 +276,30 @@ trait MinorTrait
      $creditsTakenSum = $this->getRemainingCreditsMinor($minor);
      return $creditsTakenSum;
   }
+
+  public function removeMinorCourses($minor, $degreeID)
+  {
+    $courses_in_minor = DB::table('programs')
+    ->where('PROGRAM_ID', $minor->program_id)
+    ->whereNotNull('SUBJECT_CODE')
+    ->whereNotNull('COURSE_NUMBER')
+    ->get(["SUBJECT_CODE", "COURSE_NUMBER"]);
+
+    foreach($courses_in_minor as $course)
+    {
+      $major_check = DB::table()->where('PROGRAM_ID')
+      ->where("SUBJECT_CODE", $course->SUBJECT_CODE)
+      ->where("COURSE_NUMBER", $course->COURSE_NUMBER)
+      ->first(['id']);
+
+      if($major_check) continue;
+
+      $sched_check = Schedule::where('degree_id', $degreeID)
+      ->where('SUBJECT_CODE', $course->SUBJECT_CODE)
+      ->where('COURSE_NUMBER', $course->COURSE_NUMBER)
+      ->first(['id']);
+
+      if($sched_check) $sched_check->delete();
+    }
+  }
 }
