@@ -9,6 +9,7 @@ use App\Degree;
 use App\FlowchartError;
 use App\Minor;
 use DB;
+use Debugbar;
 use App\Http\Requests;
 use App\Internship;
 use App\Custom;
@@ -23,7 +24,7 @@ class FlowchartController extends Controller
     /**
     * Function called upon GET request. Will determine if schedule needs to be generated or simply displayed
     * Consists of generating four main parts.
-    * 1) Progress Bar 2)Course Schedule 3) Complementary Courses 4) Elecitive Courses
+    * 1) Progress Bar 2)Course Schedule 3) Complementary Courses 4) Elective Courses
     **/
     public function generateFlowChart()
     {

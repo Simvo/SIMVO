@@ -17,8 +17,8 @@
   <div class="mdl-cell mdl-cell--12-col">
     <div class="mdl-card mdl-shadow--2dp progress_div">
      <div class="mdl-card__supporting-text">
-         <b>{{$degree->program_name}}</b>
          @if($degreeLoaded)
+         <b>{{$degree->program_name}}</b>
          <b><span id="major-status">{{$remainingCredits}}</span>/{{$degree->program_credits}}</b>
          @endif
        </div>

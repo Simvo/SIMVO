@@ -61,7 +61,7 @@ return [
             'password' => env('DB_PASSWORD', ''),
             'charset' => 'utf8',
             'collation' => 'utf8_unicode_ci',
-            'unix_socket' => '/Applications/MAMP/tmp/mysql/mysql.sock',
+            //'unix_socket' => '/Applications/MAMP/tmp/mysql/mysql.sock',
             'prefix' => '',
             'strict' => false,
             'engine' => null,

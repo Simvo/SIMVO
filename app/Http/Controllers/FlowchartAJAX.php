@@ -14,6 +14,7 @@ use App\course;
 use App\Internship;
 use App\Custom;
 use App\Minor;
+use Debugbar;
 
 class FlowchartAJAX extends Controller
 {
@@ -26,6 +27,7 @@ class FlowchartAJAX extends Controller
 
   public function move_course(Request $request)
   {
+
     if(!Auth::Check())
       return;
     else
@@ -53,15 +55,9 @@ class FlowchartAJAX extends Controller
     $target->save();
 
     $old_semeterCredits = $this->getSemesterCredits($old_semester, $degree);
-     $new_semeterCredits = $this->getSemesterCredits($semester, $degree);
+    $new_semeterCredits = $this->getSemesterCredits($semester, $degree);
 
-     if(!substr($request->id,0,1) == "c")
-     {
-      $errors_to_delete = $this->manageFlowchartErrors($target);
-     }
-     else{
-       $errors_to_delete = [];
-     }
+    $errors_to_delete = $this->manageFlowchartErrors($target);
 
 
     return json_encode([$new_semeterCredits, $old_semeterCredits, $errors_to_delete]);
