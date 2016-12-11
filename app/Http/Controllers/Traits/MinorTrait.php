@@ -76,7 +76,7 @@ trait MinorTrait
         $creditsInGroup = $this->extractCreditFromDesc($group->SET_BEGIN_TEXT_ENGLISH);
         if($creditsInGroup > 0)
         {
-          $groups[$group->SET_TITLE_ENGLISH] = $creditsInGroup;
+          $groups["MINOR: " . $group->SET_TITLE_ENGLISH] = $creditsInGroup;
         }
       }
     }
@@ -148,7 +148,7 @@ trait MinorTrait
     {
       if(trim($group->SET_TITLE_ENGLISH) != "")
       {
-        $groups[$group->SET_TITLE_ENGLISH] = [];
+        $groups["MINOR: ".$group->SET_TITLE_ENGLISH] = [];
       }
     }
 
@@ -179,10 +179,10 @@ trait MinorTrait
       //Index 0 is complementaries ------- Index 1 is electives
       if((trim($group->SET_TITLE_ENGLISH) != "" || is_null($group->SET_TITLE_ENGLISH)) && strpos($group->SET_TITLE_ENGLISH, "Group", 0 ) === false )
       {
-        $groups[0][$group->SET_TITLE_ENGLISH] = [];
+        $groups[0]["MINOR: " . $group->SET_TITLE_ENGLISH] = [];
       }
       else {
-        $groups[1][$group->SET_TITLE_ENGLISH] = [];
+        $groups[1]["MINOR: " . $group->SET_TITLE_ENGLISH] = [];
       }
     }
 
@@ -198,6 +198,8 @@ trait MinorTrait
   {
     $user = Auth::User();
     $degree = Session::get('degree');
+
+    $group = str_replace("MINOR: ", "", $group);
 
     $courses_PDO = DB::table('programs')
                   ->where('PROGRAM_ID', $minor->program_id)
