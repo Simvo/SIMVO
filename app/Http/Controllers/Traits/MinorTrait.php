@@ -12,6 +12,7 @@ use App\Minor;
 use DB;
 use Auth;
 use Session;
+use Debugbar;
 
 trait MinorTrait
 {
@@ -277,7 +278,7 @@ trait MinorTrait
      return $creditsTakenSum;
   }
 
-  public function removeMinorCourses($minor, $degreeID)
+  public function removeMinorCourses($minor, $degree)
   {
     $courses_in_minor = DB::table('programs')
     ->where('PROGRAM_ID', $minor->program_id)
@@ -287,14 +288,18 @@ trait MinorTrait
 
     foreach($courses_in_minor as $course)
     {
-      $major_check = DB::table()->where('PROGRAM_ID')
+      $major_check = DB::table('programs')->where('PROGRAM_ID', $degree->program_id)
       ->where("SUBJECT_CODE", $course->SUBJECT_CODE)
       ->where("COURSE_NUMBER", $course->COURSE_NUMBER)
-      ->first(['id']);
+      ->first();
+      
+      if($major_check)
+      {
+        Debugbar::info($major_check);
+        continue;
+      } 
 
-      if($major_check) continue;
-
-      $sched_check = Schedule::where('degree_id', $degreeID)
+      $sched_check = Schedule::where('degree_id', $degree->id)
       ->where('SUBJECT_CODE', $course->SUBJECT_CODE)
       ->where('COURSE_NUMBER', $course->COURSE_NUMBER)
       ->first(['id']);

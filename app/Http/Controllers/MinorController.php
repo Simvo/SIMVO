@@ -97,7 +97,7 @@ class MinorController extends Controller
     $minor = Minor::where("degree_id", $degree->id)->first();
     if(!$minor) return redirect('/flowchart');
     
-    $this->removeMinorCourses($minor, $degree->id);
+    $this->removeMinorCourses($minor, $degree);
     $minor->delete();
 
     return redirect('/flowchart');
