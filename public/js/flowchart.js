@@ -444,7 +444,7 @@ function initAddCompCourseButton()
                 {
                     if (response[6].hasOwnProperty(group))
                     {
-                        var groupProgress = response[5][group];
+                        var groupProgress = response[6][group];
                         var target = $( "td[id='" + group + "']" ).text("" + groupProgress[0] + "/" + groupProgress[1]);
                     }
                 }
