@@ -16,7 +16,6 @@ use Debugbar;
 
 trait MinorTrait
 {
-  
   /**
   * Function that returns groups and the number of credits in them along
   * with the number of credits the user has completed in each group. This is the version for minors
