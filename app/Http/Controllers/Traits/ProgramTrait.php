@@ -337,11 +337,8 @@ trait ProgramTrait
   public function getCoursesInGroup($degree, $group, $filter)
   {
     $user = Auth::User();
-        Debugbar::info($group);
 
     $group = str_replace("MINOR: ", "", $group);
-
-    Debugbar::info($group);
 
     $courses_PDO = DB::table('programs')
                   ->where('VERSION', $degree->version_id)
@@ -352,7 +349,18 @@ trait ProgramTrait
 
     $coursesInGroup = [];
 
-    Debugbar::info($courses_PDO);
+    
+    
+
+    if(count($courses_PDO) < 2 && 
+    strpos($group, "Complementary") == 0)//check to see if there are courses in the set type
+    {
+      $courses_PDO = DB::table('programs')
+                   ->where('PROGRAM_ID', $degree->program_id)
+                   ->where('SET_TYPE', "Complementary") // THIS IS A MEGA HACK, but i don't see another way around this at the moment'
+                   ->orderBy('COURSE_NUMBER', 'asc')
+                   ->get(['SUBJECT_CODE', 'COURSE_NUMBER', 'COURSE_CREDITS','SET_TYPE','COURSE_TITLE']);
+    }
 
     foreach($courses_PDO as $course)
     {

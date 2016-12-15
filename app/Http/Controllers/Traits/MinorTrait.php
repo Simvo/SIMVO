@@ -28,13 +28,9 @@ trait MinorTrait
     $groups = $this->getGroupsWithCreditsMinor($minor);
     $progress = [];
 
-    //Debugbar::info($groups);
-
     foreach ($groups as $key=>$value)
     {
       $courses = $this->getCoursesInGroup($minor, $key, false);
-      //Debugbar::info($key);
-      //Debugbar::info($courses);
 
       $totCredits = $value;
       $creditsTaken = 0;
