@@ -9,11 +9,13 @@ use App\User;
 use App\Stream;
 use App\StreamStructure;
 use App\Schedule;
+use App\Custom;
+use App\Internship;
+use Debugbar;
 use DB;
 use Auth;
 use Session;
-use App\Custom;
-use App\Internship;
+
 
 trait ProgramTrait
 {
@@ -335,6 +337,11 @@ trait ProgramTrait
   public function getCoursesInGroup($degree, $group, $filter)
   {
     $user = Auth::User();
+        Debugbar::info($group);
+
+    $group = str_replace("MINOR: ", "", $group);
+
+    Debugbar::info($group);
 
     $courses_PDO = DB::table('programs')
                   ->where('VERSION', $degree->version_id)
@@ -344,6 +351,8 @@ trait ProgramTrait
                   ->get(['SUBJECT_CODE', 'COURSE_NUMBER', 'COURSE_CREDITS','SET_TYPE','COURSE_TITLE']);
 
     $coursesInGroup = [];
+
+    Debugbar::info($courses_PDO);
 
     foreach($courses_PDO as $course)
     {

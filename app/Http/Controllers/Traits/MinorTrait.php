@@ -16,6 +16,7 @@ use Debugbar;
 
 trait MinorTrait
 {
+  
   /**
   * Function that returns groups and the number of credits in them along
   * with the number of credits the user has completed in each group. This is the version for minors
@@ -27,9 +28,13 @@ trait MinorTrait
     $groups = $this->getGroupsWithCreditsMinor($minor);
     $progress = [];
 
+    //Debugbar::info($groups);
+
     foreach ($groups as $key=>$value)
     {
       $courses = $this->getCoursesInGroup($minor, $key, false);
+      //Debugbar::info($key);
+      //Debugbar::info($courses);
 
       $totCredits = $value;
       $creditsTaken = 0;
@@ -62,8 +67,6 @@ trait MinorTrait
 
     $groups_PDO = DB::table('programs')
                   ->where('PROGRAM_ID', $minor->program_id)
-                  //->whereNotNull('SUBJECT_CODE')
-                  //->whereNotNull('COURSE_NUMBER')
                   ->groupBy('SET_TITLE_ENGLISH')
                   ->get(['SET_TITLE_ENGLISH', 'SET_BEGIN_TEXT_ENGLISH']);
 
@@ -167,8 +170,6 @@ trait MinorTrait
     $groups_PDO = DB::table('programs')
                   ->where('PROGRAM_ID', $minor->program_id)
                   ->where('SET_TYPE', 'Complementary')
-                  // ->whereNotNull('SUBJECT_CODE')
-                  // ->whereNotNull('COURSE_NUMBER')
                   ->groupBy('SET_TITLE_ENGLISH')
                   ->get(['SET_TITLE_ENGLISH', 'SET_BEGIN_TEXT_ENGLISH']);
 
@@ -297,7 +298,6 @@ trait MinorTrait
       
       if($major_check)
       {
-        Debugbar::info($major_check);
         continue;
       } 
 

@@ -202,8 +202,6 @@ class FlowchartAJAX extends Controller
     $returnGroups = [];
     $minorGroups = [];
 
-    Debugbar::info($minor_groups[0]);
-
     $returnGroups['Required'] = array_merge($groups[0],  $minor_groups[0]);
     $returnGroups['Complementary'] = array_merge($groups[1],  $minor_groups[1]);
     $returnGroups['Elective'] = array_merge($groups[2],  $minor_groups[2]);

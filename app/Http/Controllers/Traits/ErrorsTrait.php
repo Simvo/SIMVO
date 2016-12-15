@@ -20,7 +20,6 @@ trait ErrorsTrait
   // Will handle all 3 cases for prerequisite checking and return list of errors to delete
   public function manageFlowchartErrors($target)
   {
-    Debugbar::addMessage("empty all errors with course");
     $errors_to_delete = $this->empty_errors($target);
 
     $prerequisiteErrors = $this->checkPrerequisites($target);
@@ -121,8 +120,6 @@ trait ErrorsTrait
         $this->createErrorWithMessage($missing_courses, $target);
       }
     }
-
-    Debugbar::info($errors);
 
     return $errors;
   }
@@ -303,8 +300,6 @@ trait ErrorsTrait
       $error->delete();
     }
     
-    Debugbar::addMessage("deleting errors by default move");
-    Debugbar::info($id_array);
     return $id_array;
   }
 }
