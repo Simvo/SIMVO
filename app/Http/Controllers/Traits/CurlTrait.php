@@ -9,6 +9,7 @@ use App\User;
 use App\Schedule;
 use DB;
 use Auth;
+use Debugbar;
 
 trait CurlTrait
 {
@@ -20,11 +21,12 @@ trait CurlTrait
 
   public function checkCourseAvailablity($SUBJECT_CODE, $COURSE_NUMBER, $semester)
   {
-    return []; // turn off vsb until we review new version
+    //return []; // turn off vsb until we review new version
 
     $course = strtolower($SUBJECT_CODE)."+".$COURSE_NUMBER;
-    $url = "https://vsb.mcgill.ca/criteria.jsp?session_" . $semester . "=1&code_number=".$course."&add_course=Add&remove_course=&view_details=&cams=all&tip=1&pins=&sf=ffftimeinclass&bbs=&submit_action=";
+    $url = "https://vsb.mcgill.ca/vsb/api/stringToFilter?term=". $semester ."&input=". $course ."&current=&isimport=0&_=1481994433538";
 
+    Debugbar::info($url);
     $ch = curl_init();
 
     curl_setopt($ch, CURLOPT_URL, $url);
@@ -41,17 +43,22 @@ trait CurlTrait
     $previous_value = libxml_use_internal_errors(TRUE);
     $dom_document = new \DOMDocument();
   	$dom_document->loadHTMLFile(mb_convert_encoding($url, 'HTML-ENTITIES', 'UTF-8'));
+    Debugbar::info($dom_document);
     libxml_clear_errors();
     libxml_use_internal_errors($previous_value);
   	$dom_xpath = new \DOMXpath($dom_document);
 
-    $elements = $dom_xpath->query("//div[@class='warningNoteBad']");
+    $elements = $dom_xpath->query("//p");
 
     $warnings = [];
 
     foreach ($elements as $i => $element)
   	{
-	    $warnings[] = $element->nodeValue;
+      $message = json_decode($element->nodeValue);
+      if($message[0] == "error")
+      {
+        $warnings[] = $message[1];
+      }
   	}
 
     return $warnings;

@@ -427,9 +427,10 @@ function initAddCompCourseButton()
 
 
                 $("#" + response[5] + response[0]).remove();
+                removeErrors(response[4]);
 
-                $("."+semester).find( '.credit_counter_num' ).text( 'CREDITS: ' + response[1]);
-
+                //$("."+semester).find( '.credit_counter_num' ).text( 'CREDITS: ' + response[1]);
+                $("."+semester).children( '.credit_counter' ).children( '.credit_counter_num' ).text( 'CREDITS: ' + response[0]);
 
                 for (var group in response[2])
                 {
@@ -1178,6 +1179,10 @@ function initConfirmEditCustomButton( id, originalTitle, originalDescription, or
 
   });
 
+
+  $(".show-prereqs").mousedown(function(){
+    alert(($this).attr("id"));
+  });
 
 
 
