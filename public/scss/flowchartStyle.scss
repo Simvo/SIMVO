@@ -3,9 +3,38 @@ $secondary-color: #4051b5;
 $background: rgba(236, 240, 241,1.0);
 
 .progress_div {
-  padding: 5px;
+  padding: 4px;
   min-height: 50px !important;
   width: 100% !important;
+}
+
+.adjustable-border{
+  #progressBar{
+    width: 100%;
+  }
+  #progressBarMinor{
+    width: 100%;
+  }
+  position: absolute;
+  top: 5%;
+  width: 100%;
+}
+
+.mdl-card__supporting-text {
+  width: 100% !important;
+}
+
+.label-wrapper{
+  display: table-cell;
+  vertical-align: middle;
+}
+
+#minor-title{
+  text-align: center;
+}
+
+.minors-table{
+  margin: auto;
 }
 
 .my-modal{
@@ -119,6 +148,7 @@ $background: rgba(236, 240, 241,1.0);
 .area_1_card.mdl-card .mdl-card--border {
   padding: 20px;
   width: 99%;
+  min-height: 305px;
 }
 
 .area_1_card > .mdl-card__title {
@@ -185,6 +215,7 @@ $background: rgba(236, 240, 241,1.0);
   overflow: auto;
   overflow-y: hidden;
   width: 100%;
+  min-height: 310px;
 }
 
 .semester {
@@ -285,3 +316,4 @@ $background: rgba(236, 240, 241,1.0);
 #make-degree_title{
   text-align:center;
 }
+

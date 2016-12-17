@@ -42,6 +42,28 @@
   text-align: center;
 }
 
+.Custom_course {
+  background-color: #e5ecad;
+}
+
+.custom_course_description {
+  padding-top: 12px;
+  background-color: #dddddd;
+  line-height: 1.25;
+}
+
+.custom_course_title {
+  display: inline-block;
+}
+
+.custom_course_credits {
+  display: inline-block;
+}
+
+.custom_course_focus {
+  display: none;
+}
+
 .internship_company_name {
   margin-top: 10px;
   margin-bottom: 20px;
@@ -71,6 +93,10 @@
 
 .custom_card .card_content:hover {
   cursor: -webkit-grab;
+}
+
+.custom_card {
+  width: 180px;
 }
 
 .custom_card .card_content .title_list {

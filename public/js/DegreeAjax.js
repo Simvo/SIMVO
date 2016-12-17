@@ -1,68 +1,71 @@
-$(document).ready(function(){
+$(document).ready(function () {
 
-  $.ajaxSetup( {
+  $.ajaxSetup({
     headers: {
-      'X-CSRF-Token': $( 'meta[name=_token]' ).attr( 'content' )
+      'X-CSRF-Token': $('meta[name=_token]').attr('content')
     }
-  } );
+  });
 
   // Controls reset degree Modal
   var dialog = document.querySelector('dialog');
   var showDialogButton = $('#show-dialog');
-  if (! dialog.showModal) {
+  if (!dialog.showModal) {
     dialogPolyfill.registerDialog(dialog);
   }
-  $(showDialogButton).bind('click', function() {
+  $(showDialogButton).bind('click', function () {
     dialog.showModal();
   });
-  dialog.querySelector('.close').addEventListener('click', function() {
+  dialog.querySelector('.close').addEventListener('click', function () {
     dialog.close();
   });
 
   // Controls create Degree Behavior
   LoadMajors();
+  LoadVersions();
+  LoadStreams();
+  LoadSemesters();
 
-  $('#faculty-select').change(function(){
+  $('#faculty-select').change(function () {
     LoadMajors();
   });
 
-  $('#major-select').change(function(){
+  $('#major-select').change(function () {
     LoadVersions();
   });
 
-  $('#version-select').change(function(){
+  $('#version-select').change(function () {
     LoadStreams();
     LoadSemesters();
   })
 
-  $('#stream-select').change(function(){
+  $('#stream-select').change(function () {
     LoadSemesters();
   })
 
-  $("#reset-degree-button").click(function(){
-     dialog.showModal();
+  $("#reset-degree-button").click(function () {
+    dialog.showModal();
   });
 });
 
 
 //Loads all majors pertaining to the currently selected Faculty
-function LoadMajors(){
+function LoadMajors() {
   var selectedFaculty = $('#faculty-select option:selected').text();
   $('#major-select').empty();
 
-  if(selectedFaculty !== "None")
-  {
+  if (selectedFaculty !== "None") {
     $.ajax({
       type: 'post',
       url: '/auth/registration/get-majors',
-      data: { faculty : selectedFaculty},
-      success: function(data) {
+      data: {
+        faculty: selectedFaculty
+      },
+      success: function (data) {
 
         var response = JSON.parse(data);
 
-        for(var i =0; i<response.length; i++)
-        {
-          var option = '<option value="'+response[i][1]+'">' + response[i][0]+ '</option>';
+        for (var i = 0; i < response.length; i++) {
+          var option = '<option value="' + response[i][1] + '">' + response[i][0] + '</option>';
 
           $('#major-select').append(option);
         }
@@ -72,25 +75,25 @@ function LoadMajors(){
 }
 
 //Loads all version of program
-function LoadVersions(){
+function LoadVersions() {
   var selectedMajor = $('#major-select option:selected').val();
   $('#version-select').empty();
 
-  if(selectedMajor !== "None")
-  {
+  if (selectedMajor !== "None") {
     $.ajax({
       type: 'post',
       url: '/auth/registration/get-versions',
-      data: { program_id : selectedMajor},
-      success: function(data) {
+      data: {
+        program_id: selectedMajor
+      },
+      success: function (data) {
 
         var response = JSON.parse(data);
 
         $('#version-select').append('<option>-Select-</option>');
 
-        for(var i =0; i<response.length; i++)
-        {
-          var option = '<option value="'+response[i]+'">' + response[i]+ '</option>';
+        for (var i = 0; i < response.length; i++) {
+          var option = '<option value="' + response[i] + '">' + response[i] + '</option>';
 
           $('#version-select').append(option);
         }
@@ -99,27 +102,25 @@ function LoadVersions(){
   }
 }
 
-function LoadStreams(){
+function LoadStreams() {
   var selectedMajor = $('#major-select option:selected').val();
   var selectedVersion = $('#version-select option:selected').text();
   $('#stream-select').empty();
 
-  if(selectedMajor !== "None" && selectedVersion !== "None")
-  {
+  if (selectedMajor !== "None" && selectedVersion !== "None") {
 
     $.ajax({
       type: 'post',
       url: '/auth/registration/get-streams',
       data: {
-        program_id : selectedMajor,
-        version : selectedVersion
+        program_id: selectedMajor,
+        version: selectedVersion
       },
-      success : function(data) {
+      success: function (data) {
         var response = JSON.parse(data);
 
-        for(var i =0; i<response.length; i++)
-        {
-          var option = '<option value="' + response[i][0] + '">'+ response[i][1] +'</option>';
+        for (var i = 0; i < response.length; i++) {
+          var option = '<option value="' + response[i][0] + '">' + response[i][1] + '</option>';
           $('#stream-select').append(option);
         }
 
@@ -130,10 +131,10 @@ function LoadStreams(){
   }
 }
 
-function LoadSemesters(){
+function LoadSemesters() {
   var selectedStream = $('#stream-select option:selected').val();
 
-  var type = (selectedStream == -1)? "all": "fall";
+  var type = (selectedStream == -1) ? "all" : "fall";
   $('#semester-select').empty();
 
   $.ajax({
@@ -142,14 +143,31 @@ function LoadSemesters(){
     data: {
       semesters: type
     },
-    success: function(data) {
+    success: function (data) {
       var response = JSON.parse(data);
 
-      for(var i = 0; i<response.length; i++)
-      {
-        var option = '<option value="'+get_semester(response[i])+'">'+ response[i] +'</option>';
+      for (var i = 0; i < response.length; i++) {
+        var option = '<option value="' + get_semester(response[i]) + '">' + response[i] + '</option>';
         $('#semester-select').append(option);
       }
+    }
+  })
+}
+
+function editStatusBar() {
+  $.ajax({
+    type: 'post',
+    url: '/flowchart/remainingCourses',
+    success: function (data) {
+      var response = JSON.parse(data);
+      $("#major-status").text(response[0]);
+      $("#minor-status").text(response[2]);
+
+      var valMajor = ((response[0] / response[1])) * 100;
+      var valMinor = ((response[2] / response[3])) * 100;
+
+      document.querySelector('#progressBar').MaterialProgress.setProgress(valMajor);
+      document.querySelector('#progressBarMinor').MaterialProgress.setProgress(valMinor);
     }
   })
 }

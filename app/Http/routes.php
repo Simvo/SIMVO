@@ -32,6 +32,8 @@ Route::get('password/reset/{token}', ['as'=>'passwordResetPost','uses'=>'Auth\Pa
 
 Route::get('flowchart/reset-degree', ['as' => 'resetDegree', 'uses' => 'DegreeController@deleteDegree']);
 
+Route::get('/flowchart/remove-minor', ['as'=> 'removeMinor', 'uses'=> 'MinorController@removeMinor']);
+
 
 /* POST */
 
@@ -45,7 +47,10 @@ Route::post('password/reset', ['as'=>'passwordResetPost','uses'=>'Auth\PasswordC
 
 Route::post('/flowchart/new-user-create-degree', ['as'=>'newUserCreateDegree', 'uses'=>'FlowchartController@newUserCreateDegree']);
 
-Route::post('/flowchart/user-create-internship', ['as'=>'userCreateInternship', 'uses'=>'FlowchartAJAX@userCreateInternship']);
+Route::post('/flowchart/user-create-course', ['as'=>'userCreateCourse', 'uses'=>'FlowchartAJAX@userCreateCourse']);
+
+Route::post('/flowchart/add-minor', ['as'=>'addMinor', 'uses'=>'MinorController@addMinor']);
+
 
 /* AJAX */
 
@@ -61,6 +66,8 @@ Route::post('/flowchart/move-course', 'FlowchartAJAX@move_course');
 
 Route::post('/flowchart/add-course-to-Schedule', 'FlowchartAJAX@add_course_to_Schedule');
 
+Route::get('/flowchart/get-elective-groups', 'FlowchartAJAX@getElectiveGroups');
+
 Route::delete('/flowchart/delete_course_from_schedule', 'FlowchartAJAX@delete_course_from_schedule');
 
 Route::get('/flowchart/refresh-complementary-courses', 'FlowchartAJAX@refresh_complementary_courses');
@@ -71,4 +78,8 @@ Route::post('/flowchart/add_complementary_course_to_Flowchart', 'FlowchartAJAX@a
 
 Route::post('/flowchart/edit-internship', 'FlowchartAJAX@edit_internship');
 
+Route::post('/flowchart/edit-custom', 'FlowchartAJAX@edit_custom');
+
 Route::post('/flowchart/getErrors', 'FlowchartAJAX@get_errors');
+
+Route::post('/flowchart/remainingCourses','FlowchartAJAX@getMajorStatus_ajax');

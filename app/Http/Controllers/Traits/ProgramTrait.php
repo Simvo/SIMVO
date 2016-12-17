@@ -9,8 +9,13 @@ use App\User;
 use App\Stream;
 use App\StreamStructure;
 use App\Schedule;
+use App\Custom;
+use App\Internship;
+use Debugbar;
 use DB;
 use Auth;
+use Session;
+
 
 trait ProgramTrait
 {
@@ -43,6 +48,15 @@ trait ProgramTrait
 
         if(count($check)>0)
           $creditsTaken += $this->getCourseCredits($course[0], $course[1]);
+      }
+
+      $checkCustom = Custom::where('degree_id', $degree->id)
+                ->where('focus', $key)
+                ->get();
+
+      foreach($checkCustom as $course)
+      {
+        $creditsTaken += (int) $course->credits;
       }
 
       $progress[$key] = [$creditsTaken,$value];
@@ -106,6 +120,28 @@ trait ProgramTrait
     }
 
     return $majors;
+  }
+
+  /**
+  * Function that returns All Minors  In a certain Faculty
+  * @param String: Faculty name
+  * @return String array of all minors with name and program_id
+  **/
+  public function getMinors()
+  {
+    $minors_PDO = DB::table('programs')
+                  ->where('FIELD_OF_STUDY', 'MINOR')
+                  ->groupBy('PROGRAM_MAJOR')
+                  ->get(['PROGRAM_MAJOR', 'PROGRAM_ID', 'PROGRAM_TEACHING_FACULTY', 'PROGRAM_TOTAL_CREDITS']);
+
+    $minors = [];
+
+    foreach($minors_PDO as $minor)
+    {
+      $minors[] = [$minor->PROGRAM_MAJOR,$minor->PROGRAM_ID, $minor->PROGRAM_TEACHING_FACULTY, $minor->PROGRAM_TOTAL_CREDITS];
+    }
+
+    return $minors;
   }
 
   /**
@@ -286,7 +322,7 @@ trait ProgramTrait
       }
       if($courseCount == 0)
       {
-        $groups[$i] = null;
+        $groups[$i] = [];
       }
     }
 
@@ -302,6 +338,8 @@ trait ProgramTrait
   {
     $user = Auth::User();
 
+    $group = str_replace("MINOR: ", "", $group);
+
     $courses_PDO = DB::table('programs')
                   ->where('VERSION', $degree->version_id)
                   ->where('PROGRAM_ID', $degree->program_id)
@@ -310,6 +348,19 @@ trait ProgramTrait
                   ->get(['SUBJECT_CODE', 'COURSE_NUMBER', 'COURSE_CREDITS','SET_TYPE','COURSE_TITLE']);
 
     $coursesInGroup = [];
+
+    
+    
+
+    if(count($courses_PDO) < 2 && 
+    strpos($group, "Complementary") == 0)//check to see if there are courses in the set type
+    {
+      $courses_PDO = DB::table('programs')
+                   ->where('PROGRAM_ID', $degree->program_id)
+                   ->where('SET_TYPE', "Complementary") // THIS IS A MEGA HACK, but i don't see another way around this at the moment'
+                   ->orderBy('COURSE_NUMBER', 'asc')
+                   ->get(['SUBJECT_CODE', 'COURSE_NUMBER', 'COURSE_CREDITS','SET_TYPE','COURSE_TITLE']);
+    }
 
     foreach($courses_PDO as $course)
     {
@@ -354,8 +405,10 @@ trait ProgramTrait
     {
       $versions[] = $version->VERSION;
     }
-
-    return $versions;
+    if(count($versions))
+      return $versions;
+    else
+      return [1];
   }
 
   /**
@@ -408,5 +461,39 @@ trait ProgramTrait
     return DB::table('programs')->where('SUBJECT_CODE', $sub_code)
                ->where('COURSE_NUMBER', $course_num)
                ->First(['COURSE_CREDITS'])->COURSE_CREDITS;
+  }
+
+  /**
+   *Returns total remaining credits
+   *@param None
+   *@Return int: number of credits remaing to take
+   **/
+   public function getRemainingCredits($degree)
+   {
+     $progress = [];
+     $progress = $this->generateProgressBar($degree);
+ 
+     $creditsTakenSum = 0;
+     foreach($progress as $key => $creditsTaken)
+     {
+       $creditsTakenSum = $creditsTakenSum + $creditsTaken[0];
+     }
+     return $creditsTakenSum;
+   }
+
+   public function getMajorStatus()
+   {
+     if(!Auth::Check())
+      return;
+     else
+       $user = Auth::User();
+ 
+     $degree = Session::get('degree');
+     if($degree == null)
+     {
+       return;
+     }
+     $creditsTakenSum = $this->getRemainingCredits($degree);
+     return $creditsTakenSum;
   }
 }

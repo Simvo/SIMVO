@@ -1,15 +1,21 @@
 $(document).ready(function()
 {
+  editStatusBar();
   renderSortable();
   initAddCompCourseButton();
   initAddInternshipButton();
+  initAddCustomCourseButton();
   initDeleteSemesterListener(".delete-semester");
   initAddSemesterListener(".add-semester");
   initRemoveCourseListener(".remove-course");
   initComplementaryModalRevealListener(".semester-add-comp-course-button");
   initEditInternship(".edit-internship");
+  initEditCustomCourse(".edit_custom");
   refreshDeleteSemester();
-  refreshComplementaryCourses();
+  if(!$("#make_degree").length)
+  {
+    refreshComplementaryCourses();
+  }
 });
 
 function startAddCourseTutorial()
@@ -259,17 +265,14 @@ function initAddCompCourseButton()
   $(".add_comp_course_button").click(function()
   {
     var target_sem = $($($("#course_schedule").find($("a.Complementary_Add_Target"))).parent());
-    var semester2 = $(target_sem.find("div.sortable")).attr("id");
-    if(semester2 != "Exemption")
+    var semester = $(target_sem.find("div.sortable")).attr("id");
+    if(semester != "Exemption")
     {
-      var semester = semester2.split(" ");
+      semester = semester.split(" ");
       semester = semester[0] + " " + semester[1];
       semester = get_semester(semester);
     }
-    else
-    {
-      var semester = semester2;
-    }
+
     var courseType = ['Required', 'Complementary', 'Elective'];
     var selected = [];
 
@@ -311,12 +314,18 @@ function initAddCompCourseButton()
         },
         success: function(data) {
           var response = JSON.parse(data);
+          // edit status bar
+          editStatusBar();
           if (response === 'Error')
           {
             //error handler
           }
           else
           {
+            console.log(response[5]);
+            removeErrors(response[5]);
+            getErrors();
+
             var comp_course = "<div class='custom_card " + response[4] + "_course' id='" + response[0] + "'>";
             comp_course += "<div class='card_content'>";
             comp_course += response[3]['SUBJECT_CODE'] + " &nbsp " + response[3]['COURSE_NUMBER'] + "&nbsp";
@@ -324,7 +333,7 @@ function initAddCompCourseButton()
             comp_course += "<i class='material-icons'>arrow_drop_down</i>";
             comp_course += "</button>" + " " + response[3]['COURSE_CREDITS'];
             comp_course += "<ul class='mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect' for='menu_for_" + response[0] + "''>";
-            //comp_course += "<li class='mdl-menu__item show-prereqs' id='show_prereqs_" + response[0] + "'>Show Pre-Requisites</li>";
+            comp_course += "<li class='mdl-menu__item show-prereqs' id='show_prereqs_" + response[0] + "'>Show Pre-Requisites</li>";
             comp_course += "<li class='mdl-menu__item remove-course' id='remove_" + response[0] + "'>Remove</li>";
             comp_course += "</ul>";
             comp_course += "</div>";
@@ -333,9 +342,7 @@ function initAddCompCourseButton()
 
             $(target_sem.find("div.credit_counter")).before(comp_course);
             $(target_sem.find('div.credit_counter_num' )).text( 'CREDITS: ' + response[1]);
-            checkVSB(semester, response[0] , $( "[id='" + semester2 + "']" ));
-            removeErrors(response[5]);
-            getErrors();
+
 
             for (var group in response[2])
             {
@@ -345,6 +352,16 @@ function initAddCompCourseButton()
                     var target = $( "td[id='" + group + "']" ).text("" + groupProgress[0] + "/" + groupProgress[1]);
                 }
             }
+
+            for (var group in response[6])
+            {
+                if (response[6].hasOwnProperty(group))
+                {
+                    var groupProgress = response[6][group];
+                    var target = $( "td[id='" + group + "']" ).text("" + groupProgress[0] + "/" + groupProgress[1]);
+                }
+            }
+
             initRemoveCourseListener("#remove_"+ response[0]);
             refreshComplementaryCourses();
             refreshDeleteSemester();
@@ -379,15 +396,6 @@ function initAddCompCourseButton()
         {
           var courseID = $(this).attr("id").substring(7, $(this).attr("id").length);
 
-          if($(".Internship_holder_" + courseID).length)
-          {
-            var internshipDelete = $(".Internship_holder_" + courseID);
-            //Case where internship has holder semesters
-            for(var i = 0; i < internshipDelete.length; i++ )
-            {
-              $("#remove_" + $(internshipDelete[i]).attr("id")).trigger("click");
-            }
-          }
           //delete from database
           $.ajax({
             type: "delete",
@@ -398,10 +406,8 @@ function initAddCompCourseButton()
             success: function(data) {
               var response = JSON.parse(data);
 
-              // remove any errors associated with deleted course
-              removeErrors(response[4]);
-              getErrors();
-
+              // update status bar
+              editStatusBar();
               if (response === 'Error')
               {
                 //error handler
@@ -419,8 +425,10 @@ function initAddCompCourseButton()
                   var semester = 'Exemption';
                 }
 
-                $("#" + response[0]).remove();
-                $("."+semester).children( '.credit_counter' ).children( '.credit_counter_num' ).text( 'CREDITS: ' + response[1]);
+
+                $("#" + response[5] + response[0]).remove();
+
+                $("."+semester).find( '.credit_counter_num' ).text( 'CREDITS: ' + response[1]);
 
 
                 for (var group in response[2])
@@ -431,17 +439,22 @@ function initAddCompCourseButton()
                         var target = $( "td[id='" + group + "']" ).text("" + groupProgress[0] + "/" + groupProgress[1]);
                     }
                 }
+
+                for (var group in response[6])
+                {
+                    if (response[6].hasOwnProperty(group))
+                    {
+                        var groupProgress = response[6][group];
+                        var target = $( "td[id='" + group + "']" ).text("" + groupProgress[0] + "/" + groupProgress[1]);
+                    }
+                }
+
                 refreshDeleteSemester();
                 refreshComplementaryCourses();
               }
             }
           });
-
-
-
-
         }
-
       });
     }
 
@@ -453,6 +466,7 @@ function initAddCompCourseButton()
 
         success: function(data) {
           var response = JSON.parse(data);
+          console.log(response);
           var refreshedCourses = response[0];
           if (response === 'Error')
           {
@@ -481,10 +495,11 @@ function initAddCompCourseButton()
                   }
                   if(!existCoursesInTab)
                   {
-                    html += '<button type="button" class="mdl-button mdl-js-button mdl-button--raised add_comp_course_button">Add</button>';
+                    html += '<button type="button" class="mdl-button mdl-js-button mdl-button--raised add_button add_comp_course_button">Add</button>';
                   }
                   existCoursesInTab = true;
-                  html += '<h4 id="' + tabtitle +'_table_header_' + key + '" style="text-align:center">' + key + ' (' + response[1][key] + ' credits)</h4>';
+                  if(typeof response[1][key] !== "undefined") html += '<h4 id="' + tabtitle +'_table_header_' + key + '" style="text-align:center">' + key + ' (' + response[1][key] + ' credits)</h4>';
+                  else html += '<h4 id="' + tabtitle +'_table_header_' + key + '" style="text-align:center">' + key + '</h4>';
                   html += '<table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp ' + tabtitle + '_table" id="' + tabtitle + '_table_'+key+'">';
                   html += '<thead>';
                   html += '<tr>';
@@ -518,7 +533,9 @@ function initAddCompCourseButton()
             tabs += '<a href="#Custom_tab" class="mdl-tabs__tab">Custom</a>';
             tabs += '<a href="#Internship_tab" class="mdl-tabs__tab">Internship</a>';
             tabs += '</div>';
-            html += '<div class="mdl-tabs__panel" id="Custom_tab"></div>';
+            html += '<div class="mdl-tabs__panel" id="Custom_tab">';
+            html += $("#Custom_tab").html();
+            html += '</div>';
             html += '<div class="mdl-tabs__panel" id="Internship_tab">';
             html += $("#Internship_tab").html();
             html += '</div>'
@@ -528,8 +545,16 @@ function initAddCompCourseButton()
             $("#comp_courses").append(tabs);
             initAddCompCourseButton();
             initAddInternshipButton();
+            initAddCustomCourseButton();
 
             var upgrade = $("#Internship_tab").find("div.is-upgraded");
+            for(var l = 0; l < upgrade.length; l++)
+            {
+              $(upgrade[l]).removeClass("is-upgraded");
+              $(upgrade[l]).removeAttr("data-upgraded");
+            }
+
+            upgrade = $("#Custom_tab").find("div.is-upgraded");
             for(var l = 0; l < upgrade.length; l++)
             {
               $(upgrade[l]).removeClass("is-upgraded");
@@ -564,7 +589,7 @@ function initAddCompCourseButton()
 
         var company = $("#internship_company_name").val();
         var length = parseInt($("#internship_length_select").val());
-        var width = 160;
+        var width = $(".custom_card").width();
         var position = $("#internship_position_held").val();
 
 
@@ -572,14 +597,14 @@ function initAddCompCourseButton()
         if(company.length == 0 || position.length == 0 )
         {
           $("#Internship_error").remove();
-          var invalid = '<div id="Internship_error"> Please fill out all of the internship information </div>'
+          var invalid = '<div id="Internship_error" class="Course_add_error"> Please fill out all of the internship information </div>'
           $(".add_internship_button").after(invalid);
           return;
         }
         else if(semester_letter == "Exemption")
         {
           $("#Internship_error").remove();
-          var invalid = '<div id="Internship_error">Internships cannot be added to the Exemption list!';
+          var invalid = '<div id="Internship_error" class="Course_add_error">Internships cannot be added to the Exemption list!';
           $(".add_internship_button").after(invalid);
           return;
         }
@@ -601,7 +626,7 @@ function initAddCompCourseButton()
           if($("[id='" + formatSemesterID(semester_letter) + "']").find("div.custom_card").length > 1 )
           {
             $("#Internship_error").remove();
-            var invalid = '<div id="Internship_error"> There were courses found in semesters you wish to place your internship! Make sure you clear these out before adding your internship</div>'
+            var invalid = '<div id="Internship_error" class="Course_add_error"> There were courses found in semesters you wish to place your internship! Make sure you clear these out before adding your internship</div>'
             $(".add_internship_button").after(invalid);
             return;
           }
@@ -618,69 +643,53 @@ function initAddCompCourseButton()
           {
             $("[id='" + prev_sem +"-gap']").trigger("click");
           }
-          width += 220;
+          width += $(".custom_card").width() + 60;
           k++;
           semester_letter = get_semester_letter(get_next_semester(get_semester(semester_letter)));
         }
 
-        width -= 220;
+        width -= ($(".custom_card").width() + 60);
 
 
 
           $.ajax({
             type: "post",
-            url: "/flowchart/user-create-internship",
+            url: "/flowchart/user-create-course",
             data: {
               semester: semester,
-              courseTypeWidthAndLength: 'Internship ' + width + ' ' + length,
+              details: 'Internship',
+              width: width,
+              duration: length,
               company: company,
               position: position,
             },
 
             success: function(data) {
               var response = JSON.parse(data);
-              for( var i = 0; i < response[4].length; i++)
-              {
-                var sem = get_semester_letter(response[4][i]);
+
+                var sem = get_semester_letter(response[4]);
                 var sem2 = sem.split(" ");
                 sem2 = sem2[0] + sem2[1];
-                if(i == 0)
-                {
-                  var comp_course = "<div class='custom_card pinned " + response[1] + "_course' id='" + response[0][i] + "' style='width:"+width+"px;'>";
-                  comp_course += "<div class='card_content'>";
-                  comp_course += '<div class="internship_company_name" id="internship_company_name_' + response[0][i] + '">' + response[2] + '</div>';
-                  comp_course += '<div class="internship_position_held" id="internship_position_held_' + response[0][i] + '">' + response[3] + '</div>';
-                  comp_course += "<button id='menu_for_" + response[0][i] + "' class='mdl-button mdl-js-button mdl-button--icon'>";
-                  comp_course += "<i class='material-icons'>arrow_drop_down</i>";
-                  comp_course += "</button>"
-                  comp_course += "<ul class='mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect' for='menu_for_" + response[0][i] + "''>";
-                  comp_course += "<li class='mdl-menu__item edit-internship' id='edit_internship_" + response[0][i] + "'>edit</li>";
-                  comp_course += "<li class='mdl-menu__item remove-course' id='remove_" + response[0][i] + "'>Remove</li>";
-                  comp_course += "</ul>";
-                  comp_course += "</div>";
-                  comp_course += "</div>";
-                  $("." + sem2).append(comp_course);
-                }
-                else
-                {
-                  var comp_course = "<div class='custom_card pinned Internship_holder_" + response[0][0] + "' id='" + response[0][i] + "' >";
-                  comp_course += "<div class='card_content'>";
-                  comp_course += '<div>' + response[2] + '</div>';
-                  comp_course += '<div>' + response[3] + '</div>';
-                  comp_course += "<button id='menu_for_" + response[0][i] + "' class='mdl-button mdl-js-button mdl-button--icon'>";
-                  comp_course += "<i class='material-icons'>arrow_drop_down</i>";
-                  comp_course += "</button>"
-                  comp_course += "<ul class='mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect' for='menu_for_" + response[0][i] + "''>";
-                  comp_course += "<li class='mdl-menu__item edit-internship' id='edit_internship_" + response[0][i] + "'>edit</li>";
-                  comp_course += "<li class='mdl-menu__item remove-course' id='remove_" + response[0][i] + "'>Remove</li>";
-                  comp_course += "</ul>";
-                  comp_course += "</div>";
-                  comp_course += "</div>";
-                  $("." + sem2).append(comp_course);
-                }
-                initRemoveCourseListener("#remove_" + response[0][i]);
-                initEditInternship("#edit_internship_" + response[0][i]);
-              }
+
+                var comp_course = "<div class='custom_card pinned " + response[1] + "_course' id='int" + response[0] + "' style='width:"+width+"px;'>";
+                comp_course += "<div class='card_content'>";
+                comp_course += '<div class="internship_company_name" id="internship_company_name_int' + response[0] + '">' + response[2] + '</div>';
+                comp_course += '<div class="internship_position_held" id="internship_position_held_int' + response[0] + '">' + response[3] + '</div>';
+                comp_course += "<button id='menu_for_int" + response[0] + "' class='mdl-button mdl-js-button mdl-button--icon'>";
+                comp_course += "<i class='material-icons'>arrow_drop_down</i>";
+                comp_course += "</button>"
+                comp_course += "<ul class='mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect' for='menu_for_int" + response[0] + "''>";
+                comp_course += "<li class='mdl-menu__item edit-internship' id='edit_internship_int" + response[0] + "'>Edit</li>";
+                comp_course += "<li class='mdl-menu__item remove-course' id='remove_int" + response[0] + "'>Remove</li>";
+                comp_course += "</ul>";
+                comp_course += "</div>";
+                comp_course += "</div>";
+                $("." + sem2).append(comp_course);
+
+
+                initRemoveCourseListener("#remove_int" + response[0]);
+                initEditInternship("#edit_internship_int" + response[0]);
+
 
               refreshDeleteSemester();
               refreshComplementaryCourses();
@@ -701,33 +710,33 @@ function initAddCompCourseButton()
     function initEditInternship(target)
     {
       $(target).click(function(e){
-        var id = $(this).attr("id").substring(16, $(this).attr("id").length);
-        var companyName = $("#internship_company_name_" + id).html();
-        var positionHeld = $("#internship_position_held_" + id).html();
+        var id = $(this).attr("id").substring(19, $(this).attr("id").length);
+        var companyName = $("#internship_company_name_int" + id).html();
+        var positionHeld = $("#internship_position_held_int" + id).html();
 
         var textfield1 = '<div class="mdl-textfield mdl-js-textfield">';
-        textfield1 += '<textarea class="mdl-textfield__input edit_internship_textfield" type="text" rows= "3" id="edit_company_name_textfield_' + id + '" >' + companyName + '</textarea>';
-        textfield1 += '<label class="mdl-textfield__label" for="edit_position_held_textfield_' + id + '">Company name</label>';
+        textfield1 += '<textarea class="mdl-textfield__input edit_internship_textfield" type="text" rows="3" id="edit_company_name_textfield_int' + id + '" >' + companyName + '</textarea>';
+        textfield1 += '<label class="mdl-textfield__label" for="edit_position_held_textfield_int' + id + '">Company name</label>';
         textfield1 += '</div>';
 
         var textfield2 = '<div class="mdl-textfield mdl-js-textfield">';
-        textfield2 += '<textarea class="mdl-textfield__input edit_internship_textfield" type="text" rows= "2" id="edit_position_held_textfield_' + id + '" >' + positionHeld + '</textarea>';
-        textfield2 += '<label class="mdl-textfield__label" for="edit_position_held_textfield_' + id + '">Position held</label>';
+        textfield2 += '<textarea class="mdl-textfield__input edit_internship_textfield" type="text" rows= "2" id="edit_position_held_textfield_int' + id + '" >' + positionHeld + '</textarea>';
+        textfield2 += '<label class="mdl-textfield__label" for="edit_position_held_textfield_int' + id + '">Position held</label>';
         textfield2 += '</div>';
 
-        $("#menu_for_" + id).remove();
-        $("#internship_company_name_" + id).html(textfield1);
-        $("#internship_position_held_" + id).html(textfield2);
+        $("#menu_for_int" + id).remove();
+        $("#internship_company_name_int" + id).html(textfield1);
+        $("#internship_position_held_int" + id).html(textfield2);
 
         var options = '<div> ';
-        options += '<button id="internship_edit_cancel_' + id + '" class="mdl-button mdl-js-button mdl-js-ripple-effect">';
+        options += '<button id="internship_edit_cancel_int' + id + '" class="mdl-button mdl-js-button mdl-js-ripple-effect">';
         options += '<i class="material-icons">cancel</i>';
         options += '</button>';
-        options += '<button id="internship_edit_confirm_' + id + '" class="mdl-button mdl-js-button mdl-js-ripple-effect">';
+        options += '<button id="internship_edit_confirm_int' + id + '" class="mdl-button mdl-js-button mdl-js-ripple-effect">';
         options += '<i class="material-icons">check</i>';
         options += '</button>';
         options += "</div>";
-        $("#internship_position_held_" + id).after(options);
+        $("#internship_position_held_int" + id).after(options);
 
         initConfirmEditInternshipButton(id,companyName, positionHeld);
 
@@ -742,33 +751,33 @@ function initAddCompCourseButton()
     {
 
       //on confirmTarget click
-      $("#internship_edit_confirm_" + id).click(function(){
-        var newCN = $("#edit_company_name_textfield_" + id).val();
-        var newPH = $("#edit_position_held_textfield_" + id).val();
+      $("#internship_edit_confirm_int" + id).click(function(){
+        var newCN = $("#edit_company_name_textfield_int" + id).val();
+        var newPH = $("#edit_position_held_textfield_int" + id).val();
         var html = '<div class="card_content">';
 
         if(originalCN == newCN && originalPH == newPH)
         {
-          html += '<div class="internship_company_name" id="internship_company_name_' + id + '"> ' + originalCN + ' </div>';
-          html += '<div class="internship_position_held" id="internship_position_held_' + id + '"> ' + originalPH + ' </div>';
-          html += '<button id="menu_for_' + id + '" class="mdl-button mdl-js-button mdl-button--icon">';
+          html += '<div class="internship_company_name" id="internship_company_name_int' + id + '"> ' + originalCN + ' </div>';
+          html += '<div class="internship_position_held" id="internship_position_held_int' + id + '"> ' + originalPH + ' </div>';
+          html += '<button id="menu_for_int' + id + '" class="mdl-button mdl-js-button mdl-button--icon">';
           html += '<i class="material-icons">arrow_drop_down</i>';
           html += '</button>';
-          html += '<ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="menu_for_' + id + '">';
-          html += '<li class="mdl-menu__item edit-internship" id="edit_internship_' + id + '">Edit</li>';
-          html += '<li class="mdl-menu__item remove-course" id="remove_' + id+ '">Remove</li>';
+          html += '<ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="menu_for_int' + id + '">';
+          html += '<li class="mdl-menu__item edit-internship" id="edit_internship_int' + id + '">Edit</li>';
+          html += '<li class="mdl-menu__item remove-course" id="remove_int' + id+ '">Remove</li>';
           html += '</ul>';
         }
         else
         {
-          html += '<div class="internship_company_name" id="internship_company_name_' + id + '"> ' + newCN + ' </div>';
-          html += '<div class="internship_position_held" id="internship_position_held_' + id + '"> ' + newPH + ' </div>';
-          html += '<button id="menu_for_' + id + '" class="mdl-button mdl-js-button mdl-button--icon">';
+          html += '<div class="internship_company_name" id="internship_company_name_int' + id + '"> ' + newCN + ' </div>';
+          html += '<div class="internship_position_held" id="internship_position_held_int' + id + '"> ' + newPH + ' </div>';
+          html += '<button id="menu_for_int' + id + '" class="mdl-button mdl-js-button mdl-button--icon">';
           html += '<i class="material-icons">arrow_drop_down</i>';
           html += '</button>';
-          html += '<ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="menu_for_' + id + '">';
-          html += '<li class="mdl-menu__item edit-internship" id="edit_internship_' + id + '">Edit</li>';
-          html += '<li class="mdl-menu__item remove-course" id="remove_' + id+ '">Remove</li>';
+          html += '<ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="menu_for_int' + id + '">';
+          html += '<li class="mdl-menu__item edit-internship" id="edit_internship_int' + id + '">Edit</li>';
+          html += '<li class="mdl-menu__item remove-course" id="remove_int' + id+ '">Remove</li>';
           html += '</ul>';
           //DB CALL!
           $.ajax({
@@ -785,10 +794,10 @@ function initAddCompCourseButton()
         }
         html += '</div>';
 
-        $("#" + id).html( html );
+        $("#int" + id).html( html );
 
-        initEditInternship("#edit_internship_" + id);
-        initRemoveCourseListener("#remove_" + id);
+        initEditInternship("#edit_internship_int" + id);
+        initRemoveCourseListener("#remove_int" + id);
 
         //Dynamically render MDL
         componentHandler.upgradeDom();
@@ -797,33 +806,379 @@ function initAddCompCourseButton()
 
 
       //on cancelTarget click
-      $("#internship_edit_cancel_" + id).click(function(){
-
-        var newCN = $("#edit_company_name_textfield_" + id).val();
-        var newPH = $("#edit_position_held_textfield_" + id).val();
+      $("#internship_edit_cancel_int" + id).click(function(){
+        var newCN = $("#edit_company_name_textfield_int" + id).val();
+        var newPH = $("#edit_position_held_textfield_int" + id).val();
 
         var html = '<div class="card_content">';
-        html += '<div class="internship_company_name" id="internship_company_name_' + id + '"> ' + originalCN + ' </div>';
-        html += '<div class="internship_position_held" id="internship_position_held_' + id + '"> ' + originalPH + ' </div>';
-        html += '<button id="menu_for_' + id + '" class="mdl-button mdl-js-button mdl-button--icon">';
+        html += '<div class="internship_company_name" id="internship_company_name_int' + id + '"> ' + originalCN + ' </div>';
+        html += '<div class="internship_position_held" id="internship_position_held_int' + id + '"> ' + originalPH + ' </div>';
+        html += '<button id="menu_for_int' + id + '" class="mdl-button mdl-js-button mdl-button--icon">';
         html += '<i class="material-icons">arrow_drop_down</i>';
         html += '</button>';
-        html += '<ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="menu_for_' + id + '">';
-        html += '<li class="mdl-menu__item edit-internship" id="edit_internship_' + id + '">Edit</li>';
-        html += '<li class="mdl-menu__item remove-course" id="remove_' + id+ '">Remove</li>';
+        html += '<ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="menu_for_int' + id + '">';
+        html += '<li class="mdl-menu__item edit-internship" id="edit_internship_int' + id + '">Edit</li>';
+        html += '<li class="mdl-menu__item remove-course" id="remove_int' + id+ '">Remove</li>';
         html += '</ul>';
         html += '</div>';
-        $("#" + id).html( html );
+        $("#int" + id).html( html );
 
-        initEditInternship("#edit_internship_" + id);
-        initRemoveCourseListener("#remove_" + id);
+        initEditInternship("#edit_internship_int" + id);
+        initRemoveCourseListener("#remove_int" + id);
 
         //Dynamically render MDL
         componentHandler.upgradeDom();
 
       });
+    }
+
+
+function initAddCustomCourseButton()
+{
+  $(".add_custom_course_button").click( function(){
+    var target_sem = $($($("#course_schedule").find($("a.Complementary_Add_Target"))).parent());
+    var semester_letter = $(target_sem.find("div.sortable")).attr("id");
+    if(semester_letter != "Exemption")
+    {
+
+      semester_letter = semester_letter.split(" ");
+      semester_letter = semester_letter[0] + " " + semester_letter[1];
+      var semester = get_semester(semester_letter);
+    }
+    else
+    {
+      //throw error message!
+      $("#Custom_error").remove();
+      var invalid = '<div id="Custom_error" class="Course_add_error"> You may not add custom courses to the exemption semester! </div>'
+      $(".add_custom_course_button").after(invalid);
+      return;
+    }
 
 
 
+    var title = $("#custom_title").val();
+    var credits = parseInt($("#custom_credit_select").val());
+    var focus = $("#custom_focus").val().substring(13, $("#custom_focus").val().length);
+    var description = $("#custom_description").val();
+
+    if(title == "")
+    {
+      //throw error message!
+      $("#Custom_error").remove();
+      var invalid = '<div id="Custom_error" class="Course_add_error"> Please fill out all the Custom Course infromation before adding! </div>'
+      $(".add_custom_course_button").after(invalid);
+      return;
+    }
+    else
+    {
+      $("#Custom_error").remove();
+    }
+
+    $.ajax({
+      type: "post",
+      url: "/flowchart/user-create-course",
+      data: {
+        details: "Custom",
+        credits: credits,
+        title: title,
+        description: description,
+        focus: focus,
+        semester: semester,
+
+      },
+      success: function(data){
+        var response = JSON.parse(data);
+
+        var html = '';
+        var sem = get_semester_letter(response[4]);
+        var sem2 = sem.split(" ");
+        var cutTitle = response[2];
+        if(cutTitle.length > 11)
+        {
+          cutTitle = cutTitle.substring(0,8) + "...";
+        }
+        sem2 = sem2[0] + sem2[1];
+
+        html += '<div class="custom_card ' + response[1] + '_course" id="cust' + response[0] + '" >';
+        html += '<div class="card_content">';
+        html += '<div class="custom_course_title" id="custom_course_title_cust' + response[0] + '">' + cutTitle +  ' </div> &nbsp  &nbsp';
+        html += '<button id="menu_for_cust' + response[0] + '" class="mdl-button mdl-js-button mdl-button--icon">';
+        html += '<i class="material-icons">arrow_drop_down</i>';
+        html += '</button> &nbsp &nbsp';
+        html += '<div class="custom_course_credits" id="custom_course_credits_cust' + response[0] + '">'+ response[3] + '</div>';
+        html += '<div class="custom_course_focus" id="custom_course_focus_cust' + response[0] + '">' + response[7] + '</div>';
+
+        html += '<ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="menu_for_cust' + response[0] + '">';
+        html += '<li disabled class=" mdl-menu__item mdl-menu__item--full-bleed-divider custom_course_description" id="custom_course_description_cust' + response[0] + '">' + response[8] + '</li>';
+        html += '<li class="mdl-menu__item edit_custom" id="edit_custom_cust' + response[0] + '">Edit</li>';
+        html += '<li class="mdl-menu__item remove-course" id="remove_cust' + response[0] + '">Remove</li>';
+        html += '</ul>';
+        html += '</div>';
+        html += '</div>';
+
+        $(target_sem.find("div.credit_counter")).before(html);
+        $(target_sem.find('div.credit_counter_num' )).text( 'CREDITS: ' + response[5]);
+
+
+        for (var group in response[6])
+        {
+            if (response[6].hasOwnProperty(group))
+            {
+                var groupProgress = response[6][group];
+                var target = $( "td[id='" + group + "']" ).text("" + groupProgress[0] + "/" + groupProgress[1]);
+            }
+        }
+
+        initEditCustomCourse("#edit_custom_cust" + response[0]);
+        initRemoveCourseListener("#remove_cust" + response[0]);
+        refreshDeleteSemester();
+        refreshComplementaryCourses();
+
+
+
+        //Dynamically render MDL
+        componentHandler.upgradeDom();
+
+      }
+    });
+
+
+    $('#comp_courses').foundation('reveal', 'close');
+
+
+
+
+  });
+
+}
+
+function initEditCustomCourse(target){
+  $(target).click(function() {
+    var id = $(this).attr("id").substring(16, $(this).attr("id").length );
+
+    $("#cust" + id).animate({"width":"300px"},{queue: false, duration: 100},"linear");
+    $("#cust" + id).animate({"height":"400px"},{queue: false, duration: 100},"linear");
+
+    //get custom course values
+    var title = $.trim($("#custom_course_title_cust" + id).html());
+    var description = $.trim($("#custom_course_description_cust" + id).text());
+    var credits = parseInt($("#custom_course_credits_cust" + id).html());
+    var focus = $.trim($("#custom_course_focus_cust" + id).html());
+
+
+    $.ajax({
+      type: 'get',
+      url: '/flowchart/get-elective-groups',
+      success: function(data) {
+
+        var response = JSON.parse(data);
+
+
+
+
+
+            var html = '<div class="card_content">';
+            html += '<div class="mdl-textfield mdl-js-textfield">';
+            html += '<textarea class="mdl-textfield__input edit_internship_textfield" type="text" rows= "3" id="edit_custom_course_title_cust' + id + '" >' + title + '</textarea>';
+            html += '<label class="mdl-textfield__label" for="edit_custom_course_title_cust' + id + '">Custom Title</label>';
+            html += '</div>';
+
+            html += '<div class="mdl-textfield mdl-js-textfield">';
+            html += '<textarea class="mdl-textfield__input edit_internship_textfield" type="text" rows= "3" id="edit_custom_course_description_cust' + id + '" >' + description + '</textarea>';
+            html += '<label class="mdl-textfield__label" for="edit_custom_course_description_cust' + id + '">Custom Description</label>';
+            html += '</div>';
+
+
+            html += '<div id="custom_course_focus_cust' + id + '">';
+            html += 'Focus: ';
+            html += '<select name="Focus" id="edit_custom_focus_select_cust' + id + '" class="reg_dropdown form-control">';
+
+            for(var group in response )
+            {
+              html += '<option value="'+ group +'">' + group + '</option>';
+            }
+            html += '<option value="Miscellaneous">Miscellaneous</option>';
+            html += '</select>';
+            html += '</div>';
+            html += '<br>';
+
+            html += '<div id="custom_course_credits_cust' + id + '">';
+            html += 'Credits: ';
+            html += '<select name="Credits" id="edit_custom_credits_select_cust' + id + '" class="reg_dropdown form-control">';
+            for(var i = 1; i <= 6; i++ )
+            {
+              html += '<option value="'+ i +'">' + i + '</option>';
+            }
+            html += '</select>';
+            html += '</div>';
+
+            html += '</div>';
+
+            html += '<div style="margin:auto;"> ';
+            html += '<button id="custom_edit_cancel_cust' + id + '" class="mdl-button mdl-js-button mdl-js-ripple-effect">';
+            html += '<i class="material-icons">cancel</i>';
+            html += '</button>';
+            html += '<button id="custom_edit_confirm_cust' + id + '" class="mdl-button mdl-js-button mdl-js-ripple-effect">';
+            html += '<i class="material-icons">check</i>';
+            html += '</button>';
+            html += "</div>";
+
+
+            $("#cust" + id).html(html);
+            $("#cust" + id).addClass("pinned");
+
+            renderSortable();
+            initConfirmEditCustomButton(id, title, description, focus, credits);
+            //Dynamically render MDL
+            componentHandler.upgradeDom();
+
+      }
+    });
+  });
+}
+
+
+function initConfirmEditCustomButton( id, originalTitle, originalDescription, originalGroup, originalCredits){
+  $("#custom_edit_confirm_cust" + id).click(function(){
+    var newTitle = $("#edit_custom_course_title_cust" + id).val();
+    var newDescription = $("#edit_custom_course_description_cust" + id).val();
+    var newGroup = $("#edit_custom_focus_select_cust" + id).val();
+    var newCredits = parseInt($("#edit_custom_credits_select_cust" + id).val());
+    var cutTitle = newTitle;
+    if(cutTitle.length > 11)
+    {
+      cutTitle = cutTitle.substring(0,8) + "...";
+    }
+
+    if(newTitle == originalTitle && newDescription == originalDescription && newGroup == originalGroup && newCredits == originalCredits)
+    {
+      var html = '<div class="card_content">';
+      html += '<div class="custom_course_title" id="custom_course_title_cust' + id + '">' + cutTitle + '</div> &nbsp  &nbsp';
+      html += '<button id="menu_for_cust' + id + '" class="mdl-button mdl-js-button mdl-button--icon">';
+      html += '<i class="material-icons">arrow_drop_down</i>';
+      html += '</button>';
+      html += '<div class="custom_course_credits" id="custom_course_credits_cust' + id + '"> ' + originalCredits + ' </div>';
+      html += '<div class="custom_course_focus" id="custom_course_focus_cust' + id + '"> ' + originalGroup + ' </div>';
+
+      html += '<ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="menu_for_cust' + id + '">';
+      html += '<li disabled class=" mdl-menu__item mdl-menu__item--full-bleed-divider custom_course_description" id="custom_course_description_cust' + id + '">' + originalDescription + ' </li>';
+      html += '<li class="mdl-menu__item edit_custom" id="edit_custom_cust' + id + '">Edit</li>';
+      html += '<li class="mdl-menu__item remove-course" id="remove_cust' + id + '">Remove</li>';
+      html += '</ul>';
+      html += '</div>';
+
+      $("#cust" + id).html(html);
+      $("#cust" + id).animate({"width":"160px"},{queue: false, duration: 100},"linear");
+      $("#cust" + id).animate({"height":"45px"},{queue: false, duration: 100},"linear");
+
+      initEditCustomCourse("#edit_custom_cust" + id);
+      initRemoveCourseListener("#remove_cust" + id);
+
+      //Dynamically render MDL
+      componentHandler.upgradeDom();
 
     }
+    else
+    {
+
+      var html = '<div class="card_content">';
+      html += '<div class="custom_course_title" id="custom_course_title_cust' + id + '">' + cutTitle + '</div> &nbsp  &nbsp';
+      html += '<button id="menu_for_cust' + id + '" class="mdl-button mdl-js-button mdl-button--icon">';
+      html += '<i class="material-icons">arrow_drop_down</i>';
+      html += '</button>';
+      html += '<div class="custom_course_credits" id="custom_course_credits_cust' + id + '"> ' + newCredits + ' </div>';
+      html += '<div class="custom_course_focus" id="custom_course_focus_cust' + id + '"> ' + newGroup + ' </div>';
+
+      html += '<ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="menu_for_cust' + id + '">';
+      html += '<li disabled class=" mdl-menu__item mdl-menu__item--full-bleed-divider custom_course_description" id="custom_course_description_cust' + id + '">' + newDescription + ' </li>';
+      html += '<li class="mdl-menu__item edit_custom" id="edit_custom_cust' + id + '">Edit</li>';
+      html += '<li class="mdl-menu__item remove-course" id="remove_cust' + id + '">Remove</li>';
+      html += '</ul>';
+      html += '</div>';
+
+      $("#cust" + id).html(html);
+      $("#cust" + id).animate({"width":"160px"},{queue: false, duration: 100},"linear");
+      $("#cust" + id).animate({"height":"45px"},{queue: false, duration: 100},"linear");
+
+      $.ajax({
+        type: 'post',
+        url: 'flowchart/edit-custom',
+        data: {
+          id: id,
+          title: newTitle,
+          description: newDescription,
+          group: newGroup,
+          credits: newCredits,
+        },
+        success: function(data){
+          var response = JSON.parse(data);
+          var semester_letter = get_semester_letter(response[2]);
+          semester_letter = semester_letter.split(" ");
+          semester_letter = semester_letter[0] + semester_letter[1];
+
+          var target_sem = $("." + semester_letter);
+
+
+          $(target_sem.find('div.credit_counter_num' )).text( 'CREDITS: ' + response[0]);
+
+
+          for (var group in response[1])
+          {
+              if (response[1].hasOwnProperty(group))
+              {
+                  var groupProgress = response[1][group];
+                  var target = $( "td[id='" + group + "']" ).text("" + groupProgress[0] + "/" + groupProgress[1]);
+              }
+          }
+        }
+      });
+
+      initEditCustomCourse("#edit_custom_cust" + id);
+      initRemoveCourseListener("#remove_cust" + id);
+
+      //Dynamically render MDL
+      componentHandler.upgradeDom();
+    }
+
+
+  });
+
+  $("#custom_edit_cancel_cust" + id).click( function() {
+
+    var cutTitle = originalTitle;
+    if(cutTitle.length > 11)
+    {
+      cutTitle = cutTitle.substring(0,8) + "...";
+    }
+
+      var html = '<div class="card_content">';
+      html += '<div class="custom_course_title" id="custom_course_title_cust' + id + '">' + cutTitle + '</div> &nbsp  &nbsp';
+      html += '<button id="menu_for_cust' + id + '" class="mdl-button mdl-js-button mdl-button--icon">';
+      html += '<i class="material-icons">arrow_drop_down</i>';
+      html += '</button>';
+      html += '<div class="custom_course_credits" id="custom_course_credits_cust' + id + '"> ' + originalCredits + ' </div>';
+      html += '<div class="custom_course_focus" id="custom_course_focus_cust' + id + '"> ' + originalGroup + ' </div>';
+
+      html += '<ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="menu_for_cust' + id + '">';
+      html += '<li disabled class=" mdl-menu__item mdl-menu__item--full-bleed-divider custom_course_description" id="custom_course_description_cust' + id + '">' + originalDescription + ' </li>';
+      html += '<li class="mdl-menu__item edit_custom" id="edit_custom_cust' + id + '">Edit</li>';
+      html += '<li class="mdl-menu__item remove-course" id="remove_cust' + id + '">Remove</li>';
+      html += '</ul>';
+      html += '</div>';
+
+      $("#cust" + id).html(html);
+      $("#cust" + id).animate({"width":"160px"},{queue: false, duration: 100},"linear");
+      $("#cust" + id).animate({"height":"45px"},{queue: false, duration: 100},"linear");
+
+      initEditCustomCourse("#edit_custom_cust" + id);
+      initRemoveCourseListener("#remove_cust" + id);
+
+      //Dynamically render MDL
+      componentHandler.upgradeDom();
+
+  });
+
+
+
+
+}

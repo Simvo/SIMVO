@@ -20,6 +20,8 @@ trait CurlTrait
 
   public function checkCourseAvailablity($SUBJECT_CODE, $COURSE_NUMBER, $semester)
   {
+    return []; // turn off vsb until we review new version
+
     $course = strtolower($SUBJECT_CODE)."+".$COURSE_NUMBER;
     $url = "https://vsb.mcgill.ca/criteria.jsp?session_" . $semester . "=1&code_number=".$course."&add_course=Add&remove_course=&view_details=&cams=all&tip=1&pins=&sf=ffftimeinclass&bbs=&submit_action=";
 

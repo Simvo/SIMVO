@@ -53,8 +53,9 @@ public function login(Request $request)
   **/
   public function registrationView()
   {
-    $faculties = $this->getFaculties();
-    array_unshift($faculties, "Select");
+    $faculties = [
+      "Faculty of Engineering"
+    ];
     $semesters = $this->generateListOfSemesters(10);
     return view('auth.registration',[
       'faculties'=> $faculties,
