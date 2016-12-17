@@ -387,7 +387,6 @@ public function delete_course_from_schedule(Request $request)
     $sum = 0;
     foreach($courses as $course)
     {
-      //var_dump($course->SUBJECT_CODE . " " . $course->COURSE_NUMBER);
       $courseCredits = DB::table('programs')
                        ->where('SUBJECT_CODE', $course->SUBJECT_CODE)
                        ->where('COURSE_NUMBER', $course->COURSE_NUMBER)
