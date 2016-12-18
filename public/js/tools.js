@@ -29,6 +29,27 @@ function checkVSB(new_semester, id, semesterID)
   }
 }
 
+function createVSBSchedule(courses, semester)
+{
+  var base_url = "https://vsb.mcgill.ca/vsb/criteria.jsp?access=0&lang=en&tip=0&page=results&scratch=0&term=" + semester + "&sort=none&filters=iiiiiiiii&bbs=&ds=&cams=Distance_Downtown_Macdonald_Off-Campus&locs=any&isrts=&";
+
+  for(var i = 0; i<courses.length; i++) 
+  {
+    var course_name = courses[i][0].toUpperCase() + "-" + courses[i][1];
+    base_url += "course_"+ i +"_0=" + course_name + "&sa_"+ i +"_0=&cs_"+i+"_0=--" + semester + "_698--&cpn_"+i+"_0=&csn_"+i+"_0=&ca_"+i+"_0=&dropdown_"+i+"_0=al&ig_"+i+"_0=0&rq_"+i+"_0=&";
+  }
+
+  var win = window.open(base_url, '_blank');
+
+  if (win) {
+      //Browser has allowed it to be opened
+      win.focus();
+  } else {
+      //Browser has blocked it
+      alert('Could not open URL: Here is the link to go to VSB: '+ base_url);
+  }
+}
+
 function getErrors()
 {
   $.ajax({
