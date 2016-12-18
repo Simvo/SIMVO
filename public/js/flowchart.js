@@ -322,7 +322,6 @@ function initAddCompCourseButton()
           }
           else
           {
-            console.log(response[5]);
             removeErrors(response[5]);
             getErrors();
 
