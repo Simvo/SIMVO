@@ -46,8 +46,18 @@ function createVSBSchedule(courses, semester)
       win.focus();
   } else {
       //Browser has blocked it
-      alert('Could not open URL: Here is the link to go to VSB: '+ base_url);
+      alert('It seems your browser did not allow the pop-up to appear. Make sure to approve pop-ups from us!');
   }
+}
+
+function getCoursesInSemester(semester_div)
+{
+   var courses = [
+      ["comp", "202"]
+    ];
+  var children = $(semester_div).find();
+
+  return courses;
 }
 
 function getErrors()

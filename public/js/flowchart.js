@@ -14,6 +14,26 @@ $(document).ready(function () {
   if (!$("#make_degree").length) {
     refreshComplementaryCourses();
   }
+
+  $(".show-prereqs").mousedown(function () {
+    alert(($this).attr("id"));
+  });
+
+  $(".create_vsb").click(function (e) {
+    var semester = get_semester(e.target.id);
+    $.ajax({
+      type: "post",
+      url : "/flowchart/get-courses-in-semester",
+      data: {
+        semester : semester
+      },
+      success: function(data){
+        var courses = JSON.parse(data);
+
+        createVSBSchedule(courses, semester);
+      }
+    })
+  });
 });
 
 function startAddCourseTutorial() {
@@ -412,7 +432,6 @@ function refreshComplementaryCourses() {
 
     success: function (data) {
       var response = JSON.parse(data);
-      console.log(response);
       var refreshedCourses = response[0];
       if (response === 'Error') {
         //error handler
@@ -1113,20 +1132,4 @@ function initConfirmEditCustomButton(id, originalTitle, originalDescription, ori
     componentHandler.upgradeDom();
 
   });
-
-
-  $(".show-prereqs").mousedown(function () {
-    alert(($this).attr("id"));
-  });
-
-  $(".create_vsb").click(function () {
-    var courses = [
-      ["comp", "202"]
-    ];
-
-    createVSBSchedule(courses, 201701);
-  });
-
-
-
 }

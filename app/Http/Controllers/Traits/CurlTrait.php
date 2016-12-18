@@ -16,7 +16,7 @@ trait CurlTrait
 
   public function createVSBSchedule($courses, $semester)
   {
-    $base_url = " https://vsb.mcgill.ca/vsb/criteria.jsp?access=0&lang=en&tip=0&page=results&scratch=0&term=201701&sort=none&filters=iiiiiiiii&bbs=&ds=&cams=Distance_Downtown_Macdonald_Off-Campus&locs=any&isrts=&";
+    $base_url = "https://vsb.mcgill.ca/vsb/criteria.jsp?access=0&lang=en&tip=0&page=results&scratch=0&term=201701&sort=none&filters=iiiiiiiii&bbs=&ds=&cams=Distance_Downtown_Macdonald_Off-Campus&locs=any&isrts=&";
     foreach($courses as $course)
     {
       $course_name = strtolower($SUBJECT_CODE)."+".$COURSE_NUMBER;

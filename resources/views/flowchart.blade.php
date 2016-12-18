@@ -247,11 +247,14 @@
                       CREDITS: {{ $classes[0] }}
                     </div>
                   </div>
+
+                  <button class="create_vsb" id="{{str_replace(" ", " ", $key)}}" type="button">Preview Schedule</button>
                   @if(isset($course_errors[$key])) @foreach ($course_errors[$key] as $error)
                   <div id='error_{{$error[0]}}' class='error {{$error[1]}}'>
                     {{ $error[2] }}
                   </div>
-                  @endforeach @endif
+                  @endforeach 
+                  @endif
                 </div>
               </div>
             </div>

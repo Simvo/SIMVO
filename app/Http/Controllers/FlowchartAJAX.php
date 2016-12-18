@@ -460,4 +460,27 @@ public function delete_course_from_schedule(Request $request)
 
     return json_encode([$this->getMajorStatus(), $degree->program_credits, $this->getMinorStatus(), $minor_credits]);
   }
+
+  public function get_courses_in_semester(Request $request)
+  {
+    $degree = Session::get('degree');
+    if($degree == null)
+    {
+      return;
+    }
+
+    $response = [];
+    
+    $courses = Schedule::where('degree_id', $degree->id)
+               ->where('semester', $request->semester)
+               ->get(["SUBJECT_CODE", "COURSE_NUMBER"]);
+
+    foreach($courses as $course)
+    {
+      $response[] = [$course->SUBJECT_CODE, $course->COURSE_NUMBER];
+    }
+
+    Debugbar::info($response);
+    return json_encode($response);
+  }
 }
