@@ -911,5 +911,11 @@ function initConfirmEditCustomButton(id, originalTitle, originalDescription, ori
 }
 
 $(document).on("click", '.ignore_error', function(){
-    $.ajax();
+    console.log($(this).attr("id"));
+    var error_id = $(this).attr("id").split("_")[1];
+    $.ajax({
+      type : 'post',
+      url : '/flowchart/ignore_error',
+      data : { id: id }
+    });
 })

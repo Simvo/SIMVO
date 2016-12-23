@@ -51,7 +51,7 @@ function getErrors()
         var errorType = (response[i][3] === "prereq__error")?  'prereq__error' : 'vsb_error';
 
         var error = "<div class='" + errorType  + " course_error' id='error_"+errorInstance[0]+"'>";
-        error += "<div class='ignore_error hide_" + errorInstance[0]+ "'>X</div>"
+        error += "<div class='ignore_error' id='hide_" + errorInstance[0]+ "'><a href='#'>x</a></div>"
         error += "<p>" + errorInstance[2] + "</p>";
         error += "</div>";
 

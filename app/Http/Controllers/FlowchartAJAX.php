@@ -460,4 +460,11 @@ public function delete_course_from_schedule(Request $request)
 
     return json_encode([$this->getMajorStatus(), $degree->program_credits, $this->getMinorStatus(), $minor_credits]);
   }
+
+  public function ignore_error(Request $request)
+  {
+    $error = FlowchartError::find($request->id);
+    $error->hidden = 1;
+    $error->save;
+  }
 }

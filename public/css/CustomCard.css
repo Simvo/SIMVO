@@ -11,23 +11,20 @@
 
 .ignore_error {
   position: absolute;
-  top: 3px;
+  top: 5px;
   right: 3px;
   color: white;
 }
 
 .course_error {
   position: relative;
-  border-radius: 5px;
-  margin-bottom: 2px;
-  padding: 5px;
-  min-height: 20px;
-  background-color: #95a5a6;
+  border-radius: 4px;
+  background-color: #cc0000;
 }
 
 .course_error p {
   padding-top: 3px;
-  text-align: center;
+  margin-left: 3px;
   color: white;
 }
 
@@ -41,7 +38,7 @@
 }
 
 .prereq__error {
-  color: #95a5a6;
+  color: #cc0000;
 }
 
 .grabbing-icon {
@@ -63,7 +60,7 @@
 }
 
 .Required_course {
-  background: #ffcc00 !important;
+  background: #34495e !important;
 }
 
 .Internship_course {
@@ -124,6 +121,7 @@
 
 .custom_card .card_content {
   padding: 4px 8px 4px 8px;
+  color: white;
 }
 
 .custom_card .card_content:hover {

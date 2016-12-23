@@ -2,8 +2,9 @@ $primary-color: #f44235;
 $secondary-color: #4051b5;
 $background: rgba(236, 240, 241,1.0);
 $cardWidth: 180px;
-$errorColor: #95a5a6;
-$requiredCourseColor: #ffcc00;
+$errorColor: #cc0000;
+//$requiredCourseColor: #ffcc00;
+$requiredCourseColor:#34495e;
 
 .custom_card {
   border-radius: 4px;
@@ -18,21 +19,21 @@ $requiredCourseColor: #ffcc00;
 
 .ignore_error{
   position: absolute;
-  top: 3px;
+  top: 5px;
   right: 3px;
   color: white;
 }
 
 .course_error{
   position: relative;
-  border-radius: 5px;
-  margin-bottom: 2px;
-  padding: 5px;
-  min-height: 20px;
+  border-radius: 4px;
+ // margin-bottom: 2px;
+ // padding: 5px;
+  //height: 20px;
   background-color: $errorColor;
   p{
     padding-top: 3px;
-    text-align: center;
+    margin-left: 3px;
     color:white;
   }
 }
@@ -131,6 +132,7 @@ $requiredCourseColor: #ffcc00;
 
 .custom_card .card_content {
   padding: 4px 8px 4px 8px;
+  color: white;
   &:hover{
     cursor: -webkit-grab;
   }
