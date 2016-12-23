@@ -16,6 +16,10 @@
   color: white;
 }
 
+.ignore_error a {
+  color: white;
+}
+
 .course_error {
   position: relative;
   border-radius: 4px;

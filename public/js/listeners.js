@@ -1,3 +1,15 @@
+$(document).on("click", '.ignore_error', function(){
+    var error_id = $(this).attr("id").split("_")[1];
+    $.ajax({
+      type : 'post',
+      url : '/flowchart/ignore-error',
+      data : { id: error_id },
+      success : function(data) {
+        $("#error_" + error_id).remove();
+      }
+    });
+})
+
 function initAddSemesterListener(target) {
     event.stopImmediatePropagation();
     $(target).click(function (e) {

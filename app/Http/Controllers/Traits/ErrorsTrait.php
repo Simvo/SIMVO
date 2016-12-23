@@ -278,7 +278,9 @@ trait ErrorsTrait
 
     $allScheduleID = $this->getAllSchedId($degree);
 
-    $errors = FlowchartError::whereIn('schedule_id' , $allScheduleID)->get();
+    $errors = FlowchartError::whereIn('schedule_id' , $allScheduleID)
+              ->where('hidden', 0)
+              ->get();
 
     foreach($errors as $error)
     {

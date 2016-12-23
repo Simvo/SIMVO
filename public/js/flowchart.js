@@ -195,7 +195,6 @@ function initAddCompCourseButton() {
   });
 }
 
-
 function refreshComplementaryCourses() {
   $.ajax({
     type: "get",
@@ -203,7 +202,6 @@ function refreshComplementaryCourses() {
 
     success: function (data) {
       var response = JSON.parse(data);
-      console.log(response);
       var refreshedCourses = response[0];
       if (response === 'Error') {
         //error handler
@@ -909,13 +907,3 @@ function initConfirmEditCustomButton(id, originalTitle, originalDescription, ori
 
 
 }
-
-$(document).on("click", '.ignore_error', function(){
-    console.log($(this).attr("id"));
-    var error_id = $(this).attr("id").split("_")[1];
-    $.ajax({
-      type : 'post',
-      url : '/flowchart/ignore_error',
-      data : { id: id }
-    });
-})
