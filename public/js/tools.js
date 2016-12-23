@@ -50,11 +50,12 @@ function getErrors()
 
         var errorType = (response[i][3] === "prereq__error")?  'prereq__error' : 'vsb_error';
 
-        var error = "<div class='" + errorType  + " error' id='error_"+errorInstance[0]+"'>";
-        error += errorInstance[2];
+        var error = "<div class='" + errorType  + " course_error' id='error_"+errorInstance[0]+"'>";
+        error += "<div class='ignore_error hide_" + errorInstance[0]+ "'>X</div>"
+        error += "<p>" + errorInstance[2] + "</p>";
         error += "</div>";
 
-        $("#" + errorInstance[1]).parent().append(error);
+        $("#" + errorInstance[1] + " .card_content").append(error);
       }
     }
   });
