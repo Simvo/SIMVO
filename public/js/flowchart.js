@@ -295,9 +295,6 @@ function refreshComplementaryCourses() {
   });
 }
 
-
-
-
 function initAddInternshipButton() {
   $(".add_internship_button").click(function () {
     var target_sem = $($($("#course_schedule").find($("a.Complementary_Add_Target"))).parent());
@@ -912,3 +909,7 @@ function initConfirmEditCustomButton(id, originalTitle, originalDescription, ori
 
 
 }
+
+$(document).on("click", '.ignore_error', function(){
+    $.ajax();
+})
