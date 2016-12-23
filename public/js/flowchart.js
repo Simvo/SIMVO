@@ -1,5 +1,6 @@
 $(document).ready(function () {
   editStatusBar();
+  addCreateScheduleLinks();
   renderSortable();
   initAddCompCourseButton();
   initAddInternshipButton();
@@ -19,21 +20,24 @@ $(document).ready(function () {
     alert(($this).attr("id"));
   });
 
-  $(".create_vsb").click(function (e) {
-    var semester = get_semester(e.target.id);
-    $.ajax({
-      type: "post",
-      url : "/flowchart/get-courses-in-semester",
-      data: {
-        semester : semester
-      },
-      success: function(data){
-        var courses = JSON.parse(data);
+});
 
-        createVSBSchedule(courses, semester);
-      }
-    })
-  });
+$(document).on('click', '.create_vsb' ,function(){
+
+  var semester = $(this).attr("id");
+  
+  $.ajax({
+    type: "post",
+    url : "/flowchart/get-courses-in-semester",
+    data: {
+      semester : semester
+    },
+    success: function(data){
+      var courses = JSON.parse(data);
+
+      createVSBSchedule(courses, semester);
+    }
+  })
 });
 
 function startAddCourseTutorial() {
@@ -59,6 +63,9 @@ function initAddSemesterListener(target) {
     var new_sem2 = get_semester_letter(get_next_semester(get_semester(new_sem)));
     var new_sem2_class = new_sem2.split(" ");
     new_sem2_class = new_sem2_class[0] + new_sem2_class[1];
+
+          console.log("calling vsb link");
+
 
     if (new_sem.substring(0, 6) == "SUMMER" && !$(".semester").find("div." + new_sem2_class).length) {
       //add add-button
@@ -93,8 +100,6 @@ function initAddSemesterListener(target) {
       initDeleteSemesterListener("[id='" + new_sem2 + "-delete']");
       initAddSemesterListener("[id='" + last_sem + "-gap']");
       initComplementaryModalRevealListener("#reveal_complementary_courses_" + new_sem.replace(" ", ""));
-
-
 
       //check if the next semester exists
       test_sem = new_sem2
@@ -163,6 +168,9 @@ function initAddSemesterListener(target) {
         $(this).parent().remove();
       }
     }
+
+    console.log("calling vsb link");
+    addCreateScheduleLinks();
   });
 
 }
@@ -228,7 +236,6 @@ function refreshDeleteSemester() {
         }, 300, "linear", function () {
           $(this).parent().remove();
         });
-        //$($(".semester")[i]).find("div.delete-semester-wrap").remove();
       }
 
       if ($($(".semester")[i]).find("div.pinned").length) {

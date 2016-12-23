@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
 use Auth;
 use DB;
@@ -470,6 +469,8 @@ public function delete_course_from_schedule(Request $request)
     }
 
     $response = [];
+
+    Debugbar::info($request->semester);
     
     $courses = Schedule::where('degree_id', $degree->id)
                ->where('semester', $request->semester)

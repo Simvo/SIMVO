@@ -29,6 +29,33 @@ function checkVSB(new_semester, id, semesterID)
   }
 }
 
+function addCreateScheduleLinks()
+{
+  $(".create_vsb").remove();
+
+  var semesters = get_VSB_active_semesters();
+
+   for(var i = 0; i<2 ; i++)
+   {
+     var sem = get_semester_letter(semesters[i]).split(" ");
+
+     var html =  '<div class="vsb_wrapper">';
+     html +=     '<a class="create_vsb" id="'+semesters[i]+'" href="#">Preview Schedule</a>';
+     html +=     '</div>';
+
+     var target = $("." + sem[0] + "." + sem[1] + " .credit_counter");
+
+     if(target.length == 0)
+     {
+       target = $("." + sem[0] + "" + sem[1] + " .credit_counter");
+     }
+
+     target.after(html);
+
+     componentHandler.upgradeDom();
+   }
+}
+
 function createVSBSchedule(courses, semester)
 {
   var base_url = "https://vsb.mcgill.ca/vsb/criteria.jsp?access=0&lang=en&tip=0&page=results&scratch=0&term=" + semester + "&sort=none&filters=iiiiiiiii&bbs=&ds=&cams=Distance_Downtown_Macdonald_Off-Campus&locs=any&isrts=&";
@@ -50,12 +77,9 @@ function createVSBSchedule(courses, semester)
   }
 }
 
-function getCoursesInSemester(semester_div)
+function getCoursesInSemester(sem)
 {
-   var courses = [
-      ["comp", "202"]
-    ];
-  var children = $(semester_div).find();
+   var CourseCount = $(sem).find("div.custom_card")
 
   return courses;
 }

@@ -59,11 +59,9 @@ trait CurlTrait
     foreach ($elements as $i => $element)
   	{
       $message = json_decode($element->nodeValue);
-      Debugbar::info($message);
       if($message[0])
       {
         $warnings[] = $message[0]->error;
-        Debugbar::info($message[0]->error);
       }
   	}
 
