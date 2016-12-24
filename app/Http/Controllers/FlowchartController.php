@@ -96,7 +96,7 @@ class FlowchartController extends Controller
           'groupsWithCourses' => $flowchart['Groups With Courses'],
           'course_errors' => $flowchart['Errors'],
           'exemptions' => $flowchart['Exemptions'],
-          'startingSemester' => $flowchart['Starting Semester']
+          'startingSemester' => $flowchart['Starting Semester'],
         ]);
       }
   }

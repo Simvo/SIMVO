@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
 use Auth;
 use DB;
@@ -387,7 +386,6 @@ public function delete_course_from_schedule(Request $request)
     $sum = 0;
     foreach($courses as $course)
     {
-      //var_dump($course->SUBJECT_CODE . " " . $course->COURSE_NUMBER);
       $courseCredits = DB::table('programs')
                        ->where('SUBJECT_CODE', $course->SUBJECT_CODE)
                        ->where('COURSE_NUMBER', $course->COURSE_NUMBER)
@@ -460,5 +458,30 @@ public function delete_course_from_schedule(Request $request)
     $minor_credits = ($minor)? $minor->minor_credits : 0;
 
     return json_encode([$this->getMajorStatus(), $degree->program_credits, $this->getMinorStatus(), $minor_credits]);
+  }
+
+  public function get_courses_in_semester(Request $request)
+  {
+    $degree = Session::get('degree');
+    if($degree == null)
+    {
+      return;
+    }
+
+    $response = [];
+
+    Debugbar::info($request->semester);
+    
+    $courses = Schedule::where('degree_id', $degree->id)
+               ->where('semester', $request->semester)
+               ->get(["SUBJECT_CODE", "COURSE_NUMBER"]);
+
+    foreach($courses as $course)
+    {
+      $response[] = [$course->SUBJECT_CODE, $course->COURSE_NUMBER];
+    }
+
+    Debugbar::info($response);
+    return json_encode($response);
   }
 }
