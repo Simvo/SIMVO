@@ -477,10 +477,23 @@ class FlowchartAJAX extends Controller
 
     $errors = [];
 
-    $errors = FlowchartError::where('degree_id', $degree->id)
-              ->where('hidden', 1)
+    $semesters = Schedule::where('degree_id', $degree->id)
               ->groupBy("semester")
-              ->get();
+              ->get(['semester', 'id']);
+
+    foreach($semesters as $sem)
+    {
+      $classes_in_sem = Schedule::where('degree_id', $degree->id)
+                        ->where('semester', $sem->semester)
+                        ->get(['id']);
+      $errors[$sem->semester] = 0;
+      foreach($classes_in_sem as $class)
+      {
+        $errors[$sem->semester]  += FlowchartError::where('schedule_id', $class->id)
+                  ->where('hidden', 1)
+                  ->count();
+      }
+    }
 
     return json_encode($errors);
   }

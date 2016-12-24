@@ -31,23 +31,14 @@ function checkVSB(new_semester, id, semesterID)
 
 function checkIgnoredErrors()
 {
-  $(".semester").each(function(i, obj) {
-
-    var parts = $(obj).find(".validPosition").attr("id").split(" ");
-    var semester = get_semester(parts[0] + " " + parts[1]);
-
-    if(typeof semester === "undefined") // skip exemption semester
-      return true;
-
-    $.ajax({
-      type: "post",
-      url : "/flowchart/check-for-ignored-errors",
-      data : { semester: semester},
-      success : function(data) {
-        $(obj).append("<div>Click to reveal hidden errors</div>");
-      }
-    })
-  });
+  $.ajax({
+    type: 'post',
+    url: 'flowchart/check-for-ignored-errors',
+    success: function(data){
+      var response = JSON.parse(data);
+      console.log(response);
+    }
+  })
 }
 
 function getErrors()
