@@ -1,5 +1,6 @@
 $(document).ready(function () {
   getErrors();
+  checkIgnoredErrors();
   editStatusBar();
   renderSortable();
   initAddCompCourseButton();

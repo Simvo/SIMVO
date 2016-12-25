@@ -8,7 +8,20 @@ $(document).on("click", '.ignore_error', function(){
         $("#error_" + error_id).remove();
       }
     });
-})
+});
+
+$(document).on("click", '.reveal-errors', function(){
+    var semester = $(this).attr("id").split("_")[1];
+    console.log(semester);
+    $.ajax({
+      type : 'post',
+      url : '/flowchart/reveal-errors',
+      data : { semester:  semester},
+      success : function(data) {
+          console.log("success");
+      }
+    });
+});
 
 function initAddSemesterListener(target) {
     event.stopImmediatePropagation();
@@ -206,6 +219,7 @@ function initRemoveCourseListener(target) {
 
                         refreshDeleteSemester();
                         refreshComplementaryCourses();
+                        checkIgnoredErrors();
                     }
                 }
             });

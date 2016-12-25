@@ -31,12 +31,24 @@ function checkVSB(new_semester, id, semesterID)
 
 function checkIgnoredErrors()
 {
+  $(".reveal-errors").remove();
   $.ajax({
     type: 'post',
     url: 'flowchart/check-for-ignored-errors',
     success: function(data){
       var response = JSON.parse(data);
-      console.log(response);
+      for (var semester in response) 
+      {
+        if (response.hasOwnProperty(semester)) 
+        {
+          if(response[semester] > 0)
+          {
+            var targetSemester = get_semester_letter(semester).split(" ");
+
+            $(".validPosition."+ targetSemester[0] + "." + targetSemester[1]).append("<a class='reveal-errors' id='show_" +semester+"'>click here to reveal "+response[semester]+" errors</a>");
+          }
+        }
+      }
     }
   })
 }

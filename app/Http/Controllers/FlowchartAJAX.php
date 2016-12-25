@@ -497,4 +497,24 @@ class FlowchartAJAX extends Controller
 
     return json_encode($errors);
   }
+
+  public function reveal_errors(Request $request)
+  {
+    $degree = Session::get('degree');
+    if($degree == null)
+    {
+      return;
+    }
+
+    $courses = Schedule::where('degree_id', $degree->id)
+              ->where('semester', $request->semester)
+              ->join('flowchart_errors', 'schedules.id', '=', 'flowchart_errors.schedule_id')
+              ->get(['flowchart_errors.id', 'flowchart_errors.hidden']);
+
+    foreach($courses as $error)
+    {
+      $error->hidden = 0;
+      $error->save();
+    }
+  }
 }

@@ -183,7 +183,7 @@
                   Add Course
                 </a>
             <div class="draggable">
-              <div class="validPosition sortable {{ str_replace(" ", " ", $key) }}" id="{{ $key . " " . str_replace(" ", " ", $key) }}">
+              <div class="validPosition sortable {{ str_replace(" ", " ", $key) }}" id="{{ $key . " " . str_replace(" ", "", $key) }}">
                 @foreach($classes[1] as $class) @if($class[4] == "Internship" )
                 <div class="custom_card pinned {{ $class[4]}}_course" id="int{{ $class[0] }}" style="width:{{$class[5]}}px">
                   <div class="card_content">
