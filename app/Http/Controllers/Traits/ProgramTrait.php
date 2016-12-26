@@ -507,14 +507,13 @@ trait ProgramTrait
   **/
   public function getMajorTitleDescriptions()
   {
+    $descriptions = array();
     $decriptions = DB::table('programs')->pluck('SET_END_TEXT_ENGLISH');
+    $titles = array();
     $titles = DB::table('programs')->pluck('SET_TITLE_ENGLISH');
+    
 
-    $map = array();
-    foreach ($descriptions => $info && $titles => $title) 
-    {
-      $map[$title]=$info;
-    }
+    $map = array_combine($titles, $descriptions);
     
     return $map;
   }
