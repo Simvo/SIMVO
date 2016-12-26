@@ -508,11 +508,26 @@ trait ProgramTrait
   public function getMajorTitleDescriptions()
   {
     $decriptions = DB::table('programs')->pluck('SET_END_TEXT_ENGLISH');
+    $titles = DB::table('programs')->pluck('SET_TITLE_ENGLISH');
 
-    return $descriptions;
+    $map = array();
+    foreach ($descriptions => $info && $titles => $title) 
+    {
+      $map[$title]=$info;
+    }
+    
+    return $map;
   }
-  public function getEndDescriptionText()
+    /**
+  * Function that returns the description for a given title
+  * @param title that needs a desription
+  * @return description for a given title
+  **/
+  public function getEndDescriptionText($title)
   {
-
+    $map = getMajorTitleDescriptions();
+    $description = $map[$title];
+    
+    return $description;
   }
 }
