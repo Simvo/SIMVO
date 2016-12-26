@@ -25,7 +25,7 @@ $(document).ready(function () {
 $(document).on('click', '.create_vsb' ,function(){
 
   var semester = $(this).attr("id");
-  
+
   $.ajax({
     type: "post",
     url : "/flowchart/get-courses-in-semester",
@@ -1043,13 +1043,11 @@ function initConfirmEditCustomButton(id, originalTitle, originalDescription, ori
 
       $("#cust" + id).html(html);
       $("#cust" + id).animate({
-        "width": "160px"
       }, {
         queue: false,
         duration: 100
       }, "linear");
       $("#cust" + id).animate({
-        "height": "45px"
       }, {
         queue: false,
         duration: 100
@@ -1087,6 +1085,7 @@ function initConfirmEditCustomButton(id, originalTitle, originalDescription, ori
       });
 
       initEditCustomCourse("#edit_custom_cust" + id);
+      $("#cust" + id).removeClass("pinned");
       initRemoveCourseListener("#remove_cust" + id);
 
       //Dynamically render MDL
@@ -1120,19 +1119,18 @@ function initConfirmEditCustomButton(id, originalTitle, originalDescription, ori
 
     $("#cust" + id).html(html);
     $("#cust" + id).animate({
-      "width": "160px"
     }, {
       queue: false,
       duration: 100
     }, "linear");
     $("#cust" + id).animate({
-      "height": "45px"
     }, {
       queue: false,
       duration: 100
     }, "linear");
 
     initEditCustomCourse("#edit_custom_cust" + id);
+    $("#cust" + id).removeClass("pinned");
     initRemoveCourseListener("#remove_cust" + id);
 
     //Dynamically render MDL
