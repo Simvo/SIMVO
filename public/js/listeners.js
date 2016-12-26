@@ -51,7 +51,7 @@ function initAddSemesterListener(target) {
                 new_semester += '</a>';
             }
             new_semester += '<div class="draggable">';
-            new_semester += '<div class="sortable validPosition ' + new_sem2.replace(" ", "") + '" id="' + new_sem2 + " " + new_sem2.replace(" ", "") + '">';
+            new_semester += '<div class="sortable validPosition ' + new_sem2 + " " + new_sem2.replace(" ", "") + '" id="' + new_sem2 + " " + new_sem2.replace(" ", "") + '">';
             new_semester += '<div class="custom_card credit_counter" style="text-align:center;">';
             new_semester += '<div class="credit_counter_num" style="display: table-cell; vertical-align: middle; font-size:15px">';
             new_semester += 'CREDITS: 0';
@@ -102,7 +102,7 @@ function initAddSemesterListener(target) {
                 new_semester += '</a>';
             }
             new_semester += '<div class="draggable">';
-            new_semester += '<div class="sortable validPosition ' + new_sem.replace(" ", "") + '" id="' + new_sem + " " + new_sem.replace(" ", "") + '">';
+            new_semester += '<div class="sortable validPosition ' + new_sem  + " " + new_sem.replace(" ", "") + '" id="' + new_sem + " " + new_sem.replace(" ", "") + '">';
             new_semester += '<div class="custom_card credit_counter" style="text-align:center;">';
             new_semester += '<div class="credit_counter_num" style="display: table-cell; vertical-align: middle; font-size:15px">';
             new_semester += 'CREDITS: 0';
