@@ -466,7 +466,7 @@ trait ProgramTrait
   /**
    *Returns total remaining credits
    *@param None
-   *@Return int: number of credits remaing to take
+   *@return int: number of credits remaing to take
    **/
    public function getRemainingCredits($degree)
    {
@@ -480,7 +480,11 @@ trait ProgramTrait
      }
      return $creditsTakenSum;
    }
-
+  /**
+   *Returns total remaining credits
+   *@param None
+   *@return int: number of credits remaing to take
+   **/
    public function getMajorStatus()
    {
      if(!Auth::Check())
@@ -495,5 +499,20 @@ trait ProgramTrait
      }
      $creditsTakenSum = $this->getRemainingCredits($degree);
      return $creditsTakenSum;
+  }
+  /**
+  * Function that returns list of set_end_text_english in programs 
+  * @param None
+  * @return list of descriptions for course categories 
+  **/
+  public function getMajorTitleDescriptions()
+  {
+    $decriptions = DB::table('programs')->pluck('SET_END_TEXT_ENGLISH');
+
+    return $descriptions;
+  }
+  public function getEndDescriptionText()
+  {
+
   }
 }

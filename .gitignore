@@ -8,3 +8,4 @@ prepros.cfg
 composer
 *.map
 /public/scss/.sass-cache
+/config/database.php 
