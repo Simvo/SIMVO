@@ -17,6 +17,10 @@ $requiredCourseColor:#34495e;
   }
 }
 
+.reveal-errors{
+  width: $cardWidth;
+}
+
 .ignore_error{
   position: absolute;
   top: 5px;

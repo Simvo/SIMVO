@@ -6,6 +6,7 @@ $(document).on("click", '.ignore_error', function(){
       data : { id: error_id },
       success : function(data) {
         $("#error_" + error_id).remove();
+        checkIgnoredErrors();
       }
     });
 });
@@ -18,7 +19,8 @@ $(document).on("click", '.reveal-errors', function(){
       url : '/flowchart/reveal-errors',
       data : { semester:  semester},
       success : function(data) {
-          console.log("success");
+          getErrors();
+          checkIgnoredErrors();
       }
     });
 });

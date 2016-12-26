@@ -110,6 +110,7 @@ function renderSortable()
             $( ui.sender[ 0 ] ).children( '.credit_counter' ).children( '.credit_counter_num' ).text( 'CREDITS: ' + response[1]);
             checkVSB(new_semester, ui.item.context.id, event.target);
             getErrors();
+            checkIgnoredErrors();
             removeErrors(response[2]);
             refreshDeleteSemester();
           }
