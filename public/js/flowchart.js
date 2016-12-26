@@ -1043,11 +1043,13 @@ function initConfirmEditCustomButton(id, originalTitle, originalDescription, ori
 
       $("#cust" + id).html(html);
       $("#cust" + id).animate({
+        "width": $(".custom_card").width() + "px",
       }, {
         queue: false,
         duration: 100
       }, "linear");
       $("#cust" + id).animate({
+        "height": $(".custom_card").height() + "px",
       }, {
         queue: false,
         duration: 100
@@ -1119,11 +1121,13 @@ function initConfirmEditCustomButton(id, originalTitle, originalDescription, ori
 
     $("#cust" + id).html(html);
     $("#cust" + id).animate({
+      "width": $(".custom_card").width() + "px",
     }, {
       queue: false,
       duration: 100
     }, "linear");
     $("#cust" + id).animate({
+      "height": $(".custom_card").height() + "px",
     }, {
       queue: false,
       duration: 100
