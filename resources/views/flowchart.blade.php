@@ -455,6 +455,8 @@
           </tr>
           <tr id="versionSlot">
           </tr>
+          <tr id="descSlot">
+          </tr>
           <tr>
             <td>
               Select a Stream
