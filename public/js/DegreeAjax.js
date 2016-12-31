@@ -114,7 +114,7 @@ function LoadVersions() {
 
         else
         {
-          var hiddenInput = $('<input/>',{type:'hidden',id: "#version-select",value:response[0]});
+          var hiddenInput = $('<input/>',{type:'hidden',id: "#version-select", name: "Version",value:response[0]});
           $("#versionSlot").append(hiddenInput);
         }
       }
