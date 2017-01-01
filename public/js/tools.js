@@ -29,6 +29,30 @@ function checkVSB(new_semester, id, semesterID)
   }
 }
 
+function checkIgnoredErrors()
+{
+  $.ajax({
+    type: 'post',
+    url: 'flowchart/check-for-ignored-errors',
+    success: function(data){
+      var response = JSON.parse(data);
+      $(".reveal-errors").remove();
+      for (var semester in response) 
+      {
+        if (response.hasOwnProperty(semester)) 
+        {
+          if(response[semester] > 0)
+          {
+            var targetSemester = get_semester_letter(semester).split(" ");
+
+            $(".validPosition."+ targetSemester[0] + "." + targetSemester[1]).append("<a class='reveal-errors' id='show_" +semester+"'>click here to reveal "+response[semester]+" errors</a>");
+          }
+        }
+      }
+    }
+  })
+}
+
 function addCreateScheduleLinks()
 {
   $(".create_vsb").remove();
@@ -104,11 +128,12 @@ function getErrors()
 
         var errorType = (response[i][3] === "prereq__error")?  'prereq__error' : 'vsb_error';
 
-        var error = "<div class='" + errorType  + " error' id='error_"+errorInstance[0]+"'>";
-        error += errorInstance[2];
+        var error = "<div class='" + errorType  + " course_error' id='error_"+errorInstance[0]+"'>";
+        error += "<div class='ignore_error' id='hide_" + errorInstance[0]+ "'><a href='#'>x</a></div>"
+        error += "<p>" + errorInstance[2] + "</p>";
         error += "</div>";
 
-        $("#" + errorInstance[1]).parent().append(error);
+        $("#" + errorInstance[1] + " .card_content").append(error);
       }
     }
   });
