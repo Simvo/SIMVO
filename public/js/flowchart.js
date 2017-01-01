@@ -949,9 +949,11 @@ function initEditCustomCourse(target) {
         html += '<div id="custom_course_focus_cust' + id + '">';
         html += 'Focus: ';
         html += '<select name="Focus" id="edit_custom_focus_select_cust' + id + '" class="reg_dropdown form-control">';
-
+        html += '<option value="' + focus + '">' + focus + '</option>';
         for (var group in response) {
-          html += '<option value="' + group + '">' + group + '</option>';
+          if(group != focus){
+            html += '<option value="' + group + '">' + group + '</option>';
+          }
         }
         html += '<option value="Miscellaneous">Miscellaneous</option>';
         html += '</select>';
@@ -961,8 +963,11 @@ function initEditCustomCourse(target) {
         html += '<div id="custom_course_credits_cust' + id + '">';
         html += 'Credits: ';
         html += '<select name="Credits" id="edit_custom_credits_select_cust' + id + '" class="reg_dropdown form-control">';
+        html += '<option value="' + credits + '">' + credits + '</option>';
         for (var i = 1; i <= 6; i++) {
-          html += '<option value="' + i + '">' + i + '</option>';
+          if(i != credits){
+            html += '<option value="' + i + '">' + i + '</option>';
+          }
         }
         html += '</select>';
         html += '</div>';
