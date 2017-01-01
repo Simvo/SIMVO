@@ -117,7 +117,7 @@
       <div class="mdl-card__supporting-text">
         @if($degreeLoaded)
         <b>{{$minor_object->minor_name}}</b>
-        <b><span id="minor-status">{{$remainingCreditsMinor}}</span>/{{$minor_object->minor_credits}}</b> 
+        <b><span id="minor-status">{{$remainingCreditsMinor}}</span>/{{$minor_object->minor_credits}}</b>
         @endif
       </div>
       <div class="adjustable-border">
@@ -193,7 +193,7 @@
                   Add Course
                 </a>
             <div class="draggable">
-              <div class="validPosition sortable {{ str_replace(" ", " ", $key) }}" id="{{ $key . " " . str_replace(" ", "", $key) }}">
+              <div class="validPosition sortable {{ str_replace(" ", "", $key) }}" id="{{ $key . " " . str_replace(" ", "", $key) }}">
                 @foreach($classes[1] as $class) @if($class[4] == "Internship" )
                 <div class="custom_card pinned {{ $class[4]}}_course" id="int{{ $class[0] }}" style="width:{{$class[5]}}px">
                   <div class="card_content">
@@ -247,16 +247,16 @@
                       CREDITS: {{ $classes[0] }}
                     </div>
                   </div>
-                 
+
                    <!--<div class="vsb_wrapper">
                       <a class="create_vsb" id="{{str_replace(" ", " ", $key)}}" href="#">Preview Schedule</a>
                   </div>-->
-                 
+
                   @if(isset($course_errors[$key])) @foreach ($course_errors[$key] as $error)
                   <div id='error_{{$error[0]}}' class='error {{$error[1]}}'>
                     {{ $error[2] }}
                   </div>
-                  @endforeach 
+                  @endforeach
                   @endif
                 </div>
               </div>
@@ -340,13 +340,7 @@
                             <td>
                               <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label program_input">
                                 <select class="reg_dropdown form-control" name="Focus" id="custom_focus">
-                              @if($degreeLoaded)
-                              @foreach($progress as $key => $value)
-                                <option value="custom_focus_{{$key}}">{{$key}}</option>
-                              @endforeach
-                              @endif
-                              <option value="Miscellaneous"> Miscellaneous </option>
-                            </select>
+                                </select>
                               </div>
                             </td>
                           </tr>

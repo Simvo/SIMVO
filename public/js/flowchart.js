@@ -13,6 +13,7 @@ $(document).ready(function () {
   initEditCustomCourse(".edit_custom");
   refreshDeleteSemester();
   if (!$("#make_degree").length) {
+    loadCustomModalGroups();
     refreshComplementaryCourses();
   }
 
@@ -64,7 +65,6 @@ function initAddSemesterListener(target) {
     var new_sem2_class = new_sem2.split(" ");
     new_sem2_class = new_sem2_class[0] + new_sem2_class[1];
 
-          console.log("calling vsb link");
 
 
     if (new_sem.substring(0, 6) == "SUMMER" && !$(".semester").find("div." + new_sem2_class).length) {
@@ -430,6 +430,22 @@ function initRemoveCourseListener(target) {
       });
     }
   });
+}
+
+function loadCustomModalGroups(){
+  $.ajax({
+    type: "get",
+    url: "/flowchart/get-elective-groups",
+    success: function(data){
+      var response = JSON.parse(data);
+      var groups = "";
+      for(var group in response){
+        groups += '<option value="custom_focus_' + group +'"}>' + group + '</option>';
+      }
+      groups += '<option value="Miscellaneous"> Miscellaneous </option>';
+      $("#custom_focus").html(groups);
+    }
+  })
 }
 
 function refreshComplementaryCourses() {
