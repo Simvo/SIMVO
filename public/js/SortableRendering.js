@@ -22,7 +22,6 @@ function renderSortable()
       var new_semester = get_semester( event.target.attributes.id.nodeValue );
       var vsbActiveSemesters = get_VSB_active_semesters();
       var id = ui.item.context.id;
-      console.log(id);
       var classes = ui.item.context.className;
       var courseType = classes.split(" ")[1].split("_")[0];
 
@@ -111,6 +110,7 @@ function renderSortable()
             $( ui.sender[ 0 ] ).children( '.credit_counter' ).children( '.credit_counter_num' ).text( 'CREDITS: ' + response[1]);
             checkVSB(new_semester, ui.item.context.id, event.target);
             getErrors();
+            checkIgnoredErrors();
             removeErrors(response[2]);
             refreshDeleteSemester();
           }

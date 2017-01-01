@@ -1,4 +1,6 @@
 $(document).ready(function () {
+  getErrors();
+  checkIgnoredErrors();
   editStatusBar();
   addCreateScheduleLinks();
   renderSortable();
@@ -51,6 +53,7 @@ function initComplementaryModalRevealListener(target) {
   });
 }
 
+
 function initAddSemesterListener(target) {
   event.stopImmediatePropagation();
   $(target).click(function (e) {
@@ -63,8 +66,6 @@ function initAddSemesterListener(target) {
     var new_sem2 = get_semester_letter(get_next_semester(get_semester(new_sem)));
     var new_sem2_class = new_sem2.split(" ");
     new_sem2_class = new_sem2_class[0] + new_sem2_class[1];
-
-          console.log("calling vsb link");
 
 
     if (new_sem.substring(0, 6) == "SUMMER" && !$(".semester").find("div." + new_sem2_class).length) {
@@ -174,10 +175,6 @@ function initAddSemesterListener(target) {
   });
 
 }
-
-
-
-
 
 function initDeleteSemesterListener(target) {
   $(target).animate({
@@ -313,7 +310,6 @@ function initAddCompCourseButton() {
           if (response === 'Error') {
             //error handler
           } else {
-            console.log(response[5]);
             removeErrors(response[5]);
             getErrors();
 
@@ -364,9 +360,6 @@ function initAddCompCourseButton() {
   });
 }
 
-
-
-
 function initRemoveCourseListener(target) {
   $(target).click(function (e) {
     e.preventDefault();
@@ -406,7 +399,6 @@ function initRemoveCourseListener(target) {
             $("#" + response[5] + response[0]).remove();
             removeErrors(response[4]);
 
-            //$("."+semester).find( '.credit_counter_num' ).text( 'CREDITS: ' + response[1]);
             $("." + semester).children('.credit_counter').children('.credit_counter_num').text('CREDITS: ' + response[0]);
 
             for (var group in response[2]) {
@@ -529,10 +521,7 @@ function refreshComplementaryCourses() {
     }
   });
 }
-
-
-
-
+              
 function initAddInternshipButton() {
   $(".add_internship_button").click(function () {
     var target_sem = $($($("#course_schedule").find($("a.Complementary_Add_Target"))).parent());
@@ -645,9 +634,6 @@ function initAddInternshipButton() {
 
         //Dynamically render MDL
         componentHandler.upgradeDom();
-
-
-
       }
 
     });
@@ -733,8 +719,6 @@ function initConfirmEditInternshipButton(id, originalCN, originalPH) {
           positionHeld: newPH,
         }
       });
-
-      //--------------
     }
     html += '</div>';
 
@@ -930,6 +914,16 @@ function initEditCustomCourse(target) {
         html += '</div>';
 
 
+        var html = '<div class="card_content">';
+        html += '<div class="mdl-textfield mdl-js-textfield">';
+        html += '<textarea class="mdl-textfield__input edit_internship_textfield" type="text" rows= "3" id="edit_custom_course_title_cust' + id + '" >' + title + '</textarea>';
+        html += '<label class="mdl-textfield__label" for="edit_custom_course_title_cust' + id + '">Custom Title</label>';
+        html += '</div>';
+
+        html += '<div class="mdl-textfield mdl-js-textfield">';
+        html += '<textarea class="mdl-textfield__input edit_internship_textfield" type="text" rows= "3" id="edit_custom_course_description_cust' + id + '" >' + description + '</textarea>';
+        html += '<label class="mdl-textfield__label" for="edit_custom_course_description_cust' + id + '">Custom Description</label>';
+        html += '</div>';
         html += '<div id="custom_course_focus_cust' + id + '">';
         html += 'Focus: ';
         html += '<select name="Focus" id="edit_custom_focus_select_cust' + id + '" class="reg_dropdown form-control">';

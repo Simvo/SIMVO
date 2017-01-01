@@ -85,3 +85,9 @@ Route::post('/flowchart/edit-custom', 'FlowchartAJAX@edit_custom');
 Route::post('/flowchart/getErrors', 'FlowchartAJAX@get_errors');
 
 Route::post('/flowchart/remainingCourses','FlowchartAJAX@getMajorStatus_ajax');
+
+Route::post('flowchart/ignore-error', 'FlowchartAJAX@ignore_error');
+
+Route::post('flowchart/check-for-ignored-errors', 'FlowchartAJAX@check_for_ignored_errors');
+
+Route::post('/flowchart/reveal-errors', 'FlowchartAJAX@reveal_errors');

@@ -237,17 +237,6 @@
                       CREDITS: {{ $classes[0] }}
                     </div>
                   </div>
-                 
-                   <!--<div class="vsb_wrapper">
-                      <a class="create_vsb" id="{{str_replace(" ", " ", $key)}}" href="#">Preview Schedule</a>
-                  </div>-->
-                 
-                  @if(isset($course_errors[$key])) @foreach ($course_errors[$key] as $error)
-                  <div id='error_{{$error[0]}}' class='error {{$error[1]}}'>
-                    {{ $error[2] }}
-                  </div>
-                  @endforeach 
-                  @endif
                 </div>
               </div>
             </div>
