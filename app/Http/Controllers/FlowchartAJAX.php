@@ -466,13 +466,15 @@ public function delete_course_from_schedule(Request $request)
   * @param title that needs a desription
   * @return description for a given title
   **/
-  public function getDescriptionText_ajax()
+  public function getDescriptionText_ajax($title)
   {
     $degree = Session::get('degree');
     if($degree == null)
     {
       return;
     }
-  $map = getMajorTitleDescriptions();
+    $map = getMajorTitleDescriptions();
+    $description = getEndDescriptionText($title);
+    return $description;
   }
 }
