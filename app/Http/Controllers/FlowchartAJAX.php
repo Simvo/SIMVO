@@ -475,6 +475,6 @@ public function delete_course_from_schedule(Request $request)
     }
     $map = getMajorTitleDescriptions();
     $description = getEndDescriptionText($title);
-    return $description;
+    return json_encode($description);
   }
 }
