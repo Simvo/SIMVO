@@ -1027,13 +1027,13 @@ function initConfirmEditCustomButton(id, originalTitle, originalDescription, ori
 
       $("#cust" + id).html(html);
       $("#cust" + id).animate({
-        "width": "160px"
+        "width": $(".custom_card").width() + "px",
       }, {
         queue: false,
         duration: 100
       }, "linear");
       $("#cust" + id).animate({
-        "height": "45px"
+        "height": $(".custom_card").height() + "px",
       }, {
         queue: false,
         duration: 100
