@@ -461,4 +461,18 @@ public function delete_course_from_schedule(Request $request)
 
     return json_encode([$this->getMajorStatus(), $degree->program_credits, $this->getMinorStatus(), $minor_credits]);
   }
+   /**
+  * Function for ajax call on the array of descriptions
+  * @param title that needs a desription
+  * @return description for a given title
+  **/
+  public function getDescriptionText_ajax()
+  {
+    $degree = Session::get('degree');
+    if($degree == null)
+    {
+      return;
+    }
+  $map = getMajorTitleDescriptions();
+  }
 }
