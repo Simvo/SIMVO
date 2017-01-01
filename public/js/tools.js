@@ -2,12 +2,11 @@ function get_VSB_active_semesters()
 {
   var d = new Date();
   var month = d.getMonth();
-  var year = d.getFullYear();
-  var fall = year + "09";
-  if(5<month<=12)year++;
-  var winter = year + "01";
 
-  return [fall, winter];
+  if(month < 5)
+    return ["201701"];
+  else
+    return ["201609", "201701"];
 }
 
 function checkVSB(new_semester, id, semesterID)
@@ -59,7 +58,7 @@ function addCreateScheduleLinks()
 
   var semesters = get_VSB_active_semesters();
 
-   for(var i = 0; i<2 ; i++)
+   for(var i = 0; i<semesters.length ; i++)
    {
      var sem = get_semester_letter(semesters[i]).split(" ");
 

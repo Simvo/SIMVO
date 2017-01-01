@@ -526,19 +526,29 @@ class FlowchartAJAX extends Controller
   public function get_courses_in_semester(Request $request)
   {
     $response = [];
-
-    Debugbar::info($request->semester);
-
+    
     $courses = Schedule::where('degree_id', $degree->id)
                ->where('semester', $request->semester)
                ->get(["SUBJECT_CODE", "COURSE_NUMBER"]);
+
+    $customCourses = Custom::where('degree_id', $degree->id)
+                            ->where('semester', $request->semester)
+                            ->get(['title']);
 
     foreach($courses as $course)
     {
       $response[] = [$course->SUBJECT_CODE, $course->COURSE_NUMBER];
     }
 
-    Debugbar::info($response);
+    foreach($customCourses as $course)
+    {
+      $parts = explode(" ", $course->title);
+
+      if(count($parts) != 2) continue;
+
+      $response[] = [$parts[0], $parts[1]];
+    }
+
     return json_encode($response);
   }
 }
