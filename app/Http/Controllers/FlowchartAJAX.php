@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
 use Auth;
 use DB;
@@ -521,5 +520,25 @@ class FlowchartAJAX extends Controller
         $error->save();
       }
     }
+  }
+  
+  
+  public function get_courses_in_semester(Request $request)
+  {
+    $response = [];
+
+    Debugbar::info($request->semester);
+
+    $courses = Schedule::where('degree_id', $degree->id)
+               ->where('semester', $request->semester)
+               ->get(["SUBJECT_CODE", "COURSE_NUMBER"]);
+
+    foreach($courses as $course)
+    {
+      $response[] = [$course->SUBJECT_CODE, $course->COURSE_NUMBER];
+    }
+
+    Debugbar::info($response);
+    return json_encode($response);
   }
 }

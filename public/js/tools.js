@@ -53,6 +53,61 @@ function checkIgnoredErrors()
   })
 }
 
+function addCreateScheduleLinks()
+{
+  $(".create_vsb").remove();
+
+  var semesters = get_VSB_active_semesters();
+
+   for(var i = 0; i<2 ; i++)
+   {
+     var sem = get_semester_letter(semesters[i]).split(" ");
+
+     var html =  '<div class="vsb_wrapper">';
+     html +=     '<a class="create_vsb" id="'+semesters[i]+'" href="#">Preview Schedule</a>';
+     html +=     '</div>';
+
+     var target = $("." + sem[0] + "." + sem[1] + " .credit_counter");
+
+     if(target.length == 0)
+     {
+       target = $("." + sem[0] + "" + sem[1] + " .credit_counter");
+     }
+
+     target.after(html);
+
+     componentHandler.upgradeDom();
+   }
+}
+
+function createVSBSchedule(courses, semester)
+{
+  var base_url = "https://vsb.mcgill.ca/vsb/criteria.jsp?access=0&lang=en&tip=0&page=results&scratch=0&term=" + semester + "&sort=none&filters=iiiiiiiii&bbs=&ds=&cams=Distance_Downtown_Macdonald_Off-Campus&locs=any&isrts=&";
+
+  for(var i = 0; i<courses.length; i++) 
+  {
+    var course_name = courses[i][0].toUpperCase() + "-" + courses[i][1];
+    base_url += "course_"+ i +"_0=" + course_name + "&sa_"+ i +"_0=&cs_"+i+"_0=--" + semester + "_698--&cpn_"+i+"_0=&csn_"+i+"_0=&ca_"+i+"_0=&dropdown_"+i+"_0=al&ig_"+i+"_0=0&rq_"+i+"_0=&";
+  }
+
+  var win = window.open(base_url, '_blank');
+
+  if (win) {
+      //Browser has allowed it to be opened
+      win.focus();
+  } else {
+      //Browser has blocked it
+      alert('It seems your browser did not allow the pop-up to appear. Make sure to approve pop-ups from us!');
+  }
+}
+
+function getCoursesInSemester(sem)
+{
+   var CourseCount = $(sem).find("div.custom_card")
+
+  return courses;
+}
+
 function getErrors()
 {
   $.ajax({

@@ -51,6 +51,8 @@ Route::post('/flowchart/user-create-course', ['as'=>'userCreateCourse', 'uses'=>
 
 Route::post('/flowchart/add-minor', ['as'=>'addMinor', 'uses'=>'MinorController@addMinor']);
 
+Route::post('/flowchart/get-courses-in-semester', ['as' => 'getCoursesInSemester', 'uses' => 'FlowchartAJAX@get_courses_in_semester']);
+
 
 /* AJAX */
 
