@@ -185,25 +185,20 @@ function initRemoveCourseListener(target) {
                 },
                 success: function (data) {
                     var response = JSON.parse(data);
-
-                    // update status bar
-                    editStatusBar();
+                    console.log(response);
                     if (response === 'Error') {
                         //error handler
                     } else {
                         if (response[3] != 'Exemption') {
                             var semester = get_semester_letter(response[3]);
                             semester = semester.split(" ");
-                            semester = semester[0] + semester[1];
+                            $("." + semester[0] + "." +semester[1]).find('.credit_counter_num').text('CREDITS: ' + response[1]);
                         } else {
                             var semester = 'Exemption';
+                            $("#Exemption").find('.credit_counter_num').text('CREDITS: ' + response[1]);
                         }
 
-
                         $("#" + response[5] + response[0]).remove();
-
-                        $("." + semester).find('.credit_counter_num').text('CREDITS: ' + response[1]);
-
 
                         for (var group in response[2]) {
                             if (response[2].hasOwnProperty(group)) {
@@ -222,6 +217,8 @@ function initRemoveCourseListener(target) {
                         refreshDeleteSemester();
                         refreshComplementaryCourses();
                         checkIgnoredErrors();
+                        getErrors();
+                        editStatusBar();
                     }
                 }
             });

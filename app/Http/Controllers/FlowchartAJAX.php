@@ -330,7 +330,7 @@ class FlowchartAJAX extends Controller
 
       foreach($prereqs as $prereq)
       {
-        if($semester === "Exemption")
+        if($semester == "Exemption")
         {
           $course = Schedule::where('degree_id', $degree->id)
                           ->where('SUBJECT_CODE', $prereq->SUBJECT_CODE)
@@ -525,6 +525,11 @@ class FlowchartAJAX extends Controller
   
   public function get_courses_in_semester(Request $request)
   {
+    $degree = Session::get('degree');
+    if($degree == null)
+    {
+      return;
+    }
     $response = [];
     
     $courses = Schedule::where('degree_id', $degree->id)
