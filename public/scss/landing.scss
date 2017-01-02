@@ -25,7 +25,9 @@ body {
 }
 
 .bg-degree-planner{
-  //background-image: ;
+  background-image : url("/media/DP_SCREEN_SHOT.PNG");
+  background-position: center top;
+  background-size: 100% auto;
 }
 
 hr {
@@ -163,7 +165,7 @@ footer {
 
 .navbar-default .nav > li.active>a,
 .navbar-default .nav>li.active>a:focus {
-    color: #9c27b0 !important;
+    color: $primary-color !important;
     background-color: transparent;
 }
 

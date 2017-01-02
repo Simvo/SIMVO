@@ -59,28 +59,18 @@
         <h1>S!IMVO McGill</h1>
         <h4 class= "cursive">Changing the Institution, One Project at A Time</h4>
         <hr>
-        <a href="#video-background" id="toggleVideo" data-toggle="collapse" class="btn btn-primary btn-xl">Toggle Video</a>        &nbsp; <a href="#one" class="btn btn-primary btn-xl page-scroll">Get Started</a>
       </div>
     </div>
     <video autoplay="" loop="true" class="fillWidth fadeIn wow collapse in" data-wow-delay="0.5s" poster="https://s3-us-west-2.amazonaws.com/coverr/poster/Traffic-blurred2.jpg"
       id="video-background">
-      <source src="/media/McGill_Video_tour.mp4" type="video/mp4">Your browser does not support the video tag. I suggest you upgrade your browser.
+      <source src="/media/McGillTour.mp4" type="video/mp4">Your browser does not support the video tag. I suggest you upgrade your browser.
     </video>
   </header>
-  <section class="bg-degree-planner" id="one">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-6 col-lg-offset-3 col-md-8 col-md-offset-2 text-center">
-         
-        </div>
-      </div>
-    </div>
-  </section>
-  <section id="two">
+  <section class="" id="one">
     <div class="container">
       <div class="row">
         <div class="col-lg-12 text-center">
-          <h2 class="margin-top-0 text-primary">Flexible Layouts</h2>
+          <h2 class="margin-top-0 text-primary">The Degree Planner</h2>
           <hr class="primary">
         </div>
       </div>
@@ -90,23 +80,33 @@
         <div class="col-lg-4 col-md-4 text-center">
           <div class="feature">
             <i class="icon-lg ion-android-laptop wow fadeIn" data-wow-delay=".3s"></i>
-            <h3>Responsive</h3>
-            <p class="text-muted">Your site looks good everywhere</p>
+            <h3>Visualize Your Degree</h3>
+            <p class="text-muted">Get started by Choosing your Major And Stream</p>
           </div>
         </div>
         <div class="col-lg-4 col-md-4 text-center">
           <div class="feature">
             <i class="icon-lg ion-social-sass wow fadeInUp" data-wow-delay=".2s"></i>
-            <h3>Customizable</h3>
-            <p class="text-muted">Easy to theme and customize with SASS</p>
+            <h3>Preview Semesters</h3>
+            <p class="text-muted">Drag courses into your current semester and quickly see wht your schedule will look like.</p>
           </div>
         </div>
         <div class="col-lg-4 col-md-4 text-center">
           <div class="feature">
             <i class="icon-lg ion-ios-star-outline wow fadeIn" data-wow-delay=".3s"></i>
-            <h3>Consistent</h3>
-            <p class="text-muted">A mature, well-tested, stable codebase</p>
+            <h3>Tweak to Your Liking!</h3>
+            <p class="text-muted">Add a Minor, Visualize your graduation date if you take a semester off.</p>
           </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section id="two">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 text-center">
+          <h2 class="margin-top-0 text-primary">The Students of S!MVO Program</h2>
+          <hr class="primary">
         </div>
       </div>
     </div>
@@ -281,86 +281,6 @@
       </div>
     </div>
   </aside>
-  <section id="last">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-8 col-lg-offset-2 text-center">
-          <h2 class="margin-top-0 wow fadeIn">Get in Touch</h2>
-          <hr class="primary">
-          <p>We love feedback. Fill out the form below and we'll get back to you as soon as possible.</p>
-        </div>
-        <div class="col-lg-10 col-lg-offset-1 text-center">
-          <form class="contact-form row">
-            <div class="col-md-4">
-              <label></label>
-              <input type="text" class="form-control" placeholder="Name">
-            </div>
-            <div class="col-md-4">
-              <label></label>
-              <input type="text" class="form-control" placeholder="Email">
-            </div>
-            <div class="col-md-4">
-              <label></label>
-              <input type="text" class="form-control" placeholder="Phone">
-            </div>
-            <div class="col-md-12">
-              <label></label>
-              <textarea class="form-control" rows="9" placeholder="Your message here.."></textarea>
-            </div>
-            <div class="col-md-4 col-md-offset-4">
-              <label></label>
-              <button type="button" data-toggle="modal" data-target="#alertModal" class="btn btn-primary btn-block btn-lg">Send <i class="ion-android-arrow-forward"></i></button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </section>
-  <footer id="footer">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-xs-6 col-sm-3 column">
-          <h4>Information</h4>
-          <ul class="list-unstyled">
-            <li><a href="">Products</a></li>
-            <li><a href="">Services</a></li>
-            <li><a href="">Benefits</a></li>
-            <li><a href="">Developers</a></li>
-          </ul>
-        </div>
-        <div class="col-xs-6 col-sm-3 column">
-          <h4>About</h4>
-          <ul class="list-unstyled">
-            <li><a href="#">Contact Us</a></li>
-            <li><a href="#">Delivery Information</a></li>
-            <li><a href="#">Privacy Policy</a></li>
-            <li><a href="#">Terms &amp; Conditions</a></li>
-          </ul>
-        </div>
-        <div class="col-xs-12 col-sm-3 column">
-          <h4>Stay Posted</h4>
-          <form>
-            <div class="form-group">
-              <input type="text" class="form-control" title="No spam, we promise!" placeholder="Tell us your email">
-            </div>
-            <div class="form-group">
-              <button class="btn btn-primary" data-toggle="modal" data-target="#alertModal" type="button">Subscribe for updates</button>
-            </div>
-          </form>
-        </div>
-        <div class="col-xs-12 col-sm-3 text-right">
-          <h4>Follow</h4>
-          <ul class="list-inline">
-            <li><a rel="nofollow" href="" title="Twitter"><i class="icon-lg ion-social-twitter-outline"></i></a>&nbsp;</li>
-            <li><a rel="nofollow" href="" title="Facebook"><i class="icon-lg ion-social-facebook-outline"></i></a>&nbsp;</li>
-            <li><a rel="nofollow" href="" title="Dribble"><i class="icon-lg ion-social-dribbble-outline"></i></a></li>
-          </ul>
-        </div>
-      </div>
-      <br/>
-      <span class="pull-right text-muted small"><a href="http://www.bootstrapzero.com">Landing Zero by BootstrapZero</a> ©2015 Company</span>
-    </div>
-  </footer>
   <div id="galleryModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">

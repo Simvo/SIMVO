@@ -19,6 +19,12 @@ body {
   webkit-tap-highlight-color: #222;
 }
 
+.bg-degree-planner {
+  background-image: url("/media/DP_SCREEN_SHOT.PNG");
+  background-position: center top;
+  background-size: 100% auto;
+}
+
 hr {
   max-width: 80px;
   border-width: 3px;
@@ -155,7 +161,7 @@ footer {
 
 .navbar-default .nav > li.active > a,
 .navbar-default .nav > li.active > a:focus {
-  color: #9c27b0 !important;
+  color: #f44235 !important;
   background-color: transparent;
 }
 
