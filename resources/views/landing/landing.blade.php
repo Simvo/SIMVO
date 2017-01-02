@@ -28,7 +28,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-        <a class="navbar-brand page-scroll" href="#first"><i class="ion-ios-analytics-outline"></i> Landing Zero</a>
+        <a class="navbar-brand page-scroll" href="#first"><i class="ion-ios-analytics-outline"></i>S!MVO</a>
       </div>
       <div class="navbar-collapse collapse" id="bs-navbar">
         <ul class="nav navbar-nav">
@@ -63,9 +63,9 @@
         <a href="#video-background" id="toggleVideo" data-toggle="collapse" class="btn btn-primary btn-xl">Toggle Video</a>        &nbsp; <a href="#one" class="btn btn-primary btn-xl page-scroll">Get Started</a>
       </div>
     </div>
-    <video autoplay="" loop="" class="fillWidth fadeIn wow collapse in" data-wow-delay="0.5s" poster="https://s3-us-west-2.amazonaws.com/coverr/poster/Traffic-blurred2.jpg"
+    <video autoplay="" loop="true" class="fillWidth fadeIn wow collapse in" data-wow-delay="0.5s" poster="https://s3-us-west-2.amazonaws.com/coverr/poster/Traffic-blurred2.jpg"
       id="video-background">
-      <source src="https://s3-us-west-2.amazonaws.com/coverr/mp4/Traffic-blurred2.mp4" type="video/mp4">Your browser does not support the video tag. I suggest you upgrade your browser.
+      <source src="/media/McGill_Video_tour.mp4" type="video/mp4">Your browser does not support the video tag. I suggest you upgrade your browser.
     </video>
   </header>
   <section class="bg-primary" id="one">

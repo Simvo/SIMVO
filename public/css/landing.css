@@ -180,10 +180,8 @@ footer {
   }
   .navbar-default .nav > li > a,
   .navbar-default .nav > li > a:focus {
-    color: rgba(255, 255, 255, 0.8);
-    padding: 20px;
+    color: #f44235;
     letter-spacing: 1.1px;
-    text-shadow: 1px 1px 1px rgba(60, 60, 60, 0.7);
   }
   .navbar-default .nav > li > a:hover,
   .navbar-default .nav > li > a:focus:hover {
