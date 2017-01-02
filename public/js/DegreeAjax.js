@@ -78,6 +78,7 @@ function LoadMajors() {
 function LoadVersions() {
   var selectedMajor = $('#major-select option:selected').val();
   $('#version-select').empty();
+  $('#versionSlot').empty();
 
   if (selectedMajor !== "None") {
     $.ajax({
@@ -90,12 +91,35 @@ function LoadVersions() {
 
         var response = JSON.parse(data);
 
-        $('#version-select').append('<option>-Select-</option>');
+        if (response.length > 1) {
+          var versionSelect = '<td> Version ';
+          versionSelect += '</td>';
+          versionSelect += '<td>';
+          versionSelect += '<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label program_input">';
+          versionSelect += '<select name="Version" id="version-select" class="reg_dropdown form-control"></select>';
+          versionSelect += '</div>';
+          versionSelect += '</td>';
 
-        for (var i = 0; i < response.length; i++) {
-          var option = '<option value="' + response[i] + '">' + response[i] + '</option>';
+          versionDesc = '<td>';
+          versionDesc += '<p>It seems this program has multiple versions. If your program has been changed recently (ex: ECSESS has redone all of their curriculums for students entering in FALL 2016) The higher the number, the newer the version.</p>';
+          versionDesc += '<td>';
 
-          $('#version-select').append(option);
+          $('#versionSlot').append(versionSelect);
+          $('#descSlot').append(versionDesc);
+
+          for (var i = 0; i < response.length; i++) {
+            var option = '<option value="' + response[i] + '">' + response[i] + '</option>';
+
+            $('#version-select').append(option);
+          }
+        } else {
+          var hiddenInput = $('<input/>', {
+            type: 'hidden',
+            id: "#version-select",
+            name: "Version",
+            value: response[0]
+          });
+          $("#versionSlot").append(hiddenInput);
         }
       }
     })

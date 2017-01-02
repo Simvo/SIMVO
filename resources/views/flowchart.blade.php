@@ -453,15 +453,9 @@
               </div>
             </td>
           </tr>
-          <tr>
-            <td>
-              Version
-            </td>
-            <td>
-              <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label program_input">
-                <select name="Version" id="version-select" class="reg_dropdown form-control"></select>
-              </div>
-            </td>
+          <tr id="versionSlot">
+          </tr>
+          <tr id="descSlot">
           </tr>
           <tr>
             <td>
