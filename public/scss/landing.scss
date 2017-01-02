@@ -24,6 +24,10 @@ body {
     webkit-tap-highlight-color: #222;
 }
 
+.bg-degree-planner{
+  //background-image: ;
+}
+
 hr {
     max-width: 80px;
     border-width: 3px;
@@ -45,7 +49,7 @@ a {
 
 a:hover,
 a:focus {
-    color: #9c27c1;
+    color: $primary-color;
     outline: 0;
 }
 

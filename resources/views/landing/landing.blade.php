@@ -28,7 +28,6 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-        <a class="navbar-brand page-scroll" href="#first"><i class="ion-ios-analytics-outline"></i>S!MVO</a>
       </div>
       <div class="navbar-collapse collapse" id="bs-navbar">
         <ul class="nav navbar-nav">
@@ -57,8 +56,8 @@
   <header id="first">
     <div class="header-content">
       <div class="inner">
-        <h1 class="cursive">Simple, One Page Design</h1>
-        <h4>A free landing page theme with video background</h4>
+        <h1>S!IMVO McGill</h1>
+        <h4 class= "cursive">Changing the Institution, One Project at A Time</h4>
         <hr>
         <a href="#video-background" id="toggleVideo" data-toggle="collapse" class="btn btn-primary btn-xl">Toggle Video</a>        &nbsp; <a href="#one" class="btn btn-primary btn-xl page-scroll">Get Started</a>
       </div>
@@ -68,17 +67,11 @@
       <source src="/media/McGill_Video_tour.mp4" type="video/mp4">Your browser does not support the video tag. I suggest you upgrade your browser.
     </video>
   </header>
-  <section class="bg-primary" id="one">
+  <section class="bg-degree-planner" id="one">
     <div class="container">
       <div class="row">
         <div class="col-lg-6 col-lg-offset-3 col-md-8 col-md-offset-2 text-center">
-          <h2 class="margin-top-0 text-primary">Built On The Bootstrap Grid</h2>
-          <br>
-          <p class="text-faded">
-            Bootstrap's responsive grid comes in 4 sizes or "breakpoints": tiny (xs), small(sm), medium(md) and large(lg). These 4 grid
-            sizes enable you create responsive layouts that behave accordingly on different devices.
-          </p>
-          <a href="#three" class="btn btn-default btn-xl page-scroll">Learn More</a>
+         
         </div>
       </div>
     </div>
