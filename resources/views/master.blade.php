@@ -20,7 +20,6 @@
     <link href="{{ asset('css/loginPage.css') }}" rel="stylesheet" type="text/css" >
     <link href="{{ asset('css/app.css') }}" rel="stylesheet" type="text/css" >
     <link href="{{ asset('css/flowchartStyle.css') }}" rel="stylesheet" type="text/css" >
-    <link href="{{ asset('css/landing.css')}}" rel="stylesheet" type="text/css">
     <link href="{{ asset('css/flowchartGroup.css') }}" rel="stylesheet" type="text/css" >
     <link href="{{ asset('css/CustomCard.css')}}" rel="stylesheet" type="text/css">
     <!-- Javascript libraries -->
