@@ -63,7 +63,7 @@
         <hr>
       </div>
     </div>
-    <video autoplay="" loop="true" class="fillWidth fadeIn wow collapse in" data-wow-delay="0.5s" poster="https://s3-us-west-2.amazonaws.com/coverr/poster/Traffic-blurred2.jpg"
+    <video autoplay="" loop="true" class="fillWidth fadeIn wow collapse in" data-wow-delay="0.5s" poster=""
       id="video-background">
       <source src="/media/test720.mp4" type="video/mp4">Your browser does not support the video tag. I suggest you upgrade your browser.
     </video>
@@ -85,7 +85,7 @@
             <h3>Visualize Your Degree</h3>
             <p class="text-muted" style="margin-bottom: 10px">Choose your Major And Stream. Information Comes directly from McGill ensuring accuracy.</p>
           </div>
-          <video autoplay="" loop="true" class="" data-wow-delay="0.5s" poster="https://s3-us-west-2.amazonaws.com/coverr/poster/Traffic-blurred2.jpg"
+          <video autoplay="" loop="true" class="" data-wow-delay="0.5s" poster=""
             id="demo-vid">
             <source src="/media/SimvoVisualizeDegree.mov" type="video/mp4">Your browser does not support the video tag. I suggest you upgrade your browser.
           </video>
@@ -96,7 +96,7 @@
             <h3>Preview Semesters</h3>
             <p class="text-muted">Drag courses into your current semester and quickly see wht your schedule will look like.</p>
           </div>
-          <video autoplay="" loop="true" class="" data-wow-delay="0.5s" poster="https://s3-us-west-2.amazonaws.com/coverr/poster/Traffic-blurred2.jpg"
+          <video autoplay="" loop="true" class="" data-wow-delay="0.5s" poster=""
             id="demo-vid">
             <source src="/media/SimvoPreviewSched.mov" type="video/mp4">Your browser does not support the video tag. I suggest you upgrade your browser.
           </video>
@@ -127,7 +127,7 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-5 text-center">
-          <h2 class="text-primary" style="margin-bottom: 20px;">What is the Students of S!MVO Program?</h2>
+          <h2 class="sub-header" style="margin-bottom: 20px;">What is the Students of S!MVO Program?</h2>
           <p class="primary-text text-faded">The Students of S!MVO program is a 1 term educational 
           program that will select 15-20 student applicants to develop and implement 
           multiple S!MVO projects that focus on improving some aspect of McGill. 
@@ -139,7 +139,7 @@
         </div>
         <div class="col-lg-2 text-center"></div>
         <div class="col-lg-5 text-center">
-          <h2 class="text-primary" style="margin-bottom: 20px;">Who Is The Program Suited for?</h2>
+          <h2 class="sub-header" style="margin-bottom: 20px;">Who Is The Program Suited for?</h2>
           <p class="primary-text text-faded">The Students of S!MVO program is McGill’s ideal opportunity to earn invaluable experience and develop a unique mindset critical for students wishing:
             To become valuable future employees with unique corporate and interpersonal skills
 
@@ -152,68 +152,89 @@
         </div>
       </div>
     </div>
-  </section>
-  <section id="three" class="about-tab">
     <div class="container">
       <div class="row">
         <div class="col-lg-12 text-center">
-          <h2 class="margin-top-0 text-primary">What is S!MVO</h2>
+          <h2 class="margin-top-0 text-primary">What We Offer</h2>
           <hr class="primary">
         </div>
       </div>
     </div>
     <div class="container">
       <div class="row">
-        <div class="col-lg-12 text-center">
-          <p class="primary-text text-faded">S!MVO is short for Simvolus, the greek word for “advisor”. It is the name behind our Interactive Degree Advising platform that you can access here if you are a McGill Engineer.
-
-          S!MVO’s identity goes beyond just degree planning and extends towards the entirety of university life. The student body is McGill’s most valuable asset when it comes to improving this institution, as a result the Students of S!MVO program was deployed. With respect to this, S!MVO is... 
-
-          an opportunity to develop unique hands on experience,
-          a gateway to a wider network and brighter career after graduation,
-          your way into a talented, motivated, and truly unique group of people,
-          the strategic choice to turn your vision into reality,
-          a place to work hard, have fun, and learn more about yourself,
-          all while making an impact on your peers and improving your university. 
-            
-          So S!MVO is many things, but where is the fun in revealing it all?
-
-          Apply now to find out more about us and our projects, or ask a Student of S!MVO when you see one. They can be spotted wearing our red/yellow/green striped hoodies around campus.
+        <div class="col-lg-4 col-med-12 text-center">
+         <h3 class="sub-header">Self Development</h3>
+         <p class="primary-text text-faded">Special guest talks, team networking events, and lessons 
+           in psychology will shift your mindset and mentality about your life goals 
+           and ambitions. You will also develop key employability skills through 
+           completing and implementing your project for your peers to enjoy.</p>
+        </div>
+        <div class="col-lg-4 col-med-12 text-center">
+          <h3 class="sub-header">Intristic</h3>
+          <p class="primary-text text-faded">Few things are better than the 
+          joy of seeing your work come to life and impact the people and students around 
+          you. 
+          </p>
+        </div>
+        <div class="col-lg-4 col-med-12 text-center">
+          <h3 class="sub-header">Benifits</h3>
+          <p class="primary-text text-faded">Join a network of like minded students; enjoy weekly talks on entrepreneurship, 
+            key mentalities, and personal psychology; attend networking events; build friendships on your retreat to Mt. Tremblant. 
+            It is just like you are working for a company.
           </p>
         </div>
       </div>
     </div>
   </section>
-  <aside class="bg-dark">
-    <div class="container text-center">
-      <div class="call-to-action">
-        <h2 class="text-primary">Get Started</h2>
-        <a href="http://www.bootstrapzero.com/bootstrap-template/landing-zero" target="ext" class="btn btn-default btn-lg wow flipInX">Free Download</a>
-      </div>
-      <br>
-      <hr/>
-      <br>
+  <section id="three" class="apply-tab">
+    <div class="container">
       <div class="row">
-        <div class="col-lg-10 col-lg-offset-1">
-          <div class="row">
-            <h6 class="wide-space text-center">BOOTSTRAP IS BASED ON THESE STANDARDS</h6>
-            <div class="col-sm-3 col-xs-6 text-center">
-              <i class="icon-lg ion-social-html5-outline" title="html 5"></i>
-            </div>
-            <div class="col-sm-3 col-xs-6 text-center">
-              <i class="icon-lg ion-social-sass" title="sass"></i>
-            </div>
-            <div class="col-sm-3 col-xs-6 text-center">
-              <i class="icon-lg ion-social-javascript-outline" title="javascript"></i>
-            </div>
-            <div class="col-sm-3 col-xs-6 text-center">
-              <i class="icon-lg ion-social-css3-outline" title="css 3"></i>
-            </div>
-          </div>
+        <div class="col-lg-12 text-center">
+           <h2 class="margin-top-0 text-primary">Apply Today!</h2>
+           <hr class="primary">
         </div>
       </div>
     </div>
-  </aside>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 text-center">
+           <h2 class="margin-top-0 text-primary">Current Open Positions:</h2>
+           <hr class="primary">
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-4 col-md-12 text-center">
+          <a class="app-link btn btn-success btn-lg" href="https://www.cognitoforms.com/Doeandco1/ProjectManager">Project Manager</a>
+        </div>
+        <div class="col-lg-4 col-md-12 text-center">
+          <a class="app-link btn btn-success btn-lg" href="https://www.cognitoforms.com/Doeandco1/ProjectManager">Software Engineer</a>
+        </div>
+        <div class="col-lg-4 col-md-12 text-center">
+          <a class="app-link btn btn-success btn-lg" href="https://www.cognitoforms.com/Doeandco1/ProjectManager">Marketing Advisor</a>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section id="four" class="about-tab">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 text-center">
+           <h2 class="margin-top-0 text-primary">What is S!MVO?</h2>
+           <hr class="primary">
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 text-center">
+          <p class="primary-text text-faded">S!MVO is short for Simvolus, the greek word for “advisor”. It is the name behind our Interactive Degree Advising platform that you can access here if you are a McGill Engineer. S!MVO’s identity goes beyond just degree planning and extends towards the entirety of university life. The student body is McGill’s most valuable asset when it comes to improving this institution, as a result the Students of S!MVO program was deployed. With respect to this, S!MVO is an opportunity to develop unique hands-on experience, a gateway to a wider network and brighter career after graduation, your way into a talented, motivated, and truly unique group of people, the strategic choice to turn your vision into reality, a place to work hard, have fun, and learn more about yourself, all while making an impact on your peers and improving your university. So S!MVO is many things, but where is the fun in revealing it all? Apply now to find out more about us and our projects, or ask a Student of S!MVO when you see one. They can be spotted wearing our red/yellow/green striped hoodies around campus.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
   <div id="galleryModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
@@ -223,19 +244,6 @@
             <br/>
             <button class="btn btn-primary btn-lg center-block" data-dismiss="modal" aria-hidden="true">Close <i class="ion-android-close"></i></button>
           </p>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div id="alertModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-sm">
-      <div class="modal-content">
-        <div class="modal-body">
-          <h2 class="text-center">Nice Job!</h2>
-          <p class="text-center">You clicked the button, but it doesn't actually go anywhere because this is only a demo.</p>
-          <p class="text-center"><a href="http://www.bootstrapzero.com">Learn more at BootstrapZero</a></p>
-          <br/>
-          <button class="btn btn-primary btn-lg center-block" data-dismiss="modal" aria-hidden="true">OK <i class="ion-android-close"></i></button>
         </div>
       </div>
     </div>
