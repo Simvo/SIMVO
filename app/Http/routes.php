@@ -15,7 +15,7 @@
 
 
 Route::get('/', function () {
-    return redirect('/flowchart');
+    return view('landing.landing');
 })->middleware('auth');
 
 Route::get('/login', ['as'=>'loginView', 'uses'=>'RegistrationController@loginView']);
