@@ -7,7 +7,8 @@ http://www.bootstrapzero.com
 
 $primary-color: #f44235;
 $secondary-color: #4051b5;
-$sos-background-color: #000000;
+$sos-background-color: #333;
+$about-background-color: #282828;
 
 @import url(https://fonts.googleapis.com/css?family=Questrial);
 @import url(http://fonts.googleapis.com/css?family=Dancing+Script:700);
@@ -49,8 +50,28 @@ body {
     height: 100%;
 }
 
+.primary-color{
+    color: $primary-color;
+}
+
 .SOS-tab{
     background: $sos-background-color !important;
+}
+
+.about-tab{
+    background: $about-background-color !important;
+}
+
+#logo-lines{
+    height: 1.5em;
+}
+
+#landing-title{
+    font-size: 5em
+}
+
+.landing-sub{
+    font-size: 2.5em;
 }
 
 hr {

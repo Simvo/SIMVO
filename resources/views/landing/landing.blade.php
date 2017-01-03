@@ -56,14 +56,16 @@
   <header id="first">
     <div class="header-content">
       <div class="inner">
-        <h1>S!IMVO McGill</h1>
-        <h4 class= "cursive">Changing the Institution, One Project at A Time</h4>
+        <h1 id="landing-title"><img id="logo-lines" src="http://www.wearesimvo.com/wp-content/uploads/2016/06/cropped-Screen-Shot-2016-06-29-at-11.12.45-AM-1.png"/> 
+        S<span class="primary-color">!</span>MVO
+        </h1>
+        <h4 class="cursive landing-sub">Changing the Institution, One Project at A Time</h4>
         <hr>
       </div>
     </div>
     <video autoplay="" loop="true" class="fillWidth fadeIn wow collapse in" data-wow-delay="0.5s" poster="https://s3-us-west-2.amazonaws.com/coverr/poster/Traffic-blurred2.jpg"
       id="video-background">
-      <source src="/media/McGillTour.mp4" type="video/mp4">Your browser does not support the video tag. I suggest you upgrade your browser.
+      <source src="/media/test720.mp4" type="video/mp4">Your browser does not support the video tag. I suggest you upgrade your browser.
     </video>
   </header>
   <section class="" id="one">
@@ -151,142 +153,33 @@
       </div>
     </div>
   </section>
-  <section id="three" class="no-padding">
-    <div class="container-fluid">
-      <div class="row no-gutter">
-        <div class="col-lg-4 col-sm-6">
-          <a href="#galleryModal" class="gallery-box" data-toggle="modal" data-src="//splashbase.s3.amazonaws.com/unsplash/regular/photo-1430916273432-273c2db881a0%3Fq%3D75%26fm%3Djpg%26w%3D1080%26fit%3Dmax%26s%3Df047e8284d2fdc1df0fd57a5d294614d">
-            <img src="//splashbase.s3.amazonaws.com/unsplash/regular/photo-1430916273432-273c2db881a0%3Fq%3D75%26fm%3Djpg%26w%3D1080%26fit%3Dmax%26s%3Df047e8284d2fdc1df0fd57a5d294614d"
-              class="img-responsive" alt="Image 1">
-            <div class="gallery-box-caption">
-              <div class="gallery-box-content">
-                <div>
-                  <i class="icon-lg ion-ios-search"></i>
-                </div>
-              </div>
-            </div>
-          </a>
-        </div>
-        <div class="col-lg-4 col-sm-6">
-          <a href="#galleryModal" class="gallery-box" data-toggle="modal" data-src="//splashbase.s3.amazonaws.com/getrefe/regular/tumblr_nqune4OGHl1slhhf0o1_1280.jpg">
-            <img src="//splashbase.s3.amazonaws.com/getrefe/regular/tumblr_nqune4OGHl1slhhf0o1_1280.jpg" class="img-responsive" alt="Image 2">
-            <div class="gallery-box-caption">
-              <div class="gallery-box-content">
-                <div>
-                  <i class="icon-lg ion-ios-search"></i>
-                </div>
-              </div>
-            </div>
-          </a>
-        </div>
-        <div class="col-lg-4 col-sm-6">
-          <a href="#galleryModal" class="gallery-box" data-toggle="modal" data-src="//splashbase.s3.amazonaws.com/unsplash/regular/photo-1433959352364-9314c5b6eb0b%3Fq%3D75%26fm%3Djpg%26w%3D1080%26fit%3Dmax%26s%3D3b9bc6caa190332e91472b6828a120a4">
-            <img src="//splashbase.s3.amazonaws.com/unsplash/regular/photo-1433959352364-9314c5b6eb0b%3Fq%3D75%26fm%3Djpg%26w%3D1080%26fit%3Dmax%26s%3D3b9bc6caa190332e91472b6828a120a4"
-              class="img-responsive" alt="Image 3">
-            <div class="gallery-box-caption">
-              <div class="gallery-box-content">
-                <div>
-                  <i class="icon-lg ion-ios-search"></i>
-                </div>
-              </div>
-            </div>
-          </a>
-        </div>
-        <div class="col-lg-4 col-sm-6">
-          <a href="#galleryModal" class="gallery-box" data-toggle="modal" data-src="//splashbase.s3.amazonaws.com/lifeofpix/regular/Life-of-Pix-free-stock-photos-moto-drawing-illusion-nabeel-1440x960.jpg">
-            <img src="//splashbase.s3.amazonaws.com/lifeofpix/regular/Life-of-Pix-free-stock-photos-moto-drawing-illusion-nabeel-1440x960.jpg"
-              class="img-responsive" alt="Image 4">
-            <div class="gallery-box-caption">
-              <div class="gallery-box-content">
-                <div>
-                  <i class="icon-lg ion-ios-search"></i>
-                </div>
-              </div>
-            </div>
-          </a>
-        </div>
-        <div class="col-lg-4 col-sm-6">
-          <a href="#galleryModal" class="gallery-box" data-toggle="modal" data-src="//splashbase.s3.amazonaws.com/lifeofpix/regular/Life-of-Pix-free-stock-photos-new-york-crosswalk-nabeel-1440x960.jpg">
-            <img src="//splashbase.s3.amazonaws.com/lifeofpix/regular/Life-of-Pix-free-stock-photos-new-york-crosswalk-nabeel-1440x960.jpg"
-              class="img-responsive" alt="Image 5">
-            <div class="gallery-box-caption">
-              <div class="gallery-box-content">
-                <div>
-                  <i class="icon-lg ion-ios-search"></i>
-                </div>
-              </div>
-            </div>
-          </a>
-        </div>
-        <div class="col-lg-4 col-sm-6">
-          <a href="#galleryModal" class="gallery-box" data-toggle="modal" data-src="//splashbase.s3.amazonaws.com/lifeofpix/regular/Life-of-Pix-free-stock-photos-clothes-exotic-travel-nabeel-1440x960.jpg">
-            <img src="//splashbase.s3.amazonaws.com/lifeofpix/regular/Life-of-Pix-free-stock-photos-clothes-exotic-travel-nabeel-1440x960.jpg"
-              class="img-responsive" alt="Image 6">
-            <div class="gallery-box-caption">
-              <div class="gallery-box-content">
-                <div>
-                  <i class="icon-lg ion-ios-search"></i>
-                </div>
-              </div>
-            </div>
-          </a>
+  <section id="three" class="about-tab">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 text-center">
+          <h2 class="margin-top-0 text-primary">What is S!MVO</h2>
+          <hr class="primary">
         </div>
       </div>
     </div>
-  </section>
-  <section class="container-fluid" id="four">
-    <div class="row">
-      <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
-        <h2 class="text-center text-primary">Features</h2>
-        <hr>
-        <div class="media wow fadeInRight">
-          <h3>Simple</h3>
-          <div class="media-body media-middle">
-            <p>What could be easier? Get started fast with this landing page starter theme.</p>
-          </div>
-          <div class="media-right">
-            <i class="icon-lg ion-ios-bolt-outline"></i>
-          </div>
-        </div>
-        <hr>
-        <div class="media wow fadeIn">
-          <h3>Free</h3>
-          <div class="media-left">
-            <a href="#alertModal" data-toggle="modal" data-target="#alertModal"><i class="icon-lg ion-ios-cloud-download-outline"></i></a>
-          </div>
-          <div class="media-body media-middle">
-            <p>Yes, please. Grab it for yourself, and make something awesome with this.</p>
-          </div>
-        </div>
-        <hr>
-        <div class="media wow fadeInRight">
-          <h3>Unique</h3>
-          <div class="media-body media-middle">
-            <p>Because you don't want your Bootstrap site, to look like a Bootstrap site.</p>
-          </div>
-          <div class="media-right">
-            <i class="icon-lg ion-ios-snowy"></i>
-          </div>
-        </div>
-        <hr>
-        <div class="media wow fadeIn">
-          <h3>Popular</h3>
-          <div class="media-left">
-            <i class="icon-lg ion-ios-heart-outline"></i>
-          </div>
-          <div class="media-body media-middle">
-            <p>There's good reason why Bootstrap is the most used frontend framework in the world.</p>
-          </div>
-        </div>
-        <hr>
-        <div class="media wow fadeInRight">
-          <h3>Tested</h3>
-          <div class="media-body media-middle">
-            <p>Bootstrap is matured and well-tested. It's a stable codebase that provides consistency.</p>
-          </div>
-          <div class="media-right">
-            <i class="icon-lg ion-ios-flask-outline"></i>
-          </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 text-center">
+          <p class="primary-text text-faded">S!MVO is short for Simvolus, the greek word for “advisor”. It is the name behind our Interactive Degree Advising platform that you can access here if you are a McGill Engineer.
+
+          S!MVO’s identity goes beyond just degree planning and extends towards the entirety of university life. The student body is McGill’s most valuable asset when it comes to improving this institution, as a result the Students of S!MVO program was deployed. With respect to this, S!MVO is... 
+
+          an opportunity to develop unique hands on experience,
+          a gateway to a wider network and brighter career after graduation,
+          your way into a talented, motivated, and truly unique group of people,
+          the strategic choice to turn your vision into reality,
+          a place to work hard, have fun, and learn more about yourself,
+          all while making an impact on your peers and improving your university. 
+            
+          So S!MVO is many things, but where is the fun in revealing it all?
+
+          Apply now to find out more about us and our projects, or ask a Student of S!MVO when you see one. They can be spotted wearing our red/yellow/green striped hoodies around campus.
+          </p>
         </div>
       </div>
     </div>

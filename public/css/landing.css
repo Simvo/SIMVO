@@ -43,8 +43,28 @@ body {
   height: 100%;
 }
 
+.primary-color {
+  color: #f44235;
+}
+
 .SOS-tab {
-  background: #000000 !important;
+  background: #333 !important;
+}
+
+.about-tab {
+  background: #282828 !important;
+}
+
+#logo-lines {
+  height: 1.5em;
+}
+
+#landing-title {
+  font-size: 5em;
+}
+
+.landing-sub {
+  font-size: 2.5em;
 }
 
 hr {
