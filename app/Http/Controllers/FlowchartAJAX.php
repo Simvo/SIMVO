@@ -147,7 +147,11 @@ class FlowchartAJAX extends Controller
       $new_semeterCredits = $this->getSemesterCredits($semester, $degree);
       $progress = $this->generateProgressBar($degree);
 
-      return json_encode([$new_id, $courseType, $title, $credits, $semester, $new_semeterCredits, $progress, $focus, $description ]);
+      $minor = Minor::where('degree_id', $degree->id)->first();
+
+      $minor_progress = ($minor) ? $this->generateProgressBarMinor($minor) : [] ;
+
+      return json_encode([$new_id, $courseType, $title, $credits, $semester, $new_semeterCredits, $progress, $focus, $description, $minor_progress ]);
     }
 
   }
