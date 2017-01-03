@@ -38,6 +38,17 @@ body {
     margin-bottom: 40px;
 }
 
+.app-link{
+    font-size: 30px;
+    margin-top: 30px;
+};
+
+.sub-header{
+    color: $primary-color;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
 .primary-text{
     font-size: 20px;
     letter-spacing: 1.1px;
@@ -240,9 +251,7 @@ footer {
     .navbar-default .nav > li>a,
     .navbar-default .nav>li>a:focus {
         color: $primary-color;
-        //padding: 20px;
         letter-spacing: 1.1px;
-        //text-shadow: 1px 1px 1px rgba(60,60,60,0.7);
     }
 
     .navbar-default .nav > li>a:hover,
