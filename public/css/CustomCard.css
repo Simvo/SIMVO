@@ -9,6 +9,10 @@
   cursor: grabbing;
 }
 
+.reveal-errors {
+  width: 180px;
+}
+
 .ignore_error {
   position: absolute;
   top: 5px;
