@@ -16,13 +16,13 @@
 
 Route::get('/', function () {
     return redirect('/flowchart');
-});
+})->middleware('auth');
 
 Route::get('/login', ['as'=>'loginView', 'uses'=>'RegistrationController@loginView']);
 
 Route::get('/logout', ['as'=>'logout', 'uses'=>'RegistrationController@logout']);
 
-Route::get('/auth/registration', ['as'=>'registration', 'uses'=>'RegistrationController@registrationView']);
+Route::get('/auth/registration', ['as'=>'registration', 'middleware' => 'auth','uses'=>'RegistrationController@registrationView']);
 
 Route::get('/flowchart', ['as'=>'flowchart', 'middleware' => 'auth', 'uses'=>'FlowchartController@generateFlowChart']);
 
