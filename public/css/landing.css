@@ -25,6 +25,28 @@ body {
   background-size: 100% auto;
 }
 
+.emph-title {
+  color: #f44235;
+  font-weight: bold;
+  margin-bottom: 40px;
+}
+
+.primary-text {
+  font-size: 20px;
+  letter-spacing: 1.1px;
+  line-height: 50px;
+  font-weight: bold;
+}
+
+#demo-vid {
+  width: 100%;
+  height: 100%;
+}
+
+.SOS-tab {
+  background: #000000 !important;
+}
+
 hr {
   max-width: 80px;
   border-width: 3px;
@@ -38,7 +60,7 @@ hr.light {
 }
 
 a {
-  color: #9c27b0;
+  color: #f44235;
   -webkit-transition: all .35s;
   -moz-transition: all .35s;
   transition: all .35s;
@@ -92,7 +114,7 @@ p {
 }
 
 .text-primary {
-  color: #9c27b0;
+  color: #f44235;
 }
 
 .modal-content {
@@ -126,7 +148,7 @@ footer {
 
 .navbar-header > .navbar-brand {
   font-family: 'Questrial','Helvetica Neue',Arial,sans-serif;
-  color: #9c27b0;
+  color: #f44235;
   padding: 15px;
   -webkit-transition: padding .2s ease-in;
   -moz-transition: padding .2s ease-in;
@@ -156,7 +178,7 @@ footer {
 
 .navbar-default .nav > li > a:hover,
 .navbar-default .nav > li > a:focus:hover {
-  color: #9c27b0;
+  color: #f44235;
 }
 
 .navbar-default .nav > li.active > a,
@@ -199,7 +221,7 @@ footer {
   }
   .navbar-default.affix .navbar-header .navbar-brand {
     font-size: 15px;
-    color: #9c27b0;
+    color: #f44235;
     padding: 20px;
     letter-spacing: 1px;
   }
@@ -214,7 +236,7 @@ footer {
   }
   .navbar-default.affix .nav > li > a:hover,
   .navbar-default.affix .nav > li > a:focus:hover {
-    color: #9c27b0;
+    color: #f44235;
   }
 }
 
