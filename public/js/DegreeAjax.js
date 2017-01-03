@@ -31,12 +31,13 @@ $(document).ready(function () {
 
   $('#major-select').change(function () {
     LoadVersions();
+    LoadStreams();
   });
 
-  $('#version-select').change(function () {
+  $(document).on('change', '#version-select', function() {
     LoadStreams();
     LoadSemesters();
-  })
+  });
 
   $('#stream-select').change(function () {
     LoadSemesters();
@@ -77,8 +78,6 @@ function LoadMajors() {
 //Loads all version of program
 function LoadVersions() {
   var selectedMajor = $('#major-select option:selected').val();
-  $('#version-select').empty();
-  $('#versionSlot').empty();
 
   if (selectedMajor !== "None") {
     $.ajax({
@@ -88,6 +87,9 @@ function LoadVersions() {
         program_id: selectedMajor
       },
       success: function (data) {
+        $('#version-select').empty();
+        $('#versionSlot').empty();
+        $('descSlot').empty();
 
         var response = JSON.parse(data);
 
@@ -111,11 +113,12 @@ function LoadVersions() {
             var option = '<option value="' + response[i] + '">' + response[i] + '</option>';
 
             $('#version-select').append(option);
+            componentHandler.upgradeDom();
           }
         } else {
           var hiddenInput = $('<input/>', {
             type: 'hidden',
-            id: "#version-select",
+            id: "version-select",
             name: "Version",
             value: response[0]
           });
@@ -129,6 +132,12 @@ function LoadVersions() {
 function LoadStreams() {
   var selectedMajor = $('#major-select option:selected').val();
   var selectedVersion = $('#version-select option:selected').text();
+  console.log(selectedVersion);
+  if( selectedVersion === "" || typeof selectedVersion === "undefined")
+  {
+    selectedVersion = $('#version-select').val();
+    console.log(selectedVersion);
+  }
   $('#stream-select').empty();
 
   if (selectedMajor !== "None" && selectedVersion !== "None") {
