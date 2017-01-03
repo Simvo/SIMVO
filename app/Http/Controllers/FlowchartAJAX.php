@@ -174,6 +174,23 @@ class FlowchartAJAX extends Controller
       }
     }
 
+    $minor = Minor::where('degree_id', $degree->id)->first(['program_id']);
+    if($minor)
+    {
+      $groups_minor =  DB::table('Programs')
+                        ->where('PROGRAM_ID', $degree->program_id)
+                        ->groupBy('SET_TITLE_ENGLISH')
+                        ->get(['SET_TITLE_ENGLISH', 'SET_BEGIN_TEXT_ENGLISH']);
+
+      foreach($groups_minor as $group)
+      {
+        if(trim($group->SET_TITLE_ENGLISH) != "")
+        {
+          $groups["MINOR: " . $group->SET_TITLE_ENGLISH] = [];
+        }
+      }
+    }
+
     return json_encode($groups);
   }
 
