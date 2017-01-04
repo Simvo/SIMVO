@@ -317,7 +317,10 @@ class FlowchartController extends Controller
       {
           $credits = DB::table('programs')->where('SUBJECT_CODE', $class->SUBJECT_CODE)
                      ->where('COURSE_NUMBER', $class->COURSE_NUMBER)
-                     ->first(['COURSE_CREDITS'])->COURSE_CREDITS;
+                     ->first(['COURSE_CREDITS']);
+          if($credits) $credits = $credits->COURSE_CREDITS;
+          else continue;
+          
           $class_array[] = [$class->id, $class->SUBJECT_CODE, $class->COURSE_NUMBER, $credits, $class->status];
           $tot_credits+=$credits;
 
