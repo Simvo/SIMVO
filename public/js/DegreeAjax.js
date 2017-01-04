@@ -69,6 +69,8 @@ function LoadMajors() {
           var option = '<option value="' + response[i][1] + '">' + response[i][0] + '</option>';
 
           $('#major-select').append(option);
+
+          LoadVersions();
         }
       }
     })
@@ -124,6 +126,8 @@ function LoadVersions() {
           });
           $("#versionSlot").append(hiddenInput);
         }
+
+        LoadStreams();
       }
     })
   }
@@ -159,6 +163,8 @@ function LoadStreams() {
 
         var option = '<option value="-1">Custom</option>';
         $('#stream-select').append(option);
+
+        LoadSemesters();
       }
     })
   }
