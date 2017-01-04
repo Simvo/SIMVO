@@ -189,6 +189,7 @@ class FlowchartAJAX extends Controller
     $minor_present = false;
     $degree = Session::get('degree');
     $minor = Minor::where("degree_id", $degree->id)->first();
+    $descriptions = [];
 
 
     $groups = $this->getGroupsWithCourses($degree, true);
@@ -220,8 +221,10 @@ class FlowchartAJAX extends Controller
       $groupCredits = array_merge($groupCredits, $minor_credits);
     }
 
+    $descriptions = $this->getDescriptions($returnGroups['Required']);
 
-    return json_encode([$returnGroups, $groupCredits, $minorGroups]);
+
+    return json_encode([$returnGroups, $groupCredits, $minorGroups, $descriptions]);
   }
 
   public function edit_internship(Request $request)
@@ -460,21 +463,5 @@ public function delete_course_from_schedule(Request $request)
     $minor_credits = ($minor)? $minor->minor_credits : 0;
 
     return json_encode([$this->getMajorStatus(), $degree->program_credits, $this->getMinorStatus(), $minor_credits]);
-  }
-   /**
-  * Function for ajax call on the array of descriptions
-  * @param title that needs a desription
-  * @return description for a given title
-  **/
-  public function getDescriptionText_ajax($title)
-  {
-    $degree = Session::get('degree');
-    if($degree == null)
-    {
-      return;
-    }
-    $map = getMajorTitleDescriptions();
-    $description = getEndDescriptionText($title);
-    return json_encode($description);
   }
 }

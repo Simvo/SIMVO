@@ -500,33 +500,21 @@ trait ProgramTrait
      $creditsTakenSum = $this->getRemainingCredits($degree);
      return $creditsTakenSum;
   }
-  /**
-  * Function that returns list of set_end_text_english in programs 
-  * @param None
-  * @return list of descriptions for course categories 
-  **/
-  public function getMajorTitleDescriptions()
-  {
-    $descriptions = array();
-    $decriptions = DB::table('programs')->pluck('SET_END_TEXT_ENGLISH');
-    $titles = array();
-    $titles = DB::table('programs')->pluck('SET_TITLE_ENGLISH');
-    
 
-    $map = array_combine($titles, $descriptions);
-    
-    return $map;
-  }
-    /**
-  * Function that returns the description for a given title
-  * @param title that needs a desription
-  * @return description for a given title
-  **/
-  public function getEndDescriptionText($title)
+  public function getDescriptions($groups)
   {
-    $map = getMajorTitleDescriptions();
-    $description = $map[$title];
-    
-    return $description;
+    $descriptions = [];
+
+    foreach($groups as $title => $courses)
+    {
+     $desc = DB::table('programs')->where('SET_TITLE_ENGLISH', $title)->first(['SET_BEGIN_TEXT_ENGLISH']); 
+
+     if($desc)
+     {
+        $descriptions[$title] = $desc->SET_BEGIN_TEXT_ENGLISH;
+     }
+    }
+
+    return $descriptions;
   }
 }

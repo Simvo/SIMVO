@@ -500,6 +500,7 @@ function initAddCompCourseButton()
                   existCoursesInTab = true;
                   if(typeof response[1][key] !== "undefined") html += '<h4 id="' + tabtitle +'_table_header_' + key + '" style="text-align:center">' + key + ' (' + response[1][key] + ' credits)</h4>';
                   else html += '<h4 id="' + tabtitle +'_table_header_' + key + '" style="text-align:center">' + key + '</h4>';
+                  html += '<p class="group-desc">'+ response[3][key] +'</p>';
                   html += '<table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp ' + tabtitle + '_table" id="' + tabtitle + '_table_'+key+'">';
                   html += '<thead>';
                   html += '<tr>';

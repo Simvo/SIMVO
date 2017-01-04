@@ -18,6 +18,10 @@
   width: 100%;
 }
 
+.group-desc {
+  text-align: center;
+}
+
 .mdl-card__supporting-text {
   width: 100% !important;
 }
