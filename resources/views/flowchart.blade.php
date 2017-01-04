@@ -25,8 +25,10 @@
         <thead>
           <tr>
             @if($degreeLoaded) @foreach ($progress as $key=>$value)
-            <td class="progress_cell">{{$key}}</td>
-            @endforeach @endif
+            <td class="progress_cell" id="{{$key}}">{{$key}}</td>
+            <div class="mdl-tooltip mdl-tooltip--top" for="{{$key}}">SuperTest</div>
+            @endforeach @endif 
+            
           </tr>
         </thead>
         <tbody>

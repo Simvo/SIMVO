@@ -507,6 +507,17 @@ trait ProgramTrait
    **/
   public function getDescriptions($groups)
   {
+    if(!Auth::Check())
+      return;
+     else
+       $user = Auth::User();
+ 
+     $degree = Session::get('degree');
+     if($degree == null)
+     {
+       return;
+     }
+     
     $descriptions = [];
 
     foreach($groups as $title => $courses)
@@ -515,6 +526,9 @@ trait ProgramTrait
 
      if($desc)
      {
+        // $description = $desc->SET_BEGIN_TEXT_ENGLISH;
+        // $newDescription = substr($description, 10);
+        // $descriptions[$title] = $newDescription;
         $descriptions[$title] = $desc->SET_BEGIN_TEXT_ENGLISH;
      }
     }
