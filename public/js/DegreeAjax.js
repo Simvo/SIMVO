@@ -21,9 +21,9 @@ $(document).ready(function () {
 
   // Controls create Degree Behavior
   LoadMajors();
-  LoadVersions();
-  LoadStreams();
-  LoadSemesters();
+  // LoadVersions();
+  // LoadStreams();
+  // LoadSemesters();
 
   $('#faculty-select').change(function () {
     LoadMajors();
@@ -31,16 +31,14 @@ $(document).ready(function () {
 
   $('#major-select').change(function () {
     LoadVersions();
-    LoadStreams();
   });
 
   $(document).on('change', '#version-select', function() {
-    LoadStreams();
-    LoadSemesters();
+   // LoadStreams();
   });
 
   $('#stream-select').change(function () {
-    LoadSemesters();
+   // LoadSemesters();
   })
 
   $("#reset-degree-button").click(function () {
