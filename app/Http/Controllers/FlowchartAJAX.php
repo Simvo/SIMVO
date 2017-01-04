@@ -221,10 +221,12 @@ class FlowchartAJAX extends Controller
       $groupCredits = array_merge($groupCredits, $minor_credits);
     }
 
-    $descriptions = $this->getDescriptions($returnGroups['Required']);
+    $descriptionsR = $this->getDescriptions($returnGroups['Required']);
+    $descriptionsC = $this->getDescriptions($returnGroups['Complementary']);
+    $descriptionsE = $this->getDescriptions($returnGroups['Elective']);
 
 
-    return json_encode([$returnGroups, $groupCredits, $minorGroups, $descriptions]);
+    return json_encode([$returnGroups, $groupCredits, $minorGroups, $descriptionsR, $descriptionsC, $descriptionsE]);
   }
 
   public function edit_internship(Request $request)

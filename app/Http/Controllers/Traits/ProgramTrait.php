@@ -500,7 +500,11 @@ trait ProgramTrait
      $creditsTakenSum = $this->getRemainingCredits($degree);
      return $creditsTakenSum;
   }
-
+  /**
+   *Returns total remaining credits
+   *@param groups 
+   *@return the array of descriptions 
+   **/
   public function getDescriptions($groups)
   {
     $descriptions = [];
