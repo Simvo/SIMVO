@@ -48,7 +48,6 @@ trait MinorTrait
           $creditsTaken += $this->getCourseCreditsMinor($course[0], $course[1]);
       }
 
-      Debugbar::info($key);
       $checkCustom = Custom::where('degree_id', $degree->id)
                 ->where('focus', $key)
                 ->get();
