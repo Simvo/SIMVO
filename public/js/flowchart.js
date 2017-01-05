@@ -54,6 +54,22 @@ function initComplementaryModalRevealListener(target) {
   });
 }
 
+function loadCustomModalGroups(){
+  $.ajax({
+    type: "get",
+    url: "/flowchart/get-elective-groups",
+    success: function(data){
+      var response = JSON.parse(data);
+      var groups = "";
+      for(var group in response){
+        groups += '<option value="custom_focus_' + group +'"}>' + group + '</option>';
+      }
+      groups += '<option value="Miscellaneous"> Miscellaneous </option>';
+      $("#custom_focus").html(groups);
+    }
+  })
+}
+
 function deleteSemester(prev_sem, target_sem, next_sem) {
   //Four cases:
   //1. both prev and next exist (YES)
