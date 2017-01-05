@@ -163,7 +163,7 @@ class FlowchartAJAX extends Controller
 
     $degree = Session::get("degree");
 
-    $groups_PDO = DB::table('Programs')
+    $groups_PDO = DB::table('programs')
                   ->where('PROGRAM_ID', $degree->program_id)
                   ->groupBy('SET_TITLE_ENGLISH')
                   ->get(['SET_TITLE_ENGLISH', 'SET_BEGIN_TEXT_ENGLISH']);
