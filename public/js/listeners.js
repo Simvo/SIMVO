@@ -36,9 +36,9 @@ function initAddSemesterListener(target) {
         var new_sem = get_semester_letter(get_next_semester(get_semester(last_sem)));
         var new_sem2 = get_semester_letter(get_next_semester(get_semester(new_sem)));
         var new_sem2_class = new_sem2.split(" ");
-        //new_sem2_class = new_sem2_class[0] + new_sem2_class[1];
+        new_sem2_class = new_sem2_class[0] + new_sem2_class[1];
 
-        if (new_sem.substring(0, 6) == "SUMMER" && !$(".semester").find("div." + new_sem2_class[0] + "." + new_sem2_class[1]).length) {
+        if (new_sem.substring(0, 6) == "SUMMER" && !$(".semester").find("div." + new_sem2_class).length) {
             //add add-button
             var new_semester = '<div class="fill-semester-gap-wrap">';
             new_semester += '<a href="#" id="' + last_sem + '-gap" class="add-semester mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab" style="background-color: #2980b9;"><i class="material-icons" style="color: white">add</i></a>';
