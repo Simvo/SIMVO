@@ -1,4 +1,5 @@
 $(document).ready(function () {
+   var init = false;
 
   $.ajaxSetup({
     headers: {
@@ -21,22 +22,21 @@ $(document).ready(function () {
 
   // Controls create Degree Behavior
   LoadMajors();
-  LoadVersions();
-  LoadStreams();
-  LoadSemesters();
+  var init = true;
+  // LoadVersions();
+  // LoadStreams();
+  // LoadSemesters();
 
   $('#faculty-select').change(function () {
-    LoadMajors();
+    if(init) LoadMajors();
   });
 
   $('#major-select').change(function () {
-    LoadVersions();
-    LoadStreams();
+    if(init) LoadVersions();
   });
 
   $(document).on('change', '#version-select', function() {
-    LoadStreams();
-    LoadSemesters();
+   // LoadStreams();
   });
 
   $('#stream-select').change(function () {
@@ -70,6 +70,8 @@ function LoadMajors() {
 
           $('#major-select').append(option);
         }
+        
+        LoadVersions();
       }
     })
   }
@@ -124,6 +126,8 @@ function LoadVersions() {
           });
           $("#versionSlot").append(hiddenInput);
         }
+
+        LoadStreams();
       }
     })
   }
@@ -132,11 +136,9 @@ function LoadVersions() {
 function LoadStreams() {
   var selectedMajor = $('#major-select option:selected').val();
   var selectedVersion = $('#version-select option:selected').text();
-  console.log(selectedVersion);
   if( selectedVersion === "" || typeof selectedVersion === "undefined")
   {
     selectedVersion = $('#version-select').val();
-    console.log(selectedVersion);
   }
   $('#stream-select').empty();
 
@@ -159,6 +161,8 @@ function LoadStreams() {
 
         var option = '<option value="-1">Custom</option>';
         $('#stream-select').append(option);
+
+        LoadSemesters();
       }
     })
   }
