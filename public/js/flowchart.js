@@ -15,6 +15,7 @@ $(document).ready(function () {
   initEditCustomCourse(".edit_custom");
   refreshDeleteSemester();
   if (!$("#make_degree").length) {
+    loadCustomModalGroups();
     refreshComplementaryCourses();
   }
 
@@ -27,7 +28,7 @@ $(document).ready(function () {
 $(document).on('click', '.create_vsb' ,function(){
 
   var semester = $(this).attr("id");
-  
+
   $.ajax({
     type: "post",
     url : "/flowchart/get-courses-in-semester",
@@ -216,7 +217,6 @@ function initAddCompCourseButton() {
     $('#comp_courses').foundation('reveal', 'close');
   });
 }
-
 
 function refreshComplementaryCourses() {
   $.ajax({
@@ -641,6 +641,13 @@ function initAddCustomCourseButton() {
           }
         }
 
+         for (var group in response[9]) {
+              if (response[9].hasOwnProperty(group)) {
+                var groupProgress = response[9][group];
+                var target = $("td[id='" + group + "']").text("" + groupProgress[0] + "/" + groupProgress[1]);
+              }
+            }
+
         initEditCustomCourse("#edit_custom_cust" + response[0]);
         initRemoveCourseListener("#remove_cust" + response[0]);
         refreshDeleteSemester();
@@ -721,9 +728,11 @@ function initEditCustomCourse(target) {
         html += '<div id="custom_course_focus_cust' + id + '">';
         html += 'Focus: ';
         html += '<select name="Focus" id="edit_custom_focus_select_cust' + id + '" class="reg_dropdown form-control">';
-
+        html += '<option value="' + focus + '">' + focus + '</option>';
         for (var group in response) {
-          html += '<option value="' + group + '">' + group + '</option>';
+          if(group != focus){
+            html += '<option value="' + group + '">' + group + '</option>';
+          }
         }
         html += '<option value="Miscellaneous">Miscellaneous</option>';
         html += '</select>';
@@ -733,8 +742,11 @@ function initEditCustomCourse(target) {
         html += '<div id="custom_course_credits_cust' + id + '">';
         html += 'Credits: ';
         html += '<select name="Credits" id="edit_custom_credits_select_cust' + id + '" class="reg_dropdown form-control">';
+        html += '<option value="' + credits + '">' + credits + '</option>';
         for (var i = 1; i <= 6; i++) {
-          html += '<option value="' + i + '">' + i + '</option>';
+          if(i != credits){
+            html += '<option value="' + i + '">' + i + '</option>';
+          }
         }
         html += '</select>';
         html += '</div>';
@@ -794,13 +806,13 @@ function initConfirmEditCustomButton(id, originalTitle, originalDescription, ori
 
       $("#cust" + id).html(html);
       $("#cust" + id).animate({
-        "width": "160px"
+        "width": $(".custom_card").width() + "px",
       }, {
         queue: false,
         duration: 100
       }, "linear");
       $("#cust" + id).animate({
-        "height": "45px"
+        "height": $(".custom_card").height() + "px",
       }, {
         queue: false,
         duration: 100
@@ -831,13 +843,13 @@ function initConfirmEditCustomButton(id, originalTitle, originalDescription, ori
 
       $("#cust" + id).html(html);
       $("#cust" + id).animate({
-        "width": "160px"
+        "width": $(".custom_card").width() + "px",
       }, {
         queue: false,
         duration: 100
       }, "linear");
       $("#cust" + id).animate({
-        "height": "45px"
+        "height": $(".custom_card").height() + "px",
       }, {
         queue: false,
         duration: 100
@@ -875,6 +887,7 @@ function initConfirmEditCustomButton(id, originalTitle, originalDescription, ori
       });
 
       initEditCustomCourse("#edit_custom_cust" + id);
+      $("#cust" + id).removeClass("pinned");
       initRemoveCourseListener("#remove_cust" + id);
 
       //Dynamically render MDL
@@ -908,19 +921,20 @@ function initConfirmEditCustomButton(id, originalTitle, originalDescription, ori
 
     $("#cust" + id).html(html);
     $("#cust" + id).animate({
-      "width": "160px"
+      "width": $(".custom_card").width() + "px",
     }, {
       queue: false,
       duration: 100
     }, "linear");
     $("#cust" + id).animate({
-      "height": "45px"
+      "height": $(".custom_card").height() + "px",
     }, {
       queue: false,
       duration: 100
     }, "linear");
 
     initEditCustomCourse("#edit_custom_cust" + id);
+    $("#cust" + id).removeClass("pinned");
     initRemoveCourseListener("#remove_cust" + id);
 
     //Dynamically render MDL

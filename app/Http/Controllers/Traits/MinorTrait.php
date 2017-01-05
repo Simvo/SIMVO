@@ -8,6 +8,7 @@ use App\User;
 use App\Stream;
 use App\StreamStructure;
 use App\Schedule;
+use App\Custom;
 use App\Minor;
 use DB;
 use Auth;
@@ -24,6 +25,7 @@ trait MinorTrait
   **/
   public function generateProgressBarMinor($minor)
   {
+    $degree = Session::get('degree');
     $groups = $this->getGroupsWithCreditsMinor($minor);
     $progress = [];
 
@@ -45,6 +47,17 @@ trait MinorTrait
         if(count($check)>0)
           $creditsTaken += $this->getCourseCreditsMinor($course[0], $course[1]);
       }
+
+      Debugbar::info($key);
+      $checkCustom = Custom::where('degree_id', $degree->id)
+                ->where('focus', $key)
+                ->get();
+
+      foreach($checkCustom as $course)
+      {
+        $creditsTaken += (int) $course->credits;
+      }
+
 
       $progress[$key] = [$creditsTaken,$value];
     }

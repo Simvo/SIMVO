@@ -147,7 +147,11 @@ class FlowchartAJAX extends Controller
       $new_semeterCredits = $this->getSemesterCredits($semester, $degree);
       $progress = $this->generateProgressBar($degree);
 
-      return json_encode([$new_id, $courseType, $title, $credits, $semester, $new_semeterCredits, $progress, $focus, $description ]);
+      $minor = Minor::where('degree_id', $degree->id)->first();
+
+      $minor_progress = ($minor) ? $this->generateProgressBarMinor($minor) : [] ;
+
+      return json_encode([$new_id, $courseType, $title, $credits, $semester, $new_semeterCredits, $progress, $focus, $description, $minor_progress ]);
     }
 
   }
@@ -171,6 +175,23 @@ class FlowchartAJAX extends Controller
       if(trim($group->SET_TITLE_ENGLISH) != "")
       {
         $groups[$group->SET_TITLE_ENGLISH] = [];
+      }
+    }
+
+    $minor = Minor::where('degree_id', $degree->id)->first(['program_id']);
+    if($minor)
+    {
+      $groups_minor =  DB::table('Programs')
+                        ->where('PROGRAM_ID', $minor->program_id)
+                        ->groupBy('SET_TITLE_ENGLISH')
+                        ->get(['SET_TITLE_ENGLISH', 'SET_BEGIN_TEXT_ENGLISH']);
+
+      foreach($groups_minor as $group)
+      {
+        if(trim($group->SET_TITLE_ENGLISH) != "")
+        {
+          $groups["MINOR: " . $group->SET_TITLE_ENGLISH] = [];
+        }
       }
     }
 
