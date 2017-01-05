@@ -7,19 +7,6 @@ $(document).ready(function () {
     }
   });
 
-  // Controls reset degree Modal
-  var dialog = document.querySelector('dialog');
-  var showDialogButton = $('#show-dialog');
-  if (!dialog.showModal) {
-    dialogPolyfill.registerDialog(dialog);
-  }
-  $(showDialogButton).bind('click', function () {
-    dialog.showModal();
-  });
-  dialog.querySelector('.close').addEventListener('click', function () {
-    dialog.close();
-  });
-
   // Controls create Degree Behavior
   LoadMajors();
   var init = true;
