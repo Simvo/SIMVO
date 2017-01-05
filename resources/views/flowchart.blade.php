@@ -33,9 +33,9 @@
 <!-- Progress Bar for Minor Aloing with settings buttons-->
 <div class="mdl-grid" style="padding-bottom: 0px">
   <div class="mdl-cell mdl-cell--2-col">
-    <button class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent' id="show-dialog" type="button">Reset Degree</button>
-    <dialog class="mdl-dialog my-modal">
-      <h4 class="mdl-dialog__title modal-title">Reseting Your Degree Will Delete All of Your Courses!</h4>
+    <button class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent' data-reveal-id="reset-degree-modal" type="button">Reset Degree</button>
+    <div id="reset-degree-modal" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+      <h4 class="mdl-dialog__title modal-title" style="text-align: center; line-height: 40.0px;">Reseting Your Degree Will Delete All of Your Courses!</h4>
       <div class="mdl-dialog__content">
         <p class="modal-text">
           Are you sure you want to continue? (This is not in any way connected to minerva, any changes here will not be relfected by
@@ -44,9 +44,9 @@
       </div>
       <div class="mdl-dialog__actions">
         <a type="button" class="mdl-button" href="{{ route('resetDegree') }}">Agree</a>
-        <button type="button" class="mdl-button close">Cancel</button>
+        <button type="button" class="mdl-button close-reveal-modal">X</button>
       </div>
-    </dialog>
+    </div>
   </div>
   <div class="mdl-cell mdl-cell--2-col">
     <a href="#" data-reveal-id="show-add-minors" class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent'>
