@@ -23,7 +23,7 @@ $(document).ready(function () {
   });
 
   $(document).on('change', '#version-select', function() {
-   // LoadStreams();
+   LoadStreams();
   });
 
   $('#stream-select').change(function () {
