@@ -2,12 +2,51 @@
   border-radius: 4px;
   background: #ecf0f1;
   width: 180px;
-  height: 45px;
   margin: 0 auto 10px;
 }
 
 .custom_card:hover {
   cursor: grabbing;
+}
+
+.reveal-errors {
+  width: 180px;
+}
+
+.ignore_error {
+  position: absolute;
+  top: 5px;
+  right: 3px;
+  color: white;
+}
+
+.ignore_error a {
+  color: white;
+}
+
+.course_error {
+  position: relative;
+  border-radius: 4px;
+  background-color: #cc0000;
+}
+
+.course_error p {
+  padding-top: 3px;
+  margin-left: 3px;
+  color: white;
+}
+
+.vsb_error {
+  color: orange;
+  width: 150px;
+  text-align: center;
+  padding: 3px;
+  font-size: 15px;
+  margin-bottom: 15px;
+}
+
+.prereq__error {
+  color: #cc0000;
 }
 
 .grabbing-icon {
@@ -24,11 +63,12 @@
 
 .credit_counter {
   display: table;
+  height: 45px;
   overflow: hidden;
 }
 
 .Required_course {
-  background: #fbb3ae !important;
+  background: #34495e !important;
 }
 
 .Internship_course {
@@ -88,7 +128,8 @@
 }
 
 .custom_card .card_content {
-  padding: 8px;
+  padding: 4px 8px 4px 8px;
+  color: white;
 }
 
 .custom_card .card_content:hover {

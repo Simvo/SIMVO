@@ -15,14 +15,14 @@
 
 
 Route::get('/', function () {
-    return redirect('/flowchart');
-});
+    return view('landing.landing');
+})->middleware('auth');
 
 Route::get('/login', ['as'=>'loginView', 'uses'=>'RegistrationController@loginView']);
 
 Route::get('/logout', ['as'=>'logout', 'uses'=>'RegistrationController@logout']);
 
-Route::get('/auth/registration', ['as'=>'registration', 'uses'=>'RegistrationController@registrationView']);
+Route::get('/auth/registration', ['as'=>'registration', 'middleware' => 'auth','uses'=>'RegistrationController@registrationView']);
 
 Route::get('/flowchart', ['as'=>'flowchart', 'middleware' => 'auth', 'uses'=>'FlowchartController@generateFlowChart']);
 
@@ -85,3 +85,9 @@ Route::post('/flowchart/edit-custom', 'FlowchartAJAX@edit_custom');
 Route::post('/flowchart/getErrors', 'FlowchartAJAX@get_errors');
 
 Route::post('/flowchart/remainingCourses','FlowchartAJAX@getMajorStatus_ajax');
+
+Route::post('flowchart/ignore-error', 'FlowchartAJAX@ignore_error');
+
+Route::post('flowchart/check-for-ignored-errors', 'FlowchartAJAX@check_for_ignored_errors');
+
+Route::post('/flowchart/reveal-errors', 'FlowchartAJAX@reveal_errors');

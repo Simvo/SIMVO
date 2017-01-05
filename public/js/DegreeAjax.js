@@ -1,4 +1,5 @@
 $(document).ready(function () {
+   var init = false;
 
   $.ajaxSetup({
     headers: {
@@ -21,22 +22,22 @@ $(document).ready(function () {
 
   // Controls create Degree Behavior
   LoadMajors();
-  LoadVersions();
-  LoadStreams();
-  LoadSemesters();
+  var init = true;
+  // LoadVersions();
+  // LoadStreams();
+  // LoadSemesters();
 
   $('#faculty-select').change(function () {
-    LoadMajors();
+    if(init) LoadMajors();
   });
 
   $('#major-select').change(function () {
-    LoadVersions();
+    if(init) LoadVersions();
   });
 
-  $('#version-select').change(function () {
-    LoadStreams();
-    LoadSemesters();
-  })
+  $(document).on('change', '#version-select', function() {
+   // LoadStreams();
+  });
 
   $('#stream-select').change(function () {
     LoadSemesters();
@@ -69,6 +70,8 @@ function LoadMajors() {
 
           $('#major-select').append(option);
         }
+        
+        LoadVersions();
       }
     })
   }
@@ -77,7 +80,6 @@ function LoadMajors() {
 //Loads all version of program
 function LoadVersions() {
   var selectedMajor = $('#major-select option:selected').val();
-  $('#version-select').empty();
 
   if (selectedMajor !== "None") {
     $.ajax({
@@ -87,16 +89,45 @@ function LoadVersions() {
         program_id: selectedMajor
       },
       success: function (data) {
+        $('#version-select').empty();
+        $('#versionSlot').empty();
+        $('descSlot').empty();
 
         var response = JSON.parse(data);
 
-        $('#version-select').append('<option>-Select-</option>');
+        if (response.length > 1) {
+          var versionSelect = '<td> Version ';
+          versionSelect += '</td>';
+          versionSelect += '<td>';
+          versionSelect += '<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label program_input">';
+          versionSelect += '<select name="Version" id="version-select" class="reg_dropdown form-control"></select>';
+          versionSelect += '</div>';
+          versionSelect += '</td>';
 
-        for (var i = 0; i < response.length; i++) {
-          var option = '<option value="' + response[i] + '">' + response[i] + '</option>';
+          versionDesc = '<td>';
+          versionDesc += '<p>It seems this program has multiple versions. If your program has been changed recently (ex: ECSESS has redone all of their curriculums for students entering in FALL 2016) The higher the number, the newer the version.</p>';
+          versionDesc += '<td>';
 
-          $('#version-select').append(option);
+          $('#versionSlot').append(versionSelect);
+          $('#descSlot').append(versionDesc);
+
+          for (var i = 0; i < response.length; i++) {
+            var option = '<option value="' + response[i] + '">' + response[i] + '</option>';
+
+            $('#version-select').append(option);
+            componentHandler.upgradeDom();
+          }
+        } else {
+          var hiddenInput = $('<input/>', {
+            type: 'hidden',
+            id: "version-select",
+            name: "Version",
+            value: response[0]
+          });
+          $("#versionSlot").append(hiddenInput);
         }
+
+        LoadStreams();
       }
     })
   }
@@ -105,6 +136,10 @@ function LoadVersions() {
 function LoadStreams() {
   var selectedMajor = $('#major-select option:selected').val();
   var selectedVersion = $('#version-select option:selected').text();
+  if( selectedVersion === "" || typeof selectedVersion === "undefined")
+  {
+    selectedVersion = $('#version-select').val();
+  }
   $('#stream-select').empty();
 
   if (selectedMajor !== "None" && selectedVersion !== "None") {
@@ -126,6 +161,8 @@ function LoadStreams() {
 
         var option = '<option value="-1">Custom</option>';
         $('#stream-select').append(option);
+
+        LoadSemesters();
       }
     })
   }

@@ -1,14 +1,4 @@
 @extends('master') @section('flowchart')
-<script type="text/javascript">
-  var user_id = "{{ $user->id }}";
-  var user_email = "{{ $user->email }}";
-
-  mixpanel.identify(user_id);
-
-  mixpanel.people.set({
-    "$user": user_email
-  });
-</script>
 <!-- Progress Bar for Major -->
 <div class="mdl-grid" style="padding-bottom: 0px">
   <div class="mdl-cell mdl-cell--12-col">
@@ -247,17 +237,6 @@
                       CREDITS: {{ $classes[0] }}
                     </div>
                   </div>
-
-                   <!--<div class="vsb_wrapper">
-                      <a class="create_vsb" id="{{str_replace(" ", " ", $key)}}" href="#">Preview Schedule</a>
-                  </div>-->
-
-                  @if(isset($course_errors[$key])) @foreach ($course_errors[$key] as $error)
-                  <div id='error_{{$error[0]}}' class='error {{$error[1]}}'>
-                    {{ $error[2] }}
-                  </div>
-                  @endforeach
-                  @endif
                 </div>
               </div>
             </div>
@@ -468,15 +447,9 @@
               </div>
             </td>
           </tr>
-          <tr>
-            <td>
-              Version
-            </td>
-            <td>
-              <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label program_input">
-                <select name="Version" id="version-select" class="reg_dropdown form-control"></select>
-              </div>
-            </td>
+          <tr id="versionSlot">
+          </tr>
+          <tr id="descSlot">
           </tr>
           <tr>
             <td>

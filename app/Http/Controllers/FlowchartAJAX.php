@@ -271,131 +271,130 @@ class FlowchartAJAX extends Controller
     return json_encode([$new_semeterCredits, $progress, $semester]);
   }
 
-public function add_complementary_course_to_Flowchart(Request $request)
-{
-  if(!Auth::Check())
-    return;
-  else
-    $user = Auth::User();
-
-  $degree = Session::get('degree');
-
-  $courseName = $request->courseName;
-  $semester = $request->semester;
-  $parts = explode(" ", $courseName);
-
-  $course = DB::table('programs')->where('PROGRAM_ID',$degree->program_id)
-            ->where('SUBJECT_CODE', $parts[0])
-            ->where('COURSE_NUMBER', $parts[1])
-            ->first(['SUBJECT_CODE', 'COURSE_NUMBER', 'SET_TYPE', 'COURSE_CREDITS', 'SET_TITLE_ENGLISH']);
-
-  return json_encode($course);
-}
-
-public function delete_course_from_schedule(Request $request)
-{
-  if(!Auth::Check())
-    return;
-  else
-    $user = Auth::User();
-
-  $degree = Session::get('degree');
-  if($degree == null)
+  public function add_complementary_course_to_Flowchart(Request $request)
   {
-    return;
-  }
-
-  $minor = Minor::where('degree_id', $degree->id)->first();
-  if($minor)
-  {
-    $minor_id = $minor->program_id;
-  }
-
-  $courseID = $request->id;
-
-  if(substr($request->id,0,1) == "i")
-  {
-    $courseID = substr($request->id,3);
-    $course = Internship::find($courseID);
-    $type = 'int';
-  }
-  else if(substr($request->id,0,1) == "c")
-  {
-    $courseID = substr($request->id, 4);
-    $course = Custom::find($courseID);
-    $type = 'cust';
-  }
-  else
-  {
-    $courseID = $request->id;
-    $course = Schedule::find($courseID);
-    $type = '';
-  }
-
-  if($type == '')
-  {
-    $errors_to_delete = $this->empty_errors($course);
-
-    $semester = $course->first()->semester;
-
-    $likeString = $course->SUBJECT_CODE . ' ' . $course->COURSE_NUMBER;
-    $likeString = '%'.strtolower($likeString) .'%';
-
-    $course->delete();
+    if(!Auth::Check())
+      return;
+    else
+      $user = Auth::User();
 
     $degree = Session::get('degree');
 
-    // check pre requisites of every course in front that depends on the deleted course
+    $courseName = $request->courseName;
+    $semester = $request->semester;
+    $parts = explode(" ", $courseName);
 
-    $prereqs = course::where('prerequisites', 'like', $likeString)->get();
+    $course = DB::table('programs')->where('PROGRAM_ID',$degree->program_id)
+              ->where('SUBJECT_CODE', $parts[0])
+              ->where('COURSE_NUMBER', $parts[1])
+              ->first(['SUBJECT_CODE', 'COURSE_NUMBER', 'SET_TYPE', 'COURSE_CREDITS', 'SET_TITLE_ENGLISH']);
 
-    foreach($prereqs as $prereq)
+    return json_encode($course);
+  }
+
+  public function delete_course_from_schedule(Request $request)
+  {
+    if(!Auth::Check())
+      return;
+    else
+      $user = Auth::User();
+
+    $degree = Session::get('degree');
+    if($degree == null)
     {
-      if($semester === "Exemption")
-      {
-        $course = Schedule::where('degree_id', $degree->id)
-                         ->where('SUBJECT_CODE', $prereq->SUBJECT_CODE)
-                         ->where('COURSE_NUMBER', $prereq->COURSE_NUMBER)
-                         ->where('semester', '<>', 'Exemption')
-                         ->get();
-      }
-      else
-      {
-        $course = Schedule::where('degree_id', $degree->id)
-                         ->where('SUBJECT_CODE', $prereq->SUBJECT_CODE)
-                         ->where('COURSE_NUMBER', $prereq->COURSE_NUMBER)
-                         ->where('semester', '>', $semester)
-                         ->get();
-      }
+      return;
+    }
 
-      if(count($course) > 0)
+    $minor = Minor::where('degree_id', $degree->id)->first();
+    if($minor)
+    {
+      $minor_id = $minor->program_id;
+    }
+
+    $courseID = $request->id;
+
+    if(substr($request->id,0,1) == "i")
+    {
+      $courseID = substr($request->id,3);
+      $course = Internship::find($courseID);
+      $type = 'int';
+    }
+    else if(substr($request->id,0,1) == "c")
+    {
+      $courseID = substr($request->id, 4);
+      $course = Custom::find($courseID);
+      $type = 'cust';
+    }
+    else
+    {
+      $courseID = $request->id;
+      $course = Schedule::find($courseID);
+      $type = '';
+    }
+
+    if($type == '')
+    {
+      $errors_to_delete = $this->empty_errors($course);
+
+      $semester = $course->first()->semester;
+
+      $likeString = $course->SUBJECT_CODE . ' ' . $course->COURSE_NUMBER;
+      $likeString = '%'.strtolower($likeString) .'%';
+
+      $course->delete();
+
+      $degree = Session::get('degree');
+
+      // check pre requisites of every course in front that depends on the deleted course
+
+      $prereqs = course::where('prerequisites', 'like', $likeString)->get();
+
+      foreach($prereqs as $prereq)
       {
-        $this->checkPrerequisites($course[0]);
+        if($semester == "Exemption")
+        {
+          $course = Schedule::where('degree_id', $degree->id)
+                          ->where('SUBJECT_CODE', $prereq->SUBJECT_CODE)
+                          ->where('COURSE_NUMBER', $prereq->COURSE_NUMBER)
+                          ->where('semester', '<>', 'Exemption')
+                          ->get();
+        }
+        else
+        {
+          $course = Schedule::where('degree_id', $degree->id)
+                          ->where('SUBJECT_CODE', $prereq->SUBJECT_CODE)
+                          ->where('COURSE_NUMBER', $prereq->COURSE_NUMBER)
+                          ->where('semester', '>', $semester)
+                          ->get();
+        }
+
+        if(count($course) > 0)
+        {
+          $this->checkPrerequisites($course[0]);
+        }
       }
     }
+    else{
+      $errors_to_delete = [];
+
+      $semester = $course->semester;
+
+      $degree = Session::get('degree');
+
+      $course->delete();
+    }
+
+
+
+    $new_semeterCredits = $this->getSemesterCredits($semester, $degree);
+    $progress = $this->generateProgressBar($degree);
+    if($minor)
+      $minor_progress = $this->generateProgressBarMinor($minor);
+    else
+      $minor_progress = [];
+
+    return json_encode([$courseID, $new_semeterCredits, $progress, $semester, $errors_to_delete, $type, $minor_progress]);
   }
-  else{
-    $errors_to_delete = [];
-
-    $semester = $course->semester;
-
-    $degree = Session::get('degree');
-
-    $course->delete();
-  }
-
-
-
-  $new_semeterCredits = $this->getSemesterCredits($semester, $degree);
-  $progress = $this->generateProgressBar($degree);
-  if($minor)
-    $minor_progress = $this->generateProgressBarMinor($minor);
-  else
-    $minor_progress = [];
-
-  return json_encode([$courseID, $new_semeterCredits, $progress, $semester, $errors_to_delete, $type, $minor_progress]);
-}
-
 
   public function getSemesterCredits($semester, $degree)
   {
@@ -481,7 +480,14 @@ public function delete_course_from_schedule(Request $request)
     return json_encode([$this->getMajorStatus(), $degree->program_credits, $this->getMinorStatus(), $minor_credits]);
   }
 
-  public function get_courses_in_semester(Request $request)
+  public function ignore_error(Request $request)
+  {
+    $error = FlowchartError::find($request->id);
+    $error->hidden = 1;
+    $error->save();
+  }
+
+  public function check_for_ignored_errors(Request $request)
   {
     $degree = Session::get('degree');
     if($degree == null)
@@ -489,20 +495,86 @@ public function delete_course_from_schedule(Request $request)
       return;
     }
 
-    $response = [];
+    $errors = [];
 
-    Debugbar::info($request->semester);
+    $semesters = Schedule::where('degree_id', $degree->id)
+              ->groupBy("semester")
+              ->get(['semester', 'id']);
+
+    foreach($semesters as $sem)
+    {
+      $classes_in_sem = Schedule::where('degree_id', $degree->id)
+                        ->where('semester', $sem->semester)
+                        ->get(['id']);
+      $errors[$sem->semester] = 0;
+      foreach($classes_in_sem as $class)
+      {
+        $errors[$sem->semester]  += FlowchartError::where('schedule_id', $class->id)
+                  ->where('hidden', 1)
+                  ->count();
+      }
+    }
+
+    return json_encode($errors);
+  }
+
+  public function reveal_errors(Request $request)
+  {
+    $degree = Session::get('degree');
+    if($degree == null)
+    {
+      return;
+    }
+
+    $courses = Schedule::where('degree_id', $degree->id)
+              ->where('semester', $request->semester)
+              ->get();
+
+    foreach($courses as $course)
+    {
+      $errors = FlowchartError::where('schedule_id', $course->id)
+                              ->where('hidden', 1)
+                              ->get();
+      foreach($errors as $error)
+      {
+        $error->hidden = 0;
+        $error->save();
+      }
+    }
+  }
+  
+  
+  public function get_courses_in_semester(Request $request)
+  {
+    $degree = Session::get('degree');
+    if($degree == null)
+    {
+      return;
+    }
+    $response = [];
     
     $courses = Schedule::where('degree_id', $degree->id)
                ->where('semester', $request->semester)
                ->get(["SUBJECT_CODE", "COURSE_NUMBER"]);
+
+    $customCourses = Custom::where('degree_id', $degree->id)
+                            ->where('semester', $request->semester)
+                            ->get(['title']);
 
     foreach($courses as $course)
     {
       $response[] = [$course->SUBJECT_CODE, $course->COURSE_NUMBER];
     }
 
-    Debugbar::info($response);
+    foreach($customCourses as $course)
+    {
+      $parts = explode(" ", $course->title);
+
+      if(count($parts) != 2) continue;
+
+      $response[] = [$parts[0], $parts[1]];
+    }
+
     return json_encode($response);
   }
 }

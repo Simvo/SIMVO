@@ -84,15 +84,12 @@ trait NewObjectsTrait
     $error->user_id = $user_id;
     $error->schedule_id = $sched_id;
     $error->dependencies = json_encode($dependencies);
-    $error->message = $message;
+    $error->message = strtoupper($message);
     $error->type = $type;
+    $error->hidden = 0;
     $error->save();
 
-    $sql = "INSERT into `flowchart_errors` (`user_id`, `schedule_id`, `message`, `dependencies`, `type`)
-    VALUES (". $user_id .", ". $sched_id . ", '". $message ."', '". json_encode($dependencies) ."', '". $type ."')";
-
-     DB::raw($sql);
-     return $error->id;
+    return $error->id;
   }
 
   public function create_minor($degree_id, $program_id, $minor_name, $minor_credits, $version_id)

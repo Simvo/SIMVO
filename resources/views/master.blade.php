@@ -20,7 +20,6 @@
     <link href="{{ asset('css/loginPage.css') }}" rel="stylesheet" type="text/css" >
     <link href="{{ asset('css/app.css') }}" rel="stylesheet" type="text/css" >
     <link href="{{ asset('css/flowchartStyle.css') }}" rel="stylesheet" type="text/css" >
-    <link href="{{ asset('css/landing.css')}}" rel="stylesheet" type="text/css">
     <link href="{{ asset('css/flowchartGroup.css') }}" rel="stylesheet" type="text/css" >
     <link href="{{ asset('css/CustomCard.css')}}" rel="stylesheet" type="text/css">
     <!-- Javascript libraries -->
@@ -70,6 +69,7 @@
     <script type="text/javascript" src="{{ asset('js/flowchartStyle.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/DegreeAjax.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/flowchart.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/listeners.js') }}"></script>
     <script type="text/javascript" src="{{ asset('/js/foundation.js') }}"></script>
     <script type="text/javascript" src="{{ asset('/js/foundation.reveal.js') }}"></script>
     <script type="text/javascript"> $(document).foundation(); </script>

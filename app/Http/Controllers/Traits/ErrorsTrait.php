@@ -227,7 +227,7 @@ trait ErrorsTrait
   **/
   public function createErrorWithMessage($courseList, $target)
   {
-    $message = $target->SUBJECT_CODE . " " . $target->COURSE_NUMBER . " is missing prerequisite: ";
+    $message = "Missing ";
     $dependencies = [];
 
     $i = 0;
@@ -235,11 +235,11 @@ trait ErrorsTrait
     {
       if($i == count($courseList) - 1)
       {
-        $message .= $course[0] . " " . $course[1];
+        $message .= strtoupper($course[0]) . " " . $course[1];
       }
       else
       {
-        $message .= $course[0] . " " . $course[1] . " or ";
+        $message .= strtoupper($course[0]) . " " . $course[1] . " or ";
       }
 
       $dependencies[] = $course[0] . " " . $course[1];
@@ -278,7 +278,9 @@ trait ErrorsTrait
 
     $allScheduleID = $this->getAllSchedId($degree);
 
-    $errors = FlowchartError::whereIn('schedule_id' , $allScheduleID)->get();
+    $errors = FlowchartError::whereIn('schedule_id' , $allScheduleID)
+              ->where('hidden', 0)
+              ->get();
 
     foreach($errors as $error)
     {

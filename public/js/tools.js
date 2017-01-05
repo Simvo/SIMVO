@@ -2,12 +2,11 @@ function get_VSB_active_semesters()
 {
   var d = new Date();
   var month = d.getMonth();
-  var year = d.getFullYear();
-  var fall = year + "09";
-  if(5<month<=12)year++;
-  var winter = year + "01";
 
-  return [fall, winter];
+  if(month < 5)
+    return ["201701"];
+  else
+    return ["201609", "201701"];
 }
 
 function checkVSB(new_semester, id, semesterID)
@@ -29,13 +28,37 @@ function checkVSB(new_semester, id, semesterID)
   }
 }
 
+function checkIgnoredErrors()
+{
+  $.ajax({
+    type: 'post',
+    url: 'flowchart/check-for-ignored-errors',
+    success: function(data){
+      var response = JSON.parse(data);
+      $(".reveal-errors").remove();
+      for (var semester in response) 
+      {
+        if (response.hasOwnProperty(semester)) 
+        {
+          if(response[semester] > 0)
+          {
+            var targetSemester = get_semester_letter(semester).split(" ");
+
+            $(".validPosition."+ targetSemester[0] + "." + targetSemester[1]).append("<a class='reveal-errors' id='show_" +semester+"'>click here to reveal "+response[semester]+" errors</a>");
+          }
+        }
+      }
+    }
+  })
+}
+
 function addCreateScheduleLinks()
 {
   $(".create_vsb").remove();
 
   var semesters = get_VSB_active_semesters();
 
-   for(var i = 0; i<2 ; i++)
+   for(var i = 0; i<semesters.length ; i++)
    {
      var sem = get_semester_letter(semesters[i]).split(" ");
 
@@ -104,11 +127,12 @@ function getErrors()
 
         var errorType = (response[i][3] === "prereq__error")?  'prereq__error' : 'vsb_error';
 
-        var error = "<div class='" + errorType  + " error' id='error_"+errorInstance[0]+"'>";
-        error += errorInstance[2];
+        var error = "<div class='" + errorType  + " course_error' id='error_"+errorInstance[0]+"'>";
+        error += "<div class='ignore_error' id='hide_" + errorInstance[0]+ "'><a href='#'>x</a></div>"
+        error += "<p>" + errorInstance[2] + "</p>";
         error += "</div>";
 
-        $("#" + errorInstance[1]).parent().append(error);
+        $("#" + errorInstance[1] + " .card_content").append(error);
       }
     }
   });
