@@ -191,7 +191,7 @@ function initRemoveCourseListener(target) {
                         if (response[3] != 'Exemption') {
                             var semester = get_semester_letter(response[3]);
                             semester = semester.split(" ");
-                            $("." + semester[0] + "." +semester[1]).find('.credit_counter_num').text('CREDITS: ' + response[1]);
+                            $("." + semester[0] + "" +semester[1]).find('.credit_counter_num').text('CREDITS: ' + response[1]);
                         } else {
                             var semester = 'Exemption';
                             $("#Exemption").find('.credit_counter_num').text('CREDITS: ' + response[1]);
