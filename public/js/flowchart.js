@@ -879,6 +879,13 @@ function initAddCustomCourseButton() {
           }
         }
 
+         for (var group in response[9]) {
+              if (response[9].hasOwnProperty(group)) {
+                var groupProgress = response[9][group];
+                var target = $("td[id='" + group + "']").text("" + groupProgress[0] + "/" + groupProgress[1]);
+              }
+            }
+
         initEditCustomCourse("#edit_custom_cust" + response[0]);
         initRemoveCourseListener("#remove_cust" + response[0]);
         refreshDeleteSemester();
