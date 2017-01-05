@@ -336,7 +336,7 @@ class FlowchartAJAX extends Controller
     {
       $errors_to_delete = $this->empty_errors($course);
 
-      $semester = $course->first()->semester;
+      $semester = $course->semester;
 
       $likeString = $course->SUBJECT_CODE . ' ' . $course->COURSE_NUMBER;
       $likeString = '%'.strtolower($likeString) .'%';

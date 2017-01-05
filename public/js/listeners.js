@@ -168,7 +168,6 @@ function initRemoveCourseListener(target) {
     $(target).click(function (e) {
         e.preventDefault();
 
-
         if ($(this).parent().parent().parent().parent().hasClass("add-to-schedule")) {
             //courses that have NOT been added to the schedule have no need for a database call
             $(this).parent().parent().parent().parent().remove();
