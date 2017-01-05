@@ -1,4 +1,5 @@
 $(document).ready(function () {
+   var init = false;
 
   $.ajaxSetup({
     headers: {
@@ -21,16 +22,17 @@ $(document).ready(function () {
 
   // Controls create Degree Behavior
   LoadMajors();
+  var init = true;
   // LoadVersions();
   // LoadStreams();
   // LoadSemesters();
 
   $('#faculty-select').change(function () {
-    LoadMajors();
+    if(init) LoadMajors();
   });
 
   $('#major-select').change(function () {
-    LoadVersions();
+    if(init) LoadVersions();
   });
 
   $(document).on('change', '#version-select', function() {
@@ -38,7 +40,7 @@ $(document).ready(function () {
   });
 
   $('#stream-select').change(function () {
-   // LoadSemesters();
+    LoadSemesters();
   })
 
   $("#reset-degree-button").click(function () {
@@ -67,9 +69,9 @@ function LoadMajors() {
           var option = '<option value="' + response[i][1] + '">' + response[i][0] + '</option>';
 
           $('#major-select').append(option);
-
-          LoadVersions();
         }
+        
+        LoadVersions();
       }
     })
   }
@@ -134,11 +136,9 @@ function LoadVersions() {
 function LoadStreams() {
   var selectedMajor = $('#major-select option:selected').val();
   var selectedVersion = $('#version-select option:selected').text();
-  console.log(selectedVersion);
   if( selectedVersion === "" || typeof selectedVersion === "undefined")
   {
     selectedVersion = $('#version-select').val();
-    console.log(selectedVersion);
   }
   $('#stream-select').empty();
 
