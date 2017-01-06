@@ -26,7 +26,7 @@ SET time_zone = "+00:00";
 -- Table structure for table `streams`
 --
 
-CREATE TABLE `streams` (
+CREATE TABLE IF NOT EXISTS `streams` (
   `id` int(10) UNSIGNED NOT NULL,
   `structure_id` int(11) NOT NULL,
   `semester_index` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -905,7 +905,7 @@ INSERT INTO `streams` (`id`, `structure_id`, `semester_index`, `term`, `course`,
 -- Table structure for table `stream_structures`
 --
 
-CREATE TABLE `stream_structures` (
+CREATE TABLE IF NOT EXISTS `stream_structures` (
   `id` int(10) UNSIGNED NOT NULL,
   `stream_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `program_id` int(11) NOT NULL,
@@ -920,25 +920,25 @@ CREATE TABLE `stream_structures` (
 
 INSERT INTO `stream_structures` (`id`, `stream_name`, `program_id`, `version`, `created_at`, `updated_at`) VALUES
 (1, 'Architecture Curriculum Non-Cegep Entry', 100396, 1, '2016-12-17 21:41:19', '2016-12-17 21:41:19'),
-(2, 'Chemical Engineering Curriculum Non-Cegep Entry', 100275, 1, '2016-12-17 21:41:19', '2016-12-17 21:41:19'),
-(3, 'Civil Engineering Curriculum Non-Cegep Entry', 100278, 1, '2016-12-17 21:41:19', '2016-12-17 21:41:19'),
-(4, 'Computer Engineering Curriculum Non-Cegep Entry', 100282, 1, '2016-12-17 21:41:19', '2016-12-17 21:41:19'),
-(5, 'Electrical Engineering Curriculum Non-Cegep Entry', 100284, 1, '2016-12-17 21:41:19', '2016-12-17 21:41:19'),
-(6, 'Software Engineering Curriculum Non-Cegep Entry', 100287, 1, '2016-12-17 21:41:19', '2016-12-17 21:41:19'),
-(7, 'Mechanical Engineering Curriculum Non-Cegep Entry', 100295, 1, '2016-12-17 21:41:19', '2016-12-17 21:41:19'),
-(8, 'Materials Engineering Curriculum Non-Cegep Entry', 100290, 1, '2016-12-17 21:41:19', '2016-12-17 21:41:19'),
-(9, 'Mining Engineering Curriculum Non-Cegep Entry', 100303, 1, '2016-12-17 21:41:19', '2016-12-17 21:41:19'),
-(10, 'Architecture Curriculum Non-Cegep Entry', 100396, 1, '2016-12-25 03:16:15', '2016-12-25 03:16:15'),
-(11, 'Chemical Engineering Curriculum Non-Cegep Entry', 100275, 1, '2016-12-25 03:16:15', '2016-12-25 03:16:15'),
-(12, 'Civil Engineering Curriculum Non-Cegep Entry', 100278, 1, '2016-12-25 03:16:15', '2016-12-25 03:16:15'),
-(13, 'Computer Engineering Curriculum Non-Cegep Entry', 100282, 1, '2016-12-25 03:16:15', '2016-12-25 03:16:15'),
-(14, 'Electrical Engineering Curriculum Non-Cegep Entry', 100284, 1, '2016-12-25 03:16:15', '2016-12-25 03:16:15'),
-(15, 'Software Engineering Curriculum Non-Cegep Entry', 100287, 1, '2016-12-25 03:16:15', '2016-12-25 03:16:15'),
-(16, 'Mechanical Engineering Option 2 Curriculum  Non-Cegep Entry', 100295, 1, '2016-12-25 03:16:15', '2016-12-25 03:16:15'),
-(17, 'Mechanical Engineering Option 1 Curriculum Non-Cegep Entry', 100295, 1, '2016-12-25 03:16:15', '2016-12-25 03:16:15'),
-(18, 'Honours Mechanical Engineering Curriculum Non-Cegep Entry', 100302, 1, '2016-12-25 03:16:15', '2016-12-25 03:16:15'),
-(19, 'Materials Engineering Curriculum Non-Cegep Entry', 100290, 1, '2016-12-25 03:16:15', '2016-12-25 03:16:15'),
-(20, 'Mining Engineering Curriculum Non-Cegep Entry', 100303, 1, '2016-12-25 03:16:15', '2016-12-25 03:16:15');
+(2, 'Chemical Engineering Curriculum Non-Cegep Entry', 100275, 2, '2016-12-17 21:41:19', '2016-12-17 21:41:19'),
+(3, 'Civil Engineering Curriculum Non-Cegep Entry', 100278, 2, '2016-12-17 21:41:19', '2016-12-17 21:41:19'),
+(4, 'Computer Engineering Curriculum Non-Cegep Entry', 100282, 3, '2016-12-17 21:41:19', '2016-12-17 21:41:19'),
+(5, 'Electrical Engineering Curriculum Non-Cegep Entry', 100284, 4, '2016-12-17 21:41:19', '2016-12-17 21:41:19'),
+(6, 'Software Engineering Curriculum Non-Cegep Entry', 100533, 1, '2016-12-17 21:41:19', '2016-12-17 21:41:19'),
+(7, 'Mechanical Engineering Curriculum Non-Cegep Entry', 100295, 2, '2016-12-17 21:41:19', '2016-12-17 21:41:19'),
+(8, 'Materials Engineering Curriculum Non-Cegep Entry', 100290, 2, '2016-12-17 21:41:19', '2016-12-17 21:41:19'),
+(9, 'Mining Engineering Curriculum Non-Cegep Entry', 100303, 5, '2016-12-17 21:41:19', '2016-12-17 21:41:19'),
+(10, 'Architecture Curriculum Cegep Entry', 100396, 1, '2016-12-25 03:16:15', '2016-12-25 03:16:15'),
+(11, 'Chemical Engineering Curriculum Cegep Entry', 100275, 2, '2016-12-25 03:16:15', '2016-12-25 03:16:15'),
+(12, 'Civil Engineering Curriculum Cegep Entry', 100278, 2, '2016-12-25 03:16:15', '2016-12-25 03:16:15'),
+(13, 'Computer Engineering Curriculum Cegep Entry', 100282, 3, '2016-12-25 03:16:15', '2016-12-25 03:16:15'),
+(14, 'Electrical Engineering Curriculum Cegep Entry', 100284, 4, '2016-12-25 03:16:15', '2016-12-25 03:16:15'),
+(15, 'Software Engineering Curriculum Cegep Entry', 100533, 1, '2016-12-25 03:16:15', '2016-12-25 03:16:15'),
+(16, 'Mechanical Engineering Option 2 Curriculum  Cegep Entry', 100295, 2, '2016-12-25 03:16:15', '2016-12-25 03:16:15'),
+(17, 'Mechanical Engineering Option 1 Curriculum Cegep Entry', 100295, 2, '2016-12-25 03:16:15', '2016-12-25 03:16:15'),
+(18, 'Honours Mechanical Engineering Curriculum Cegep Entry', 100302, 1, '2016-12-25 03:16:15', '2016-12-25 03:16:15'),
+(19, 'Materials Engineering Curriculum Cegep Entry', 100290, 2, '2016-12-25 03:16:15', '2016-12-25 03:16:15'),
+(20, 'Mining Engineering Curriculum Cegep Entry', 100303, 5, '2016-12-25 03:16:15', '2016-12-25 03:16:15');
 
 --
 -- Indexes for dumped tables
