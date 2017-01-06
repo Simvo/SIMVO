@@ -1,7 +1,7 @@
 @extends('master')
 @section('login')
 <div class="mdl-grid">
-  <div class="mdl-cell mdl-cell--3-col"></div> <!-- Supplement for an Offset -->
+  <div class="mdl-cell mdl-cell--3-col"></div> 
   <div class="mdl-cell mdl-cell--6-col">
     <div class="mdl-card mdl-shadow--2dp auth_card">
       <div class="mdl-card__title mdl-card--expand">

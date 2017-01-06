@@ -26,6 +26,18 @@ body {
     webkit-tap-highlight-color: #222;
 }
 
+.logo-div{
+    img{
+        height: 300px;
+       // width: 100%;
+       margin: 0 auto;
+    }
+}
+
+.apply-tab{
+    background: $about-background-color !important;
+}
+
 .bg-degree-planner{
   background-image : url("/media/DP_SCREEN_SHOT.PNG");
   background-position: center top;
