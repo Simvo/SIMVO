@@ -16,13 +16,13 @@
 
 Route::get('/', function () {
     return view('landing.landing');
-})->middleware('auth');
+});
 
 Route::get('/login', ['as'=>'loginView', 'uses'=>'RegistrationController@loginView']);
 
 Route::get('/logout', ['as'=>'logout', 'uses'=>'RegistrationController@logout']);
 
-Route::get('/auth/registration', ['as'=>'registration', 'middleware' => 'auth', 'uses'=>'RegistrationController@registrationView']);
+Route::get('/auth/registration', ['as'=>'registration','uses'=>'RegistrationController@registrationView']);
 
 Route::get('/flowchart', ['as'=>'flowchart', 'middleware' => 'auth', 'uses'=>'FlowchartController@generateFlowChart']);
 
@@ -30,9 +30,9 @@ Route::get('password/email', ['as'=>'passwordEmailGet','uses'=>'Auth\PasswordCon
 
 Route::get('password/reset/{token}', ['as'=>'passwordResetPost','uses'=>'Auth\PasswordController@getReset']);
 
-Route::get('flowchart/reset-degree', ['as' => 'resetDegree', 'uses' => 'DegreeController@deleteDegree']);
+Route::get('flowchart/reset-degree', ['as' => 'resetDegree', 'middleware' => 'auth', 'uses' => 'DegreeController@deleteDegree']);
 
-Route::get('/flowchart/remove-minor', ['as'=> 'removeMinor', 'uses'=> 'MinorController@removeMinor']);
+Route::get('/flowchart/remove-minor', ['as'=> 'removeMinor', 'middleware' => 'auth', 'uses'=> 'MinorController@removeMinor']);
 
 
 /* POST */
@@ -47,9 +47,9 @@ Route::post('password/reset', ['as'=>'passwordResetPost','uses'=>'Auth\PasswordC
 
 Route::post('/flowchart/new-user-create-degree', ['as'=>'newUserCreateDegree', 'uses'=>'FlowchartController@newUserCreateDegree']);
 
-Route::post('/flowchart/user-create-course', ['as'=>'userCreateCourse', 'uses'=>'FlowchartAJAX@userCreateCourse']);
+Route::post('/flowchart/user-create-course', ['as'=>'userCreateCourse', 'middleware' => 'auth', 'uses'=>'FlowchartAJAX@userCreateCourse']);
 
-Route::post('/flowchart/add-minor', ['as'=>'addMinor', 'uses'=>'MinorController@addMinor']);
+Route::post('/flowchart/add-minor', ['as'=>'addMinor', 'middleware' => 'auth', 'uses'=>'MinorController@addMinor']);
 
 Route::post('/flowchart/get-courses-in-semester', ['as' => 'getCoursesInSemester', 'uses' => 'FlowchartAJAX@get_courses_in_semester']);
 
