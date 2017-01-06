@@ -10,9 +10,6 @@ $(document).ready(function () {
   // Controls create Degree Behavior
   LoadMajors();
   var init = true;
-  // LoadVersions();
-  // LoadStreams();
-  // LoadSemesters();
 
   $('#faculty-select').change(function () {
     if(init) LoadMajors();
@@ -29,10 +26,6 @@ $(document).ready(function () {
   $('#stream-select').change(function () {
     LoadSemesters();
   })
-
-  $("#reset-degree-button").click(function () {
-    dialog.showModal();
-  });
 });
 
 
