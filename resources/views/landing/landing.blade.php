@@ -61,6 +61,7 @@
         </h1>
         <h4 class="cursive landing-sub">Changing the Institution, One Project at A Time</h4>
         <hr>
+        <a href="{{ route('flowchart') }}" class="btn btn-primary btn-xl page-scroll">Go To Degree Planner</a>
       </div>
     </div>
     <video autoplay="" loop="true" class="fillWidth fadeIn wow collapse in" data-wow-delay="0.5s" poster=""
@@ -72,7 +73,7 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-12 text-center">
-          <h2 class="margin-top-0 text-primary">The Degree Planner</h2>
+          <h2 class="margin-top-0 text-primary"><a href="{{ route('flowchart') }}">The Degree Planner</a></h2>
           <hr class="primary">
         </div>
       </div>

@@ -181,7 +181,7 @@ class FlowchartAJAX extends Controller
     $minor = Minor::where('degree_id', $degree->id)->first(['program_id']);
     if($minor)
     {
-      $groups_minor =  DB::table('Programs')
+      $groups_minor =  DB::table('programs')
                         ->where('PROGRAM_ID', $minor->program_id)
                         ->groupBy('SET_TITLE_ENGLISH')
                         ->get(['SET_TITLE_ENGLISH', 'SET_BEGIN_TEXT_ENGLISH']);
