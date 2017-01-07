@@ -16,6 +16,7 @@
         <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
           <div class="mdl-tabs__panel is-active" id="login-panel">
             {!! Form::open(['route' => 'login']) !!}
+            {!! csrf_field() !!}
             <ul class="list-style-none">
               <li>
                   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">

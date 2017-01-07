@@ -36,7 +36,7 @@ class RegistrationController extends Controller
 public function login(Request $request)
 {
   $this->validate($request, [
-    'email'=>'required|exists:users,email',
+    'email'=>'required',
     'password'=>'required|min:8'
     ]);
   if(Auth::attempt(['email' => $request->email, 'password' => $request->password]))
@@ -45,7 +45,7 @@ public function login(Request $request)
   }
   else
   {
-    return redirect()->back()->withErrors(['Could Not Authenticate You! Wrong Password!']);
+    return redirect()->back()->withErrors(['Could Not Authenticate You! Wrong Password id/Password']);
   }
 }
   /**
