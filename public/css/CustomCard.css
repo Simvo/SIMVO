@@ -13,6 +13,10 @@
   width: 180px;
 }
 
+.reveal-errors p {
+  text-align: center;
+}
+
 .ignore_error {
   position: absolute;
   top: 5px;
