@@ -19,6 +19,9 @@ $requiredCourseColor:#34495e;
 
 .reveal-errors{
   width: $cardWidth;
+  p{
+    text-align: center;
+  } 
 }
 
 .ignore_error{

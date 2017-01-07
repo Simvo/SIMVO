@@ -43,8 +43,9 @@ function checkIgnoredErrors()
           if(response[semester] > 0)
           {
             var targetSemester = get_semester_letter(semester).split(" ");
-
-            $(".validPosition."+ targetSemester[0] + "" + targetSemester[1]).append("<a class='reveal-errors' id='show_" +semester+"'>click here to reveal "+response[semester]+" errors</a>");
+            var errors = (response[semester] === 1)? "error": "errors";
+            
+            $(".validPosition."+ targetSemester[0] + "" + targetSemester[1]).append("<a class='reveal-errors' id='show_" +semester+"'><p>click here to reveal "+response[semester]+ " " + errors + "</p></a>");
           }
         }
       }
