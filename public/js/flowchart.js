@@ -4,7 +4,9 @@ $(document).ready(function () {
       'X-CSRF-Token': $('meta[name=_token]').attr('content')
     }
   });
-  
+
+  mixpanel.track("Degree Loaded");
+
   getErrors();
   checkIgnoredErrors();
   editStatusBar();
