@@ -481,4 +481,11 @@
   </div>
   <script>
   $(document).ready(function(){$('#make_degree').foundation('reveal', 'open')});
-</script> @endif @endsection
+</script>
+<script type="text/javascript" src="{{ asset('js/DegreeAjax.js') }}"></script>
+
+@endif 
+@if($degreeLoaded)
+    <script type="text/javascript" src="{{ asset('js/flowchart.js') }}"></script>
+@endif 
+@endsection

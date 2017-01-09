@@ -56,6 +56,11 @@ class MinorController extends Controller
   {
     $degree = Session::get('degree');
     $program_id = $request->minor_chosen;
+    $this->validate($request, [
+    'minor_chosen'=>'required'
+    ]);
+
+    if(is_null($program_id) || is_null($degree)) return redirect('/flowchart');
 
     $check = Minor::where('degree_id', $degree->id)->get();
     $minor = DB::table('programs')->where('PROGRAM_ID', $program_id)->first();
