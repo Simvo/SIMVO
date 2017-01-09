@@ -1,4 +1,6 @@
 $(document).on("click", '.ignore_error', function(){
+    mixpanel.track("Error Ignored");
+
     var error_id = $(this).attr("id").split("_")[1];
     $.ajax({
       type : 'post',
@@ -12,6 +14,8 @@ $(document).on("click", '.ignore_error', function(){
 });
 
 $(document).on("click", '.reveal-errors', function(){
+    mixpanel.track("Error Revealed");
+
     var semester = $(this).attr("id").split("_")[1];
     console.log(semester);
     $.ajax({
@@ -28,6 +32,8 @@ $(document).on("click", '.reveal-errors', function(){
 function initAddSemesterListener(target) {
     event.stopImmediatePropagation();
     $(target).click(function (e) {
+        mixpanel.track("Semester Added");
+
         e.preventDefault();
         var last_sem = $(this).attr("id").substring(0, $(this).attr("id").length - 4);
         last_sem = last_sem.split(" ");
@@ -150,6 +156,7 @@ function initDeleteSemesterListener(target) {
         opacity: 1
     }, 300);
     $(target).click(function (e) {
+         mixpanel.track("Semester Deleted");
         e.preventDefault();
 
         var target_sem = $(this).attr("id").substring(0, $(this).attr("id").length - 7);
@@ -166,6 +173,7 @@ function initDeleteSemesterListener(target) {
 
 function initRemoveCourseListener(target) {
     $(target).click(function (e) {
+         mixpanel.track("Course Removed");
         e.preventDefault();
 
         if ($(this).parent().parent().parent().parent().hasClass("add-to-schedule")) {
