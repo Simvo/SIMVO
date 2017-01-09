@@ -188,22 +188,8 @@
     </div>
     <div class="container">
       <div class="row">
-        <div class="col-lg-12 text-center">
-          <h2 class="margin-top-0 text-primary">Current Open Positions:</h2>
-          <hr class="primary">
-        </div>
-      </div>
-    </div>
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-4 col-md-12 text-center">
-          <a class="app-link btn btn-success btn-lg" href="https://www.cognitoforms.com/Doeandco1/ProjectManager">Project Manager</a>
-        </div>
-        <div class="col-lg-4 col-md-12 text-center">
-          <a class="app-link btn btn-success btn-lg" href="https://www.cognitoforms.com/Doeandco1/ProjectManager">Software Engineer</a>
-        </div>
-        <div class="col-lg-4 col-md-12 text-center">
-          <a class="app-link btn btn-success btn-lg" href="https://www.cognitoforms.com/Doeandco1/ProjectManager">Marketing Advisor</a>
+        <div class="col-lg-12 col-md-12 text-center">
+          <a class="app-link btn btn-success btn-lg" href="https://form.jotformeu.com/70064802041342">Universal Application</a>
         </div>
       </div>
     </div>
