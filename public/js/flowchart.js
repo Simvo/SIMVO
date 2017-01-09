@@ -1,4 +1,10 @@
 $(document).ready(function () {
+   $.ajaxSetup({
+    headers: {
+      'X-CSRF-Token': $('meta[name=_token]').attr('content')
+    }
+  });
+  
   getErrors();
   checkIgnoredErrors();
   editStatusBar();
@@ -957,4 +963,22 @@ function initConfirmEditCustomButton(id, originalTitle, originalDescription, ori
     componentHandler.upgradeDom();
 
   });
+}
+
+function editStatusBar() {
+  $.ajax({
+    type: 'post',
+    url: '/flowchart/remainingCourses',
+    success: function (data) {
+      var response = JSON.parse(data);
+      $("#major-status").text(response[0]);
+      $("#minor-status").text(response[2]);
+
+      var valMajor = ((response[0] / response[1])) * 100;
+      var valMinor = ((response[2] / response[3])) * 100;
+
+      document.querySelector('#progressBar').MaterialProgress.setProgress(valMajor);
+      if($('#progressBarMinor')) document.querySelector('#progressBarMinor').MaterialProgress.setProgress(valMinor);
+    }
+  })
 }

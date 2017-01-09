@@ -67,8 +67,8 @@
     <script type="text/javascript" src="{{ asset('js/SortableRendering.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/tools.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/flowchartStyle.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/DegreeAjax.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/flowchart.js') }}"></script>
+    <!--<script type="text/javascript" src="{{ asset('js/DegreeAjax.js') }}"></script>-->
+    <!--<script type="text/javascript" src="{{ asset('js/flowchart.js') }}"></script>-->
     <script type="text/javascript" src="{{ asset('js/listeners.js') }}"></script>
     <script type="text/javascript" src="{{ asset('/js/foundation.js') }}"></script>
     <script type="text/javascript" src="{{ asset('/js/foundation.reveal.js') }}"></script>
