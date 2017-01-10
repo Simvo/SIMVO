@@ -57,7 +57,7 @@
   <header id="first">
     <div class="header-content">
       <div class="inner">
-        <h1 id="landing-title"><img id="logo-lines" src="http://www.wearesimvo.com/wp-content/uploads/2016/06/cropped-Screen-Shot-2016-06-29-at-11.12.45-AM-1.png"
+        <h1 id="landing-title"><img id="logo-lines" src="/media/SIMVO-LINES.png"
           /> S
           <span class="primary-color">!</span>MVO
         </h1>
