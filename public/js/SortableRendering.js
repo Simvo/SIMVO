@@ -85,7 +85,6 @@ function renderSortable()
               }
               if(startTutorial)
               {
-                console.log("start dat tutorial!");
                 $("#required-group-div").animate({'height': '0px'},{duration: 500, queue: false } );
                 $("#required-group-div").animate({'padding-bottom': '0px'}, {duration: 500, queue: false });
                 $("#required-group-div").animate({'opacity': 0}, {duration: 500, queue: false, complete: function (){$("#required-group-div").remove();}});
