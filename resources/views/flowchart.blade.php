@@ -1,4 +1,20 @@
 @extends('master') @section('flowchart')
+
+<script>
+  mixpanel.identify("{{ $user->id }}");
+
+  mixpanel.people.set({
+    "$email": "{{ $user->email }}",   
+    
+    "firstName" : "{{ $user->firstName }}",
+
+    "lastName" : "{{ $user->lastName }}",
+
+    "$last_login": new Date(),        
+    
+    "degree": "{{ $degree->program_name }}",
+});
+</script>
 <!-- Progress Bar for Major -->
 <div class="mdl-grid" style="padding-bottom: 0px">
   <div class="mdl-cell mdl-cell--12-col">
