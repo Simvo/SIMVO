@@ -47,9 +47,9 @@
           <li>
             <a class="page-scroll" href="#five">What is S!MVO</a>
           </li>
-          <li>
+          <!--<li>
             <a class="page-scroll" href="#last">A Note from the Provost</a>
-          </li>
+          </li>-->
         </ul>
       </div>
     </div>

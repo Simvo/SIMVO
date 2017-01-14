@@ -17,7 +17,6 @@ $(document).on("click", '.reveal-errors', function(){
     mixpanel.track("Error Revealed");
 
     var semester = $(this).attr("id").split("_")[1];
-    console.log(semester);
     $.ajax({
       type : 'post',
       url : '/flowchart/reveal-errors',
@@ -192,7 +191,6 @@ function initRemoveCourseListener(target) {
                 },
                 success: function (data) {
                     var response = JSON.parse(data);
-                    console.log(response);
                     if (response === 'Error') {
                         //error handler
                     } else {
