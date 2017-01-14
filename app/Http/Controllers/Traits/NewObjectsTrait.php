@@ -39,7 +39,7 @@ trait NewObjectsTrait
     $custom->user_id = $degree->user_id;
     $custom->degree_id = $degree->id;
     $custom->semester = $semester;
-    $custom->title = strtolower($title);
+    $custom->title = strtoupper($title);
     $custom->description = $description;
     $custom->focus = $focus;
     $custom->credits = $credits;
@@ -80,6 +80,12 @@ trait NewObjectsTrait
 
   public function create_error($user_id, $sched_id, $dependencies, $message, $type)
   {
+    $check = FlowchartError::where('schedule_id', $sched_id)
+             ->where('message', $message)
+             ->get(['id']);
+
+    if(count($check)) return -1;
+
     $error = new FlowchartError();
     $error->user_id = $user_id;
     $error->schedule_id = $sched_id;
