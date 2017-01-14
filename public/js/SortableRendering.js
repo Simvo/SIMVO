@@ -18,7 +18,6 @@ function renderSortable()
       placeholder: 'object_ouline hvr-pulse',
       cancel: '.credit_counter, .error_course_message, .pinned',
       receive: function( event, ui ) {
-
       var new_semester = get_semester( event.target.attributes.id.nodeValue );
       var vsbActiveSemesters = get_VSB_active_semesters();
       var id = ui.item.context.id;
@@ -42,6 +41,8 @@ function renderSortable()
 
           },
           success: function( data ) {
+            mixpanel.track("Course Added to Schedule");
+
             var response = JSON.parse(data);
             ui.item.context.id = response[0];
             $('#'+ui.item.context.id).removeClass("add-to-schedule");
@@ -105,6 +106,8 @@ function renderSortable()
             id: id,
           },
           success: function( data ) {
+            mixpanel.track("Course Moved");
+
             var response = JSON.parse( data );
             $( event.target ).children( '.credit_counter' ).children( '.credit_counter_num' ).text( 'CREDITS: ' + response[0]);
             $( ui.sender[ 0 ] ).children( '.credit_counter' ).children( '.credit_counter_num' ).text( 'CREDITS: ' + response[1]);
