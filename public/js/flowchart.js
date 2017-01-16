@@ -5,7 +5,7 @@ $(document).ready(function () {
     }
   });
 
-  ////mixpanel.track("Degree Loaded");
+  mixpanel.track("Degree Loaded");
 
   getErrors();
   checkIgnoredErrors();
