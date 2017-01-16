@@ -256,6 +256,12 @@ $background: rgba(236, 240, 241,1.0);
   margin: auto;
 }
 
+.add_button{
+  margin: auto;
+  display: block;
+  margin-top: 20px;
+}
+
 .add_comp_course_button{
   margin: auto;
   display: block;
@@ -277,7 +283,7 @@ $background: rgba(236, 240, 241,1.0);
 
 }
 
-#Internship_error{
+.Course_add_error{
     margin-top: 30px;
     text-align: center;
     color: red;
@@ -302,4 +308,3 @@ $background: rgba(236, 240, 241,1.0);
 #make-degree_title{
   text-align:center;
 }
-
