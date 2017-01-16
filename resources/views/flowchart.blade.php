@@ -11,8 +11,13 @@
     "lastName" : "{{ $user->lastName }}",
 
     "$last_login": new Date(),        
-    
+    @if($degreeLoaded)
     "degree": "{{ $degree->program_name }}",
+
+    "stream": "{{ $degree->stream_version }}",
+
+    "entering semester": "{{ $degree->enteringSemester }}",
+    @endif
 });
 </script>
 <!-- Progress Bar for Major -->
