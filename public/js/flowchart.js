@@ -5,7 +5,7 @@ $(document).ready(function () {
     }
   });
 
-  mixpanel.track("Degree Loaded");
+  ////mixpanel.track("Degree Loaded");
 
   getErrors();
   checkIgnoredErrors();
@@ -581,20 +581,16 @@ function initConfirmEditInternshipButton(id, originalCN, originalPH) {
 
 function initAddCustomCourseButton() {
   $(".add_custom_course_button").click(function () {
-     mixpanel.track("Custom Course Added");
+    //mixpanel.track("Custom Course Added");
     var target_sem = $($($("#course_schedule").find($("a.Complementary_Add_Target"))).parent());
     var semester_letter = $(target_sem.find("div.sortable")).attr("id");
     if (semester_letter != "Exemption") {
 
-      semester_letter = semester_letter.split(" ");
-      semester_letter = semester_letter[0] + " " + semester_letter[1];
-      var semester = get_semester(semester_letter);
+    semester_letter = semester_letter.split(" ");
+    semester_letter = semester_letter[0] + " " + semester_letter[1];
+    var semester = get_semester(semester_letter);
     } else {
-      //throw error message!
-      $("#Custom_error").remove();
-      var invalid = '<div id="Custom_error" class="Course_add_error"> You may not add custom courses to the exemption semester! </div>'
-      $(".add_custom_course_button").after(invalid);
-      return;
+        var semester = "Exemption";
     }
 
 

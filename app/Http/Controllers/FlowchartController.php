@@ -238,6 +238,9 @@ class FlowchartController extends Controller
     $exemptions_PDO = Schedule::where('degree_id',$degree->id)
                       ->where('semester', 'exemption')
                       ->get();
+    $exemptions_custom = Custom::where('degree_id', $degree->id)
+                      ->where('semester', 'exemption')
+                      ->get();
     $exemptions = [];
     $sum = 0;
 
@@ -250,6 +253,17 @@ class FlowchartController extends Controller
 
       $sum += $status->COURSE_CREDITS;
       $exemptions[] = [$exemption->id, $exemption->SUBJECT_CODE, $exemption->COURSE_NUMBER, $status->COURSE_CREDITS, $exemption->status];
+    }
+
+    foreach($exemptions_custom as $exemption)
+    {
+      $sum += $exemption->credits;
+      $parts = explode(" ", $exemption->title);
+      
+      $sub_code = $exemption->title;
+      $course_number = "";
+    
+      $exemptions[] = [$exemption->id, $sub_code, $course_number, $exemption->credits, "Custom", $exemption->focus];
     }
     return [$exemptions,$sum];
   }
