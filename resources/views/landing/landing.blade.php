@@ -193,6 +193,14 @@
         </div>
       </div>
     </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 text-center">
+          <h2 class="margin-top-0 text-primary">Deadline is Wednesday, January 25th, 2017</h2>
+          <hr class="primary">
+        </div>
+      </div>
+    </div>
   </section>
   <section id="four" class="affiliations-tab">
     <div class="container-fluid">
