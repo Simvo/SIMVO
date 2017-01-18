@@ -339,7 +339,7 @@ function refreshComplementaryCourses() {
     }
   });
 }
-              
+
 function initAddInternshipButton() {
   $(".add_internship_button").click(function () {
     var target_sem = $($($("#course_schedule").find($("a.Complementary_Add_Target"))).parent());
@@ -381,6 +381,13 @@ function initAddInternshipButton() {
     while (k < length) {
       var firstSemesterCheck = $($($(".semester")[1]).find("div.sortable")).attr("id").split(" ");
       firstSemesterCheck = firstSemesterCheck[0] + " " + firstSemesterCheck[1];
+      
+      if(firstSemesterCheck == semester_letter){
+        $("#Internship_error").remove();
+        var invalid = '<div id="Internship_error" class="Course_add_error"> Internships may not be added to your first semester!</div>'
+        $(".add_internship_button").after(invalid);
+        return;
+      }
 
       if ($("[id='" + formatSemesterID(semester_letter) + "']").find("div.custom_card").length > 1) {
         $("#Internship_error").remove();
