@@ -31,6 +31,11 @@ $(document).ready(function () {
     alert(($this).attr("id"));
   });
 
+  // to track when a user adds a minor
+  $(".add-minor-submit").click(function(){
+    mixpanel.track("Minor Added");
+  });
+
 });
 
 $(document).on('click', '.create_vsb' ,function(){
