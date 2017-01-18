@@ -249,7 +249,7 @@ class FlowchartAJAX extends Controller
     if(!Auth::Check())
       return;
 
-    $course = DB::table('Internships')->where('id', $request->id);
+    $course = Internship::where('id', $request->id);
     $course->update(['company' => $request->companyName, 'position' => $request->positionHeld]);
     return json_encode($course);
   }

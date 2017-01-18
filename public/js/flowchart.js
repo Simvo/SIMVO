@@ -31,6 +31,11 @@ $(document).ready(function () {
     alert(($this).attr("id"));
   });
 
+  // to track when a user adds a minor
+  $(".add-minor-submit").click(function(){
+    mixpanel.track("Minor Added");
+  });
+
 });
 
 $(document).on('click', '.create_vsb' ,function(){
@@ -143,6 +148,7 @@ function refreshDeleteSemester() {
 // Add Complentary Course
 function initAddCompCourseButton() {
   $(".add_comp_course_button").click(function () {
+   
     var target_sem = $($($("#course_schedule").find($("a.Complementary_Add_Target"))).parent());
     var semester = $(target_sem.find("div.sortable")).attr("id");
     if (semester != "Exemption") {
@@ -188,6 +194,7 @@ function initAddCompCourseButton() {
         },
         success: function (data) {
           var response = JSON.parse(data);
+          mixpanel.track("Course Added");
           // edit status bar
           editStatusBar();
           if (response === 'Error') {
@@ -339,7 +346,7 @@ function refreshComplementaryCourses() {
     }
   });
 }
-              
+
 function initAddInternshipButton() {
   $(".add_internship_button").click(function () {
     var target_sem = $($($("#course_schedule").find($("a.Complementary_Add_Target"))).parent());
@@ -381,6 +388,13 @@ function initAddInternshipButton() {
     while (k < length) {
       var firstSemesterCheck = $($($(".semester")[1]).find("div.sortable")).attr("id").split(" ");
       firstSemesterCheck = firstSemesterCheck[0] + " " + firstSemesterCheck[1];
+      
+      if(firstSemesterCheck == semester_letter){
+        $("#Internship_error").remove();
+        var invalid = '<div id="Internship_error" class="Course_add_error"> Internships may not be added to your first semester!</div>'
+        $(".add_internship_button").after(invalid);
+        return;
+      }
 
       if ($("[id='" + formatSemesterID(semester_letter) + "']").find("div.custom_card").length > 1) {
         $("#Internship_error").remove();
@@ -581,20 +595,16 @@ function initConfirmEditInternshipButton(id, originalCN, originalPH) {
 
 function initAddCustomCourseButton() {
   $(".add_custom_course_button").click(function () {
-     mixpanel.track("Custom Course Added");
+    //mixpanel.track("Custom Course Added");
     var target_sem = $($($("#course_schedule").find($("a.Complementary_Add_Target"))).parent());
     var semester_letter = $(target_sem.find("div.sortable")).attr("id");
     if (semester_letter != "Exemption") {
 
-      semester_letter = semester_letter.split(" ");
-      semester_letter = semester_letter[0] + " " + semester_letter[1];
-      var semester = get_semester(semester_letter);
+    semester_letter = semester_letter.split(" ");
+    semester_letter = semester_letter[0] + " " + semester_letter[1];
+    var semester = get_semester(semester_letter);
     } else {
-      //throw error message!
-      $("#Custom_error").remove();
-      var invalid = '<div id="Custom_error" class="Course_add_error"> You may not add custom courses to the exemption semester! </div>'
-      $(".add_custom_course_button").after(invalid);
-      return;
+        var semester = "Exemption";
     }
 
 

@@ -11,8 +11,13 @@
     "lastName" : "{{ $user->lastName }}",
 
     "$last_login": new Date(),        
-    
+    @if($degreeLoaded)
     "degree": "{{ $degree->program_name }}",
+
+    "stream": "{{ $degree->stream_version }}",
+
+    "entering semester": "{{ $degree->enteringSemester }}",
+    @endif
 });
 </script>
 <!-- Progress Bar for Major -->
@@ -168,6 +173,7 @@
             <div class="draggable">
               <div class="validPosition sortable Exemption" id="Exemption">
                 @foreach($exemptions[0] as $exemption)
+                @if($exemption[4] !=  "Custom")
                 <div class="custom_card {{ $exemption[4] }}_course" id="{{ $exemption[0] }}">
                   <div class="card_content">
                     {{ $exemption[1] }} &nbsp {{ $exemption[2] }}
@@ -180,6 +186,27 @@
                     </ul>
                   </div>
                 </div>
+                 @elseif ($exemption[4]== "Custom")
+                <div class="custom_card {{ $exemption[4]}}_course" id="cust{{ $exemption[0] }}">
+                  <div class="card_content">
+                    <div class="custom_course_title" id="custom_course_title_cust{{$exemption[0]}}">
+                      @if(strlen($exemption[1])
+                      < 11) {{ $exemption[1] }} @else {{ substr($exemption[1], 0, 8). "..." }} @endif </div>
+                      &nbsp &nbsp
+                        <button id="menu_for_cust{{ $exemption[0] }}" class="mdl-button mdl-js-button mdl-button--icon">
+                        <i class="material-icons">arrow_drop_down</i>
+                      </button>
+                        <div class="custom_course_credits" id="custom_course_credits_cust{{$exemption[0]}}"> {{ $exemption[3]}} </div>
+                        <div class="custom_course_focus" id="custom_course_focus_cust{{$exemption[0]}}"> {{$exemption[5]}} </div>
+                        <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="menu_for_cust{{ $exemption[0] }}">
+                          <li disabled class=" mdl-menu__item mdl-menu__item--full-bleed-divider custom_course_description" id="custom_course_description_cust{{$exemption[0]}}">
+                          {{$exemption[2]}} </li>
+                          <li class="mdl-menu__item edit_custom" id="edit_custom_cust{{ $exemption[0] }}">Edit</li>
+                          <li class="mdl-menu__item remove-course" id="remove_cust{{ $exemption[0] }}">Remove</li>
+                        </ul>
+                    </div>
+                  </div>
+                  @endif
                 @endforeach
                 <div class="custom_card credit_counter" style="text-align:center;">
                   <div class="credit_counter_num" style="display: table-cell; vertical-align: middle; font-size:15px">
