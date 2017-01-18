@@ -143,6 +143,7 @@ function refreshDeleteSemester() {
 // Add Complentary Course
 function initAddCompCourseButton() {
   $(".add_comp_course_button").click(function () {
+   
     var target_sem = $($($("#course_schedule").find($("a.Complementary_Add_Target"))).parent());
     var semester = $(target_sem.find("div.sortable")).attr("id");
     if (semester != "Exemption") {
@@ -188,6 +189,7 @@ function initAddCompCourseButton() {
         },
         success: function (data) {
           var response = JSON.parse(data);
+          mixpanel.track("Course Added");
           // edit status bar
           editStatusBar();
           if (response === 'Error') {
