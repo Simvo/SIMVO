@@ -68,18 +68,9 @@ return [
         ],
 
          'testing' => [
-           'driver' => 'mysql',
-            'host' => env('DB_HOST', 'localhost:8000'),
-            'port' => env('DB_PORT', '8000'),
-            'database' => env('DB_DATABASE', 'SIMVO'),
-            'username' => env('DB_USERNAME', 'root'),
-            'password' => env('DB_PASSWORD', ''),
-            'charset' => 'utf8',
-            'collation' => 'utf8_unicode_ci',
-            //'unix_socket' => '/Applications/MAMP/tmp/mysql/mysql.sock',
+            'driver' => 'sqlite',
+            'database' => env('DB_DATABASE', database_path('database.sqlite')),
             'prefix' => '',
-            'strict' => false,
-            'engine' => null,
         ],
 
         'pgsql' => [
