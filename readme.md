@@ -10,7 +10,7 @@ The app uses the Laravel web framework along with JQuery in the front end. If yo
 
 Thank you for considering contributing to the Degree Planner!
 
-We prefer bug reports to be done through pull requests. If you discover a bug on the latest build, branch off of dev and give it a name representing the behaviour of the error. Then, make a pull request (with no code at first) with a more detailed explanantion and screenshots/videos showing the bug. This allows us to easily test the fix by simply checking out the remote branch.
+We prefer bug reports to be done through pull requests. If you discover a bug on the latest build, branch off dev and give it a name representing the behaviour of the error. Then, make a pull request (with no code at first) with a more detailed explanantion and screenshots/videos showing the bug. This allows us to easily test the fix by simply checking out the remote branch.
 
 ### General Contribution
 
@@ -18,7 +18,7 @@ If you would like to add a new feature or improvement please make a report in th
 
 ### Which Branch?
 
-It is simple, everything goes on dev. Any PR to master will be rejected promptly. Our workflow makes it so the master branch is copied directly to the server. Just to be clear again, branch off of dev and compare with dev!
+It is simple, everything goes on dev. Any PR to master will be rejected promptly. Our workflow makes it so the master branch is copied directly to the server. Just to be clear again, branch off dev and compare with dev!
 
 
 ## Security Vulnerabilities
