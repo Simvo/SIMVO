@@ -2,6 +2,9 @@
 <a href="#"><img src="https://travis-ci.org/tardycorgi9917/SIMVO.svg?branch=master" alt="License"></a>
 </p>
 
+#### Note:
+I am still trying to configure travis so I will test all PR manually and ignore the status
+
 # S!MVO Degree Planner
 
 The Degree Planner is an open source web appplication allowing students to organize and interact with their degrees with a friendly user interface.
