@@ -3,7 +3,7 @@
 </p>
 
 #### Note:
-I am still trying to configure travis so I will test all PR manually and ignore the status
+I am still trying to configure travis so I will test all pull requests manually and ignore the status
 
 # S!MVO Degree Planner
 
