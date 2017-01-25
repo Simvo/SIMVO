@@ -24,7 +24,7 @@ class RegistrationControllerTest extends TestCase
             Artisan::call('db:seed', ['--class' => 'ProgramSeeder']);
 
             $sql = file_get_contents("../SQLFiles/programs.sql");
-            DB::raw($sql):
+            DB::raw($sql);
         }
     }
 
