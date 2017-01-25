@@ -7,7 +7,8 @@ before_script:
   - cp .env.travis .env
   - composer self-update
   - composer install --no-interaction
-  - php artisan migrate
+  
 
 script:
+  - php artisan migrate
   - vendor/bin/phpunit
