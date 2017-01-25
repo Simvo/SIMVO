@@ -20,11 +20,11 @@ class RegistrationControllerTest extends TestCase
 
         Artisan::call('migrate');
 
-        if(app()->env == "testing"){
+        if(app()->env == "testing")
+        {
             Artisan::call('db:seed', ['--class' => 'ProgramSeeder']);
 
-            $sql = file_get_contents( __DIR__ . "/../SQLFiles/programs.sql");
-            DB::raw($sql);
+            Artisan::call('db:seed', ['--class' => 'TestSeeder ', '--database' => 'testing']);
         }
     }
 
