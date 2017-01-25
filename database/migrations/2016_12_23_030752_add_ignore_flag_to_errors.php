@@ -13,7 +13,7 @@ class AddIgnoreFlagToErrors extends Migration
     public function up()
     {
         Schema::table('flowchart_errors', function (Blueprint $table) {
-             $table->integer('hidden');
+             $table->integer('hidden')->nullable();
         });
     }
 
