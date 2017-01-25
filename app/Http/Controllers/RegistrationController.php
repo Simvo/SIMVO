@@ -76,7 +76,7 @@ public function login(Request $request)
     'Confirm_Password' => 'required|min:8|same:Password',
     ]);
     $semesters = $this->generateListOfSemesters(10);
-    $faculties = $this->getFaculties();
+    //$faculties = $this->getFaculties();
     $new_user = new User();
     $new_user->firstName = htmlentities($request->First_Name);
     $new_user->lastName = htmlentities($request->Last_Name);
