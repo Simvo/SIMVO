@@ -19,7 +19,7 @@ class RegistrationControllerTest extends TestCase
         Artisan::call('migrate');
 
         if(app()->env == "testing")
-            Artisan::call('db:seed');
+            Artisan::call('db:seed --class=ProgramSeeder');
     }
 
     public function testUserRegistrationValid()
