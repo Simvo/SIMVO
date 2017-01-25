@@ -11,7 +11,7 @@ class ProgramSeeder extends Seeder
      */
     public function run()
     {
-        $sql = file_get_contents("../../SQLFiles/programs");
+        $sql = file_get_contents("../../SQLFiles/programs.sql");
 
         DB::raw($sql);
     }
