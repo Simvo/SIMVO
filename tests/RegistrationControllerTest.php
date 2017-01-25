@@ -23,7 +23,7 @@ class RegistrationControllerTest extends TestCase
         if(app()->env == "testing"){
             Artisan::call('db:seed', ['--class' => 'ProgramSeeder']);
 
-            $sql = file_get_contents("../SQLFiles/programs.sql");
+            $sql = file_get_contents( __DIR__ . "../SQLFiles/programs.sql");
             DB::raw($sql);
         }
     }
