@@ -10,5 +10,4 @@ before_script:
   
 
 script:
-  - php artisan migrate
   - vendor/bin/phpunit
