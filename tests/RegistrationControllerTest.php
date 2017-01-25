@@ -12,9 +12,11 @@ class RegistrationControllerTest extends TestCase
      * @return void
      */
     
-    public function migrate()
+    public function setUp()
     {
-        exec("php artisan migrate");
+        parent::setUp();
+
+        Artisan::call('migrate');
     }
 
     public function testUserRegistrationValid()
