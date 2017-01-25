@@ -17,6 +17,9 @@ class RegistrationControllerTest extends TestCase
         parent::setUp();
 
         Artisan::call('migrate');
+
+        if(app()->env == "testing")
+            Artisan::call('db:seed');
     }
 
     public function testUserRegistrationValid()
