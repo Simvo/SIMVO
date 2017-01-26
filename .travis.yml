@@ -9,7 +9,7 @@ services:
 test:
   adapter: mysql2
   database: simvo_test
-  username: testing
+  username: root
   encoding: utf8
 
 before_install:
