@@ -464,7 +464,8 @@
       <div class="mdl-cell mdl-cell--8-col">
         <h4 id="make-degree_title">Hey {{$user->firstName}}! Looks like you are new here. Let's Get you started with S!MVO</h4>
         <h6 id="make-degree_title">NOTE: The ECSESS curriculum is the new one (Introduced in Fall 2016). We are currently working to import the old one into our database. We apologise for the inconvenience.</h6>
-
+        </br>
+        <h6>NOTE TO STUDENTS: The Degree Requirements and Rules were sourced from the E-Calendar and data provided by McGill IT. This may not be 100% consistent with the Engineering Faculty or Department requirements. Please ensure to confirm your classes and approve your degree with your advisor.</h6>
         {!! Form::open(['route' => 'newUserCreateDegree','style'=>'width:100%']) !!}
         <ul class="list-style-none">
           @foreach ($errors->all() as $error)
