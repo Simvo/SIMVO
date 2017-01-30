@@ -67,17 +67,11 @@ return [
             'engine' => null,
         ],
 
-         'testingSQLite' => [
-            'driver' => 'sqlite',
-            'database' => ':memory:',
-            'prefix' => '',
-        ],
-
         'travisSQL' => [
            'driver' => 'mysql',
-            'host' => env('DB_HOST', 'localhost:8000'),
-            'port' => env('DB_PORT', '8000'),
-            'database' => env('DB_DATABASE', 'SIMVO'),
+            'host' => env('DB_HOST', '127.0.0.1'),
+            'port' => env('DB_PORT', ''),
+            'database' => env('DB_DATABASE', 'test'),
             'username' => env('DB_USERNAME', 'root'),
             'password' => env('DB_PASSWORD', ''),
             'charset' => 'utf8',
