@@ -6,17 +6,12 @@ php:
 services: 
   - mysql
 
-test:
-  adapter: mysql2
-  database: simvo_test
-  username: root
-  encoding: utf8
 
 before_install:
-  - mysql -e 'CREATE DATABASE IF NOT EXISTS simvo_test;'
+  - cp .env.travis .env
+  - mysql -e "create database IF NOT EXISTS test;" -uroot
 
 before_script:
-  - cp .env.travis .env
   - composer self-update
   - composer install --no-interaction
   
