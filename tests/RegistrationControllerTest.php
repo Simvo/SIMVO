@@ -16,13 +16,13 @@ class RegistrationControllerTest extends TestCase
     {
         parent::setUp();
 
-        Artisan::call('migrate');
+        //Artisan::call('migrate');
 
         if(app()->env == "testing")
         {
-            Artisan::call('db:seed', ['--class' => 'ProgramSeeder']);
+           // Artisan::call('db:seed', ['--class' => 'ProgramSeeder']);
 
-            Artisan::call('db:seed', ['--class' => 'TestSeeder ', '--database' => 'test']);
+           // Artisan::call('db:seed', ['--class' => 'TestSeeder ', '--database' => 'test']);
         }
     }
 
