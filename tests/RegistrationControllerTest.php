@@ -4,8 +4,6 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-use DB;
-
 class RegistrationControllerTest extends TestCase
 {
     /**
@@ -24,7 +22,7 @@ class RegistrationControllerTest extends TestCase
         {
             Artisan::call('db:seed', ['--class' => 'ProgramSeeder']);
 
-            Artisan::call('db:seed', ['--class' => 'TestSeeder ', '--database' => 'testing']);
+            Artisan::call('db:seed', ['--class' => 'TestSeeder ', '--database' => 'test']);
         }
     }
 
