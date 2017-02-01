@@ -8,6 +8,18 @@ $background: rgba(236, 240, 241,1.0);
   width: 100% !important;
 }
 
+.disc-close{
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  font-size: 20px;
+  color: black;
+}
+
+.disclaimer-text{
+  font-weight: bold;
+}
+
 .vsb_wrapper{
   text-align: center;
 }

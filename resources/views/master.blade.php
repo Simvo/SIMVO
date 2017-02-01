@@ -10,7 +10,7 @@
   	<meta property="og:type" content="website"/>
     <title>S!MVO</title>
     <!-- Stylesheets for Material Design and FontAwesome-->
-    <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.red-indigo.min.css"/>
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.red-indigo.min.css"/>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <!-- Stylesheets -->
@@ -67,7 +67,7 @@
     </div>
 
     <!-- Javascript Files and Libraries -->
-    <script defer src="https://code.getmdl.io/1.1.2/material.min.js"></script>
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
     <script type="text/javascript" src="{{ asset('js/SortableRendering.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/tools.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/flowchartStyle.js') }}"></script>
