@@ -36,6 +36,10 @@ $(document).ready(function () {
     mixpanel.track("Minor Added");
   });
 
+  $(".disc-close").click(function(){
+    $("#disc-box").remove();
+  });
+
 });
 
 $(document).on('click', '.create_vsb' ,function(){
