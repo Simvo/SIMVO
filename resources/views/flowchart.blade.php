@@ -22,6 +22,13 @@
 </script>
 <!-- Progress Bar for Major -->
 <div class="mdl-grid" style="padding-bottom: 0px">
+  <div id="disc-box" class="alert-box">
+    <h4>NOTE TO STUDENTS:</h4>
+    <p class="disclaimer-text">
+S!MVO data is obtained from McGill sources, but may be missing the most recent updates to the curriculum and some unique requirements of a specific Engineering program.  We therefore recommend that this tool be used in collaboration with the ecalendar.  McGill's eCalendar contains information on courses, fees, degree requirements, deadlines, terminology and more. You are responsible for consulting the appropriate calendar each time you register and for meeting your graduation requirements. If you need help or guidance, please ask  your departmental, school, or Faculty advisor! Using the Degree Planner with an advisor is also recommended.</p>
+    <a href="#" class="disc-close">&times;</a>
+  </div>
+
   <div class="mdl-cell mdl-cell--12-col">
     <div class="mdl-card mdl-shadow--2dp progress_div">
       <div class="mdl-card__supporting-text">
