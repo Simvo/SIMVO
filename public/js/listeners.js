@@ -29,7 +29,6 @@ $(document).on("click", '.reveal-errors', function(){
 });
 
 function initAddSemesterListener(target) {
-    event.stopImmediatePropagation();
     $(target).click(function (e) {
         mixpanel.track("Semester Added");
 
