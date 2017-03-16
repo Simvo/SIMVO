@@ -125,6 +125,7 @@ function refreshDeleteSemester() {
         }, 300, "linear", function () {
           $(this).parent().remove();
         });
+        
       }
 
       if ($($(".semester")[i]).find("div.pinned").length) {
@@ -142,6 +143,7 @@ function refreshDeleteSemester() {
         deleteButton += '</div>';
 
         $($(".semester")[i]).append(deleteButton);
+        $(".vsb_wrapper").css("display", "none");
 
         initDeleteSemesterListener("[id='" + target_sem + "-delete']");
       }
@@ -152,7 +154,7 @@ function refreshDeleteSemester() {
 // Add Complentary Course
 function initAddCompCourseButton() {
   $(".add_comp_course_button").click(function () {
-   
+
     var target_sem = $($($("#course_schedule").find($("a.Complementary_Add_Target"))).parent());
     var semester = $(target_sem.find("div.sortable")).attr("id");
     if (semester != "Exemption") {
@@ -392,7 +394,7 @@ function initAddInternshipButton() {
     while (k < length) {
       var firstSemesterCheck = $($($(".semester")[1]).find("div.sortable")).attr("id").split(" ");
       firstSemesterCheck = firstSemesterCheck[0] + " " + firstSemesterCheck[1];
-      
+
       if(firstSemesterCheck == semester_letter){
         $("#Internship_error").remove();
         var invalid = '<div id="Internship_error" class="Course_add_error"> Internships may not be added to your first semester!</div>'
