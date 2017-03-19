@@ -6,10 +6,16 @@ php:
 services: 
   - mysql
 
+test:
+  adapter: mysql2
+  database: testing
+  username: root
+  encoding: utf8
+
 
 before_install:
   - cp .env.travis .env
-  - mysql -e "create database IF NOT EXISTS test;" -uroot
+  - mysql -e "create database IF NOT EXISTS testing;" -uroot
 
 before_script:
   - composer self-update
