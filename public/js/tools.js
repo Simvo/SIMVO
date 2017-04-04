@@ -2,11 +2,7 @@ function get_VSB_active_semesters()
 {
   var d = new Date();
   var month = d.getMonth();
-
-  if(month < 5)
-    return ["201701"];
-  else
-    return ["201609", "201701"];
+  return ["201709", "201801"];
 }
 
 function checkVSB(new_semester, id, semesterID)
