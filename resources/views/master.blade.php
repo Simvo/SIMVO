@@ -8,6 +8,7 @@
     <meta property="og:description" content="S!MVO Allows students to plan their degrees using an intuitive web application. S!mvo was developed by students at McGill Univeristy." />
     <meta property="og:image" content="http://www.international.gouv.qc.ca/Content/Users/Documents/FicheContenu/263.jpg"/>
   	<meta property="og:type" content="website"/>
+    <meta http-equiv="cache-control" content="no-cache" />
     <title>S!MVO</title>
     <!-- Stylesheets for Material Design and FontAwesome-->
     <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.red-indigo.min.css"/>
