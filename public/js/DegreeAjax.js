@@ -3,7 +3,7 @@ $(document).ready(function () {
 
   $.ajaxSetup({
     headers: {
-      'X-CSRF-Token': $('meta[name=_token]').attr('content')
+      'X-CSRF-Token': $('input[name="_token"]').val()
     }
   });
 
