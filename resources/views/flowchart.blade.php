@@ -66,7 +66,7 @@ S!MVO data is obtained from McGill sources, but may be missing the most recent u
       <h4 class="mdl-dialog__title modal-title" style="text-align: center; line-height: 40.0px;">Reseting Your Degree Will Delete All of Your Courses!</h4>
       <div class="mdl-dialog__content">
         <p class="modal-text">
-          Are you sure you want to continue? (This is not in any way connected to minerva, any changes here will not be relfected by
+          Are you sure you want to continue? (This is not in any way connected to minerva, any changes here will not be reflected by
           minerva) By doing this, you can change your program and entering semester.
         </p>
       </div>
